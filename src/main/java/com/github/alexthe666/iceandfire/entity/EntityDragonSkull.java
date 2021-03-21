@@ -64,14 +64,14 @@ public class EntityDragonSkull extends EntityAnimal implements IBlacklistedFromS
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.getDataManager().register(DRAGON_TYPE, Integer.valueOf(0));
-        this.getDataManager().register(DRAGON_AGE, Integer.valueOf(0));
-        this.getDataManager().register(DRAGON_STAGE, Integer.valueOf(0));
-        this.getDataManager().register(DRAGON_DIRECTION, Float.valueOf(0F));
+        this.getDataManager().register(DRAGON_TYPE, 0);
+        this.getDataManager().register(DRAGON_AGE, 0);
+        this.getDataManager().register(DRAGON_STAGE, 0);
+        this.getDataManager().register(DRAGON_DIRECTION, 0F);
     }
 
     public float getYaw() {
-        return this.getDataManager().get(DRAGON_DIRECTION).floatValue();
+        return this.getDataManager().get(DRAGON_DIRECTION);
     }
 
     public void setYaw(float var1) {
@@ -79,7 +79,7 @@ public class EntityDragonSkull extends EntityAnimal implements IBlacklistedFromS
     }
 
     public int getType() {
-        return this.getDataManager().get(DRAGON_TYPE).intValue();
+        return this.getDataManager().get(DRAGON_TYPE);
     }
 
     public void setType(int var1) {
@@ -87,7 +87,7 @@ public class EntityDragonSkull extends EntityAnimal implements IBlacklistedFromS
     }
 
     public int getStage() {
-        return this.getDataManager().get(DRAGON_STAGE).intValue();
+        return this.getDataManager().get(DRAGON_STAGE);
     }
 
     public void setStage(int var1) {
@@ -95,7 +95,7 @@ public class EntityDragonSkull extends EntityAnimal implements IBlacklistedFromS
     }
 
     public int getDragonAge() {
-        return this.getDataManager().get(DRAGON_AGE).intValue();
+        return this.getDataManager().get(DRAGON_AGE);
     }
 
     public void setDragonAge(int var1) {

@@ -23,12 +23,8 @@ public class LayerDragonEyes implements LayerRenderer<EntityDragonBase> {
             this.render.bindTexture(EnumDragonTextures.getEyeTextureFromDragon(dragon));
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-
-            if (dragon.isInvisible()) {
-                GlStateManager.depthMask(false);
-            } else {
-                GlStateManager.depthMask(true);
-            }
+	
+	        GlStateManager.depthMask(!dragon.isInvisible());
 
             int i = 61680;
             int j = i % 65536;

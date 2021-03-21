@@ -40,7 +40,7 @@ public class TileEntityLectern extends TileEntity implements ITickable, ISidedIn
     public EnumBestiaryPages[] selectedPages = new EnumBestiaryPages[3];
     net.minecraftforge.items.IItemHandler handlerUp = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, net.minecraft.util.EnumFacing.UP);
     net.minecraftforge.items.IItemHandler handlerDown = new net.minecraftforge.items.wrapper.SidedInvWrapper(this, EnumFacing.DOWN);
-    private Random localRand = new Random();
+    private final Random localRand = new Random();
     private NonNullList<ItemStack> stacks = NonNullList.withSize(3, ItemStack.EMPTY);
 
     @Override

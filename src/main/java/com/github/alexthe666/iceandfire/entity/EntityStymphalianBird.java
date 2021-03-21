@@ -110,7 +110,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(VICTOR_ENTITY, Optional.absent());
-        this.dataManager.register(FLYING, Boolean.valueOf(false));
+        this.dataManager.register(FLYING, Boolean.FALSE);
     }
 
     protected int getExperiencePoints(EntityPlayer player) {
@@ -158,7 +158,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
 
     public boolean isFlying() {
         if (world.isRemote) {
-            return this.isFlying = this.dataManager.get(FLYING).booleanValue();
+            return this.isFlying = this.dataManager.get(FLYING);
         }
         return isFlying;
     }
@@ -208,7 +208,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
         }
     }
 
-    @Nullable
+    
     private EntityItem dropItemAt(ItemStack stack, double x, double y, double z) {
         EntityItem entityitem = new EntityItem(this.world, x, y, z, stack);
         entityitem.setDefaultPickupDelay();
@@ -254,7 +254,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
                 if (!world.isAirBlock(pos)) {
                     return true;
                 }
-                return rayTrace != null && rayTrace.typeOfHit != RayTraceResult.Type.BLOCK;
+                return rayTrace.typeOfHit != RayTraceResult.Type.BLOCK;
             }
         }
         return false;
@@ -331,7 +331,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
                             double d0 = target.posX - wingX;
                             double d1 = target.getEntityBoundingBox().minY - wingY;
                             double d2 = target.posZ - wingZ;
-                            double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
+                            double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
                             EntityStymphalianFeather entityarrow = new EntityStymphalianFeather(world, this);
                             entityarrow.setPosition(wingX, wingY, wingZ);
                             entityarrow.shoot(d0, d1 + d3 * 0.10000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
@@ -373,7 +373,10 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
             this.setFlying(false);
             this.airTarget = null;
         }
-        if ((properties == null || properties != null && !properties.isStone) && !world.isRemote && (this.flock == null || this.flock != null && this.flock.isLeader(this)) && this.getRNG().nextInt(FLIGHT_CHANCE_PER_TICK) == 0 && !this.isFlying() && this.getPassengers().isEmpty() && !this.isChild() && this.onGround) {
+        if ((properties == null || !properties.isStone) && !world.isRemote && (this.flock == null || this.flock.isLeader(this)) && this
+		        .getRNG()
+		        .nextInt(FLIGHT_CHANCE_PER_TICK) == 0 && !this.isFlying() && this.getPassengers()
+		        .isEmpty() && !this.isChild() && this.onGround) {
             this.setFlying(true);
             this.launchTicks = 0;
             this.flyTicks = 0;

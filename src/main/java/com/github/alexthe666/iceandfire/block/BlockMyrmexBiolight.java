@@ -25,7 +25,7 @@ public class BlockMyrmexBiolight extends BlockBush {
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
         this.setSoundType(SoundType.PLANT);
         this.setRegistryName(IceAndFire.MODID, jungle ? "myrmex_jungle_biolight" : "myrmex_desert_biolight");
-        this.setDefaultState(this.blockState.getBaseState().withProperty(CONNECTED_DOWN, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(CONNECTED_DOWN, Boolean.FALSE));
     }
 
     public boolean isPassable(IBlockAccess worldIn, BlockPos pos) {

@@ -73,7 +73,7 @@ public class RenderModCapes {
             GL11.glPushMatrix();
             float f2 = ((float) event.getEntityPlayer().ticksExisted - 1 +  event.getPartialRenderTick());
             float f3 = MathHelper.sin(f2 / 10.0F) * 0.1F + 0.1F;
-            GL11.glTranslatef((float) 0, (float) 1.3F * event.getEntityPlayer().height, (float) 0);
+            GL11.glTranslatef((float) 0, 1.3F * event.getEntityPlayer().height, (float) 0);
             float f4 = (f2 / 20.0F) * (180F / (float) Math.PI);
             GlStateManager.rotate(f4, 0.0F, 1.0F, 0.0F);
             GL11.glPushMatrix();

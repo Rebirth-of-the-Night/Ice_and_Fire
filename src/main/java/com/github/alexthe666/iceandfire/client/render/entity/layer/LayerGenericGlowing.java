@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class LayerGenericGlowing implements LayerRenderer<EntityLiving> {
     private final RenderLiving render;
-    private ResourceLocation texture;
+    private final ResourceLocation texture;
 
     public LayerGenericGlowing(RenderLiving renderIn, ResourceLocation texture) {
         this.render = renderIn;

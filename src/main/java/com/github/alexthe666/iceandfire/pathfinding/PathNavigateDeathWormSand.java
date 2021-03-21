@@ -10,7 +10,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class PathNavigateDeathWormSand extends PathNavigate {
-    private EntityDeathWorm worm;
+    private final EntityDeathWorm worm;
 
     public PathNavigateDeathWormSand(EntityDeathWorm deathworm, World worldIn) {
         super(deathworm, worldIn);

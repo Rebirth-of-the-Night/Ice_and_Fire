@@ -102,14 +102,14 @@ public class EntityTideTrident extends Entity implements IProjectile {
     }
 
     protected void entityInit() {
-        this.dataManager.register(CRITICAL, Byte.valueOf((byte) 0));
+        this.dataManager.register(CRITICAL, (byte) 0);
     }
 
     public void shoot(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy) {
         float f = -MathHelper.sin(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
         float f1 = -MathHelper.sin(pitch * 0.017453292F);
         float f2 = MathHelper.cos(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
-        this.shoot((double) f, (double) f1, (double) f2, velocity, inaccuracy);
+        this.shoot(f, f1, f2, velocity, inaccuracy);
         this.motionX += shooter.motionX;
         this.motionZ += shooter.motionZ;
 
@@ -134,7 +134,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
         this.motionZ = z;
         float f1 = MathHelper.sqrt(x * x + z * z);
         this.rotationYaw = (float) (MathHelper.atan2(x, z) * (180D / Math.PI));
-        this.rotationPitch = (float) (MathHelper.atan2(y, (double) f1) * (180D / Math.PI));
+        this.rotationPitch = (float) (MathHelper.atan2(y, f1) * (180D / Math.PI));
         this.prevRotationYaw = this.rotationYaw;
         this.prevRotationPitch = this.rotationPitch;
         this.ticksInGround = 0;
@@ -157,7 +157,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
             float f = MathHelper.sqrt(x * x + z * z);
-            this.rotationPitch = (float) (MathHelper.atan2(y, (double) f) * (180D / Math.PI));
+            this.rotationPitch = (float) (MathHelper.atan2(y, f) * (180D / Math.PI));
             this.rotationYaw = (float) (MathHelper.atan2(x, z) * (180D / Math.PI));
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
@@ -171,7 +171,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
             float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            this.rotationPitch = (float) (MathHelper.atan2(this.motionY, (double) f) * (180D / Math.PI));
+            this.rotationPitch = (float) (MathHelper.atan2(this.motionY, f) * (180D / Math.PI));
             this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
             this.prevRotationYaw = this.rotationYaw;
             this.prevRotationPitch = this.rotationPitch;
@@ -198,9 +198,9 @@ public class EntityTideTrident extends Entity implements IProjectile {
             int j = block.getMetaFromState(iblockstate);
             if ((block != this.inTile || j != this.inData) && !this.world.collidesWithAnyBlock(this.getEntityBoundingBox().grow(0.05D))) {
                 this.inGround = false;
-                this.motionX *= (double) (this.rand.nextFloat() * 0.2F);
-                this.motionY *= (double) (this.rand.nextFloat() * 0.2F);
-                this.motionZ *= (double) (this.rand.nextFloat() * 0.2F);
+                this.motionX *= this.rand.nextFloat() * 0.2F;
+                this.motionY *= this.rand.nextFloat() * 0.2F;
+                this.motionZ *= this.rand.nextFloat() * 0.2F;
                 this.ticksInGround = 0;
                 this.ticksInAir = 0;
             }
@@ -248,7 +248,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
             float f4 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
 
-            for (this.rotationPitch = (float) (MathHelper.atan2(this.motionY, (double) f4) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
+            for (this.rotationPitch = (float) (MathHelper.atan2(this.motionY, f4) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
             }
 
             while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {
@@ -281,9 +281,9 @@ public class EntityTideTrident extends Entity implements IProjectile {
                 this.extinguish();
             }
 
-            this.motionX *= (double) f1;
-            this.motionY *= (double) f1;
-            this.motionZ *= (double) f1;
+            this.motionX *= f1;
+            this.motionY *= f1;
+            this.motionZ *= f1;
 
             if (!this.hasNoGravity()) {
                 this.motionY -= 0.05000000074505806D;
@@ -369,9 +369,9 @@ public class EntityTideTrident extends Entity implements IProjectile {
             IBlockState iblockstate = this.world.getBlockState(blockpos);
             this.inTile = iblockstate.getBlock();
             this.inData = this.inTile.getMetaFromState(iblockstate);
-            this.motionX = (double) ((float) (raytraceResultIn.hitVec.x - this.posX));
-            this.motionY = (double) ((float) (raytraceResultIn.hitVec.y - this.posY));
-            this.motionZ = (double) ((float) (raytraceResultIn.hitVec.z - this.posZ));
+            this.motionX = (float) (raytraceResultIn.hitVec.x - this.posX);
+            this.motionY = (float) (raytraceResultIn.hitVec.y - this.posY);
+            this.motionZ = (float) (raytraceResultIn.hitVec.z - this.posZ);
             float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
             this.posX -= this.motionX / (double) f2 * 0.05000000074505806D;
             this.posY -= this.motionY / (double) f2 * 0.05000000074505806D;
@@ -436,7 +436,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
         compound.setInteger("zTile", this.zTile);
         compound.setShort("life", (short) this.ticksInGround);
         ResourceLocation resourcelocation = Block.REGISTRY.getNameForObject(this.inTile);
-        compound.setString("inTile", resourcelocation == null ? "" : resourcelocation.toString());
+        compound.setString("inTile", resourcelocation.toString());
         compound.setByte("inData", (byte) this.inData);
         compound.setByte("shake", (byte) this.arrowShake);
         compound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
@@ -530,17 +530,17 @@ public class EntityTideTrident extends Entity implements IProjectile {
      * Whether the arrow has a stream of critical hit particles flying behind it.
      */
     public boolean getIsCritical() {
-        byte b0 = this.dataManager.get(CRITICAL).byteValue();
+        byte b0 = this.dataManager.get(CRITICAL);
         return (b0 & 1) != 0;
     }
 
     public void setIsCritical(boolean critical) {
-        byte b0 = this.dataManager.get(CRITICAL).byteValue();
+        byte b0 = this.dataManager.get(CRITICAL);
 
         if (critical) {
-            this.dataManager.set(CRITICAL, Byte.valueOf((byte) (b0 | 1)));
+            this.dataManager.set(CRITICAL, (byte) (b0 | 1));
         } else {
-            this.dataManager.set(CRITICAL, Byte.valueOf((byte) (b0 & -2)));
+            this.dataManager.set(CRITICAL, (byte) (b0 & -2));
         }
     }
 

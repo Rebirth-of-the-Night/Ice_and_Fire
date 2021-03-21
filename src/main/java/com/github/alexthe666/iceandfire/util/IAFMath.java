@@ -5,7 +5,7 @@ public class IAFMath {
     private static final double coeff_1 = Math.PI / 4;
     private static final double coeff_2 = coeff_1 * 3;
 
-    public static final double atan2_accurate(double y, double x) {
+    public static double atan2_accurate(double y, double x) {
         double r;
         if (y < 0) {
             y = -y;

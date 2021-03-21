@@ -106,8 +106,8 @@ public class GuiLectern extends GuiContainer {
         GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
         float f3 = this.oFlip + (this.flip - this.oFlip) * partialTicks + 0.25F;
         float f4 = this.oFlip + (this.flip - this.oFlip) * partialTicks + 0.75F;
-        f3 = (f3 - (float) MathHelper.fastFloor((double) f3)) * 1.6F - 0.3F;
-        f4 = (f4 - (float) MathHelper.fastFloor((double) f4)) * 1.6F - 0.3F;
+        f3 = (f3 - (float) MathHelper.fastFloor(f3)) * 1.6F - 0.3F;
+        f4 = (f4 - (float) MathHelper.fastFloor(f4)) * 1.6F - 0.3F;
 
         if (f3 < 0.0F) {
             f3 = 0.0F;
@@ -192,13 +192,14 @@ public class GuiLectern extends GuiContainer {
             EnumBestiaryPages enchantment = this.container.getPossiblePages()[j];
             int i1 = 3;
 
-            if (this.isPointInRegion(60, 14 + 19 * j, 108, 17, mouseX, mouseY) && k > 0) {
+            if (this.isPointInRegion(60, 14 + 19 * j, 108, 17, mouseX, mouseY)) {
                 List<String> list = Lists.newArrayList();
 
                 if (enchantment == null) {
                     list.add(TextFormatting.RED + I18n.format("container.lectern.no_bestiary"));
                 } else if (!flag) {
-                    list.add("" + TextFormatting.WHITE + TextFormatting.ITALIC + I18n.format(enchantment == null ? "" : "bestiary." + enchantment.name().toLowerCase()));
+                    list.add("" + TextFormatting.WHITE + TextFormatting.ITALIC + I18n.format("bestiary." + enchantment.name()
+		                    .toLowerCase()));
                     TextFormatting textformatting = i >= i1 ? TextFormatting.GRAY : TextFormatting.RED;
                     list.add(textformatting + "" + I18n.format("container.lectern.costs"));
                     String s = I18n.format("container.lectern.manuscript.many", i1);

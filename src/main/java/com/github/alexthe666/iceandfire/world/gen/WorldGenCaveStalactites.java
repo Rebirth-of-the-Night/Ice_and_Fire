@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class WorldGenCaveStalactites {
-    private Block block;
+    private final Block block;
 
     public WorldGenCaveStalactites(Block block) {
         this.block = block;

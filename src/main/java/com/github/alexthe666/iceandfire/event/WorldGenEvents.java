@@ -332,7 +332,7 @@ public class WorldGenEvents implements IWorldGenerator {
         int[] blacklistedArray = dragons ? IceAndFire.CONFIG.dragonBlacklistedDimensions : IceAndFire.CONFIG.structureBlacklistedDimensions;
         int[] whitelistedArray = dragons ? IceAndFire.CONFIG.dragonWhitelistedDimensions : IceAndFire.CONFIG.structureWhitelistedDimensions;
         int[] array = useBlackOrWhiteLists ? blacklistedArray : whitelistedArray;
-        List<Integer> dimList = new ArrayList<Integer>();
+        List<Integer> dimList = new ArrayList<>();
         for (int dimension : array) {
             dimList.add(dimension);
         }

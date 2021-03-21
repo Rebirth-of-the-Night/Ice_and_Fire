@@ -326,8 +326,8 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(VARIANT, Integer.valueOf(0));
-        this.dataManager.register(SCALE, Float.valueOf(0F));
+        this.dataManager.register(VARIANT, 0);
+        this.dataManager.register(SCALE, 0F);
         this.dataManager.register(JUMPING, false);
         this.dataManager.register(BREATHING, false);
         this.dataManager.register(ANCIENT, false);
@@ -368,24 +368,24 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
     }
 
     public float getSeaSerpentScale() {
-        return Float.valueOf(this.dataManager.get(SCALE).floatValue());
+        return this.dataManager.get(SCALE);
     }
 
     private void setSeaSerpentScale(float scale) {
-        this.dataManager.set(SCALE, Float.valueOf(scale));
+        this.dataManager.set(SCALE, scale);
         this.updateAttributes();
     }
 
     public int getVariant() {
-        return Integer.valueOf(this.dataManager.get(VARIANT).intValue());
+        return this.dataManager.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.dataManager.set(VARIANT, Integer.valueOf(variant));
+        this.dataManager.set(VARIANT, variant);
     }
 
     public boolean isJumpingOutOfWater() {
-        return this.dataManager.get(JUMPING).booleanValue();
+        return this.dataManager.get(JUMPING);
     }
 
     public void setJumpingOutOfWater(boolean jump) {
@@ -393,7 +393,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
     }
 
     public boolean isAncient() {
-        return this.dataManager.get(ANCIENT).booleanValue();
+        return this.dataManager.get(ANCIENT);
     }
 
     public void setAncient(boolean ancient) {
@@ -402,7 +402,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
 
     public boolean isBreathing() {
         if (world.isRemote) {
-            boolean breathing = this.dataManager.get(BREATHING).booleanValue();
+            boolean breathing = this.dataManager.get(BREATHING);
             this.isBreathing = breathing;
             return breathing;
         }
@@ -477,11 +477,9 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
         } else if (!jumping && jumpProgress > 0.0F) {
             jumpProgress -= 0.5F;
         }
-        if (wantJumping && wantJumpProgress < 10.0F) {
-            wantJumpProgress += 2F;
-        } else if (!wantJumping && wantJumpProgress > 0.0F) {
-            wantJumpProgress -= 2F;
-        }
+	    if (wantJumpProgress > 0.0F) {
+	        wantJumpProgress -= 2F;
+	    }
         if (this.isJumpingOutOfWater() && jumpRot < 1.0F) {
             jumpRot += 0.1F;
         } else if (!this.isJumpingOutOfWater() && jumpRot > 0.0F) {
@@ -556,11 +554,9 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
                     this.swimBehavior = SwimBehavior.WANDER;
                 }
             } else {
-                if (this.swimBehavior == SwimBehavior.JUMP && this.getAttackTarget() != null && this.getDistanceSq(this.getAttackTarget()) > 200 * getSeaSerpentScale()) {
-                    this.swimBehavior = SwimBehavior.WANDER;
-                    this.ticksSinceJump = 0;
-                    setJumpingOutOfWater(false);
-                }
+	            if (this.swimBehavior == SwimBehavior.JUMP) {
+		            this.getAttackTarget();
+	            }
             }
             if (this.swimBehavior != SwimBehavior.JUMP && this.swimBehavior != SwimBehavior.ATTACK && this.ticksSinceJump > TIME_BETWEEN_JUMPS) {
                 this.swimBehavior = SwimBehavior.JUMP;
@@ -851,7 +847,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
                         world.spawnEntity(entitylargefireball);
                     }
                     entitylargefireball.setSizes(size, size);
-                    if (entity.isDead || entity == null) {
+                    if (entity.isDead) {
                         this.setBreathing(false);
                         this.attackDecision = this.getRNG().nextBoolean();
                     }
@@ -960,7 +956,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
     }
 
     public class SwimmingMoveHelper extends EntityMoveHelper {
-        private EntitySeaSerpent serpent = EntitySeaSerpent.this;
+        private final EntitySeaSerpent serpent = EntitySeaSerpent.this;
 
         public SwimmingMoveHelper() {
             super(EntitySeaSerpent.this);

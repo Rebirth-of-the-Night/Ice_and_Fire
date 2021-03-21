@@ -22,7 +22,7 @@ public class ModelHydraBody extends ModelDragonBase {
     public AdvancedModelRenderer TailSpike1;
     public AdvancedModelRenderer TailSpike2;
     public AdvancedModelRenderer TailSpike3;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelHydraBody() {
         this.textureWidth = 256;

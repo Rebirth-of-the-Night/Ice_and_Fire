@@ -6,7 +6,7 @@ import net.minecraft.util.DamageSource;
 public class EntityHydraHead extends EntityMutlipartPart {
     public int headIndex;
     public EntityHydra hydra;
-    private boolean neck;
+    private final boolean neck;
 
     public EntityHydraHead(EntityHydra entity, float radius, float angle, float y, float width, float height, float damageMulti, int headIndex, boolean neck) {
         super(entity, radius, angle, y, width, height, damageMulti);

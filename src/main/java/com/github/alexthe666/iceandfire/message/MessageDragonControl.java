@@ -61,7 +61,7 @@ public class MessageDragonControl extends AbstractMessage<MessageDragonControl> 
         if (player.world != null) {
             Entity entity = player.world.getEntityByID(message.dragonId);
             if (entity.isRidingOrBeingRiddenBy(player)) {
-                if (entity != null && entity instanceof EntityDragonBase) {
+                if (entity instanceof EntityDragonBase) {
                     EntityDragonBase dragon = (EntityDragonBase) entity;
                     if (dragon.isOwner(player)) {
                         dragon.setControlState(message.controlState);

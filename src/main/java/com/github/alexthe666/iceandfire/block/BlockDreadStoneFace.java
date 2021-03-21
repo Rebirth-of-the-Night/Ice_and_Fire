@@ -23,7 +23,7 @@ public class BlockDreadStoneFace extends BlockHorizontal implements IDreadBlock,
 
     public BlockDreadStoneFace() {
         super(Material.ROCK);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(PLAYER_PLACED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(PLAYER_PLACED, Boolean.FALSE));
         this.setTranslationKey("iceandfire.dread_stone_face");
         this.setHarvestLevel("pickaxe", 3);
         this.setHardness(20F);

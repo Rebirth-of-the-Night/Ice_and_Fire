@@ -34,7 +34,7 @@ public class DeathwormAITargetItems<T extends EntityItem> extends EntityAITarget
         this.targetEntitySelector = new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
-                return item instanceof EntityItem && !item.getItem().isEmpty() && item.getItem().getItem() == Item.getItemFromBlock(Blocks.TNT);
+                return item != null && !item.getItem().isEmpty() && item.getItem().getItem() == Item.getItemFromBlock(Blocks.TNT);
             }
         };
     }
@@ -45,7 +45,7 @@ public class DeathwormAITargetItems<T extends EntityItem> extends EntityAITarget
         if (list.isEmpty()) {
             return false;
         } else {
-            Collections.sort(list, this.theNearestAttackableTargetSorter);
+            list.sort(this.theNearestAttackableTargetSorter);
             this.targetEntity = list.get(0);
             return true;
         }
@@ -64,7 +64,7 @@ public class DeathwormAITargetItems<T extends EntityItem> extends EntityAITarget
     @Override
     public void updateTask() {
         super.updateTask();
-        if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
+        if (this.targetEntity == null || this.targetEntity.isDead) {
             this.resetTask();
         }
         if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {

@@ -57,7 +57,7 @@ public class EntityDreadGhoul extends EntityDreadMob implements IAnimatedEntity,
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 0.5D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {IDreadMob.class}));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, IDreadMob.class));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.targetTasks.addTask(3, new DreadAITargetNonDread(this, EntityLivingBase.class, false, new Predicate<Entity>() {
             @Override
@@ -79,17 +79,17 @@ public class EntityDreadGhoul extends EntityDreadMob implements IAnimatedEntity,
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(VARIANT, Integer.valueOf(0));
-        this.dataManager.register(SCREAMS, Integer.valueOf(0));
-        this.dataManager.register(SCALE, Float.valueOf(1F));
+        this.dataManager.register(VARIANT, 0);
+        this.dataManager.register(SCREAMS, 0);
+        this.dataManager.register(SCALE, 1F);
     }
 
     public float getScale() {
-        return Float.valueOf(this.dataManager.get(SCALE).floatValue());
+        return this.dataManager.get(SCALE);
     }
 
     public void setScale(float scale) {
-        this.dataManager.set(SCALE, Float.valueOf(scale));
+        this.dataManager.set(SCALE, scale);
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
@@ -171,7 +171,7 @@ public class EntityDreadGhoul extends EntityDreadMob implements IAnimatedEntity,
     }
 
     public int getVariant() {
-        return this.dataManager.get(VARIANT).intValue();
+        return this.dataManager.get(VARIANT);
     }
 
     public void setVariant(int variant) {
@@ -179,7 +179,7 @@ public class EntityDreadGhoul extends EntityDreadMob implements IAnimatedEntity,
     }
 
     public int getScreamStage() {
-        return this.dataManager.get(SCREAMS).intValue();
+        return this.dataManager.get(SCREAMS);
     }
 
     public void setScreamStage(int screamStage) {

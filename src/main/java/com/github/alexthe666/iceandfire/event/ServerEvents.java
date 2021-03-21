@@ -69,16 +69,14 @@ public class ServerEvents {
             return entity != null && entity instanceof IVillagerFear;
         }
     };
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     private static void signalChickenAlarm(EntityLivingBase chicken, EntityLivingBase attacker) {
         float d0 = IceAndFire.CONFIG.cockatriceChickenSearchLength;
         List<Entity> list = chicken.world.getEntitiesWithinAABB(EntityCockatrice.class, (new AxisAlignedBB(chicken.posX, chicken.posY, chicken.posZ, chicken.posX + 1.0D, chicken.posY + 1.0D, chicken.posZ + 1.0D)).grow(d0, 10.0D, d0));
-        Collections.sort(list, new EntityAINearestAttackableTarget.Sorter(attacker));
+        list.sort(new EntityAINearestAttackableTarget.Sorter(attacker));
         if (!list.isEmpty()) {
-            Iterator<Entity> itr = list.iterator();
-            while (itr.hasNext()) {
-                Entity entity = itr.next();
+            for (Entity entity : list) {
                 if (entity instanceof EntityCockatrice && !(attacker instanceof EntityCockatrice)) {
                     EntityCockatrice cockatrice = (EntityCockatrice) entity;
                     if (!DragonUtils.hasSameOwner(cockatrice, attacker)) {
@@ -99,11 +97,9 @@ public class ServerEvents {
     private static void signalAmphithereAlarm(EntityLivingBase villager, EntityLivingBase attacker) {
         float d0 = IceAndFire.CONFIG.amphithereVillagerSearchLength;
         List<Entity> list = villager.world.getEntitiesWithinAABB(EntityAmphithere.class, (new AxisAlignedBB(villager.posX - 1.0D, villager.posY - 1.0D, villager.posZ - 1.0D, villager.posX + 1.0D, villager.posY + 1.0D, villager.posZ + 1.0D)).grow(d0, d0, d0));
-        Collections.sort(list, new EntityAINearestAttackableTarget.Sorter(attacker));
+        list.sort(new EntityAINearestAttackableTarget.Sorter(attacker));
         if (!list.isEmpty()) {
-            Iterator<Entity> itr = list.iterator();
-            while (itr.hasNext()) {
-                Entity entity = itr.next();
+            for (Entity entity : list) {
                 if (entity instanceof EntityAmphithere && !(attacker instanceof EntityAmphithere)) {
                     EntityAmphithere amphithere = (EntityAmphithere) entity;
                     if (!DragonUtils.hasSameOwner(amphithere, attacker)) {
@@ -360,11 +356,9 @@ public class ServerEvents {
         if (event.getTarget() != null && isAnimaniaSheep(event.getTarget())) {
             float dist = IceAndFire.CONFIG.cyclopesSheepSearchLength;
             List<Entity> list = event.getTarget().world.getEntitiesWithinAABBExcludingEntity(event.getEntityPlayer(), event.getEntityPlayer().getEntityBoundingBox().expand(dist, dist, dist));
-            Collections.sort(list, new EntityAINearestAttackableTarget.Sorter(event.getEntityPlayer()));
+            list.sort(new EntityAINearestAttackableTarget.Sorter(event.getEntityPlayer()));
             if (!list.isEmpty()) {
-                Iterator<Entity> itr = list.iterator();
-                while (itr.hasNext()) {
-                    Entity entity = itr.next();
+                for (Entity entity : list) {
                     if (entity instanceof EntityCyclops) {
                         EntityCyclops cyclops = (EntityCyclops) entity;
                         if (!cyclops.isBlinded() && !event.getEntityPlayer().capabilities.isCreativeMode) {
@@ -381,7 +375,10 @@ public class ServerEvents {
                 ((EntityLiving) event.getTarget()).setHealth(((EntityLiving) event.getTarget()).getMaxHealth());
                 if (event.getEntityPlayer() != null) {
                     ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
-                    if (stack.getItem() != null && (stack.getItem().canHarvestBlock(Blocks.STONE.getDefaultState()) || stack.getItem().getTranslationKey().contains("pickaxe"))) {
+	                stack.getItem();
+	                if (stack.getItem().canHarvestBlock(Blocks.STONE.getDefaultState()) || stack.getItem()
+			                .getTranslationKey()
+			                .contains("pickaxe")) {
                         boolean silkTouch = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0;
                         boolean ready = false;
                         if (properties != null && !stonePlayer) {
@@ -535,7 +532,7 @@ public class ServerEvents {
                         event.getEntityLiving().dropItem(IafItemRegistry.rotten_egg, 1);
                     }
                     chickenProps.timeUntilNextEgg = chickenProps.generateTime();
-                } else if (chickenProps.timeUntilNextEgg > 0) {
+                } else {
                     chickenProps.timeUntilNextEgg--;
                 }
             }
@@ -565,9 +562,9 @@ public class ServerEvents {
             if (frozenProps.isFrozen && !(event.getEntityLiving() instanceof EntityPlayer && ((EntityPlayer) event.getEntityLiving()).isCreative())) {
                 event.getEntityLiving().motionX *= 0.25;
                 event.getEntityLiving().motionZ *= 0.25;
-                if (!(event.getEntityLiving() instanceof EntityDragon) && !event.getEntityLiving().onGround) {
-                    event.getEntityLiving().motionY -= 0.2D;
-                }
+//                if (!(event.getEntityLiving() instanceof EntityDragon) && !event.getEntityLiving().onGround) {
+//                    event.getEntityLiving().motionY -= 0.2D;
+//                }
             }
             if (prevFrozen != frozenProps.isFrozen) {
                 if (frozenProps.isFrozen) {
@@ -702,7 +699,7 @@ public class ServerEvents {
                     properties.specialWeaponDmg++;
                     next.attackEntityFrom(DamageSource.WITHER, 2);
                 }
-                if (next == null || !next.isEntityAlive()) {
+                if (!next.isEntityAlive()) {
                     itr.remove();
                 }
             }
@@ -770,9 +767,7 @@ public class ServerEvents {
             float dist = IceAndFire.CONFIG.dragonGoldSearchLength;
             List<Entity> list = event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getEntityPlayer(), event.getEntityPlayer().getEntityBoundingBox().expand(dist, dist, dist));
             if (!list.isEmpty()) {
-                Iterator<Entity> itr = list.iterator();
-                while (itr.hasNext()) {
-                    Entity entity = itr.next();
+                for (Entity entity : list) {
                     if (entity instanceof EntityDragonBase) {
                         EntityDragonBase dragon = (EntityDragonBase) entity;
                         if (!dragon.isTamed() && !dragon.isModelDead() && !dragon.isOwner(event.getEntityPlayer()) && !event.getEntityPlayer().capabilities.isCreativeMode) {
@@ -795,9 +790,7 @@ public class ServerEvents {
             float dist = IceAndFire.CONFIG.dragonGoldSearchLength;
             List<Entity> list = event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getPlayer(), event.getPlayer().getEntityBoundingBox().expand(dist, dist, dist));
             if (!list.isEmpty()) {
-                Iterator<Entity> itr = list.iterator();
-                while (itr.hasNext()) {
-                    Entity entity = itr.next();
+                for (Entity entity : list) {
                     if (entity instanceof EntityDragonBase) {
                         EntityDragonBase dragon = (EntityDragonBase) entity;
                         if (!dragon.isTamed() && !dragon.isModelDead() && !dragon.isOwner(event.getPlayer()) && !event.getPlayer().capabilities.isCreativeMode) {
@@ -846,9 +839,8 @@ public class ServerEvents {
     @SubscribeEvent
     public void onPlayerLeaveEvent(PlayerEvent.PlayerLoggedOutEvent event) {
         if (event.player != null && !event.player.getPassengers().isEmpty()) {
-            Iterator<Entity> itr = event.player.getPassengers().iterator();
-            while (itr.hasNext()) {
-                (itr.next()).dismountRidingEntity();
+            for (Entity entity : event.player.getPassengers()) {
+                entity.dismountRidingEntity();
             }
         }
     }

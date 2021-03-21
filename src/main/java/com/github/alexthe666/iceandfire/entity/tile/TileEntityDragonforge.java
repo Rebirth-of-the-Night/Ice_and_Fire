@@ -189,71 +189,49 @@ public class TileEntityDragonforge extends TileEntity implements ITickable, ISid
         return 1000;
     }
 
-    private DragonForgeRecipe getCurrentRecipe() {
-        ItemStack inputItemStack = this.forgeItemStacks.get(0);
-        ItemStack bloodItemStack = this.forgeItemStacks.get(1);
-
-        DragonForgeRecipe forgeRecipe;
-        if (this.isFire) {
-            forgeRecipe = IafRecipeRegistry.getFireForgeRecipe(inputItemStack);
-        } else {
-            forgeRecipe = IafRecipeRegistry.getIceForgeRecipe(inputItemStack);
-        }
-
-        if (
-            forgeRecipe != null &&
-            // Input item and quantity match
-            inputItemStack.isItemEqual(forgeRecipe.getInput()) &&
-            inputItemStack.getCount() >= forgeRecipe.getInput().getCount() &&
-            // Blood item and quantity match
-            bloodItemStack.isItemEqual(forgeRecipe.getBlood()) &&
-            bloodItemStack.getCount() >= forgeRecipe.getBlood().getCount()
-        ) {
-            return forgeRecipe;
-        }
-
-        Block defaultOutput = IafBlockRegistry.dragon_ice;
-        if (this.isFire) {
-            defaultOutput = IafBlockRegistry.ash;
-        }
-
-        return new DragonForgeRecipe(
-            new ItemStack(inputItemStack.getItem()),
-            new ItemStack(bloodItemStack.getItem()),
-            new ItemStack(defaultOutput)
-        );
-    }
-
     private ItemStack getCurrentResult() {
-        return getCurrentRecipe().getOutput();
+        DragonForgeRecipe forgeRecipe = null;
+        if (this.isFire) {
+            forgeRecipe = IafRecipeRegistry.getFireForgeRecipe(this.forgeItemStacks.get(0));
+        } else {
+            forgeRecipe = IafRecipeRegistry.getIceForgeRecipe(this.forgeItemStacks.get(0));
+        }
+        ItemStack itemstack = ItemStack.EMPTY;
+        if (forgeRecipe != null && this.forgeItemStacks.get(1).isItemEqual(forgeRecipe.getBlood())) {
+            itemstack = forgeRecipe.getOutput();
+        }
+        if (itemstack == ItemStack.EMPTY) {
+            if (this.isFire) {
+                itemstack = new ItemStack(IafBlockRegistry.ash);
+            } else {
+                itemstack = new ItemStack(IafBlockRegistry.dragon_ice);
+            }
+        }
+        return itemstack;
     }
 
     public boolean canSmelt() {
-        ItemStack inputItemStack = this.forgeItemStacks.get(0);
-        if (inputItemStack.isEmpty()) {
+        if (this.forgeItemStacks.get(0).isEmpty()) {
             return false;
+        } else {
+            ItemStack itemstack = getCurrentResult();
+            if (itemstack.isEmpty()) {
+                return false;
+            } else {
+                ItemStack itemstack1 = this.forgeItemStacks.get(2);
+
+                if (itemstack1.isEmpty()) {
+                    return true;
+                } else if (!itemstack1.isItemEqual(itemstack)) {
+                    return false;
+                } else if (itemstack1.getCount() + itemstack.getCount() <= this.getInventoryStackLimit() && itemstack1.getCount() + itemstack.getCount() <= itemstack1.getMaxStackSize())  // Forge fix: make furnace respect stack sizes in furnace recipes
+                {
+                    return true;
+                } else {
+                    return itemstack1.getCount() + itemstack.getCount() <= itemstack.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
+                }
+            }
         }
-
-        DragonForgeRecipe forgeRecipe = getCurrentRecipe();
-        ItemStack forgeRecipeOutput = forgeRecipe.getOutput();
-
-        if (forgeRecipeOutput.isEmpty()) {
-            return false;
-        }
-
-        ItemStack outputItemStack = this.forgeItemStacks.get(2);
-        if (
-            !outputItemStack.isEmpty() &&
-            !outputItemStack.isItemEqual(forgeRecipeOutput)
-        ) {
-            return false;
-        }
-
-        int calculatedOutputCount = outputItemStack.getCount() + forgeRecipeOutput.getCount();
-        return (
-             calculatedOutputCount <= this.getInventoryStackLimit() &&
-             calculatedOutputCount <= outputItemStack.getMaxStackSize()
-        );
     }
 
     public boolean isUsableByPlayer(EntityPlayer player) {
@@ -265,24 +243,22 @@ public class TileEntityDragonforge extends TileEntity implements ITickable, ISid
     }
 
     public void smeltItem() {
-        if (!this.canSmelt()) {
-            return;
+        if (this.canSmelt()) {
+            ItemStack itemstack = this.forgeItemStacks.get(0);
+            ItemStack bloodStack = this.forgeItemStacks.get(1);
+            ItemStack itemstack1 = getCurrentResult();
+            ItemStack itemstack2 = this.forgeItemStacks.get(2);
+
+            if (itemstack2.isEmpty()) {
+                this.forgeItemStacks.set(2, itemstack1.copy());
+            } else if (itemstack2.getItem() == itemstack1.getItem()) {
+                itemstack2.grow(itemstack1.getCount());
+            }
+            if (!bloodStack.isEmpty() && this.cookTime == 0) {
+                bloodStack.shrink(1);
+            }
+            itemstack.shrink(1);
         }
-
-        DragonForgeRecipe forgeRecipe = getCurrentRecipe();
-
-        ItemStack inputItemStack = this.forgeItemStacks.get(0);
-        ItemStack bloodItemStack = this.forgeItemStacks.get(1);
-        ItemStack outputItemStack = this.forgeItemStacks.get(2);
-
-        if (outputItemStack.isEmpty()) {
-            this.forgeItemStacks.set(2, forgeRecipe.getOutput().copy());
-        } else {
-            outputItemStack.grow(forgeRecipe.getOutput().getCount());
-        }
-
-        inputItemStack.shrink(forgeRecipe.getInput().getCount());
-        bloodItemStack.shrink(forgeRecipe.getBlood().getCount());
     }
 
     public void openInventory(EntityPlayer player) {
@@ -295,11 +271,11 @@ public class TileEntityDragonforge extends TileEntity implements ITickable, ISid
         if (index == 2) {
             return false;
         } else if (index == 1) {
-            DragonForgeRecipe forgeRecipe;
+            DragonForgeRecipe forgeRecipe = null;
             if (this.isFire) {
-                forgeRecipe = IafRecipeRegistry.getFireForgeRecipeForBlood(stack);
+                forgeRecipe = IafRecipeRegistry.getFireForgeRecipeForBlood(this.forgeItemStacks.get(0));
             } else {
-                forgeRecipe = IafRecipeRegistry.getIceForgeRecipeForBlood(stack);
+                forgeRecipe = IafRecipeRegistry.getIceForgeRecipeForBlood(this.forgeItemStacks.get(0));
             }
             if (forgeRecipe != null) {
                 return true;

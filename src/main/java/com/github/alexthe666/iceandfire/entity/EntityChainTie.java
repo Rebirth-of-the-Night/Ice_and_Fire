@@ -33,7 +33,7 @@ public class EntityChainTie extends EntityHanging {
 
     public EntityChainTie(World worldIn, BlockPos hangingPositionIn) {
         super(worldIn, hangingPositionIn);
-        this.setPosition((double) hangingPositionIn.getX() + 0.5D, (double) hangingPositionIn.getY(), (double) hangingPositionIn.getZ() + 0.5D);
+        this.setPosition((double) hangingPositionIn.getX() + 0.5D, hangingPositionIn.getY(), (double) hangingPositionIn.getZ() + 0.5D);
         this.setSize(0.8F, 0.9F);
         this.forceSpawn = true;
     }
@@ -52,8 +52,11 @@ public class EntityChainTie extends EntityHanging {
         int k = pos.getZ();
 
         for (EntityChainTie entityleashknot : worldIn.getEntitiesWithinAABB(EntityChainTie.class, new AxisAlignedBB((double) i - 1.0D, (double) j - 1.0D, (double) k - 1.0D, (double) i + 1.0D, (double) j + 1.0D, (double) k + 1.0D))) {
-            if (entityleashknot != null && entityleashknot.getHangingPosition() != null && entityleashknot.getHangingPosition().equals(pos)) {
-                return entityleashknot;
+            if (entityleashknot != null) {
+	            entityleashknot.getHangingPosition();
+	            if (entityleashknot.getHangingPosition().equals(pos)) {
+		            return entityleashknot;
+	            }
             }
         }
 
@@ -88,12 +91,10 @@ public class EntityChainTie extends EntityHanging {
 
     public void writeEntityToNBT(NBTTagCompound compound) {
         BlockPos blockpos = this.getHangingPosition();
-        if(blockpos != null){
-            compound.setInteger("TileX", blockpos.getX());
-            compound.setInteger("TileY", blockpos.getY());
-            compound.setInteger("TileZ", blockpos.getZ());
-        }
-
+	    compound.setInteger("TileX", blockpos.getX());
+	    compound.setInteger("TileY", blockpos.getY());
+	    compound.setInteger("TileZ", blockpos.getZ());
+	
     }
 
     public void readEntityFromNBT(NBTTagCompound compound) {

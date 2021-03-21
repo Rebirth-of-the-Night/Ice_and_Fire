@@ -166,7 +166,10 @@ public class SnowVillagePieces {
 
         public static House1 createPiece(Start start, List<StructureComponent> p_175850_1_, Random rand, int p_175850_3_, int p_175850_4_, int p_175850_5_, EnumFacing facing, int p_175850_7_) {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175850_3_, p_175850_4_, p_175850_5_, 0, 0, 0, 9, 9, 6, facing);
-            return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(p_175850_1_, structureboundingbox) == null ? new House1(start, p_175850_7_, rand, structureboundingbox, facing) : null;
+	        if (canVillageGoDeeper(structureboundingbox)) {
+		        StructureComponent.findIntersecting(p_175850_1_, structureboundingbox);
+	        }
+	        return null;
         }
 
         public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
@@ -292,7 +295,10 @@ public class SnowVillagePieces {
 
         public static House2 createPiece(Start start, List<StructureComponent> p_175855_1_, Random rand, int p_175855_3_, int p_175855_4_, int p_175855_5_, EnumFacing facing, int p_175855_7_) {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175855_3_, p_175855_4_, p_175855_5_, 0, 0, 0, 10, 6, 7, facing);
-            return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(p_175855_1_, structureboundingbox) == null ? new House2(start, p_175855_7_, rand, structureboundingbox, facing) : null;
+	        if (canVillageGoDeeper(structureboundingbox)) {
+		        StructureComponent.findIntersecting(p_175855_1_, structureboundingbox);
+	        }
+	        return null;
         }
 
         /**
@@ -417,7 +423,10 @@ public class SnowVillagePieces {
 
         public static House3 createPiece(Start start, List<StructureComponent> p_175849_1_, Random rand, int p_175849_3_, int p_175849_4_, int p_175849_5_, EnumFacing facing, int p_175849_7_) {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175849_3_, p_175849_4_, p_175849_5_, 0, 0, 0, 9, 7, 12, facing);
-            return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(p_175849_1_, structureboundingbox) == null ? new House3(start, p_175849_7_, rand, structureboundingbox, facing) : null;
+	        if (canVillageGoDeeper(structureboundingbox)) {
+		        StructureComponent.findIntersecting(p_175849_1_, structureboundingbox);
+	        }
+	        return null;
         }
 
         /**
@@ -579,10 +588,8 @@ public class SnowVillagePieces {
         public static StructureBoundingBox findPieceBox(Start start, List<StructureComponent> p_175848_1_, Random rand, int p_175848_3_, int p_175848_4_, int p_175848_5_, EnumFacing facing) {
             for (int i = 7 * MathHelper.getInt(rand, 3, 5); i >= 7; i -= 7) {
                 StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175848_3_, p_175848_4_, p_175848_5_, 0, 0, 0, 3, 3, i, facing);
-
-                if (StructureComponent.findIntersecting(p_175848_1_, structureboundingbox) == null) {
-                    return structureboundingbox;
-                }
+	
+	            StructureComponent.findIntersecting(p_175848_1_, structureboundingbox);
             }
 
             return null;
@@ -791,7 +798,8 @@ public class SnowVillagePieces {
 
         public static StructureBoundingBox findPieceBox(Start start, List<StructureComponent> p_175856_1_, Random rand, int p_175856_3_, int p_175856_4_, int p_175856_5_, EnumFacing facing) {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175856_3_, p_175856_4_, p_175856_5_, 0, 0, 0, 3, 4, 2, facing);
-            return StructureComponent.findIntersecting(p_175856_1_, structureboundingbox) != null ? null : structureboundingbox;
+	        StructureComponent.findIntersecting(p_175856_1_, structureboundingbox);
+	        return null;
         }
 
         /**
@@ -972,13 +980,13 @@ public class SnowVillagePieces {
 
                     if (this.field_189929_i) {
                         EntityZombieVillager entityzombie = new EntityZombieVillager(worldIn);
-                        entityzombie.setLocationAndAngles((double) j + 0.5D, (double) k, (double) l + 0.5D, 0.0F, 0.0F);
+                        entityzombie.setLocationAndAngles((double) j + 0.5D, k, (double) l + 0.5D, 0.0F, 0.0F);
                         entityzombie.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityzombie)), null);
                         entityzombie.enablePersistence();
                         worldIn.spawnEntity(entityzombie);
                     } else {
                         EntitySnowVillager entityvillager = new EntitySnowVillager(worldIn);
-                        entityvillager.setLocationAndAngles((double) j + 0.5D, (double) k, (double) l + 0.5D, 0.0F, 0.0F);
+                        entityvillager.setLocationAndAngles((double) j + 0.5D, k, (double) l + 0.5D, 0.0F, 0.0F);
                         entityvillager.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityvillager)), null);
                         IafVillagerRegistry.INSTANCE.setRandomProfession(entityvillager, worldIn.rand);
                         worldIn.spawnEntity(entityvillager);
@@ -1172,7 +1180,10 @@ public class SnowVillagePieces {
 
         public static TorchNew createPiece(Start start, List<StructureComponent> p_175853_1_, Random rand, int p_175853_3_, int p_175853_4_, int p_175853_5_, EnumFacing facing, int p_175853_7_) {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175853_3_, p_175853_4_, p_175853_5_, 0, 0, 0, 4, 6, 5, facing);
-            return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(p_175853_1_, structureboundingbox) == null ? new TorchNew(start, p_175853_7_, rand, structureboundingbox, facing) : null;
+	        if (canVillageGoDeeper(structureboundingbox)) {
+		        StructureComponent.findIntersecting(p_175853_1_, structureboundingbox);
+	        }
+	        return null;
         }
 
         @SuppressWarnings("deprecation")
@@ -1222,7 +1233,10 @@ public class SnowVillagePieces {
 
         public static WoodHut createPiece(Start start, List<StructureComponent> p_175853_1_, Random rand, int p_175853_3_, int p_175853_4_, int p_175853_5_, EnumFacing facing, int p_175853_7_) {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175853_3_, p_175853_4_, p_175853_5_, 0, 0, 0, 4, 6, 5, facing);
-            return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(p_175853_1_, structureboundingbox) == null ? new WoodHut(start, p_175853_7_, rand, structureboundingbox, facing) : null;
+	        if (canVillageGoDeeper(structureboundingbox)) {
+		        StructureComponent.findIntersecting(p_175853_1_, structureboundingbox);
+	        }
+	        return null;
         }
 
         /**

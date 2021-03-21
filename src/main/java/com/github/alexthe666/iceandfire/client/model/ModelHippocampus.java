@@ -41,7 +41,7 @@ public class ModelHippocampus extends ModelDragonBase {
     public AdvancedModelRenderer StirrupL;
     public AdvancedModelRenderer StirrupIronR;
     public AdvancedModelRenderer StirrupIronL;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelHippocampus() {
         this.animator = ModelAnimator.create();

@@ -37,7 +37,7 @@ public class MyrmexAIForage extends EntityAIBase {
         if (!this.myrmex.canMove() || this.myrmex.holdingSomething() || !this.myrmex.getNavigator().noPath() || !myrmex.canSeeSky() || this.myrmex.shouldEnterHive() || !this.myrmex.keepSearching) {
             return false;
         }
-        List<BlockPos> allBlocks = new ArrayList<BlockPos>();
+        List<BlockPos> allBlocks = new ArrayList<>();
         for (BlockPos pos : BlockPos.getAllInBox(this.myrmex.getPosition().add(-RADIUS, -RADIUS, -RADIUS), this.myrmex.getPosition().add(RADIUS, RADIUS, RADIUS))) {
             if (MinecraftForge.EVENT_BUS.post(new GenericGriefEvent(this.myrmex, pos.getX(), pos.getY(), pos.getZ()))) continue;
             if (EntityMyrmexBase.isEdibleBlock(this.myrmex.world.getBlockState(pos))) {

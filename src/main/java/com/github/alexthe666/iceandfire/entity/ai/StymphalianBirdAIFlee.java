@@ -39,7 +39,7 @@ public class StymphalianBirdAIFlee extends EntityAIBase {
         if (this.stymphalianBird.getVictor() == null) {
             return false;
         }
-        List<EntityLivingBase> list = this.stymphalianBird.world.getEntitiesWithinAABB(EntityLivingBase.class, this.stymphalianBird.getEntityBoundingBox().grow((double) this.avoidDistance, 3.0D, (double) this.avoidDistance),
+        List<EntityLivingBase> list = this.stymphalianBird.world.getEntitiesWithinAABB(EntityLivingBase.class, this.stymphalianBird.getEntityBoundingBox().grow(this.avoidDistance, 3.0D, this.avoidDistance),
                 Predicates.and(new Predicate[]{EntitySelectors.NOT_SPECTATING, this.canBeSeenSelector}));
 
         if (list.isEmpty()) {

@@ -29,7 +29,7 @@ public class VillagerAIFearUntamed extends EntityAIAvoidEntity<EntityLivingBase>
     }
 
     public boolean shouldExecuteVanilla() {
-        List<EntityLivingBase> list = this.entity.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLivingBase.class, this.entity.getEntityBoundingBox().grow((double)this.avoidDistance, 3.0D, (double)this.avoidDistance), this.avoidTargetSelector);
+        List<EntityLivingBase> list = this.entity.world.getEntitiesWithinAABB(EntityLivingBase.class, this.entity.getEntityBoundingBox().grow(this.avoidDistance, 3.0D, this.avoidDistance), this.avoidTargetSelector);
 
         if (list.isEmpty())
         {

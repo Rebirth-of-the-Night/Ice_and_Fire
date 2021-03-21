@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class DragonAITarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
-    private EntityDragonBase dragon;
+    private final EntityDragonBase dragon;
 
     public DragonAITarget(EntityDragonBase entityIn, Class<T> classTarget, boolean checkSight, Predicate<? super T> targetSelector) {
         super(entityIn, classTarget, 0, checkSight, false, targetSelector);
@@ -60,6 +60,6 @@ public class DragonAITarget<T extends EntityLivingBase> extends EntityAINearestA
 
     protected double getTargetDistance() {
         IAttributeInstance iattributeinstance = this.taskOwner.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
-        return iattributeinstance == null ? 64.0D : iattributeinstance.getAttributeValue();
+        return iattributeinstance.getAttributeValue();
     }
 }

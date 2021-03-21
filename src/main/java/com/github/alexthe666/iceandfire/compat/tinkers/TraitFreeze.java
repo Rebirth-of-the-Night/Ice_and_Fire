@@ -1,8 +1,11 @@
 package com.github.alexthe666.iceandfire.compat.tinkers;
 
+import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
+import com.github.alexthe666.iceandfire.util.IsImmune;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -11,7 +14,7 @@ import slimeknights.tconstruct.library.modifiers.ModifierTrait;
 
 public class TraitFreeze extends ModifierTrait {
 
-    private int level;
+    private final int level;
 
     public TraitFreeze(int level) {
         super("frost" + (level == 1 ? "" : level), 0XA3ECE8, 1, 1);
@@ -26,13 +29,14 @@ public class TraitFreeze extends ModifierTrait {
 
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
-        FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
-        if (frozenProps != null) {
-            frozenProps.setFrozenFor(level == 1 ? 200 : 300);
-            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 150 * (level), 2));
-            if (level >= 2) {
-                target.knockBack(target, 1F, player.posX - target.posX, player.posZ - target.posZ);
-            }
+	    if (!IsImmune.toDragonIce(target)) {
+	        FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
+	        frozenProps.setFrozenFor(level == 1 ? 200 : 300);
+	        target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 150 * (level), 2));
+	    }
+	    
+	    if (level >= 2) {
+            target.knockBack(target, 1F, player.posX - target.posX, player.posZ - target.posZ);
         }
     }
 }

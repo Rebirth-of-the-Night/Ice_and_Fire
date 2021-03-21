@@ -35,7 +35,7 @@ public class ModelDreadQueen extends ModelDragonBase {
     public ModelBiped.ArmPose leftArmPose;
     public ModelBiped.ArmPose rightArmPose;
     public boolean isSneak;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
     private boolean armor = false;
 
     public ModelDreadQueen(float modelSize, boolean armorArms) {

@@ -26,7 +26,7 @@ public enum EnumSeaSerpentAnimations {
 
     @SideOnly(Side.CLIENT)
     public IceAndFireTabulaModel seaserpent_model;
-    private String fileSuffix;
+    private final String fileSuffix;
 
     EnumSeaSerpentAnimations(String fileSuffix) {
         this.fileSuffix = fileSuffix;

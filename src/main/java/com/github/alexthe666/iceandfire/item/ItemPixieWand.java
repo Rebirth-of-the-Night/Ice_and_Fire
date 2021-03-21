@@ -63,7 +63,7 @@ public class ItemPixieWand extends Item {
             itemStackIn.damageItem(1, playerIn);
             playerIn.getCooldownTracker().setCooldown(this, 5);
         }
-        return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+        return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
     }
 
     public boolean isInfinite(ItemStack stack, ItemStack bow, net.minecraft.entity.player.EntityPlayer player) {

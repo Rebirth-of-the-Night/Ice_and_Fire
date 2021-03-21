@@ -84,7 +84,10 @@ public class ItemDragonHorn extends Item {
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         ItemStack trueStack = playerIn.getHeldItem(hand);
-        if (target instanceof EntityDragonBase && ((EntityDragonBase) target).isOwner(playerIn) && (trueStack.getTagCompound() == null || trueStack.getTagCompound() != null && trueStack.getTagCompound().getCompoundTag("EntityTag").isEmpty())) {
+        if (target instanceof EntityDragonBase && ((EntityDragonBase) target).isOwner(playerIn) && (trueStack.getTagCompound() == null || trueStack
+		        .getTagCompound()
+		        .getCompoundTag("EntityTag")
+		        .isEmpty())) {
             NBTTagCompound entityTag = new NBTTagCompound();
             entityTag.setString("id", EntityList.getKey(target).toString());
             target.writeEntityToNBT(entityTag);

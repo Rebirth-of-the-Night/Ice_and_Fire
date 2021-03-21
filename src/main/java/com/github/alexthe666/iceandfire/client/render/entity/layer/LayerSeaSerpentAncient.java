@@ -10,7 +10,7 @@ public class LayerSeaSerpentAncient implements LayerRenderer<EntitySeaSerpent> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/seaserpent/ancient_overlay.png");
     private static final ResourceLocation TEXTURE_BLINK = new ResourceLocation("iceandfire:textures/models/seaserpent/ancient_overlay_blink.png");
-    private RenderLivingBase renderer;
+    private final RenderLivingBase renderer;
 
     public LayerSeaSerpentAncient(RenderLivingBase renderer) {
         this.renderer = renderer;

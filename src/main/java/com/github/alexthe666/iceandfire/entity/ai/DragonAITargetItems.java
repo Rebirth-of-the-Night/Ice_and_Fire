@@ -42,7 +42,9 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
         this.targetEntitySelector = new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
-                return item instanceof EntityItem && !item.getItem().isEmpty() && item.getItem().getItem() != null && FoodUtils.getFoodPoints(item.getItem(), true, isIce) > 0;
+	            if (item == null || item.getItem().isEmpty()) return false;
+	            item.getItem().getItem();
+	            return FoodUtils.getFoodPoints(item.getItem(), true, isIce) > 0;
             }
         };
     }
@@ -65,7 +67,7 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
             if (list.isEmpty()) {
                 return false;
             } else {
-                Collections.sort(list, this.theNearestAttackableTargetSorter);
+                list.sort(this.theNearestAttackableTargetSorter);
                 this.targetEntity = list.get(0);
                 return true;
             }
@@ -85,7 +87,7 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
     @Override
     public void updateTask() {
         super.updateTask();
-        if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
+        if (this.targetEntity == null || this.targetEntity.isDead) {
             this.resetTask();
         }
         if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {
@@ -120,7 +122,7 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
         public int compare(Entity p_compare_1_, Entity p_compare_2_) {
             double d0 = this.theEntity.getDistanceSq(p_compare_1_);
             double d1 = this.theEntity.getDistanceSq(p_compare_2_);
-            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+            return Double.compare(d0, d1);
         }
     }
 }

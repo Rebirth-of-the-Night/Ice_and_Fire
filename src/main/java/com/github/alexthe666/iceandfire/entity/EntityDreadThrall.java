@@ -53,7 +53,7 @@ public class EntityDreadThrall extends EntityDreadMob implements IAnimatedEntity
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {IDreadMob.class}));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, IDreadMob.class));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
         this.targetTasks.addTask(3, new DreadAITargetNonDread(this, EntityLivingBase.class, false, new Predicate<Entity>() {
             @Override
@@ -75,11 +75,11 @@ public class EntityDreadThrall extends EntityDreadMob implements IAnimatedEntity
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(CUSTOM_ARMOR_INDEX, Integer.valueOf(0));
-        this.dataManager.register(CUSTOM_ARMOR_HEAD, Boolean.valueOf(false));
-        this.dataManager.register(CUSTOM_ARMOR_CHEST, Boolean.valueOf(false));
-        this.dataManager.register(CUSTOM_ARMOR_LEGS, Boolean.valueOf(false));
-        this.dataManager.register(CUSTOM_ARMOR_FEET, Boolean.valueOf(false));
+        this.dataManager.register(CUSTOM_ARMOR_INDEX, 0);
+        this.dataManager.register(CUSTOM_ARMOR_HEAD, Boolean.FALSE);
+        this.dataManager.register(CUSTOM_ARMOR_CHEST, Boolean.FALSE);
+        this.dataManager.register(CUSTOM_ARMOR_LEGS, Boolean.FALSE);
+        this.dataManager.register(CUSTOM_ARMOR_FEET, Boolean.FALSE);
     }
 
     public void onLivingUpdate() {
@@ -182,7 +182,7 @@ public class EntityDreadThrall extends EntityDreadMob implements IAnimatedEntity
     }
 
     public boolean hasCustomArmorHead() {
-        return this.dataManager.get(CUSTOM_ARMOR_HEAD).booleanValue();
+        return this.dataManager.get(CUSTOM_ARMOR_HEAD);
     }
 
     public void setCustomArmorHead(boolean head) {
@@ -190,7 +190,7 @@ public class EntityDreadThrall extends EntityDreadMob implements IAnimatedEntity
     }
 
     public boolean hasCustomArmorChest() {
-        return this.dataManager.get(CUSTOM_ARMOR_CHEST).booleanValue();
+        return this.dataManager.get(CUSTOM_ARMOR_CHEST);
     }
 
     public void setCustomArmorChest(boolean head) {
@@ -198,7 +198,7 @@ public class EntityDreadThrall extends EntityDreadMob implements IAnimatedEntity
     }
 
     public boolean hasCustomArmorLegs() {
-        return this.dataManager.get(CUSTOM_ARMOR_LEGS).booleanValue();
+        return this.dataManager.get(CUSTOM_ARMOR_LEGS);
     }
 
     public void setCustomArmorLegs(boolean head) {
@@ -206,7 +206,7 @@ public class EntityDreadThrall extends EntityDreadMob implements IAnimatedEntity
     }
 
     public boolean hasCustomArmorFeet() {
-        return this.dataManager.get(CUSTOM_ARMOR_FEET).booleanValue();
+        return this.dataManager.get(CUSTOM_ARMOR_FEET);
     }
 
     public void setCustomArmorFeet(boolean head) {
@@ -214,7 +214,7 @@ public class EntityDreadThrall extends EntityDreadMob implements IAnimatedEntity
     }
 
     public int getArmorVariant() {
-        return this.dataManager.get(CUSTOM_ARMOR_INDEX).intValue();
+        return this.dataManager.get(CUSTOM_ARMOR_INDEX);
     }
 
     public void setArmorVariant(int variant) {

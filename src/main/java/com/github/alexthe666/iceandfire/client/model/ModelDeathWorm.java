@@ -45,7 +45,7 @@ public class ModelDeathWorm extends ModelDragonBase {
     public AdvancedModelRenderer TopJaw;
     public AdvancedModelRenderer BottomJaw;
     public AdvancedModelRenderer JawHook;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelDeathWorm() {
         this.animator = ModelAnimator.create();

@@ -2,6 +2,7 @@ package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
+import com.github.alexthe666.iceandfire.util.IsImmune;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -13,6 +14,7 @@ import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumParticleTypes;
@@ -40,7 +42,7 @@ public class IceExplosion extends Explosion {
     private final List<BlockPos> affectedBlockPositions;
     private final Map<EntityPlayer, Vec3d> playerKnockbackMap;
     private final Vec3d position;
-    private boolean mobGreifing;
+    private final boolean mobGreifing;
 
     public IceExplosion(World world, Entity entity, double x, double y, double z, float size, boolean smoke) {
         super(world, entity, x, y, z, size, true, smoke);
@@ -148,13 +150,13 @@ public class IceExplosion extends Explosion {
                                     entity.attackEntityFrom(IceAndFire.dragonIce, (float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D)) / 3);
                                     if (entity instanceof EntityLivingBase) {
                                         FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entity, FrozenEntityProperties.class);
-                                        if (frozenProps != null) {
+                                        if (frozenProps != null && !IsImmune.toDragonIce(entity)) {
                                             frozenProps.setFrozenFor(200);
                                         }
                                     }
                                 }
                             }
-                            if (entity.isDead && this.exploder != null && this.exploder instanceof EntityDragonBase) {
+                            if (entity.isDead) {
                                 ((EntityDragonBase) this.exploder).usingGroundAttack = true;
                             }
                         }

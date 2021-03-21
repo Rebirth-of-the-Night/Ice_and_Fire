@@ -34,7 +34,7 @@ public class ItemHippogryphSword extends ItemSword {
             EntityPlayer player = (EntityPlayer) attacker;
             for (EntityLivingBase entitylivingbase : attacker.world.getEntitiesWithinAABB(EntityLivingBase.class, targetEntity.getEntityBoundingBox().grow(1.0D, 0.25D, 1.0D))) {
                 if (entitylivingbase != player && entitylivingbase != targetEntity && !attacker.isOnSameTeam(entitylivingbase) && attacker.getDistanceSq(entitylivingbase) < 9.0D) {
-                    entitylivingbase.knockBack(player, 0.4F, (double) MathHelper.sin(attacker.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(attacker.rotationYaw * 0.017453292F)));
+                    entitylivingbase.knockBack(player, 0.4F, MathHelper.sin(attacker.rotationYaw * 0.017453292F), -MathHelper.cos(attacker.rotationYaw * 0.017453292F));
                     entitylivingbase.attackEntityFrom(DamageSource.causePlayerDamage(player), f3);
                 }
             }

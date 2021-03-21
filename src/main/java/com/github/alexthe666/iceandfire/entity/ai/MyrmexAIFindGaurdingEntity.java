@@ -40,7 +40,7 @@ public class MyrmexAIFindGaurdingEntity<T extends EntityMyrmexBase> extends Enti
         if (list.isEmpty()) {
             return false;
         } else {
-            Collections.sort(list, this.theNearestAttackableTargetSorter);
+            list.sort(this.theNearestAttackableTargetSorter);
             this.myrmex.guardingEntity = list.get(0);
             return true;
         }
@@ -65,7 +65,7 @@ public class MyrmexAIFindGaurdingEntity<T extends EntityMyrmexBase> extends Enti
         public int compare(Entity p_compare_1_, Entity p_compare_2_) {
             double d0 = this.theEntity.getDistanceSq(p_compare_1_);
             double d1 = this.theEntity.getDistanceSq(p_compare_2_);
-            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+            return Double.compare(d0, d1);
         }
     }
 }

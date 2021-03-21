@@ -26,7 +26,7 @@ public class ModelSiren extends ModelDragonBase {
     public AdvancedModelRenderer Mouth;
     public AdvancedModelRenderer Jaw;
     public AdvancedModelRenderer Hair2;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelSiren() {
         this.textureWidth = 128;

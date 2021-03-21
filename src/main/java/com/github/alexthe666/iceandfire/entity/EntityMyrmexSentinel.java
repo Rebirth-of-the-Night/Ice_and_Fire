@@ -150,7 +150,7 @@ public class EntityMyrmexSentinel extends EntityMyrmexBase {
 
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(HIDING, Boolean.valueOf(false));
+        this.dataManager.register(HIDING, Boolean.FALSE);
     }
 
     protected void applyEntityAttributes() {
@@ -215,8 +215,8 @@ public class EntityMyrmexSentinel extends EntityMyrmexBase {
                 extraY = modTick * 0.035F;
             }
             float angle = (0.01745329251F * this.renderYawOffset);
-            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-            double extraZ = (double) (radius * MathHelper.cos(angle));
+            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+            double extraZ = radius * MathHelper.cos(angle);
             if (passenger.height >= 1.75F) {
                 extraY = passenger.height - 2F;
             }
@@ -272,7 +272,7 @@ public class EntityMyrmexSentinel extends EntityMyrmexBase {
 
 
     public boolean isHiding() {
-        return this.dataManager.get(HIDING).booleanValue();
+        return this.dataManager.get(HIDING);
     }
 
     public void setHiding(boolean hiding) {

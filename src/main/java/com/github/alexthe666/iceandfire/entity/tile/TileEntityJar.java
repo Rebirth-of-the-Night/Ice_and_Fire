@@ -34,7 +34,7 @@ public class TileEntityJar extends TileEntity implements ITickable {
     public float rotationYaw;
     public float prevRotationYaw;
     net.minecraftforge.items.IItemHandler handlerBottom = new PixieJarInvWrapper(this, net.minecraft.util.EnumFacing.DOWN);
-    private Random rand;
+    private final Random rand;
 
     public TileEntityJar() {
         this.rand = new Random();

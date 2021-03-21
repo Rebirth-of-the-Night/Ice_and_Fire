@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerLectern extends SyncedFieldContainer {
     private final IInventory tileFurnace;
-    private int[] possiblePagesInt = new int[3];
+    private final int[] possiblePagesInt = new int[3];
 
     public ContainerLectern(InventoryPlayer playerInv, IInventory furnaceInventory) {
         super(furnaceInventory);

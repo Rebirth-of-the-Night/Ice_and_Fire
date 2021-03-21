@@ -12,7 +12,7 @@ import net.minecraft.util.math.Vec3d;
 import java.util.Random;
 
 public class HippogryphAIAirTarget extends EntityAIBase {
-    private EntityHippogryph hippogryph;
+    private final EntityHippogryph hippogryph;
 
     public HippogryphAIAirTarget(EntityHippogryph dragon) {
         this.hippogryph = dragon;

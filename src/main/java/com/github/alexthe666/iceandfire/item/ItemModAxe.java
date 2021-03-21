@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.item;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityDeathWorm;
+import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.block.material.Material;
@@ -10,6 +11,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
@@ -65,14 +68,18 @@ public class ItemModAxe extends ItemAxe {
             }
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_fire_tools) {
-            target.setFire(15);
-            target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
+	        if (!(target instanceof EntityCow)) {
+		        target.setFire(15);
+	        }
+	        target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_ice_tools) {
-            FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
-            frozenProps.setFrozenFor(300);
-            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 2));
-            target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
+	        if (!(target instanceof EntityHippogryph)) {
+		        FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
+		        frozenProps.setFrozenFor(300);
+		        target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 2));
+	        }
+	        target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         }
         return super.hitEntity(stack, target, attacker);
     }

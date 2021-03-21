@@ -9,7 +9,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class HippocampusAIRide extends EntityAIBase {
 
-    private EntityHippocampus dragon;
+    private final EntityHippocampus dragon;
     private EntityPlayer player;
 
     public HippocampusAIRide(EntityHippocampus dragon) {

@@ -22,7 +22,7 @@ public class HippogryphAIAttackMelee extends EntityAIBase {
     private double targetY;
     private double targetZ;
     private int failedPathFindingPenalty = 0;
-    private boolean canPenalize = false;
+    private final boolean canPenalize = false;
 
     public HippogryphAIAttackMelee(EntityCreature creature, double speedIn, boolean useLongMemory) {
         this.attacker = creature;
@@ -158,6 +158,6 @@ public class HippogryphAIAttackMelee extends EntityAIBase {
     }
 
     protected double getAttackReachSqr(EntityLivingBase attackTarget) {
-        return (double) (this.attacker.width * 4.0F * this.attacker.width * 4.0F + attackTarget.width);
+        return this.attacker.width * 4.0F * this.attacker.width * 4.0F + attackTarget.width;
     }
 }

@@ -9,8 +9,8 @@ import javax.annotation.Nonnull;
 
 public class PixieJarInvWrapper implements IItemHandlerModifiable {
 
-    private TileEntityJar tile;
-    private EnumFacing side;
+    private final TileEntityJar tile;
+    private final EnumFacing side;
 
     public PixieJarInvWrapper(TileEntityJar tile, EnumFacing side) {
         this.tile = tile;

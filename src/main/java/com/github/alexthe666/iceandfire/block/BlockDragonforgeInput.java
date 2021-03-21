@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 
 public class BlockDragonforgeInput extends BlockContainer implements IDragonProof {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
-    private boolean isFire;
+    private final boolean isFire;
 
     public BlockDragonforgeInput(boolean isFire) {
         super(Material.IRON);
@@ -35,7 +35,7 @@ public class BlockDragonforgeInput extends BlockContainer implements IDragonProo
         this.setTranslationKey("iceandfire.dragonforge_" + (isFire ? "fire" : "ice") + "_input");
         this.setRegistryName(IceAndFire.MODID, "dragonforge_" + (isFire ? "fire" : "ice") + "_input");
         this.isFire = isFire;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(ACTIVE, Boolean.FALSE));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class BlockDragonforgeInput extends BlockContainer implements IDragonProo
     }
 
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(ACTIVE, Boolean.valueOf(meta > 0));
+        return this.getDefaultState().withProperty(ACTIVE, meta > 0);
     }
 
     public EnumBlockRenderType getRenderType(IBlockState state) {
@@ -72,7 +72,7 @@ public class BlockDragonforgeInput extends BlockContainer implements IDragonProo
     }
 
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(ACTIVE).booleanValue() ? 1 : 0;
+        return state.getValue(ACTIVE) ? 1 : 0;
     }
 
     protected BlockStateContainer createBlockState() {

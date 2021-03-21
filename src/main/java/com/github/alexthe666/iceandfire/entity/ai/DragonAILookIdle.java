@@ -4,7 +4,7 @@ import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import net.minecraft.entity.ai.EntityAIBase;
 
 public class DragonAILookIdle extends EntityAIBase {
-    private EntityDragonBase dragon;
+    private final EntityDragonBase dragon;
     private double lookX;
     private double lookZ;
     private int idleTime;

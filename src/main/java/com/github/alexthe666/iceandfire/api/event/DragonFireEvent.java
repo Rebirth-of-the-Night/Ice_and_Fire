@@ -24,10 +24,10 @@ import net.minecraftforge.fml.common.eventhandler.Cancelable;
  **/
 @Cancelable
 public class DragonFireEvent extends LivingEvent {
-    private EntityDragonBase dragonBase;
-    private double targetX;
-    private double targetY;
-    private double targetZ;
+    private final EntityDragonBase dragonBase;
+    private final double targetX;
+    private final double targetY;
+    private final double targetZ;
 
     public DragonFireEvent(EntityDragonBase dragonBase, double targetX, double targetY, double targetZ){
         super(dragonBase);

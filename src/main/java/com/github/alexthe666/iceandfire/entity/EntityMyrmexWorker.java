@@ -26,6 +26,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
 
 import javax.annotation.Nullable;
@@ -202,8 +203,8 @@ public class EntityMyrmexWorker extends EntityMyrmexBase {
             renderYawOffset = rotationYaw;
             float radius = 1.05F;
             float angle = (0.01745329251F * this.renderYawOffset);
-            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-            double extraZ = (double) (radius * MathHelper.cos(angle));
+            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+            double extraZ = radius * MathHelper.cos(angle);
             passenger.setPosition(this.posX + extraX, this.posY + 0.25F, this.posZ + extraZ);
         }
     }
@@ -232,8 +233,10 @@ public class EntityMyrmexWorker extends EntityMyrmexBase {
 
     public void onPickupItem(EntityItem itemEntity) {
         Item item = itemEntity.getItem().getItem();
-        if (item == IafItemRegistry.myrmex_jungle_resin && this.isJungle() || item == IafItemRegistry.myrmex_desert_resin && !this.isJungle()) {
-
+        int jungleRepOfItem = getJungleRepOf(item);
+        int desertRepOfItem = getDesertRepOf(item);
+        int repOfItem = isJungle() ? jungleRepOfItem : desertRepOfItem;
+        if (repOfItem > 0) {
             EntityPlayer owner = null;
             try {
                 owner = this.world.getPlayerEntityByName(itemEntity.getThrower());
@@ -241,7 +244,7 @@ public class EntityMyrmexWorker extends EntityMyrmexBase {
                 IceAndFire.logger.warn("Myrmex picked up resin that wasn't thrown!");
             }
             if (owner != null && this.getHive() != null) {
-                this.getHive().modifyPlayerReputation(owner.getUniqueID(), 5);
+                this.getHive().modifyPlayerReputation(owner.getUniqueID(), repOfItem);
                 this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1, 1);
                 if (!world.isRemote) {
                     world.spawnEntity(new EntityXPOrb(world, owner.posX, owner.posY, owner.posZ, 1 + rand.nextInt(3)));
@@ -249,4 +252,24 @@ public class EntityMyrmexWorker extends EntityMyrmexBase {
             }
         }
     }
+	
+	private static int getJungleRepOf(Item item) {
+		for (String repItem : IceAndFire.CONFIG.myrmexJungleRepItems) {
+			int spaceIndex = repItem.indexOf(' ');
+			if (ForgeRegistries.ITEMS.getValue(new ResourceLocation(repItem.substring(0, spaceIndex))) == item) {
+				return Integer.parseInt(repItem.substring(spaceIndex + 1));
+			}
+		}
+		return 0;
+	}
+	
+	private static int getDesertRepOf(Item item) {
+		for (String repItem : IceAndFire.CONFIG.myrmexDesertRepItems) {
+			int spaceIndex = repItem.indexOf(' ');
+			if (ForgeRegistries.ITEMS.getValue(new ResourceLocation(repItem.substring(0, spaceIndex))) == item) {
+				return Integer.parseInt(repItem.substring(spaceIndex + 1));
+			}
+		}
+		return 0;
+	}
 }

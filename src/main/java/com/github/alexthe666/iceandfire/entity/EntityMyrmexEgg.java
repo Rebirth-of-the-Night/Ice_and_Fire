@@ -63,13 +63,13 @@ public class EntityMyrmexEgg extends EntityLiving implements IBlacklistedFromSta
     protected void entityInit() {
         super.entityInit();
         this.getDataManager().register(MYRMEX_TYPE, false);
-        this.getDataManager().register(MYRMEX_AGE, Integer.valueOf(0));
-        this.getDataManager().register(MYRMEX_CASTE, Integer.valueOf(0));
+        this.getDataManager().register(MYRMEX_AGE, 0);
+        this.getDataManager().register(MYRMEX_CASTE, 0);
     }
 
 
     public boolean isJungle() {
-        return this.getDataManager().get(MYRMEX_TYPE).booleanValue();
+        return this.getDataManager().get(MYRMEX_TYPE);
     }
 
     public void setJungle(boolean jungle) {
@@ -77,7 +77,7 @@ public class EntityMyrmexEgg extends EntityLiving implements IBlacklistedFromSta
     }
 
     public int getMyrmexAge() {
-        return this.getDataManager().get(MYRMEX_AGE).intValue();
+        return this.getDataManager().get(MYRMEX_AGE);
     }
 
     public void setMyrmexAge(int i) {
@@ -85,7 +85,7 @@ public class EntityMyrmexEgg extends EntityLiving implements IBlacklistedFromSta
     }
 
     public int getMyrmexCaste() {
-        return this.getDataManager().get(MYRMEX_CASTE).intValue();
+        return this.getDataManager().get(MYRMEX_CASTE);
     }
 
     public void setMyrmexCaste(int i) {

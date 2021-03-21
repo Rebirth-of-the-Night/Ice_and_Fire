@@ -51,7 +51,7 @@ public class ItemDeathwormGauntlet extends Item {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
         ItemStack itemStackIn = playerIn.getHeldItem(hand);
         playerIn.setActiveHand(hand);
-        return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+        return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
     }
 
     public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
@@ -109,7 +109,7 @@ public class ItemDeathwormGauntlet extends Item {
                     }
                 } else if (properties.deathwormLaunched) {
                     properties.deathwormLungeTicks = 4 + properties.deathwormLungeTicks;
-                    if (properties.deathwormLungeTicks > 20 && !properties.deathwormReceded) {
+                    if (properties.deathwormLungeTicks > 20) {
                         properties.deathwormReceded = true;
                     }
                 }

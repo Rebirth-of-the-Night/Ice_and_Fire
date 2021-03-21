@@ -6,11 +6,11 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.math.Vec3d;
 
 public class HippogryphAIWander extends EntityAIBase {
-    private EntityHippogryph hippo;
+    private final EntityHippogryph hippo;
     private double xPosition;
     private double yPosition;
     private double zPosition;
-    private double speed;
+    private final double speed;
     private int executionChance;
     private boolean mustUpdate;
 

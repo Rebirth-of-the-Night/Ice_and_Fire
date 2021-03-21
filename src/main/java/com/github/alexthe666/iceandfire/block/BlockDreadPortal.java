@@ -126,9 +126,9 @@ public class BlockDreadPortal extends BlockContainer implements IDreadBlock {
         if (tileentity instanceof TileEntityDreadPortal) {
             int i = 3;
             for (int j = 0; j < i; ++j) {
-                double d0 = (double) ((float) pos.getX() + rand.nextFloat());
-                double d1 = (double) ((float) pos.getY() + rand.nextFloat());
-                double d2 = (double) ((float) pos.getZ() + rand.nextFloat());
+                double d0 = (float) pos.getX() + rand.nextFloat();
+                double d1 = (float) pos.getY() + rand.nextFloat();
+                double d2 = (float) pos.getZ() + rand.nextFloat();
                 double d3 = ((double) rand.nextFloat() - 0.5D) * 0.25D;
                 double d4 = ((double) rand.nextFloat()) * -0.25D;
                 double d5 = ((double) rand.nextFloat() - 0.5D) * 0.25D;

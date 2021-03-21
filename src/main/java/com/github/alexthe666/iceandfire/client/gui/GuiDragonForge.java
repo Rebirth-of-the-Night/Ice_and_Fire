@@ -16,7 +16,7 @@ public class GuiDragonForge extends GuiContainer {
     private static final ResourceLocation TEXTURE_FIRE = new ResourceLocation("iceandfire:textures/gui/dragonforge_fire.png");
     private static final ResourceLocation TEXTURE_ICE = new ResourceLocation("iceandfire:textures/gui/dragonforge_ice.png");
     private final InventoryPlayer playerInventory;
-    private IInventory tileFurnace;
+    private final IInventory tileFurnace;
     private boolean ice;
 
     public GuiDragonForge(InventoryPlayer playerInv, IInventory furnaceInv) {

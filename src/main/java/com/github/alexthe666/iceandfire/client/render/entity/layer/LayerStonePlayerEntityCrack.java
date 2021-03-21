@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 public class LayerStonePlayerEntityCrack implements LayerRenderer {
 
     protected static final ResourceLocation[] DESTROY_STAGES = new ResourceLocation[]{new ResourceLocation("textures/blocks/destroy_stage_0.png"), new ResourceLocation("textures/blocks/destroy_stage_1.png"), new ResourceLocation("textures/blocks/destroy_stage_2.png"), new ResourceLocation("textures/blocks/destroy_stage_3.png"), new ResourceLocation("textures/blocks/destroy_stage_4.png"), new ResourceLocation("textures/blocks/destroy_stage_5.png"), new ResourceLocation("textures/blocks/destroy_stage_6.png"), new ResourceLocation("textures/blocks/destroy_stage_7.png"), new ResourceLocation("textures/blocks/destroy_stage_8.png"), new ResourceLocation("textures/blocks/destroy_stage_9.png")};
-    private RenderLivingBase renderer;
+    private final RenderLivingBase renderer;
 
     public LayerStonePlayerEntityCrack(RenderLivingBase renderer) {
         this.renderer = renderer;

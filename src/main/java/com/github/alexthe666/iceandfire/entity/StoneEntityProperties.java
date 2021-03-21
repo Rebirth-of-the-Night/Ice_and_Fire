@@ -5,7 +5,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class StoneEntityProperties extends EntityProperties<EntityLiving> {
-
     public boolean isStone;
     public int breakLvl;
 

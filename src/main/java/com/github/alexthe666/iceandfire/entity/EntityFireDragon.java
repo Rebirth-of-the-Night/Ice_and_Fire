@@ -260,7 +260,7 @@ public class EntityFireDragon extends EntityDragonBase {
                     if (!world.isRemote) {
                         world.spawnEntity(entitylargefireball);
                     }
-                    if (entity.isDead || entity == null) {
+                    if (entity.isDead) {
                         this.setBreathingFire(false);
                     }
                     this.randomizeAttacks();
@@ -273,7 +273,7 @@ public class EntityFireDragon extends EntityDragonBase {
                             this.playSound(IafSoundRegistry.FIREDRAGON_BREATH, 4, 1);
                         }
                         stimulateFire(entity.posX, entity.posY, entity.posZ, 1);
-                        if (entity.isDead || entity == null) {
+                        if (entity.isDead) {
                             this.setBreathingFire(false);
                             this.randomizeAttacks();
                         }
@@ -392,7 +392,9 @@ public class EntityFireDragon extends EntityDragonBase {
     }
 
     public boolean isBreedingItem(ItemStack stack) {
-        return !stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.fire_stew;
+	    if (stack.isEmpty()) return false;
+	    stack.getItem();
+	    return stack.getItem() == IafItemRegistry.fire_stew;
     }
 
     protected void spawnDeathParticles() {

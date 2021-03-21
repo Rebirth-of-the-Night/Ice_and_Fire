@@ -72,7 +72,7 @@ public enum EnumDragonAnimations {
     public IceAndFireTabulaModel firedragon_model;
     @SideOnly(Side.CLIENT)
     public IceAndFireTabulaModel icedragon_model;
-    private String fileSuffix;
+    private final String fileSuffix;
     private int dragonType;
 
     EnumDragonAnimations(String fileSuffix) {

@@ -31,6 +31,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.lang.reflect.Field;
 
@@ -57,20 +58,22 @@ public class CommonProxy {
     
     @SubscribeEvent
     public static void registerVillagers(RegistryEvent.Register<VillagerRegistry.VillagerProfession> event) {
-    	IafVillagerRegistry.INSTANCE.init();
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.fisherman);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.craftsman);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.shaman);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.desertMyrmexWorker);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.jungleMyrmexWorker);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.desertMyrmexSoldier);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.jungleMyrmexSoldier);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.desertMyrmexSentinel);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.jungleMyrmexSentinel);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.desertMyrmexRoyal);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.jungleMyrmexRoyal);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.desertMyrmexQueen);
-        event.getRegistry().register(IafVillagerRegistry.INSTANCE.jungleMyrmexQueen);
+        IForgeRegistry<VillagerRegistry.VillagerProfession> professionRegistry = event.getRegistry();
+        IafVillagerRegistry villagerRegistry = IafVillagerRegistry.INSTANCE;
+        if(villagerRegistry.fisherman == null) villagerRegistry.init();
+        professionRegistry.register(villagerRegistry.fisherman);
+        professionRegistry.register(villagerRegistry.craftsman);
+        professionRegistry.register(villagerRegistry.shaman);
+        professionRegistry.register(villagerRegistry.desertMyrmexWorker);
+        professionRegistry.register(villagerRegistry.jungleMyrmexWorker);
+        professionRegistry.register(villagerRegistry.desertMyrmexSoldier);
+        professionRegistry.register(villagerRegistry.jungleMyrmexSoldier);
+        professionRegistry.register(villagerRegistry.desertMyrmexSentinel);
+        professionRegistry.register(villagerRegistry.jungleMyrmexSentinel);
+        professionRegistry.register(villagerRegistry.desertMyrmexRoyal);
+        professionRegistry.register(villagerRegistry.jungleMyrmexRoyal);
+        professionRegistry.register(villagerRegistry.desertMyrmexQueen);
+        professionRegistry.register(villagerRegistry.jungleMyrmexQueen);
     }
 
     @SubscribeEvent

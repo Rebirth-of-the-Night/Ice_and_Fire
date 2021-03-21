@@ -29,7 +29,7 @@ public class BlockDreadWoodLock extends Block implements IDragonProof, IDreadBlo
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
         this.setTranslationKey("iceandfire.dreadwood_planks_lock");
         this.setRegistryName(IceAndFire.MODID, "dreadwood_planks_lock");
-        this.setDefaultState(this.blockState.getBaseState().withProperty(PLAYER_PLACED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(PLAYER_PLACED, Boolean.FALSE));
     }
 
     @Override
@@ -62,11 +62,11 @@ public class BlockDreadWoodLock extends Block implements IDragonProof, IDreadBlo
     }
 
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(PLAYER_PLACED, Boolean.valueOf(meta > 0));
+        return this.getDefaultState().withProperty(PLAYER_PLACED, meta > 0);
     }
 
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(PLAYER_PLACED).booleanValue() ? 1 : 0;
+        return state.getValue(PLAYER_PLACED) ? 1 : 0;
     }
 
     protected BlockStateContainer createBlockState() {

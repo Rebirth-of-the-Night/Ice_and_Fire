@@ -151,8 +151,8 @@ public class EntityCyclops extends EntityMob implements IAnimatedEntity, IBlackl
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(BLINDED, Boolean.valueOf(false));
-        this.dataManager.register(VARIANT, Integer.valueOf(0));
+        this.dataManager.register(BLINDED, Boolean.FALSE);
+        this.dataManager.register(VARIANT, 0);
     }
 
     @Override
@@ -170,19 +170,19 @@ public class EntityCyclops extends EntityMob implements IAnimatedEntity, IBlackl
     }
 
     public int getVariant() {
-        return Integer.valueOf(this.dataManager.get(VARIANT).intValue());
+        return this.dataManager.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.dataManager.set(VARIANT, Integer.valueOf(variant));
+        this.dataManager.set(VARIANT, variant);
     }
 
     public boolean isBlinded() {
-        return Boolean.valueOf(this.dataManager.get(BLINDED).booleanValue());
+        return this.dataManager.get(BLINDED);
     }
 
     public void setBlinded(boolean blind) {
-        this.dataManager.set(BLINDED, Boolean.valueOf(blind));
+        this.dataManager.set(BLINDED, blind);
     }
 
     public void updatePassenger(Entity passenger) {
@@ -197,8 +197,8 @@ public class EntityCyclops extends EntityMob implements IAnimatedEntity, IBlackl
             this.rotationYaw *= 0;
             float radius = -2.75F + pullIn;
             float angle = (0.01745329251F * this.renderYawOffset) + 3.15F;
-            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-            double extraZ = (double) (radius * MathHelper.cos(angle));
+            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+            double extraZ = radius * MathHelper.cos(angle);
             double extraY = raiseUp;
             passenger.setPosition(this.posX + extraX, this.posY + extraY, this.posZ + extraZ);
             if (this.getAnimationTick() == 32) {
@@ -269,9 +269,9 @@ public class EntityCyclops extends EntityMob implements IAnimatedEntity, IBlackl
                 double motionZ = getRNG().nextGaussian() * 0.07D;
                 float radius = 0.75F * -2F;
                 float angle = (0.01745329251F * this.renderYawOffset) + i1 * 1F;
-                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
+                double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
                 double extraY = 0.8F;
-                double extraZ = (double) (radius * MathHelper.cos(angle));
+                double extraZ = radius * MathHelper.cos(angle);
 
                 IBlockState iblockstate = this.world.getBlockState(new BlockPos(MathHelper.floor(this.posX + extraX), MathHelper.floor(this.posY + extraY) - 1, MathHelper.floor(this.posZ + extraZ)));
                 if (iblockstate.getMaterial() != Material.AIR) {

@@ -23,8 +23,8 @@ import java.util.Random;
 
 public class BlockDragonforgeCore extends BlockContainer implements IDragonProof {
     private static boolean keepInventory;
-    private boolean isFire;
-    private boolean activated;
+    private final boolean isFire;
+    private final boolean activated;
 
     public BlockDragonforgeCore(boolean isFire, boolean activated) {
         super(Material.IRON);

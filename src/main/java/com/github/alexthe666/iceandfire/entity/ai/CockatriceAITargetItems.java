@@ -34,7 +34,7 @@ public class CockatriceAITargetItems<T extends EntityItem> extends EntityAITarge
         this.targetEntitySelector = new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
-                return item instanceof EntityItem && !item.getItem().isEmpty() && (item.getItem().getItem() == Items.ROTTEN_FLESH || FoodUtils.isSeeds(item.getItem()));
+                return item != null && !item.getItem().isEmpty() && (item.getItem().getItem() == Items.ROTTEN_FLESH || FoodUtils.isSeeds(item.getItem()));
             }
         };
     }
@@ -53,7 +53,7 @@ public class CockatriceAITargetItems<T extends EntityItem> extends EntityAITarge
         if (list.isEmpty()) {
             return false;
         } else {
-            Collections.sort(list, this.theNearestAttackableTargetSorter);
+            list.sort(this.theNearestAttackableTargetSorter);
             this.targetEntity = list.get(0);
             return true;
         }
@@ -72,7 +72,7 @@ public class CockatriceAITargetItems<T extends EntityItem> extends EntityAITarge
     @Override
     public void updateTask() {
         super.updateTask();
-        if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
+        if (this.targetEntity == null || this.targetEntity.isDead) {
             this.resetTask();
         }
         if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {

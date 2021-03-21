@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 
 public class LayerTrollEyes implements LayerRenderer<EntityTroll> {
 
-    private RenderTroll renderer;
+    private final RenderTroll renderer;
 
     public LayerTrollEyes(RenderTroll renderer) {
         this.renderer = renderer;

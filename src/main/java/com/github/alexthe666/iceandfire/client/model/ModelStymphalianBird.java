@@ -55,7 +55,7 @@ public class ModelStymphalianBird extends ModelDragonBase {
     public AdvancedModelRenderer HeadPivot;
     public AdvancedModelRenderer NeckPivot;
 
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelStymphalianBird() {
         this.textureWidth = 128;

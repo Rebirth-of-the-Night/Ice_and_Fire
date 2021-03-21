@@ -44,15 +44,16 @@ public class NodeProcessorDragon extends WalkNodeProcessor {
                 return PathNodeType.DAMAGE_FIRE;
             } else if (block == Blocks.CACTUS) {
                 return PathNodeType.DAMAGE_CACTUS;
-            } else if (block instanceof BlockDoor && material == Material.WOOD && !iblockstate.getValue(BlockDoor.OPEN).booleanValue()) {
+            } else if (block instanceof BlockDoor && material == Material.WOOD && !iblockstate.getValue(BlockDoor.OPEN)) {
                 return PathNodeType.DOOR_WOOD_CLOSED;
-            } else if (block instanceof BlockDoor && material == Material.IRON && !iblockstate.getValue(BlockDoor.OPEN).booleanValue()) {
+            } else if (block instanceof BlockDoor && material == Material.IRON && !iblockstate.getValue(BlockDoor.OPEN)) {
                 return PathNodeType.DOOR_IRON_CLOSED;
-            } else if (block instanceof BlockDoor && iblockstate.getValue(BlockDoor.OPEN).booleanValue()) {
+            } else if (block instanceof BlockDoor && iblockstate.getValue(BlockDoor.OPEN)) {
                 return PathNodeType.DOOR_OPEN;
             } else if (block instanceof BlockRailBase) {
                 return PathNodeType.RAIL;
-            } else if (!(block instanceof BlockFence) && !(block instanceof BlockWall) && (!(block instanceof BlockFenceGate) || iblockstate.getValue(BlockFenceGate.OPEN).booleanValue())) {
+            } else if (!(block instanceof BlockFence) && !(block instanceof BlockWall) && (!(block instanceof BlockFenceGate) || iblockstate
+		            .getValue(BlockFenceGate.OPEN))) {
                 if (material == Material.WATER) {
                     return PathNodeType.WATER;
                 } else if (material == Material.LAVA) {

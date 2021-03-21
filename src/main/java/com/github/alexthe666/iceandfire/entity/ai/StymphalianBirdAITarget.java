@@ -15,7 +15,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import javax.annotation.Nullable;
 
 public class StymphalianBirdAITarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
-    private EntityStymphalianBird bird;
+    private final EntityStymphalianBird bird;
 
     public StymphalianBirdAITarget(EntityStymphalianBird entityIn, Class<T> classTarget, boolean checkSight) {
         super(entityIn, classTarget, 0, checkSight, false, new Predicate<EntityLivingBase>() {

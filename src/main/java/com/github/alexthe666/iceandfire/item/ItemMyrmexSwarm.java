@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemMyrmexSwarm extends Item {
-    private boolean jungle;
+    private final boolean jungle;
 
     public ItemMyrmexSwarm(boolean jungle) {
         this.setCreativeTab(IceAndFire.TAB_ITEMS);
@@ -53,7 +53,7 @@ public class ItemMyrmexSwarm extends Item {
             }
         }
         playerIn.getCooldownTracker().setCooldown(this, 1800);
-        return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+        return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
     }
 
     @Override

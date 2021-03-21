@@ -28,7 +28,7 @@ public class TileEntityPixieHouse extends TileEntity implements ITickable {
     public int pixieType;
     public int ticksExisted;
     public NonNullList<ItemStack> pixieItems = NonNullList.withSize(1, ItemStack.EMPTY);
-    private Random rand;
+    private final Random rand;
 
     public TileEntityPixieHouse() {
         this.rand = new Random();

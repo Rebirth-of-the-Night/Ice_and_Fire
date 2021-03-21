@@ -25,15 +25,18 @@ public class FoodUtils {
     }
 
     public static int getFoodPoints(ItemStack item, boolean meatOnly, boolean includeFish) {
-        if (item != null && item != ItemStack.EMPTY && item.getItem() != null && item.getItem() instanceof ItemFood) {
-            int food = (((ItemFood) item.getItem()).getHealAmount(item) * 10);
-            if (!meatOnly) {
-                return food;
-            } else if (((ItemFood) item.getItem()).isWolfsFavoriteMeat()) {
-                return food;
-            } else if (includeFish && item.getItem() == Items.FISH) {
-                return food;
-            }
+        if (item != null && item != ItemStack.EMPTY) {
+	        item.getItem();
+	        if (item.getItem() instanceof ItemFood) {
+		        int food = (((ItemFood) item.getItem()).getHealAmount(item) * 10);
+		        if (!meatOnly) {
+			        return food;
+		        } else if (((ItemFood) item.getItem()).isWolfsFavoriteMeat()) {
+			        return food;
+		        } else if (includeFish && item.getItem() == Items.FISH) {
+			        return food;
+		        }
+	        }
         }
         return 0;
     }

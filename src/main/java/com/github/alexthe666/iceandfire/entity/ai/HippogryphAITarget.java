@@ -9,7 +9,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class HippogryphAITarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
-    private EntityHippogryph hippogryph;
+    private final EntityHippogryph hippogryph;
 
     public HippogryphAITarget(EntityHippogryph entityIn, Class<T> classTarget, boolean checkSight, Predicate<? super T> targetSelector) {
         super(entityIn, classTarget, 20, checkSight, false, targetSelector);

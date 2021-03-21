@@ -38,7 +38,7 @@ public enum EnumTroll {
     public Item leggings;
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":troll_boots")
     public Item boots;
-    private Weapon[] weapons;
+    private final Weapon[] weapons;
 
     EnumTroll(BiomeDictionary.Type biome, ItemArmor.ArmorMaterial material, Weapon... weapons) {
         spawnBiome = biome;
@@ -56,7 +56,7 @@ public enum EnumTroll {
     }
 
     public static EnumTroll getBiomeType(Biome biome) {
-        List<EnumTroll> types = new ArrayList<EnumTroll>();
+        List<EnumTroll> types = new ArrayList<>();
         for (EnumTroll type : values()) {
             if (BiomeDictionary.hasType(biome, type.spawnBiome)) {
                 types.add(type);

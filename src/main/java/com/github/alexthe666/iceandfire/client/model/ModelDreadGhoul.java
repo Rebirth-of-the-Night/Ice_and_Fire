@@ -20,7 +20,7 @@ public class ModelDreadGhoul extends ModelDragonBase {
     public AdvancedModelRenderer head2;
     public AdvancedModelRenderer clawsRight;
     public AdvancedModelRenderer clawsLeft;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelDreadGhoul() {
         this.textureWidth = 128;

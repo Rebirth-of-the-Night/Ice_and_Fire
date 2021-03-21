@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 public interface IFlyingMount {
 
     EntityPlayer getRidingPlayer();
-    double getFlightSpeedModifier();
+    float getFlightSpeedModifier();
     default boolean fliesLikeElytra() { return false; }
     boolean isFlying();
     default boolean up(){ return false; }

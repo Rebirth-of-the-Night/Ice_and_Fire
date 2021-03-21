@@ -12,7 +12,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class DragonAIRide<T extends EntityCreature & IFlyingMount> extends EntityAIBase {
 
-    private T dragon;
+    private final T dragon;
     private EntityPlayer player;
 
     public DragonAIRide(T dragon) {

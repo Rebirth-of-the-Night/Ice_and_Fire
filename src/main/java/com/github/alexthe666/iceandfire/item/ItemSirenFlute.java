@@ -59,7 +59,7 @@ public class ItemSirenFlute extends Item {
         double d2 = d1;
         for (int j = 0; j < list.size(); ++j) {
             Entity entity1 = list.get(j);
-            AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow((double) entity1.getCollisionBorderSize());
+            AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow(entity1.getCollisionBorderSize());
             RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(vec3d, vec3d2);
             if (axisalignedbb.contains(vec3d)) {
                 if (d2 >= 0.0D) {
@@ -91,7 +91,7 @@ public class ItemSirenFlute extends Item {
             }
         }
         player.playSound(IafSoundRegistry.SIREN_SONG, 1, 1);
-        return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+        return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
     }
 
     @Override

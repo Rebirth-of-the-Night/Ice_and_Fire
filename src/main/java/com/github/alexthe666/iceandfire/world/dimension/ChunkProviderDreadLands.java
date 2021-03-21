@@ -147,7 +147,7 @@ public class ChunkProviderDreadLands implements IChunkGenerator {
     public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn) {
         if (!net.minecraftforge.event.ForgeEventFactory.onReplaceBiomeBlocks(this, x, z, primer, this.world)) return;
         double d0 = 0.03125D;
-        this.depthBuffer = this.surfaceNoise.getRegion(this.depthBuffer, (double) (x * 16), (double) (z * 16), 16, 16, 0.0625D, 0.0625D, 1.0D);
+        this.depthBuffer = this.surfaceNoise.getRegion(this.depthBuffer, x * 16, z * 16, 16, 16, 0.0625D, 0.0625D, 1.0D);
 
         for (int i = 0; i < 16; ++i) {
             for (int j = 0; j < 16; ++j) {
@@ -181,12 +181,12 @@ public class ChunkProviderDreadLands implements IChunkGenerator {
     }
 
     private void generateHeightmap(int x, int y, int z) {
-        this.depthRegion = this.depthNoise.generateNoiseOctaves(this.depthRegion, x, z, 5, 5, (double) 200.0F, (double) 200.0F, (double) 0.5F);
+        this.depthRegion = this.depthNoise.generateNoiseOctaves(this.depthRegion, x, z, 5, 5, 200.0F, 200.0F, 0.5F);
         float f = 684.412F;
         float f1 = 684.412F;
-        this.mainNoiseRegion = this.mainPerlinNoise.generateNoiseOctaves(this.mainNoiseRegion, x, y, z, 5, 33, 5, (double) (f / 80.0F), (double) (f1 / 160F), (double) (f / 80.0F));
-        this.minLimitRegion = this.minLimitPerlinNoise.generateNoiseOctaves(this.minLimitRegion, x, y, z, 5, 33, 5, (double) f, (double) f1, (double) f);
-        this.maxLimitRegion = this.maxLimitPerlinNoise.generateNoiseOctaves(this.maxLimitRegion, x, y, z, 5, 33, 5, (double) f, (double) f1, (double) f);
+        this.mainNoiseRegion = this.mainPerlinNoise.generateNoiseOctaves(this.mainNoiseRegion, x, y, z, 5, 33, 5, f / 80.0F, f1 / 160F, f / 80.0F);
+        this.minLimitRegion = this.minLimitPerlinNoise.generateNoiseOctaves(this.minLimitRegion, x, y, z, 5, 33, 5, f, f1, f);
+        this.maxLimitRegion = this.maxLimitPerlinNoise.generateNoiseOctaves(this.maxLimitRegion, x, y, z, 5, 33, 5, f, f1, f);
         int i = 0;
         int j = 0;
 
@@ -251,8 +251,8 @@ public class ChunkProviderDreadLands implements IChunkGenerator {
                 }
 
                 ++j;
-                double d8 = (double) f3;
-                double d9 = (double) f2;
+                double d8 = f3;
+                double d9 = f2;
                 d8 = d8 + d7 * 0.2D;
                 d8 = d8 * (double) 8.5F / 8.0D;
                 double d0 = (double) 8.5F + d8 * 4.0D;
@@ -270,7 +270,7 @@ public class ChunkProviderDreadLands implements IChunkGenerator {
                     double d5 = MathHelper.clampedLerp(d2, d3, d4) - d1;
 
                     if (l1 > 29) {
-                        double d6 = (double) ((float) (l1 - 29) / 3.0F);
+                        double d6 = (float) (l1 - 29) / 3.0F;
                         d5 = d5 * (1.0D - d6) + -10.0D * d6;
                     }
 
@@ -300,10 +300,10 @@ public class ChunkProviderDreadLands implements IChunkGenerator {
         boolean flag = false;
         ChunkPos chunkpos = new ChunkPos(x, z);
         biome.decorate(this.world, this.rand, new BlockPos(i, 0, j));
-        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS))
+        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, false, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS))
             WorldEntitySpawner.performWorldGenSpawning(this.world, biome, i + 8, j + 8, 16, 16, this.rand);
         blockpos = blockpos.add(8, 0, 8);
-        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE)) {
+        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, false, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE)) {
             for (int k2 = 0; k2 < 16; ++k2) {
                 for (int j3 = 0; j3 < 16; ++j3) {
                     BlockPos blockpos1 = this.world.getPrecipitationHeight(blockpos.add(k2, 0, j3));
@@ -327,7 +327,7 @@ public class ChunkProviderDreadLands implements IChunkGenerator {
             }
         }//Forge: End ICE
 
-        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, x, z, flag);
+        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, x, z, false);
 
         BlockFalling.fallInstantly = false;
     }

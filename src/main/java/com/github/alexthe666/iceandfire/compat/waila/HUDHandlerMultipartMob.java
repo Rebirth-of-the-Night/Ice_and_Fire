@@ -42,7 +42,7 @@ public class HUDHandlerMultipartMob implements IWailaEntityProvider {
     @Override
     public List<String> getWailaBody(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config) {
         EntityMutlipartPart part = (EntityMutlipartPart) entity;
-        if (config.getConfig("general.showhp") && part.getParent() instanceof EntityLivingBase) {
+        if (config.getConfig("general.showhp") && part.getParent() != null) {
             nhearts = nhearts <= 0 ? 20 : nhearts;
             float health = part.getParent().getHealth() / 2.0f;
             float maxhp = part.getParent().getMaxHealth() / 2.0f;

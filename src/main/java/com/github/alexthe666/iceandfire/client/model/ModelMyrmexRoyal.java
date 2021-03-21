@@ -46,7 +46,7 @@ public class ModelMyrmexRoyal extends ModelMyrmexBase {
     public AdvancedModelRenderer legBottomR2;
     public AdvancedModelRenderer legMidR2_1;
     public AdvancedModelRenderer legBottomR2_1;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelMyrmexRoyal() {
         this.textureWidth = 128;

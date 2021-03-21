@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -56,7 +57,7 @@ public class ClientEvents {
     private static final ResourceLocation TEXTURE_2 = new ResourceLocation("textures/blocks/frosted_ice_2.png");
     private static final ResourceLocation TEXTURE_3 = new ResourceLocation("textures/blocks/frosted_ice_3.png");
     private static final ResourceLocation CHAIN_TEXTURE = new ResourceLocation("iceandfire:textures/models/misc/chain_link.png");
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     public static void initializeStoneLayer() {
         for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : Minecraft.getMinecraft().getRenderManager().entityRenderMap.entrySet()) {
@@ -257,8 +258,11 @@ public class ClientEvents {
                     }
 
                 }
-                if (IceAndFire.CONFIG.sirenShader && !sirenProps.isCharmed && renderer != null && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && SIREN_SHADER.toString().equals(renderer.getShaderGroup().getShaderGroupName())) {
-                    renderer.stopUseShader();
+                if (IceAndFire.CONFIG.sirenShader && !sirenProps.isCharmed && renderer != null) {
+	                ShaderGroup shaderGroup = renderer.getShaderGroup();
+	                if (shaderGroup != null && SIREN_SHADER.toString().equals(shaderGroup.getShaderGroupName())) {
+		                renderer.stopUseShader();
+	                }
                 }
             }
         }

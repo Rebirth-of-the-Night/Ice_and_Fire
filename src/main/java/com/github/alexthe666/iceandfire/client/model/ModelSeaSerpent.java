@@ -43,7 +43,7 @@ public class ModelSeaSerpent extends ModelDragonBase {
     public AdvancedModelRenderer Teeth2;
     public AdvancedModelRenderer Teeth2Bottom;
     public AdvancedModelRenderer Teeth1Bottom;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelSeaSerpent() {
         this.textureWidth = 256;

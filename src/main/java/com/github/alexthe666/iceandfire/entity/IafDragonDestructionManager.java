@@ -8,11 +8,14 @@ import com.github.alexthe666.iceandfire.block.BlockReturningState;
 import com.github.alexthe666.iceandfire.block.IDragonProof;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforgeInput;
+import com.github.alexthe666.iceandfire.util.IsImmune;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -44,7 +47,9 @@ public class IafDragonDestructionManager {
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
                     entityliving.attackEntityFrom(IceAndFire.dragonFire, stage * dmgScale);
-                    entityliving.setFire(5 + stage * 5);
+                    if (!IsImmune.toDragonFire(entityliving)) {
+	                    entityliving.setFire(5 + stage * 5);
+                    }
                 }
             }
         } else {
@@ -73,7 +78,9 @@ public class IafDragonDestructionManager {
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
                     entityliving.attackEntityFrom(IceAndFire.dragonFire, stage * dmgScale);
-                    entityliving.setFire(5 + stage * 5);
+                    if (!IsImmune.toDragonFire(entityliving)) {
+	                    entityliving.setFire(5 + stage * 5);
+                    }
                 }
             }
         }
@@ -104,7 +111,9 @@ public class IafDragonDestructionManager {
                     entityliving.attackEntityFrom(IceAndFire.dragonIce, stage * dmgScale);
                     FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
                     if (frozenProps != null) {
-                        frozenProps.setFrozenFor(50 * stage);
+                        if (!IsImmune.toDragonIce(entityliving)) {
+                            frozenProps.setFrozenFor(50 * stage);
+                        }
                     }
                 }
             }
@@ -136,7 +145,9 @@ public class IafDragonDestructionManager {
                     entityliving.attackEntityFrom(IceAndFire.dragonIce, stage * dmgScale);
                     FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
                     if (frozenProps != null) {
-                        frozenProps.setFrozenFor(50 * stage);
+                        if (!IsImmune.toDragonIce(entityliving)) {
+                            frozenProps.setFrozenFor(50 * stage);
+                        }
                     }
                 }
             }
@@ -167,7 +178,9 @@ public class IafDragonDestructionManager {
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - 2, (double) center.getY() - 2, (double) center.getZ() - 2, (double) center.getX() + 2, (double) center.getY() + 2, (double) center.getZ() + 2))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
                         entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
-                        entityliving.setFire(15);
+	                    if (!IsImmune.toDragonFire(entityliving)) {
+		                    entityliving.setFire(15);
+	                    }
                     }
                 }
             } else {
@@ -200,7 +213,9 @@ public class IafDragonDestructionManager {
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - j, (double) center.getY() - k, (double) center.getZ() - l, (double) center.getX() + j, (double) center.getY() + k, (double) center.getZ() + l))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
                         entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
-                        entityliving.setFire(15);
+	                    if (!IsImmune.toDragonFire(entityliving)) {
+		                    entityliving.setFire(15);
+	                    }
                     }
                 }
             }
@@ -238,7 +253,9 @@ public class IafDragonDestructionManager {
                         entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
                         FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
                         if (frozenProps != null) {
-                            frozenProps.setFrozenFor(400);
+                            if (!IsImmune.toDragonIce(entityliving)) {
+                                frozenProps.setFrozenFor(400);
+                            }
                         }
                     }
                 }
@@ -274,7 +291,9 @@ public class IafDragonDestructionManager {
                         entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
                         FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
                         if (frozenProps != null) {
-                            frozenProps.setFrozenFor(400);
+                            if (!IsImmune.toDragonIce(entityliving)) {
+                                frozenProps.setFrozenFor(400);
+                            }
                         }
                     }
                 }

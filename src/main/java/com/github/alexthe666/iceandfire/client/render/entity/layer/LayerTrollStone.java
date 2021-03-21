@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 public class LayerTrollStone implements LayerRenderer {
 
-    private RenderLivingBase renderer;
+    private final RenderLivingBase renderer;
 
     public LayerTrollStone(RenderLivingBase renderer) {
         this.renderer = renderer;

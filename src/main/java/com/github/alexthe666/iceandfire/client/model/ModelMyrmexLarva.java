@@ -17,7 +17,7 @@ public class ModelMyrmexLarva extends ModelDragonBase {
     public AdvancedModelRenderer Body4_2;
     public AdvancedModelRenderer Neck1;
     public AdvancedModelRenderer HeadBase;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelMyrmexLarva() {
         this.textureWidth = 128;

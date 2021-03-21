@@ -16,17 +16,17 @@ public class BlockDreadBase extends BlockGeneric implements IDragonProof, IDread
 
     public BlockDreadBase(Material materialIn, String gameName, String name, String toolUsed, int toolStrength, float hardness, float resistance, SoundType sound) {
         super(materialIn, gameName, name, toolUsed, toolStrength, hardness, resistance, sound);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(PLAYER_PLACED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(PLAYER_PLACED, Boolean.FALSE));
     }
 
     public BlockDreadBase(Material materialIn, String gameName, String name, String toolUsed, int toolStrength, float hardness, float resistance, SoundType sound, boolean slippery) {
         super(materialIn, gameName, name, toolUsed, toolStrength, hardness, resistance, sound, slippery);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(PLAYER_PLACED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(PLAYER_PLACED, Boolean.FALSE));
     }
 
     public BlockDreadBase(Material materialIn, String gameName, String name, float hardness, float resistance, SoundType sound) {
         super(materialIn, gameName, name, hardness, resistance, sound);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(PLAYER_PLACED, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(PLAYER_PLACED, Boolean.FALSE));
     }
 
     @Override
@@ -35,11 +35,11 @@ public class BlockDreadBase extends BlockGeneric implements IDragonProof, IDread
     }
 
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(PLAYER_PLACED, Boolean.valueOf(meta > 0));
+        return this.getDefaultState().withProperty(PLAYER_PLACED, meta > 0);
     }
 
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(PLAYER_PLACED).booleanValue() ? 1 : 0;
+        return state.getValue(PLAYER_PLACED) ? 1 : 0;
     }
 
     protected BlockStateContainer createBlockState() {

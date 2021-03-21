@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class DreadPortalProcessor implements ITemplateProcessor {
 
-    private float integrity = 1.0F;
+    private final float integrity = 1.0F;
     public DreadPortalProcessor(BlockPos position, PlacementSettings settings, Biome biome) {
     }
 
