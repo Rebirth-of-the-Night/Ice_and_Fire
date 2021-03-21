@@ -23,15 +23,15 @@ public class RenderDreadlandsAurora extends IRenderHandler {
     private static final ResourceLocation AURORA_TEXTURES = new ResourceLocation("iceandfire:textures/environment/dread_aurora.png");
 
 
-    private static Field CLOUD_TICK_COUNTER;
-    private static Field SKY_VBO;
-    private static Field SKY_2_VBO;
-    private static Field STAR_VBO;
-    private static Field SKY_LIST;
-    private static Field SKY_2_LIST;
-    private static Field STAR_LIST;
+    private static final Field CLOUD_TICK_COUNTER;
+    private static final Field SKY_VBO;
+    private static final Field SKY_2_VBO;
+    private static final Field STAR_VBO;
+    private static final Field SKY_LIST;
+    private static final Field SKY_2_LIST;
+    private static final Field STAR_LIST;
 
-    private int skyboxList = -1;
+    private final int skyboxList = -1;
 
     static {
         CLOUD_TICK_COUNTER = ReflectionHelper.findField(RenderGlobal.class, "cloudTickCounter", "field_72773_u");

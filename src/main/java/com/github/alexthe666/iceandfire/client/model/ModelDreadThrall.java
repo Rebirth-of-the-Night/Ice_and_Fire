@@ -31,7 +31,7 @@ public class ModelDreadThrall extends AdvancedModelBase {
     public ModelBiped.ArmPose leftArmPose;
     public ModelBiped.ArmPose rightArmPose;
     public boolean isSneak;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
     private boolean armor = false;
 
     public ModelDreadThrall(float modelSize, boolean armorArms) {
@@ -121,23 +121,7 @@ public class ModelDreadThrall extends AdvancedModelBase {
         animate((IAnimatedEntity) entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
         ItemStack itemstack = ((EntityLivingBase) entityIn).getHeldItemMainhand();
         EntityDreadThrall thrall = (EntityDreadThrall) entityIn;
-        if (false) {
-            float f = MathHelper.sin(this.swingProgress * (float) Math.PI);
-            float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);
-            this.bipedRightArm.rotateAngleZ = 0.0F;
-            this.bipedLeftArm.rotateAngleZ = 0.0F;
-            this.bipedRightArm.rotateAngleY = -(0.1F - f * 0.6F);
-            this.bipedLeftArm.rotateAngleY = 0.1F - f * 0.6F;
-            this.bipedRightArm.rotateAngleX = -((float) Math.PI / 2F);
-            this.bipedLeftArm.rotateAngleX = -((float) Math.PI / 2F);
-            this.bipedRightArm.rotateAngleX -= f * 1.2F - f1 * 0.4F;
-            this.bipedLeftArm.rotateAngleX -= f * 1.2F - f1 * 0.4F;
-            this.bipedRightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-            this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
-            this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-            this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-        }
-        float f = 1.0F;
+	    float f = 1.0F;
         this.bipedRightArm.rotateAngleX += MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F / f;
         this.bipedLeftArm.rotateAngleX += MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F / f;
         this.bipedRightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount / f;

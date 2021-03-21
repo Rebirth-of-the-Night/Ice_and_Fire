@@ -11,7 +11,7 @@ import net.minecraft.util.math.MathHelper;
 public class RenderLectern extends TileEntitySpecialRenderer {
 
     private static final ResourceLocation ENCHANTMENT_TABLE_BOOK_TEXTURE = new ResourceLocation("iceandfire:textures/models/lectern_book.png");
-    private ModelBook book = new ModelBook();
+    private final ModelBook book = new ModelBook();
 
     @Override
     public void render(TileEntity entity, double x, double y, double z, float f, int yee, float alpha) {

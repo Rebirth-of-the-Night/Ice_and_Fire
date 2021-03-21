@@ -80,7 +80,7 @@ public class EntityDreadLichSkull extends EntityArrow {
                 double d0 = 10;
                 List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, (new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1.0D, this.posY + 1.0D, this.posZ + 1.0D)).grow(d0, 10.0D, d0), IMob.VISIBLE_MOB_SELECTOR);
                 if(targetSorter != null){
-                    Collections.sort(list, targetSorter);
+                    list.sort(targetSorter);
                 }
                 if(!list.isEmpty()){
                     target = list.get(0);
@@ -96,7 +96,7 @@ public class EntityDreadLichSkull extends EntityArrow {
                 this.motionZ += (Math.signum(minusZ) * 0.5D - this.motionZ) * 0.10000000149011612D;
                 float f1 = MathHelper.sqrt(motionX * motionX + motionZ * motionZ);
                 this.rotationYaw = (float)(MathHelper.atan2(motionX, motionZ) * (180D / Math.PI));
-                this.rotationPitch = (float)(MathHelper.atan2(motionY, (double)f1) * (180D / Math.PI));
+                this.rotationPitch = (float)(MathHelper.atan2(motionY, f1) * (180D / Math.PI));
                 flag  = false;
             }
         }
@@ -141,7 +141,7 @@ public class EntityDreadLichSkull extends EntityArrow {
     }
     protected void arrowHit(EntityLivingBase living) {
         super.arrowHit(living);
-        if (living != null && (this.shootingEntity == null || !living.isEntityEqual(this.shootingEntity))){
+        if (this.shootingEntity == null || !living.isEntityEqual(this.shootingEntity)){
             if (living instanceof EntityPlayer) {
                 this.damageShield((EntityPlayer) living, (float) this.getDamage());
             }

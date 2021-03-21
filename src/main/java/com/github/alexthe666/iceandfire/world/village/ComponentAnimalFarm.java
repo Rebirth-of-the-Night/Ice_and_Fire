@@ -25,7 +25,10 @@ public class ComponentAnimalFarm extends StructureVillagePieces.Village {
 
     public static ComponentAnimalFarm buildComponent(StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing facing, int p5) {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 8, 7, 8, facing);
-        return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new ComponentAnimalFarm(startPiece, p5, random, structureboundingbox, facing) : null;
+	    if (canVillageGoDeeper(structureboundingbox)) {
+		    StructureComponent.findIntersecting(pieces, structureboundingbox);
+	    }
+	    return null;
     }
 
     @Override

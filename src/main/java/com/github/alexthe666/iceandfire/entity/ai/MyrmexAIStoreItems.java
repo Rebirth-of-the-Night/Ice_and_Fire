@@ -111,7 +111,7 @@ public class MyrmexAIStoreItems extends EntityAIBase {
     public BlockPos getNearbyCocoon(BlockPos roomCenter) {
         int RADIUS_XZ = 15;
         int RADIUS_Y = 7;
-        List<BlockPos> closeCocoons = new ArrayList<BlockPos>();
+        List<BlockPos> closeCocoons = new ArrayList<>();
         for (BlockPos blockpos : BlockPos.getAllInBox(roomCenter.add(-RADIUS_XZ, -RADIUS_Y, -RADIUS_XZ), roomCenter.add(RADIUS_XZ, RADIUS_Y, RADIUS_XZ))) {
             TileEntity te = this.myrmex.world.getTileEntity(blockpos);
             if (te != null && te instanceof TileEntityMyrmexCocoon) {

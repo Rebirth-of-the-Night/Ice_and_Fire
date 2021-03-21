@@ -11,8 +11,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class StymphalianBirdAIAirTarget extends EntityAIBase {
-    private EntityStymphalianBird bird;
-    private World theWorld;
+    private final EntityStymphalianBird bird;
+    private final World theWorld;
 
     public StymphalianBirdAIAirTarget(EntityStymphalianBird bird) {
         this.bird = bird;
@@ -35,34 +35,31 @@ public class StymphalianBirdAIAirTarget extends EntityAIBase {
     }
 
     public boolean shouldExecute() {
-        if (bird != null) {
-            if (!bird.isFlying()) {
-                return false;
-            }
-            if (bird.isChild()) {
-                return false;
-            }
-            if (bird.doesWantToLand()) {
-                return false;
-            }
-            if (bird.airTarget != null && (bird.isTargetBlocked(new Vec3d(bird.airTarget)))) {
-                bird.airTarget = null;
-            }
-
-            if (bird.airTarget != null) {
-                return false;
-            } else {
-                Vec3d vec = this.findAirTarget();
-
-                if (vec == null) {
-                    return false;
-                } else {
-                    bird.airTarget = new BlockPos(vec.x, vec.y, vec.z);
-                    return true;
-                }
-            }
-        }
-        return false;
+	    if (!bird.isFlying()) {
+	        return false;
+	    }
+	    if (bird.isChild()) {
+	        return false;
+	    }
+	    if (bird.doesWantToLand()) {
+	        return false;
+	    }
+	    if (bird.airTarget != null && (bird.isTargetBlocked(new Vec3d(bird.airTarget)))) {
+	        bird.airTarget = null;
+	    }
+	
+	    if (bird.airTarget != null) {
+	        return false;
+	    } else {
+	        Vec3d vec = this.findAirTarget();
+	
+	        if (vec == null) {
+	            return false;
+	        } else {
+	            bird.airTarget = new BlockPos(vec.x, vec.y, vec.z);
+	            return true;
+	        }
+	    }
     }
 
     public boolean continueExecuting() {

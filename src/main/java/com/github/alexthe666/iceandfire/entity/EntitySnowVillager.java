@@ -26,6 +26,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Objects;
 
 public class EntitySnowVillager extends EntityVillager {
 
@@ -52,7 +53,7 @@ public class EntitySnowVillager extends EntityVillager {
         if (professionId > 2) {
             professionId = 2;
         }
-        this.dataManager.set(PROFFESSION(), Integer.valueOf(professionId));
+        this.dataManager.set(PROFFESSION(), professionId);
 
     }
 
@@ -99,7 +100,7 @@ public class EntitySnowVillager extends EntityVillager {
             }
         }
 //field_184751_bv
-        if (BABY().equals(key)) {
+        if (Objects.equals(BABY(), key)) {
             this.setScaleForAge(this.isChild());
         }
 //field_184752_bw
@@ -133,7 +134,7 @@ public class EntitySnowVillager extends EntityVillager {
         Team team = this.getTeam();
         String s = this.getCustomNameTag();
 
-        if (s != null && !s.isEmpty()) {
+        if (!s.isEmpty()) {
             TextComponentString textcomponentstring = new TextComponentString(ScorePlayerTeam.formatPlayerName(team, s));
             textcomponentstring.getStyle().setHoverEvent(this.getHoverEvent());
             textcomponentstring.getStyle().setInsertion(this.getCachedUniqueIdString());

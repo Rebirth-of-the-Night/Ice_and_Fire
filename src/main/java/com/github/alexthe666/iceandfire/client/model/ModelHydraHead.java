@@ -24,7 +24,7 @@ public class ModelHydraHead extends ModelDragonBase {
     public AdvancedModelRenderer TeethL1;
     public AdvancedModelRenderer TeethR1;
     public AdvancedModelRenderer TeethTL1;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
     private int headIndex = 0;
 
     public ModelHydraHead(int headIndex) {
@@ -144,26 +144,22 @@ public class ModelHydraHead extends ModelDragonBase {
         this.progressRotationInterp(Neck4, (float)limbSwingProgress, (float) Math.toRadians(-5), 0.0F, 0.0F, 1F);
         this.progressRotationInterp(Head1, (float)limbSwingProgress, (float) Math.toRadians(-5), 0.0F, 0.0F, 1F);*/
         float strikeProgress = entity.prevStrikeProgress[headIndex] + LLibrary.PROXY.getPartialTicks() * (entity.strikingProgress[headIndex] - entity.prevStrikeProgress[headIndex]);
-        this.progressRotationInterp(Neck2, (float)strikeProgress, (float) Math.toRadians(5), 0.0F, 0.0F, 10F);
-        this.progressRotationInterp(Neck3, (float)strikeProgress, (float) Math.toRadians(5), 0.0F, 0.0F, 10F);
-        this.progressRotationInterp(Neck4, (float)strikeProgress, (float) Math.toRadians(5), 0.0F, 0.0F, 10F);
-        this.progressRotationInterp(Head1, (float)strikeProgress, (float) Math.toRadians(-15), 0.0F, 0.0F, 10F);
-        this.progressRotationInterp(LowerJaw1, (float)strikeProgress, (float) Math.toRadians(45), 0.0F, 0.0F, 10F);
-        this.progresPositionInterp(TeethTR1, (float)strikeProgress, 0.5F, 0.0F, 0.0F, 10F);
+        this.progressRotationInterp(Neck2, strikeProgress, (float) Math.toRadians(5), 0.0F, 0.0F, 10F);
+        this.progressRotationInterp(Neck3, strikeProgress, (float) Math.toRadians(5), 0.0F, 0.0F, 10F);
+        this.progressRotationInterp(Neck4, strikeProgress, (float) Math.toRadians(5), 0.0F, 0.0F, 10F);
+        this.progressRotationInterp(Head1, strikeProgress, (float) Math.toRadians(-15), 0.0F, 0.0F, 10F);
+        this.progressRotationInterp(LowerJaw1, strikeProgress, (float) Math.toRadians(45), 0.0F, 0.0F, 10F);
+        this.progresPositionInterp(TeethTR1, strikeProgress, 0.5F, 0.0F, 0.0F, 10F);
         float breathProgress = entity.prevBreathProgress[headIndex] + LLibrary.PROXY.getPartialTicks() * (entity.breathProgress[headIndex] - entity.prevBreathProgress[headIndex]);
-        this.progressRotationInterp(Neck4, (float)breathProgress, (float) Math.toRadians(15), 0.0F, 0.0F, 10F);
-        this.progressRotationInterp(Neck3, (float)breathProgress, (float) Math.toRadians(15), 0.0F, 0.0F, 10F);
-        this.progresPositionInterp(TeethTR1, (float)breathProgress, 0.5F, 0.0F, 0.0F, 10F);
-        this.progressRotationInterp(Head1, (float)breathProgress, (float) Math.toRadians(15), 0.0F, 0.0F, 10F);
-        this.progressRotationInterp(UpperJaw1, (float)breathProgress, (float) Math.toRadians(-10), 0.0F, 0.0F, 10F);
-        this.progressRotationInterp(LowerJaw1, (float)breathProgress, (float) Math.toRadians(50), 0.0F, 0.0F, 10F);
-
-
-        if(entity.getSeveredHead() == headIndex || !entity.isEntityAlive()){
-            this.Neck2.isHidden = true;
-        }else{
-            this.Neck2.isHidden = false;
-        }
+        this.progressRotationInterp(Neck4, breathProgress, (float) Math.toRadians(15), 0.0F, 0.0F, 10F);
+        this.progressRotationInterp(Neck3, breathProgress, (float) Math.toRadians(15), 0.0F, 0.0F, 10F);
+        this.progresPositionInterp(TeethTR1, breathProgress, 0.5F, 0.0F, 0.0F, 10F);
+        this.progressRotationInterp(Head1, breathProgress, (float) Math.toRadians(15), 0.0F, 0.0F, 10F);
+        this.progressRotationInterp(UpperJaw1, breathProgress, (float) Math.toRadians(-10), 0.0F, 0.0F, 10F);
+        this.progressRotationInterp(LowerJaw1, breathProgress, (float) Math.toRadians(50), 0.0F, 0.0F, 10F);
+	
+	
+	    this.Neck2.isHidden = entity.getSeveredHead() == headIndex || !entity.isEntityAlive();
     }
 
     @Override

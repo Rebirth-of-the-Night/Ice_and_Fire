@@ -74,9 +74,10 @@ public class LayerDragonBanner implements LayerRenderer<EntityDragonBase> {
     }
 
     public void renderBanner(TileEntityBanner te, double x, double y, double z, float partialTicks, int destroyStage, float scale, boolean pole) {
-        boolean flag = te.getWorld() != null;
-        int i = flag ? te.getBlockMetadata() : 0;
-        long j = flag ? te.getWorld().getTotalWorldTime() : 0L;
+	    te.getWorld();
+	    boolean flag = true;
+        int i = te.getBlockMetadata();
+        long j = te.getWorld().getTotalWorldTime();
         GlStateManager.pushMatrix();
         float reverseScale = 1F / scale;
         float f = 0.6666667F;

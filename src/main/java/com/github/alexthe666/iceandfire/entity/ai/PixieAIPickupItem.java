@@ -35,7 +35,7 @@ public class PixieAIPickupItem<T extends EntityItem> extends EntityAITarget {
         this.targetEntitySelector = new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
-                return item instanceof EntityItem && !item.getItem().isEmpty() && (item.getItem().getItem() == Items.CAKE && !creature.isTamed() || item.getItem().getItem() == Items.SUGAR && creature.isTamed() && creature.getHealth() < creature.getMaxHealth());
+                return item != null && !item.getItem().isEmpty() && (item.getItem().getItem() == Items.CAKE && !creature.isTamed() || item.getItem().getItem() == Items.SUGAR && creature.isTamed() && creature.getHealth() < creature.getMaxHealth());
             }
         };
         this.setMutexBits(3);
@@ -49,7 +49,7 @@ public class PixieAIPickupItem<T extends EntityItem> extends EntityAITarget {
         if (list.isEmpty()) {
             return false;
         } else {
-            Collections.sort(list, this.theNearestAttackableTargetSorter);
+            list.sort(this.theNearestAttackableTargetSorter);
             this.targetEntity = list.get(0);
             return true;
         }
@@ -71,23 +71,31 @@ public class PixieAIPickupItem<T extends EntityItem> extends EntityAITarget {
     @Override
     public void updateTask() {
         super.updateTask();
-        if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
+        if (this.targetEntity == null || this.targetEntity.isDead) {
             this.resetTask();
         }
         if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {
             EntityPixie pixie = (EntityPixie) this.taskOwner;
-            if (this.targetEntity.getItem() != null && this.targetEntity.getItem().getItem() != null && this.targetEntity.getItem().getItem() == Items.SUGAR) {
-                pixie.heal(5);
-            }
-            if (this.targetEntity.getItem() != null && this.targetEntity.getItem().getItem() != null && this.targetEntity.getItem().getItem() == Items.CAKE) {
-                if (!pixie.isTamed() && this.targetEntity.getThrower() != null && !this.targetEntity.getThrower().isEmpty() && this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower()) != null) {
-                    EntityPlayer owner = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
-                    pixie.setTamed(true);
-                    pixie.setOwnerId(owner.getUniqueID());
-                    pixie.setSitting(true);
-                }
-            }
-            this.targetEntity.getItem().shrink(1);
+	        this.targetEntity.getItem();
+	        this.targetEntity.getItem().getItem();
+	        if (this.targetEntity.getItem().getItem() == Items.SUGAR) {
+		        pixie.heal(5);
+	        }
+	        this.targetEntity.getItem();
+	        this.targetEntity.getItem().getItem();
+	        if (this.targetEntity.getItem().getItem() == Items.CAKE) {
+		        if (!pixie.isTamed()) {
+			        this.targetEntity.getThrower();
+			        if (!this.targetEntity.getThrower()
+					        .isEmpty() && this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower()) != null) {
+				        EntityPlayer owner = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
+				        pixie.setTamed(true);
+				        pixie.setOwnerId(owner.getUniqueID());
+				        pixie.setSitting(true);
+			        }
+		        }
+	        }
+	        this.targetEntity.getItem().shrink(1);
             pixie.playSound(IafSoundRegistry.PIXIE_TAUNT, 1F, 1F);
             resetTask();
         }
@@ -108,7 +116,7 @@ public class PixieAIPickupItem<T extends EntityItem> extends EntityAITarget {
         public int compare(Entity p_compare_1_, Entity p_compare_2_) {
             double d0 = this.theEntity.getDistanceSq(p_compare_1_);
             double d1 = this.theEntity.getDistanceSq(p_compare_2_);
-            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+            return Double.compare(d0, d1);
         }
     }
 }

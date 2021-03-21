@@ -23,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.UUID;
 
 public class EntityMyrmexSwarmer extends EntityMyrmexRoyal {
@@ -98,17 +99,15 @@ public class EntityMyrmexSwarmer extends EntityMyrmexRoyal {
     }
 
     public boolean isOnSameTeam(Entity entityIn) {
-        if(entityIn == null){
-            return false;
-        }
-        if (this.getSummonerUUID() == null || entityIn instanceof EntityMyrmexSwarmer && ((EntityMyrmexSwarmer) entityIn).getSummonerUUID() == null) {
+	    if (this.getSummonerUUID() == null || entityIn instanceof EntityMyrmexSwarmer && ((EntityMyrmexSwarmer) entityIn).getSummonerUUID() == null) {
             return false;
         }
         if(entityIn instanceof EntityTameable){
             UUID ownerID = ((EntityTameable) entityIn).getOwnerId();
             return ownerID != null && ownerID.equals(this.getSummonerUUID());
         }
-        return entityIn.getUniqueID().equals(this.getSummonerUUID()) || entityIn instanceof EntityMyrmexSwarmer && ((EntityMyrmexSwarmer) entityIn).getSummonerUUID() != null && ((EntityMyrmexSwarmer) entityIn).getSummonerUUID().equals(this.getSummonerUUID());
+        return entityIn.getUniqueID().equals(this.getSummonerUUID()) || entityIn instanceof EntityMyrmexSwarmer && ((EntityMyrmexSwarmer) entityIn).getSummonerUUID() != null && Objects
+		        .equals(((EntityMyrmexSwarmer) entityIn).getSummonerUUID(), this.getSummonerUUID());
     }
 
     public void setSummonerID(@Nullable UUID uuid) {
@@ -151,7 +150,7 @@ public class EntityMyrmexSwarmer extends EntityMyrmexRoyal {
     }
 
     public int getTicksAlive() {
-        return this.dataManager.get(TICKS_ALIVE).intValue();
+        return this.dataManager.get(TICKS_ALIVE);
     }
 
     public void setTicksAlive(int ticks) {

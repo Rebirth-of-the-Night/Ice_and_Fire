@@ -42,8 +42,8 @@ public class RenderDreadThrall extends RenderLiving<EntityDreadThrall> {
             }
         });
         this.addLayer(new LayerArmorBase<ModelDreadThrall>(this) {
-            ModelDreadThrall modelHead = new ModelDreadThrall(1.0F, true);
-            ModelDreadThrall modelBoots = new ModelDreadThrall(1.0F, true);
+            final ModelDreadThrall modelHead = new ModelDreadThrall(1.0F, true);
+            final ModelDreadThrall modelBoots = new ModelDreadThrall(1.0F, true);
 
             protected void initArmor() {
                 this.modelLeggings = new ModelDreadThrall(0.5F, true);

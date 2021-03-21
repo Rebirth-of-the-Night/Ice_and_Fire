@@ -65,22 +65,22 @@ public class CyclopsAITargetSheepPlayers<T extends EntityLivingBase> extends Ent
             if (list.isEmpty()) {
                 return false;
             } else {
-                Collections.sort(list, this.sorter);
+                list.sort(this.sorter);
                 this.targetEntity = list.get(0);
                 return true;
             }
         } else {
             this.targetEntity = (T) this.taskOwner.world.getNearestAttackablePlayer(this.taskOwner.posX, this.taskOwner.posY + (double) this.taskOwner.getEyeHeight(), this.taskOwner.posZ, this.getTargetDistance(), this.getTargetDistance(), new Function<EntityPlayer, Double>() {
-                @Nullable
+                
                 public Double apply(@Nullable EntityPlayer player) {
                     ItemStack helmet = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
                     ItemStack chestplate = player.getItemStackFromSlot(EntityEquipmentSlot.CHEST);
                     ItemStack leggings = player.getItemStackFromSlot(EntityEquipmentSlot.LEGS);
                     ItemStack boots = player.getItemStackFromSlot(EntityEquipmentSlot.FEET);
-                    double subHelm = helmet != null && helmet.getItem() != null && helmet.getItem() == IafItemRegistry.sheep_helmet ? 0.2D : 0;
-                    double subChest = chestplate != null && chestplate.getItem() != null && chestplate.getItem() == IafItemRegistry.sheep_chestplate ? 0.2D : 0;
-                    double subLegs = leggings != null && leggings.getItem() != null && leggings.getItem() == IafItemRegistry.sheep_leggings ? 0.2D : 0;
-                    double subBoots = boots != null && boots.getItem() != null && boots.getItem() == IafItemRegistry.sheep_boots ? 0.2D : 0;
+                    double subHelm = helmet.getItem() == IafItemRegistry.sheep_helmet ? 0.2D : 0;
+                    double subChest = chestplate.getItem() == IafItemRegistry.sheep_chestplate ? 0.2D : 0;
+                    double subLegs = leggings.getItem() == IafItemRegistry.sheep_leggings ? 0.2D : 0;
+                    double subBoots = boots.getItem() == IafItemRegistry.sheep_boots ? 0.2D : 0;
                     double subSneaking = player.isSneaking() ? 0.2D : 0;
                     return 1.0D - subHelm - subChest - subLegs - subBoots - subSneaking;
                 }

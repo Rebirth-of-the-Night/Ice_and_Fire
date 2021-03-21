@@ -29,8 +29,8 @@ public class GuiMyrmexStaff extends GuiScreen {
     public ChangePageButton nextPage;
     int ticksSinceDeleted = 0;
     int currentPage = 0;
-    private ItemStack staff;
-    private boolean jungle;
+    private final ItemStack staff;
+    private final boolean jungle;
     private int hiveCount;
 
     public GuiMyrmexStaff(ItemStack staff) {

@@ -45,9 +45,9 @@ public class GuiBestiary extends GuiScreen {
     private static final ResourceLocation DRAWINGS_1 = new ResourceLocation("iceandfire:textures/gui/bestiary/drawings_1.png");
     private static final ResourceLocation DRAWINGS_2 = new ResourceLocation("iceandfire:textures/gui/bestiary/drawings_2.png");
     private static final Map<String, ResourceLocation> PICTURE_LOCATION_CACHE = Maps.newHashMap();
-    public List<EnumBestiaryPages> allPageTypes = new ArrayList<EnumBestiaryPages>();
+    public List<EnumBestiaryPages> allPageTypes = new ArrayList<>();
     public EnumBestiaryPages pageType;
-    public List<IndexPageButton> indexButtons = new ArrayList<IndexPageButton>();
+    public List<IndexPageButton> indexButtons = new ArrayList<>();
     public ChangePageButton previousPage;
     public ChangePageButton nextPage;
     public int bookPages;
@@ -61,12 +61,16 @@ public class GuiBestiary extends GuiScreen {
     public GuiBestiary(ItemStack book) {
         this.book = book;
         int indexPageTotal = 0;
-        if (!book.isEmpty() && book.getItem() != null && book.getItem() == IafItemRegistry.bestiary) {
-            if (book.getTagCompound() != null) {
-                List<EnumBestiaryPages> pages = EnumBestiaryPages.containedPages(EnumBestiaryPages.toList(book.getTagCompound().getIntArray("Pages")));
-                allPageTypes.addAll(pages);
-                indexPagesTotal = (int) Math.ceil(pages.size() / 10D);
-            }
+        if (!book.isEmpty()) {
+	        book.getItem();
+	        if (book.getItem() == IafItemRegistry.bestiary) {
+		        if (book.getTagCompound() != null) {
+			        List<EnumBestiaryPages> pages = EnumBestiaryPages.containedPages(EnumBestiaryPages.toList(book.getTagCompound()
+					        .getIntArray("Pages")));
+			        allPageTypes.addAll(pages);
+			        indexPagesTotal = (int) Math.ceil(pages.size() / 10D);
+		        }
+	        }
         }
         index = true;
     }

@@ -20,7 +20,7 @@ public class ChainEntityProperties extends EntityProperties<EntityLivingBase> {
     public List<Entity> connectedEntities = new ArrayList<>();
     public boolean alreadyIgnoresCamera = false;
     public boolean wasJustDisconnected = false;
-    private List<UUID> connectedEntityUUID = new ArrayList<UUID>();
+    private List<UUID> connectedEntityUUID = new ArrayList<>();
 
     @Override
     public int getTrackingTime() {
@@ -41,7 +41,7 @@ public class ChainEntityProperties extends EntityProperties<EntityLivingBase> {
     @Override
     public void loadNBTData(NBTTagCompound compound) {
         NBTTagList nbttaglist = compound.getTagList("ConnectedEntities", Constants.NBT.TAG_COMPOUND);
-        this.connectedEntityUUID = new ArrayList<UUID>();
+        this.connectedEntityUUID = new ArrayList<>();
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
             NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
             connectedEntityUUID.add(nbttagcompound.getUniqueId("UUID"));
@@ -76,7 +76,7 @@ public class ChainEntityProperties extends EntityProperties<EntityLivingBase> {
         minimizeLists();
         connectedEntityUUID.remove(entity.getUniqueID());
         connectedEntities.remove(entity);
-        if (entity != null && !entity.world.isRemote) {
+        if (!entity.world.isRemote) {
             IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageRemoveChainedEntity(us.getEntityId(), entity.getEntityId()));
         }
         wasJustDisconnected = true;
@@ -96,7 +96,7 @@ public class ChainEntityProperties extends EntityProperties<EntityLivingBase> {
         }
         connectedEntityUUID = noDupesUUID;
         List<Entity> noDupesEntity = new ArrayList();
-        List<UUID> addedUUIDs = new ArrayList<UUID>();
+        List<UUID> addedUUIDs = new ArrayList<>();
         for (Entity entity : connectedEntities) {
             if (!addedUUIDs.contains(entity.getUniqueID())) {
                 addedUUIDs.add(entity.getUniqueID());
@@ -108,7 +108,7 @@ public class ChainEntityProperties extends EntityProperties<EntityLivingBase> {
 
     public void updateConnectedEntities(Entity toUpdate) {
         connectedEntities.clear();
-        List<UUID> addedUUIDs = new ArrayList<UUID>();
+        List<UUID> addedUUIDs = new ArrayList<>();
         if (toUpdate != null) {
             World world = toUpdate.world;
             if (!connectedEntityUUID.isEmpty() && world != null && !world.isRemote) {

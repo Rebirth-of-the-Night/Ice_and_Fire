@@ -85,15 +85,15 @@ public class ClientProxy extends CommonProxy {
     private static final ModelSilverArmor SILVER_ARMOR_MODEL_LEGS = new ModelSilverArmor(0.2F);
     @SideOnly(Side.CLIENT)
     private static final IceAndFireTEISR TEISR = new IceAndFireTEISR();
-    public static List<UUID> currentDragonRiders = new ArrayList<UUID>();
+    public static List<UUID> currentDragonRiders = new ArrayList<>();
     private static MyrmexHive referedClientHive = null;
     private IceAndFireParticleSpawner particleSpawner;
     private FontRenderer bestiaryFontRenderer;
     private int previousViewType = 0;
     private int thirdPersonViewDragon = 0;
-    private IRenderHandler dreadlandsWeatherRenderer = new RenderDreadlandsWeather();
-    private IRenderHandler dreadlandsSkyRenderer = new RenderDreadlandsSky();
-    private IRenderHandler dreadlandsAuroraRender = new RenderDreadlandsAurora();
+    private final IRenderHandler dreadlandsWeatherRenderer = new RenderDreadlandsWeather();
+    private final IRenderHandler dreadlandsSkyRenderer = new RenderDreadlandsSky();
+    private final IRenderHandler dreadlandsAuroraRender = new RenderDreadlandsAurora();
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)

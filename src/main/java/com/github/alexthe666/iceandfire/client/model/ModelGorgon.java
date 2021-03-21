@@ -46,7 +46,7 @@ public class ModelGorgon extends ModelDragonBase {
     public AdvancedModelRenderer SnakeHeadL1;
     public AdvancedModelRenderer SnakeBodyL4;
     public AdvancedModelRenderer SnakeHeadL4;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelGorgon() {
         this.textureWidth = 128;

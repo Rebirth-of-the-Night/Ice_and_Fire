@@ -38,7 +38,7 @@ public class BlockCharedPath extends BlockGrassPath {
         }
         this.setLightOpacity(0);
         setRegistryName(IceAndFire.MODID, isFire ? "chared_grass_path" : "frozen_grass_path");
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.FALSE));
         this.setTickRandomly(true);
     }
 

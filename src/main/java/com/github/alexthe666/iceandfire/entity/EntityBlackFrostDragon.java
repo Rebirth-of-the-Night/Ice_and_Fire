@@ -269,7 +269,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         return false;
     }
 
-    protected int getFlightChancePerTick(){
-        return 15;
+    protected float getFlightChancePerTick(){
+        return 1/15F;
     }
 }

@@ -21,14 +21,14 @@ import java.util.Map;
 public class RenderMobSkull extends Render<EntityMobSkull> {
 
     private static final Map<String, ResourceLocation> SKULL_TEXTURE_CACHE = Maps.newHashMap();
-    private ModelHippogryph hippogryphModel;
-    private ModelCyclops cyclopsModel;
-    private ModelCockatrice cockatriceModel;
-    private ModelStymphalianBird stymphalianBirdModel;
-    private ModelTroll trollModel;
-    private ModelAmphithere amphithereModel;
-    private ModelHydraHead hydraModel;
-    private IceAndFireTabulaModel seaSerpentModel;
+    private final ModelHippogryph hippogryphModel;
+    private final ModelCyclops cyclopsModel;
+    private final ModelCockatrice cockatriceModel;
+    private final ModelStymphalianBird stymphalianBirdModel;
+    private final ModelTroll trollModel;
+    private final ModelAmphithere amphithereModel;
+    private final ModelHydraHead hydraModel;
+    private final IceAndFireTabulaModel seaSerpentModel;
 
     public RenderMobSkull(RenderManager renderManager, ModelBase seaSerpentModel) {
         super(renderManager);

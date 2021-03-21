@@ -22,7 +22,7 @@ import java.util.Random;
 
 public class DreadRuinProcessor implements ITemplateProcessor {
 
-    private float integrity = 1.0F;
+    private final float integrity = 1.0F;
     public static final ResourceLocation DREAD_CHEST_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "mausoleum_chest"));
 
     public DreadRuinProcessor(BlockPos position, PlacementSettings settings, @Nullable Biome biome) {

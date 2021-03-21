@@ -29,7 +29,7 @@ public class BlockMyrmexResin extends Block implements ICustomRendered {
 
     public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockMyrmexResin.EnumType.class);
     protected static final AxisAlignedBB STICKY_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
-    private boolean sticky;
+    private final boolean sticky;
 
     public BlockMyrmexResin(boolean sticky) {
         super(Material.CLAY);
@@ -109,7 +109,7 @@ public class BlockMyrmexResin extends Block implements ICustomRendered {
     public enum EnumType implements IStringSerializable {
         DESERT("desert"), JUNGLE("jungle");
 
-        private String name;
+        private final String name;
 
         EnumType(String name) {
             this.name = name;

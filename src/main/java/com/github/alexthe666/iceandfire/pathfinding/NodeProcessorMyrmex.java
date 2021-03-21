@@ -54,10 +54,10 @@ public class NodeProcessorMyrmex extends NodeProcessor {
 
         if (this.entity.getPathPriority(pathnodetype1) < 0.0F) {
             Set<BlockPos> set = Sets.newHashSet();
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().minX, (double) i, this.entity.getEntityBoundingBox().minZ));
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().minX, (double) i, this.entity.getEntityBoundingBox().maxZ));
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().maxX, (double) i, this.entity.getEntityBoundingBox().minZ));
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().maxX, (double) i, this.entity.getEntityBoundingBox().maxZ));
+            set.add(new BlockPos(this.entity.getEntityBoundingBox().minX, i, this.entity.getEntityBoundingBox().minZ));
+            set.add(new BlockPos(this.entity.getEntityBoundingBox().minX, i, this.entity.getEntityBoundingBox().maxZ));
+            set.add(new BlockPos(this.entity.getEntityBoundingBox().maxX, i, this.entity.getEntityBoundingBox().minZ));
+            set.add(new BlockPos(this.entity.getEntityBoundingBox().maxX, i, this.entity.getEntityBoundingBox().maxZ));
 
             for (BlockPos blockpos1 : set) {
                 PathNodeType pathnodetype = this.getPathNodeType(this.entity, blockpos1);
@@ -182,7 +182,7 @@ public class NodeProcessorMyrmex extends NodeProcessor {
                     if (pathpoint != null && (pathpoint.nodeType == PathNodeType.OPEN || pathpoint.nodeType == PathNodeType.WALKABLE) && this.entity.width < 1.0F) {
                         double d2 = (double) (x - facing.getXOffset()) + 0.5D;
                         double d3 = (double) (z - facing.getZOffset()) + 0.5D;
-                        AxisAlignedBB axisalignedbb = new AxisAlignedBB(d2 - d1, (double) y + 0.001D, d3 - d1, d2 + d1, (double) ((float) y + this.entity.height), d3 + d1);
+                        AxisAlignedBB axisalignedbb = new AxisAlignedBB(d2 - d1, (double) y + 0.001D, d3 - d1, d2 + d1, (float) y + this.entity.height, d3 + d1);
                         AxisAlignedBB axisalignedbb1 = this.blockaccess.getBlockState(blockpos).getBoundingBox(this.blockaccess, blockpos);
                         AxisAlignedBB axisalignedbb2 = axisalignedbb.expand(0.0D, axisalignedbb1.maxY - 0.002D, 0.0D);
 
@@ -193,7 +193,7 @@ public class NodeProcessorMyrmex extends NodeProcessor {
                 }
 
                 if (pathnodetype == PathNodeType.OPEN) {
-                    AxisAlignedBB axisalignedbb3 = new AxisAlignedBB((double) x - d1 + 0.5D, (double) y + 0.001D, (double) z - d1 + 0.5D, (double) x + d1 + 0.5D, (double) ((float) y + this.entity.height), (double) z + d1 + 0.5D);
+                    AxisAlignedBB axisalignedbb3 = new AxisAlignedBB((double) x - d1 + 0.5D, (double) y + 0.001D, (double) z - d1 + 0.5D, (double) x + d1 + 0.5D, (float) y + this.entity.height, (double) z + d1 + 0.5D);
 
                     if (this.entity.world.collidesWithAnyBlock(axisalignedbb3)) {
                         return null;
@@ -371,15 +371,16 @@ public class NodeProcessorMyrmex extends NodeProcessor {
                 return PathNodeType.DAMAGE_FIRE;
             } else if (block == Blocks.CACTUS) {
                 return PathNodeType.DAMAGE_CACTUS;
-            } else if (block instanceof BlockDoor && material == Material.WOOD && !iblockstate.getValue(BlockDoor.OPEN).booleanValue()) {
+            } else if (block instanceof BlockDoor && material == Material.WOOD && !iblockstate.getValue(BlockDoor.OPEN)) {
                 return PathNodeType.DOOR_WOOD_CLOSED;
-            } else if (block instanceof BlockDoor && material == Material.IRON && !iblockstate.getValue(BlockDoor.OPEN).booleanValue()) {
+            } else if (block instanceof BlockDoor && material == Material.IRON && !iblockstate.getValue(BlockDoor.OPEN)) {
                 return PathNodeType.DOOR_IRON_CLOSED;
-            } else if (block instanceof BlockDoor && iblockstate.getValue(BlockDoor.OPEN).booleanValue()) {
+            } else if (block instanceof BlockDoor && iblockstate.getValue(BlockDoor.OPEN)) {
                 return PathNodeType.DOOR_OPEN;
             } else if (block instanceof BlockRailBase) {
                 return PathNodeType.RAIL;
-            } else if (!(block instanceof BlockFence) && !(block instanceof BlockWall) && (!(block instanceof BlockFenceGate) || iblockstate.getValue(BlockFenceGate.OPEN).booleanValue())) {
+            } else if (!(block instanceof BlockFence) && !(block instanceof BlockWall) && (!(block instanceof BlockFenceGate) || iblockstate
+		            .getValue(BlockFenceGate.OPEN))) {
                 if (material == Material.WATER) {
                     return PathNodeType.WATER;
                 } else if (material == Material.LAVA) {

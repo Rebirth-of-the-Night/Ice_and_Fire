@@ -22,7 +22,7 @@ public class LayerStoneEntity implements LayerRenderer {
     private static final ModelHorseStatue HORSE_MODEL = new ModelHorseStatue();
     private static final ModelGuardianStatue GUARDIAN_MODEL = new ModelGuardianStatue();
     private static final ResourceLocation STONE_TEXTURE = new ResourceLocation( "textures/blocks/stone.png");
-    private RenderLivingBase renderer;
+    private final RenderLivingBase renderer;
 
     public LayerStoneEntity(RenderLivingBase renderer) {
         this.renderer = renderer;

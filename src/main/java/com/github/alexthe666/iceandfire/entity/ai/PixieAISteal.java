@@ -70,7 +70,7 @@ public class PixieAISteal extends EntityAIBase {
 
     public void updateTask() {
         this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingPlayer, (float) (this.temptedEntity.getHorizontalFaceSpeed() + 20), (float) this.temptedEntity.getVerticalFaceSpeed());
-        ArrayList<Integer> slotlist = new ArrayList<Integer>();
+        ArrayList<Integer> slotlist = new ArrayList<>();
         if (this.temptedEntity.getDistanceSq(this.temptingPlayer) < 6.25D && !this.temptingPlayer.inventory.isEmpty()) {
             for (int i = 0; i < this.temptingPlayer.inventory.getSizeInventory(); i++) {
                 if (this.temptingPlayer.inventory.getStackInSlot(i) != ItemStack.EMPTY) {

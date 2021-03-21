@@ -77,7 +77,7 @@ public class BlockEggInIce extends BlockContainer {
             return false;
         }
 
-        return block != this && super.shouldSideBeRendered(iblockstate, worldIn, pos, side);
+        return super.shouldSideBeRendered(iblockstate, worldIn, pos, side);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class BlockEggInIce extends BlockContainer {
         player.addExhaustion(0.025F);
 
         if (this.canSilkHarvest(worldIn, pos, state, player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0) {
-            java.util.List<ItemStack> items = new java.util.ArrayList<ItemStack>();
+            java.util.List<ItemStack> items = new java.util.ArrayList<>();
             ItemStack itemstack = new ItemStack(Blocks.ICE, 1);
 
             if (!itemstack.isEmpty()) {

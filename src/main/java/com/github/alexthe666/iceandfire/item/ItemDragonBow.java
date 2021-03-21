@@ -180,10 +180,10 @@ public class ItemDragonBow extends ItemBow implements ICustomRendered {
             return ret;
 
         if (!playerIn.capabilities.isCreativeMode && !flag) {
-            return !flag ? new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn) : new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+            return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
         } else {
             playerIn.setActiveHand(hand);
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
         }
     }
 

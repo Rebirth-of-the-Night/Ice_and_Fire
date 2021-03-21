@@ -13,9 +13,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class IceAndFireTEISR extends TileEntityItemStackRenderer {
 
-    private RenderTrollWeapon renderTrollWeapon = new RenderTrollWeapon();
-    private RenderDeathWormGauntlet renderDeathWormGauntlet = new RenderDeathWormGauntlet();
-    private RenderDreadPortal renderDreadPortal = new RenderDreadPortal();
+    private final RenderTrollWeapon renderTrollWeapon = new RenderTrollWeapon();
+    private final RenderDeathWormGauntlet renderDeathWormGauntlet = new RenderDeathWormGauntlet();
+    private final RenderDreadPortal renderDreadPortal = new RenderDreadPortal();
 
     public void renderByItem(ItemStack itemStackIn) {
         if (itemStackIn.getItem() instanceof ItemTrollWeapon) {

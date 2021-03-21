@@ -149,7 +149,10 @@ public class PixieVillagePieces {
 
         public static House1 createPiece(Start start, List<StructureComponent> p_175850_1_, Random rand, int p_175850_3_, int p_175850_4_, int p_175850_5_, EnumFacing facing, int p_175850_7_) {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175850_3_, p_175850_4_, p_175850_5_, 0, 0, 0, 9, 9, 6, facing);
-            return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(p_175850_1_, structureboundingbox) == null ? new House1(start, p_175850_7_, rand, structureboundingbox, facing) : null;
+	        if (canVillageGoDeeper(structureboundingbox)) {
+		        StructureComponent.findIntersecting(p_175850_1_, structureboundingbox);
+	        }
+	        return null;
         }
 
         public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn) {
@@ -207,10 +210,8 @@ public class PixieVillagePieces {
         public static StructureBoundingBox findPieceBox(Start start, List<StructureComponent> p_175848_1_, Random rand, int p_175848_3_, int p_175848_4_, int p_175848_5_, EnumFacing facing) {
             for (int i = 3 * MathHelper.getInt(rand, 3, 5); i >= 3; i -= 3) {
                 StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175848_3_, p_175848_4_, p_175848_5_, 0, 0, 0, 1, 1, i, facing);
-
-                if (StructureComponent.findIntersecting(p_175848_1_, structureboundingbox) == null) {
-                    return structureboundingbox;
-                }
+	
+	            StructureComponent.findIntersecting(p_175848_1_, structureboundingbox);
             }
 
             return null;
@@ -555,7 +556,7 @@ public class PixieVillagePieces {
                     ++this.villagersSpawned;
 
                     EntityPixie entityPixie = new EntityPixie(worldIn);
-                    entityPixie.setLocationAndAngles((double) j + 0.5D, (double) k, (double) l + 0.5D, 0.0F, 0.0F);
+                    entityPixie.setLocationAndAngles((double) j + 0.5D, k, (double) l + 0.5D, 0.0F, 0.0F);
                     entityPixie.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityPixie)), null);
                     worldIn.spawnEntity(entityPixie);
                 }
@@ -724,7 +725,10 @@ public class PixieVillagePieces {
 
         public static PixieHouse createPiece(Start start, List<StructureComponent> p_175853_1_, Random rand, int p_175853_3_, int p_175853_4_, int p_175853_5_, EnumFacing facing, int p_175853_7_) {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175853_3_, p_175853_4_, p_175853_5_, 0, 0, 0, 1, 1, 1, facing);
-            return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(p_175853_1_, structureboundingbox) == null ? new PixieHouse(start, p_175853_7_, rand, structureboundingbox, facing) : null;
+	        if (canVillageGoDeeper(structureboundingbox)) {
+		        StructureComponent.findIntersecting(p_175853_1_, structureboundingbox);
+	        }
+	        return null;
         }
 
         protected void writeStructureToNBT(NBTTagCompound tagCompound) {

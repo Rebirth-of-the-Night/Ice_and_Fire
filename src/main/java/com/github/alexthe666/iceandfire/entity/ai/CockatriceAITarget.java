@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.EnumDifficulty;
 
 public class CockatriceAITarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
-    private EntityCockatrice cockatrice;
+    private final EntityCockatrice cockatrice;
 
     public CockatriceAITarget(EntityCockatrice entityIn, Class<T> classTarget, boolean checkSight, Predicate<? super T> targetSelector) {
         super(entityIn, classTarget, 0, checkSight, false, targetSelector);

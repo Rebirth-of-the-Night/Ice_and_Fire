@@ -37,7 +37,7 @@ public class BlockDragonforgeBricks extends BlockContainer implements IDragonPro
         this.setTranslationKey("iceandfire.dragonforge_" + (isFire ? "fire" : "ice") + "_brick");
         this.setRegistryName(IceAndFire.MODID, "dragonforge_" + (isFire ? "fire" : "ice") + "_brick");
         this.isFire = isFire;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(GRILL, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(GRILL, Boolean.FALSE));
     }
 
     @Override
@@ -90,11 +90,11 @@ public class BlockDragonforgeBricks extends BlockContainer implements IDragonPro
     }
 
     public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(GRILL, Boolean.valueOf(meta > 0));
+        return this.getDefaultState().withProperty(GRILL, meta > 0);
     }
 
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(GRILL).booleanValue() ? 1 : 0;
+        return state.getValue(GRILL) ? 1 : 0;
     }
 
     protected BlockStateContainer createBlockState() {

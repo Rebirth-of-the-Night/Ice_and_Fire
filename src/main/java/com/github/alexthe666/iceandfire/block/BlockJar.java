@@ -31,9 +31,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 
 public class BlockJar extends BlockContainer implements ICustomRendered {
-    private static AxisAlignedBB AABB = new AxisAlignedBB(0.1875F, 0, 0.1875F, 0.8125F, 1F, 0.8125F);
+    private static final AxisAlignedBB AABB = new AxisAlignedBB(0.1875F, 0, 0.1875F, 0.8125F, 1F, 0.8125F);
     public Item itemBlock;
-    private boolean empty;
+    private final boolean empty;
 
     public BlockJar(boolean empty) {
         super(Material.GLASS);

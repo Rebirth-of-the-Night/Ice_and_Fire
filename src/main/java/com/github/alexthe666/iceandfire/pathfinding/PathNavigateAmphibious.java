@@ -31,7 +31,7 @@ public class PathNavigateAmphibious extends PathNavigate {
     }
 
     protected Vec3d getEntityPosition() {
-        return new Vec3d(this.entity.posX, (double) this.getPathablePosY(), this.entity.posZ);
+        return new Vec3d(this.entity.posX, this.getPathablePosY(), this.entity.posZ);
     }
 
     public Path getPathToPos(BlockPos pos) {

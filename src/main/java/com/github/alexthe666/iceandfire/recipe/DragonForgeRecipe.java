@@ -4,9 +4,9 @@ import net.minecraft.item.ItemStack;
 
 public class DragonForgeRecipe {
 
-    private ItemStack input;
-    private ItemStack blood;
-    private ItemStack output;
+    private final ItemStack input;
+    private final ItemStack blood;
+    private final ItemStack output;
 
     public DragonForgeRecipe(ItemStack input, ItemStack blood, ItemStack output) {
         this.input = input;

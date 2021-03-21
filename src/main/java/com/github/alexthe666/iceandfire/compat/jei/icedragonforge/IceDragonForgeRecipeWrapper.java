@@ -10,7 +10,7 @@ import java.util.List;
 
 public class IceDragonForgeRecipeWrapper implements IRecipeWrapper {
 
-    private DragonForgeRecipe recipe;
+    private final DragonForgeRecipe recipe;
 
     public IceDragonForgeRecipeWrapper(DragonForgeRecipe recipe) {
         this.recipe = recipe;

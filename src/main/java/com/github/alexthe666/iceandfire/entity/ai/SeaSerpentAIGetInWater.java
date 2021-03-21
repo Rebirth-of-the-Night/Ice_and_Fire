@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class SeaSerpentAIGetInWater extends EntityAIBase {
 
-    private EntitySeaSerpent serpent;
+    private final EntitySeaSerpent serpent;
     private final double movementSpeed;
     private final World world;
     private double shelterX;
@@ -75,7 +75,7 @@ public class SeaSerpentAIGetInWater extends EntityAIBase {
                 blockpos1 = blockpos1.down();
             }
             if (this.world.getBlockState(blockpos1).getMaterial() == Material.WATER) {
-                return new Vec3d((double) blockpos1.getX(), (double) blockpos1.getY(), (double) blockpos1.getZ());
+                return new Vec3d(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ());
             }
         }
 

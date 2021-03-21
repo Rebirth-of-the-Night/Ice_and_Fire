@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import javax.annotation.Nullable;
 
 public class MyrmexAIAttackPlayers extends EntityAINearestAttackableTarget {
-    private EntityMyrmexBase myrmex;
+    private final EntityMyrmexBase myrmex;
 
     public MyrmexAIAttackPlayers(EntityMyrmexBase myrmex) {
         super(myrmex, EntityPlayer.class, 10, true, true, new Predicate<EntityPlayer>() {

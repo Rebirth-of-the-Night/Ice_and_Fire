@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class WorldGenRoostArch {
-    private Block block;
+    private final Block block;
 
     public WorldGenRoostArch(Block block) {
         this.block = block;

@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class WorldGenRoostGoldPile {
-    private Block block;
+    private final Block block;
 
     public WorldGenRoostGoldPile(Block block) {
         this.block = block;

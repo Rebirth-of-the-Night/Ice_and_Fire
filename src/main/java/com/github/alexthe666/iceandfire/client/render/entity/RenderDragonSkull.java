@@ -21,8 +21,8 @@ public class RenderDragonSkull extends Render<EntityDragonSkull> {
     public static final float[] growth_stage_4 = new float[]{12.5F, 20F};
     public static final float[] growth_stage_5 = new float[]{20F, 30F};
     public float[][] growth_stages;
-    private IceAndFireTabulaModel fireDragonModel;
-    private IceAndFireTabulaModel iceDragonModel;
+    private final IceAndFireTabulaModel fireDragonModel;
+    private final IceAndFireTabulaModel iceDragonModel;
 
     public RenderDragonSkull(RenderManager renderManager, ModelBase fireDragonModel, ModelBase iceDragonModel) {
         super(renderManager);

@@ -29,7 +29,7 @@ public class AmphithereAIFleePlayer extends EntityAIBase {
 
     public boolean shouldExecute() {
         if (!this.entity.isFlying() && !this.entity.isTamed()) {
-            List<EntityPlayer> list = this.entity.world.getEntitiesWithinAABB(EntityPlayer.class, this.entity.getEntityBoundingBox().grow((double) this.avoidDistance, 6D, (double) this.avoidDistance), EntitySelectors.CAN_AI_TARGET);
+            List<EntityPlayer> list = this.entity.world.getEntitiesWithinAABB(EntityPlayer.class, this.entity.getEntityBoundingBox().grow(this.avoidDistance, 6D, this.avoidDistance), EntitySelectors.CAN_AI_TARGET);
             if (list.isEmpty()) {
                 return false;
             } else {

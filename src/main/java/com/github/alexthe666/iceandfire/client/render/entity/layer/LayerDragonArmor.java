@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LayerDragonArmor implements LayerRenderer<EntityDragonBase> {
-    private static EntityEquipmentSlot[] ARMOR_SLOTS = {EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET};
+    private static final EntityEquipmentSlot[] ARMOR_SLOTS = {EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET};
     private final RenderLiving render;
     private static final Map<String, ResourceLocation> LAYERED_ARMOR_CACHE = Maps.newHashMap();
 
@@ -37,7 +37,7 @@ public class LayerDragonArmor implements LayerRenderer<EntityDragonBase> {
             ResourceLocation resourcelocation = LAYERED_ARMOR_CACHE.get(armorTexture);
             if(resourcelocation == null){
                 resourcelocation = new ResourceLocation("iceandfire" + "dragonArmor_" + armorTexture);
-                List<String> tex = new ArrayList<String>();
+                List<String> tex = new ArrayList<>();
                 for (EntityEquipmentSlot slot : ARMOR_SLOTS) {
                     if (dragon.dragonType == DragonType.FIRE) {
                         tex.add(EnumDragonTextures.Armor.getArmorForDragon(dragon, slot).FIRETEXTURE.toString());

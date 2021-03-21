@@ -11,15 +11,15 @@ import net.minecraft.util.math.BlockPos;
 public class DragonAIAttackMelee extends EntityAIBase {
     protected EntityDragonBase dragon;
     private int attackTick;
-    private double speedTowardsTarget;
-    private boolean longMemory;
+    private final double speedTowardsTarget;
+    private final boolean longMemory;
     private Path entityPathEntity;
     private int delayCounter;
     private double targetX;
     private double targetY;
     private double targetZ;
     private int failedPathFindingPenalty = 0;
-    private boolean canPenalize = false;
+    private final boolean canPenalize = false;
 
     public DragonAIAttackMelee(EntityDragonBase dragon, double speedIn, boolean useLongMemory) {
         this.dragon = dragon;

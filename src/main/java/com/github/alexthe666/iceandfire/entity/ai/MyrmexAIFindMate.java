@@ -53,7 +53,7 @@ public class MyrmexAIFindMate<T extends EntityMyrmexBase> extends EntityAITarget
         if (list.isEmpty()) {
             return false;
         } else {
-            Collections.sort(list, this.theNearestAttackableTargetSorter);
+            list.sort(this.theNearestAttackableTargetSorter);
             for (Entity royal : list) {
                 if (this.myrmex.canMateWith((EntityMyrmexRoyal) royal)) {
                     this.myrmex.mate = (EntityMyrmexRoyal) royal;
@@ -84,7 +84,7 @@ public class MyrmexAIFindMate<T extends EntityMyrmexBase> extends EntityAITarget
         public int compare(Entity p_compare_1_, Entity p_compare_2_) {
             double d0 = this.theEntity.getDistanceSq(p_compare_1_);
             double d1 = this.theEntity.getDistanceSq(p_compare_2_);
-            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+            return Double.compare(d0, d1);
         }
     }
 }

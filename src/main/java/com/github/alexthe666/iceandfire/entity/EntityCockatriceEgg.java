@@ -44,6 +44,7 @@ public class EntityCockatriceEgg extends EntityEgg {
      * Called when this EntityThrowable hits a block or entity.
      */
     protected void onImpact(RayTraceResult result) {
+        if (result == null) return;
         if (result.entityHit != null) {
             result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0F);
         }

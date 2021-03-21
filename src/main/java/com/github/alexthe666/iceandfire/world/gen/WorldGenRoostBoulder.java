@@ -12,7 +12,7 @@ public class WorldGenRoostBoulder extends WorldGenerator {
 
     private final Block block;
     private final int startRadius;
-    private boolean replaceAir;
+    private final boolean replaceAir;
 
     public WorldGenRoostBoulder(Block blockIn, int startRadiusIn, boolean replaceAir) {
         super(false);

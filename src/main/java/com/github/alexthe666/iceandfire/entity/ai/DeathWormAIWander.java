@@ -5,7 +5,7 @@ import net.minecraft.entity.ai.EntityAIWander;
 
 public class DeathWormAIWander extends EntityAIWander {
 
-    private EntityDeathWorm worm;
+    private final EntityDeathWorm worm;
 
     public DeathWormAIWander(EntityDeathWorm creatureIn, double speedIn) {
         super(creatureIn, speedIn);

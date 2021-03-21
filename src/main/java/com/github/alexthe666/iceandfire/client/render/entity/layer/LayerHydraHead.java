@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class LayerHydraHead implements LayerRenderer {
     private final RenderHydra renderer;
-    private ModelHydraHead[] modelArr;
+    private final ModelHydraHead[] modelArr;
     public static final ResourceLocation TEXTURE_STONE = new ResourceLocation("iceandfire:textures/models/hydra/stone.png");
     private static final float[][] TRANSLATE = new float[][]{
             {0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F},// 1 total heads

@@ -65,7 +65,7 @@ public class EntityIceDragon extends EntityDragonBase {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(SWIMMING, Boolean.valueOf(false));
+        this.dataManager.register(SWIMMING, Boolean.FALSE);
     }
 
     public String getVariantName(int variant) {
@@ -325,7 +325,7 @@ public class EntityIceDragon extends EntityDragonBase {
                     if (!world.isRemote) {
                         world.spawnEntity(entitylargefireball);
                     }
-                    if (entity.isDead || entity == null) {
+                    if (entity.isDead) {
                         this.setBreathingFire(false);
                         this.usingGroundAttack = true;
                     }
@@ -338,7 +338,7 @@ public class EntityIceDragon extends EntityDragonBase {
                             this.playSound(IafSoundRegistry.ICEDRAGON_BREATH, 4, 1);
                         }
                         stimulateFire(entity.posX, entity.posY, entity.posZ, 1);
-                        if (entity.isDead || entity == null) {
+                        if (entity.isDead) {
                             this.setBreathingFire(false);
                             this.usingGroundAttack = true;
                         }
@@ -433,7 +433,7 @@ public class EntityIceDragon extends EntityDragonBase {
 
     public boolean isSwimming() {
         if (world.isRemote) {
-            boolean swimming = this.dataManager.get(SWIMMING).booleanValue();
+            boolean swimming = this.dataManager.get(SWIMMING);
             this.isSwimming = swimming;
             return swimming;
         }
@@ -473,7 +473,9 @@ public class EntityIceDragon extends EntityDragonBase {
     }
 
     public boolean isBreedingItem(@Nullable ItemStack stack) {
-        return !stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.frost_stew;
+	    if (stack.isEmpty()) return false;
+	    stack.getItem();
+	    return stack.getItem() == IafItemRegistry.frost_stew;
     }
 
     @Override
@@ -491,7 +493,7 @@ public class EntityIceDragon extends EntityDragonBase {
         }
     }
 
-    public double getFlightSpeedModifier() {
+    public float getFlightSpeedModifier() {
         return super.getFlightSpeedModifier() * (this.isInMaterialWater() ? 0.8F : 1F);
     }
 

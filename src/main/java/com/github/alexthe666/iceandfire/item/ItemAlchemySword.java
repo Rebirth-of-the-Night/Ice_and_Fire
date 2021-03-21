@@ -3,12 +3,15 @@ package com.github.alexthe666.iceandfire.item;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
+import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
 import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -37,17 +40,25 @@ public class ItemAlchemySword extends ItemSword {
             if (target instanceof EntityIceDragon) {
                 target.attackEntityFrom(DamageSource.IN_FIRE, 13.5F);
             }
-            target.setFire(5);
+            
+            if (!(target instanceof EntityCow)) {
+	            target.setFire(5);
+            }
+            
             target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         }
         if (this == IafItemRegistry.dragonbone_sword_ice) {
             if (target instanceof EntityFireDragon) {
                 target.attackEntityFrom(DamageSource.DROWN, 13.5F);
             }
-            FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
-            frozenProps.setFrozenFor(200);
-            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 2));
-            target.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 100, 2));
+            
+            if (!(target instanceof EntityHippogryph)) {
+	            FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
+	            frozenProps.setFrozenFor(200);
+	            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 2));
+	            target.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 100, 2));
+            }
+            
             target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         }
         return super.hitEntity(stack, target, attacker);

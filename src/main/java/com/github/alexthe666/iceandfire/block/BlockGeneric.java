@@ -86,7 +86,7 @@ public class BlockGeneric extends Block {
         } else {
             return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
         }
-        return block == this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+	    return false;
     }
 
     @Deprecated

@@ -18,9 +18,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiDragon extends GuiContainer {
     private static final ResourceLocation texture = new ResourceLocation("iceandfire:textures/gui/dragon.png");
-    private IInventory playerInventory;
-    private IInventory dragonInv;
-    private EntityDragonBase dragon;
+    private final IInventory playerInventory;
+    private final IInventory dragonInv;
+    private final EntityDragonBase dragon;
     private float mousePosx;
     private float mousePosY;
 

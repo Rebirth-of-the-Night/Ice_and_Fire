@@ -84,7 +84,7 @@ public class EntityMyrmexRoyal extends EntityMyrmexBase {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(FLYING, Boolean.valueOf(false));
+        this.dataManager.register(FLYING, Boolean.FALSE);
     }
 
     protected void switchNavigator(boolean onLand) {
@@ -101,7 +101,7 @@ public class EntityMyrmexRoyal extends EntityMyrmexBase {
 
     public boolean isFlying() {
         if (world.isRemote) {
-            return this.isFlying = this.dataManager.get(FLYING).booleanValue();
+            return this.isFlying = this.dataManager.get(FLYING);
         }
         return isFlying;
     }
@@ -242,19 +242,16 @@ public class EntityMyrmexRoyal extends EntityMyrmexBase {
     }
 
     public boolean canMateWith(EntityAnimal otherAnimal) {
-        if (otherAnimal == this || otherAnimal == null) {
+        if (otherAnimal == this) {
             return false;
         } else if (otherAnimal.getClass() != this.getClass()) {
             return false;
         } else {
-            if (otherAnimal instanceof EntityMyrmexBase) {
-                if (((EntityMyrmexBase) otherAnimal).getHive() != null && this.getHive() != null) {
-                    return !this.getHive().equals(((EntityMyrmexBase) otherAnimal).getHive());
-                } else {
-                    return true;
-                }
-            }
-            return false;
+	        if (((EntityMyrmexBase) otherAnimal).getHive() != null && this.getHive() != null) {
+	            return !this.getHive().equals(((EntityMyrmexBase) otherAnimal).getHive());
+	        } else {
+	            return true;
+	        }
         }
     }
 
@@ -376,7 +373,7 @@ public class EntityMyrmexRoyal extends EntityMyrmexBase {
                 double d1 = this.posY - EntityMyrmexRoyal.this.posY;
                 double d2 = this.posZ - EntityMyrmexRoyal.this.posZ;
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                d3 = (double) MathHelper.sqrt(d3);
+                d3 = MathHelper.sqrt(d3);
 
                 if (d3 < EntityMyrmexRoyal.this.getEntityBoundingBox().getAverageEdgeLength()) {
                     this.action = EntityMoveHelper.Action.WAIT;

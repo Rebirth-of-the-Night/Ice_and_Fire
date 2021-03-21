@@ -24,18 +24,18 @@ public class ParticleDragonFrost extends ParticleFlame {
 
     private static final ResourceLocation SNOWFLAKE = new ResourceLocation("iceandfire:textures/particles/snowflake_0.png");
     private static final ResourceLocation SNOWFLAKE_BIG = new ResourceLocation("iceandfire:textures/particles/snowflake_1.png");
-    private float dragonSize;
-    private double initialX;
-    private double initialY;
-    private double initialZ;
+    private final float dragonSize;
+    private final double initialX;
+    private final double initialY;
+    private final double initialZ;
     private double targetX;
     private double targetY;
     private double targetZ;
-    private int touchedTime = 0;
-    private float speedBonus;
+    private final int touchedTime = 0;
+    private final float speedBonus;
     @Nullable
     private EntityDragonBase dragon;
-    private boolean big;
+    private final boolean big;
 
     @SideOnly(Side.CLIENT)
     public ParticleDragonFrost(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, float dragonSize) {
@@ -86,7 +86,7 @@ public class ParticleDragonFrost extends ParticleFlame {
         int i = this.getBrightnessForRender(partialTicks);
         int j = i >> 16 & 65535;
         int k = i & 65535;
-        Vec3d[] avec3d = new Vec3d[]{new Vec3d((double) (-rotationX * width - rotationXY * width), (double) (-rotationZ * width), (double) (-rotationYZ * width - rotationXZ * width)), new Vec3d((double) (-rotationX * width + rotationXY * width), (double) (rotationZ * width), (double) (-rotationYZ * width + rotationXZ * width)), new Vec3d((double) (rotationX * width + rotationXY * width), (double) (rotationZ * width), (double) (rotationYZ * width + rotationXZ * width)), new Vec3d((double) (rotationX * width - rotationXY * width), (double) (-rotationZ * width), (double) (rotationYZ * width - rotationXZ * width))};
+        Vec3d[] avec3d = new Vec3d[]{new Vec3d(-rotationX * width - rotationXY * width, -rotationZ * width, -rotationYZ * width - rotationXZ * width), new Vec3d(-rotationX * width + rotationXY * width, rotationZ * width, -rotationYZ * width + rotationXZ * width), new Vec3d(rotationX * width + rotationXY * width, rotationZ * width, rotationYZ * width + rotationXZ * width), new Vec3d(rotationX * width - rotationXY * width, -rotationZ * width, rotationYZ * width - rotationXZ * width)};
         GlStateManager.enableBlend();
         GlStateManager.enableNormalize();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -95,9 +95,9 @@ public class ParticleDragonFrost extends ParticleFlame {
         float f10 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.x;
         float f11 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.y;
         float f12 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.z;
-        Vec3d vec3d = new Vec3d((double) f10, (double) f11, (double) f12);
+        Vec3d vec3d = new Vec3d(f10, f11, f12);
         for (int l = 0; l < 4; ++l) {
-            avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double) (f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale((double) (2.0F * f9)));
+            avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double) (f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale(2.0F * f9));
         }
         if (big) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(SNOWFLAKE_BIG);
@@ -158,9 +158,6 @@ public class ParticleDragonFrost extends ParticleFlame {
             this.motionX += d2 * speed;
             this.motionY += d3 * speed;
             this.motionZ += d4 * speed;
-            if (touchedTime > 3) {
-                this.setExpired();
-            }
         }
     }
 

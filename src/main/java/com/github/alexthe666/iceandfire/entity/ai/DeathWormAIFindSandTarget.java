@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeathWormAIFindSandTarget extends EntityAIBase {
-    private EntityDeathWorm mob;
+    private final EntityDeathWorm mob;
     private int range;
     private boolean avoidAttacker;
 
@@ -80,7 +80,7 @@ public class DeathWormAIFindSandTarget extends EntityAIBase {
             }
         } else {
             BlockPos blockpos1 = new BlockPos(this.mob.getAttackTarget());
-            return new BlockPos((double) blockpos1.getX(), (double) blockpos1.getY() - 1, (double) blockpos1.getZ());
+            return new BlockPos(blockpos1.getX(), (double) blockpos1.getY() - 1, blockpos1.getZ());
         }
         return null;
     }

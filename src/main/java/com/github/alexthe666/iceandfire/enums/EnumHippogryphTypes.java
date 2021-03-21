@@ -42,7 +42,7 @@ public enum EnumHippogryphTypes {
     }
 
     public static EnumHippogryphTypes getBiomeType(Biome biome) {
-        List<EnumHippogryphTypes> types = new ArrayList<EnumHippogryphTypes>();
+        List<EnumHippogryphTypes> types = new ArrayList<>();
         for (EnumHippogryphTypes type : getWildTypes()) {
             for (BiomeDictionary.Type biomeTypes : type.spawnBiomes) {
                 if (BiomeDictionary.hasType(biome, biomeTypes)) {

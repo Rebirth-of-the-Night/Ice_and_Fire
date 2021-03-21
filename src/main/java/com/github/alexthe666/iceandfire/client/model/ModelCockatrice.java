@@ -41,7 +41,7 @@ public class ModelCockatrice extends ModelDragonBase {
     public AdvancedModelRenderer leftFoot;
     public AdvancedModelRenderer rightLeg;
     public AdvancedModelRenderer rightFoot;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelCockatrice() {
         this.textureWidth = 128;

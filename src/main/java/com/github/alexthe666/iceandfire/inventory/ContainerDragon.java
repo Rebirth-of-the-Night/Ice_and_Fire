@@ -10,8 +10,8 @@ import net.minecraft.item.ItemBanner;
 import net.minecraft.item.ItemStack;
 
 public class ContainerDragon extends Container {
-    private IInventory dragonInventory;
-    private EntityDragonBase dragon;
+    private final IInventory dragonInventory;
+    private final EntityDragonBase dragon;
 
     public ContainerDragon(final EntityDragonBase dragon, EntityPlayer player) {
 
@@ -37,7 +37,9 @@ public class ContainerDragon extends Container {
 
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 0;
+	            if (!super.isItemValid(stack) || stack.isEmpty()) return false;
+	            stack.getItem();
+	            return stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 0;
             }
         });
         this.addSlotToContainer(new Slot(dragon.dragonInventory, 2, 8, 36) {
@@ -47,7 +49,9 @@ public class ContainerDragon extends Container {
 
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 1;
+	            if (!super.isItemValid(stack) || stack.isEmpty()) return false;
+	            stack.getItem();
+	            return stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 1;
             }
         });
         this.addSlotToContainer(new Slot(dragon.dragonInventory, 3, 153, 18) {
@@ -57,7 +61,9 @@ public class ContainerDragon extends Container {
 
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 2;
+	            if (!super.isItemValid(stack) || stack.isEmpty()) return false;
+	            stack.getItem();
+	            return stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 2;
             }
         });
         this.addSlotToContainer(new Slot(dragon.dragonInventory, 4, 153, 36) {
@@ -67,7 +73,9 @@ public class ContainerDragon extends Container {
 
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 3;
+	            if (!super.isItemValid(stack) || stack.isEmpty()) return false;
+	            stack.getItem();
+	            return stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 3;
             }
         });
         int j;

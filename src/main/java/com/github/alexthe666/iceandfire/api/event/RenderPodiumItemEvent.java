@@ -11,8 +11,8 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 public class RenderPodiumItemEvent extends Event {
     float partialTicks;
     double x, y, z;
-    private RenderPodium render;
-    private TileEntityPodium podium;
+    private final RenderPodium render;
+    private final TileEntityPodium podium;
 
     public RenderPodiumItemEvent(RenderPodium renderPodium, TileEntityPodium podium, float partialTicks, double x, double y, double z) {
         this.render = renderPodium;

@@ -76,7 +76,7 @@ public class AquaticAIGetInWater extends EntityAIBase {
             BlockPos blockpos1 = blockpos.add(random.nextInt(xz * 2) - xz, random.nextInt(y * 2) - y, random.nextInt(xz * 2) - xz);
 
             if (this.world.getBlockState(blockpos1).getMaterial() == Material.WATER) {
-                return new Vec3d((double) blockpos1.getX(), (double) blockpos1.getY(), (double) blockpos1.getZ());
+                return new Vec3d(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ());
             }
         }
 

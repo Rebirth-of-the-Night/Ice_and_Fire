@@ -8,7 +8,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class EntityGroundAIRide<T extends EntityCreature & IGroundMount> extends EntityAIBase {
 
-    private T dragon;
+    private final T dragon;
     private EntityPlayer player;
 
     public EntityGroundAIRide(T dragon) {

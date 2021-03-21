@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 public class EntityPixieCharge extends EntityFireball {
 
     public int ticksInAir;
-    private float[] rgb;
+    private final float[] rgb;
 
     public EntityPixieCharge(World worldIn) {
         super(worldIn);
@@ -28,7 +28,7 @@ public class EntityPixieCharge extends EntityFireball {
 
     public EntityPixieCharge(World worldIn, double posX, double posY, double posZ, double accelX, double accelY, double accelZ) {
         super(worldIn, posX, posY, posZ, accelX, accelY, accelZ);
-        double d0 = (double) MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
+        double d0 = MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
         this.accelerationX = accelX / d0 * 0.07D;
         this.accelerationY = accelY / d0 * 0.07D;
         this.accelerationZ = accelZ / d0 * 0.07D;
@@ -38,7 +38,7 @@ public class EntityPixieCharge extends EntityFireball {
 
     public EntityPixieCharge(World worldIn, EntityPlayer shooter, double accelX, double accelY, double accelZ) {
         super(worldIn, shooter, accelX, accelY, accelZ);
-        double d0 = (double) MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
+        double d0 = MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
         this.accelerationX = accelX / d0 * 0.07D;
         this.accelerationY = accelY / d0 * 0.07D;
         this.accelerationZ = accelZ / d0 * 0.07D;
@@ -65,7 +65,7 @@ public class EntityPixieCharge extends EntityFireball {
             super.onEntityUpdate();
             ++this.ticksInAir;
             RayTraceResult raytraceresult = ProjectileHelper.forwardsRaycast(this, true, this.ticksInAir >= 25, this.shootingEntity);
-            if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
+            if (!net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
                 this.onImpact(raytraceresult);
             }
             this.posX += this.motionX;
@@ -76,9 +76,9 @@ public class EntityPixieCharge extends EntityFireball {
             this.motionX += this.accelerationX;
             this.motionY += this.accelerationY;
             this.motionZ += this.accelerationZ;
-            this.motionX *= (double) f;
-            this.motionY *= (double) f;
-            this.motionZ *= (double) f;
+            this.motionX *= f;
+            this.motionY *= f;
+            this.motionZ *= f;
             this.setPosition(this.posX, this.posY, this.posZ);
         } else {
             this.setDead();
@@ -87,6 +87,7 @@ public class EntityPixieCharge extends EntityFireball {
 
     @Override
     protected void onImpact(RayTraceResult movingObject) {
+        if (movingObject == null) return;
         if (!this.world.isRemote) {
             if (movingObject.entityHit instanceof EntityLivingBase) {
                 ((EntityLivingBase) movingObject.entityHit).addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 100, 0));

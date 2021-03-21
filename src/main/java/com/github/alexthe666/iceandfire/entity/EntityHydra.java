@@ -2,6 +2,7 @@ package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
+import com.github.alexthe666.iceandfire.util.IsImmune;
 import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
@@ -97,7 +98,8 @@ public class EntityHydra extends EntityMob implements IAnimatedEntity, IMultipar
             @Override
             public boolean apply(@Nullable Entity entity) {
                 StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(entity, StoneEntityProperties.class);
-                return entity instanceof EntityLivingBase && DragonUtils.isAlive((EntityLiving) entity) && !(entity instanceof PartEntity) && !(entity instanceof IMob) && (properties == null || properties != null && !properties.isStone) || (entity instanceof IBlacklistedFromStatues && ((IBlacklistedFromStatues) entity).canBeTurnedToStone());
+                return entity instanceof EntityLivingBase && DragonUtils.isAlive((EntityLiving) entity) && !(entity instanceof IMob) && (properties == null || !properties.isStone) || !IsImmune
+		                .toStone(entity);
             }
         }));
     }
@@ -330,9 +332,9 @@ public class EntityHydra extends EntityMob implements IAnimatedEntity, IMultipar
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(VARIANT, Integer.valueOf(0));
-        this.dataManager.register(HEAD_COUNT, Integer.valueOf(3));
-        this.dataManager.register(SEVERED_HEAD, Integer.valueOf(-1));
+        this.dataManager.register(VARIANT, 0);
+        this.dataManager.register(HEAD_COUNT, 3);
+        this.dataManager.register(SEVERED_HEAD, -1);
     }
 
     protected void applyEntityAttributes() {
@@ -413,7 +415,7 @@ public class EntityHydra extends EntityMob implements IAnimatedEntity, IMultipar
     }
 
     public int getVariant() {
-        return this.dataManager.get(VARIANT).intValue();
+        return this.dataManager.get(VARIANT);
     }
 
     public void setVariant(int variant) {
@@ -421,7 +423,7 @@ public class EntityHydra extends EntityMob implements IAnimatedEntity, IMultipar
     }
 
     public int getHeadCount() {
-        return MathHelper.clamp(this.dataManager.get(HEAD_COUNT).intValue(), 1, HEADS);
+        return MathHelper.clamp(this.dataManager.get(HEAD_COUNT), 1, HEADS);
     }
 
     public void setHeadCount(int count) {
@@ -429,7 +431,7 @@ public class EntityHydra extends EntityMob implements IAnimatedEntity, IMultipar
     }
 
     public int getSeveredHead() {
-        return MathHelper.clamp(this.dataManager.get(SEVERED_HEAD).intValue(), -1, HEADS);
+        return MathHelper.clamp(this.dataManager.get(SEVERED_HEAD), -1, HEADS);
     }
 
     public void setSeveredHead(int count) {

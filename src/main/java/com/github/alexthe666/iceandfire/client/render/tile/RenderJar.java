@@ -17,15 +17,10 @@ public class RenderJar extends TileEntitySpecialRenderer<TileEntityJar> {
     public void render(TileEntityJar entity, double x, double y, double z, float f, int f1, float alpha) {
         int meta = 0;
         boolean hasPixie = false;
-
-        if (entity != null && entity.getWorld() != null) {
-            meta = entity.pixieType;
-            hasPixie = entity.hasPixie;
-        } else if (ItemTESRContext.INSTANCE.getCurrentStack() != null) {
-            hasPixie = ItemTESRContext.INSTANCE.getCurrentStack().getItemDamage() != 0;
-            meta = ItemTESRContext.INSTANCE.getCurrentStack().getItemDamage() - 1;
-        }
-        if (hasPixie) {
+	
+	    meta = entity.pixieType;
+	    hasPixie = entity.hasPixie;
+	    if (hasPixie) {
             GL11.glPushMatrix();
             GL11.glTranslatef((float) x + 0.5F, (float) y + 1.501F, (float) z + 0.5F);
             GL11.glRotatef(180, 1, 0, 0);
@@ -50,24 +45,23 @@ public class RenderJar extends TileEntitySpecialRenderer<TileEntityJar> {
                     this.bindTexture(RenderPixie.TEXTURE_5);
                     break;
             }
-            if (entity != null && entity.getWorld() != null) {
-
-                if (entity.hasProduced) {
-                    GL11.glTranslatef(0F, 0.90F, 0F);
-                } else {
-                    GL11.glTranslatef(0F, 0.60F, 0F);
-                }
-                GL11.glDisable(GL11.GL_CULL_FACE);
-                GlStateManager.rotate(this.interpolateRotation(entity.prevRotationYaw, entity.rotationYaw, f), 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(0.50F, 0.50F, 0.50F);
-                GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0F);
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                MODEL_PIXIE.animateInJar(entity.hasProduced, entity, 0);
-                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-                GL11.glEnable(GL11.GL_CULL_FACE);
-            }
-            GL11.glPopMatrix();
+		    entity.getWorld();
+		
+		    if (entity.hasProduced) {
+			    GL11.glTranslatef(0F, 0.90F, 0F);
+		    } else {
+			    GL11.glTranslatef(0F, 0.60F, 0F);
+		    }
+		    GL11.glDisable(GL11.GL_CULL_FACE);
+		    GlStateManager.rotate(this.interpolateRotation(entity.prevRotationYaw, entity.rotationYaw, f), 0.0F, 1.0F, 0.0F);
+		    GL11.glScalef(0.50F, 0.50F, 0.50F);
+		    GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+		    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0F);
+		    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		    MODEL_PIXIE.animateInJar(entity.hasProduced, entity, 0);
+		    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		    GL11.glEnable(GL11.GL_CULL_FACE);
+		    GL11.glPopMatrix();
             GL11.glPopMatrix();
         }
     }
