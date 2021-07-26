@@ -15,11 +15,10 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Matrix4f;
 
 /*
-    Lightning bolt effect code dragged from the 1.16 source code of IaF. Original code belongs to aidancbrady
+Lightning bolt effect code dragged from the 1.16 source code of IaF. Original code belongs to aidancbrady
 
-    STILL NEED TO ASK FOR PERSMISSON(?)
-*/
-public class LightningRender {
+STILL NEED TO ASK FOR PERSMISSON(?), AS A RESULT IT WON'T BE USED FOR NOW. */
+public class LightningRender { /*
 
     private static final float REFRESH_TIME = 3F;
     private static final double MAX_OWNER_TRACK_TIME = 100;
@@ -148,5 +147,5 @@ public class LightningRender {
                 return false;
             return (partial - prev.partial) >= duration;
         }
-    }
+    } */
 }

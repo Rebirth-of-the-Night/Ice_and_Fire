@@ -10,13 +10,11 @@ import net.minecraft.util.math.Vec3d;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.util.vector.Vector4f;
-
 /*
     Lightning bolt effect code dragged from the 1.16 source code of IaF. Original code belongs to aidancbrady
     
-    STILL NEED TO ASK FOR PERSMISSON(?)
- */
-public class LightningBoltData {
+    STILL NEED TO ASK FOR PERSMISSON(?), AS A RESULT IT WON'T BE USED FOR NOW. */
+public class LightningBoltData { /*
 
     private final Random random = new Random();
 
@@ -199,11 +197,11 @@ public class LightningBoltData {
 
     public interface SpreadFunction {
 
-        /** A steady linear increase in perpendicular noise. */
+        // A steady linear increase in perpendicular noise.
         SpreadFunction LINEAR_ASCENT = (progress) -> progress;
-        /** A steady linear increase in perpendicular noise, followed by a steady decrease after the halfway point. */
+        // A steady linear increase in perpendicular noise, followed by a steady decrease after the halfway point.
         SpreadFunction LINEAR_ASCENT_DESCENT = (progress) -> (progress - Math.max(0, 2 * progress - 1)) / 0.5F;
-        /** Represents a unit sine wave from 0 to PI, scaled by progress. */
+        // Represents a unit sine wave from 0 to PI, scaled by progress.
         SpreadFunction SINE = (progress) -> (float) Math.sin(Math.PI * progress);
 
         float getMaxSpread(float progress);
@@ -219,10 +217,10 @@ public class LightningBoltData {
 
     public interface SegmentSpreader {
 
-        /** Don't remember where the last segment left off, just randomly move from the straight-line vector. */
+        // Don't remember where the last segment left off, just randomly move from the straight-line vector.
         SegmentSpreader NO_MEMORY = (perpendicularDist, randVec, maxDiff, scale, progress) -> randVec.scale(maxDiff);
 
-        /** Move from where the previous segment ended by a certain memory factor. Higher memory will restrict perpendicular movement. */
+        // Move from where the previous segment ended by a certain memory factor. Higher memory will restrict perpendicular movement.
         static SegmentSpreader memory(float memoryFactor) {
             return (perpendicularDist, randVec, maxDiff, spreadScale, progress) -> {
                 float nextDiff = maxDiff * (1 - memoryFactor);
@@ -240,9 +238,9 @@ public class LightningBoltData {
 
     public interface SpawnFunction {
 
-        /** Allow for bolts to be spawned each update call without any delay. */
+        // Allow for bolts to be spawned each update call without any delay.
         SpawnFunction NO_DELAY = (rand) -> Pair.of(0F, 0F);
-        /** Will re-spawn a bolt each time one expires. */
+        // Will re-spawn a bolt each time one expires.
         SpawnFunction CONSECUTIVE = new SpawnFunction() {
             @Override
             public Pair<Float, Float> getSpawnDelayBounds(Random rand) {
@@ -254,14 +252,12 @@ public class LightningBoltData {
             }
         };
 
-        /** Spawn bolts with a specified constant delay. */
+        // Spawn bolts with a specified constant delay.
         static SpawnFunction delay(float delay) {
             return (rand) -> Pair.of(delay, delay);
         }
 
-        /**
-         * Spawns bolts with a specified delay and specified noise value, which will be randomly applied at either end of the delay bounds.
-         */
+         // Spawns bolts with a specified delay and specified noise value, which will be randomly applied at either end of the delay bounds.
         static SpawnFunction noise(float delay, float noise) {
             return (rand) -> Pair.of(delay - noise, delay + noise);
         }
@@ -280,10 +276,10 @@ public class LightningBoltData {
 
     public interface FadeFunction {
 
-        /** No fade; render the bolts entirely throughout their lifespan. */
+        // No fade; render the bolts entirely throughout their lifespan.
         FadeFunction NONE = (totalBolts, lifeScale) -> Pair.of(0, totalBolts);
 
-        /** Remder bolts with a segment-by-segment 'fade' in and out, with a specified fade duration (applied to start and finish). */
+        // Remder bolts with a segment-by-segment 'fade' in and out, with a specified fade duration (applied to start and finish).
         static FadeFunction fade(float fade) {
             return (totalBolts, lifeScale) -> {
                 int start = lifeScale > (1 - fade) ? (int) (totalBolts * (lifeScale - (1 - fade)) / fade) : 0;
@@ -300,14 +296,14 @@ public class LightningBoltData {
         public static final BoltRenderInfo DEFAULT = new BoltRenderInfo();
         public static final BoltRenderInfo ELECTRICITY = electricity();
 
-        /** How much variance is allowed in segment lengths (parallel to straight line). */
+        // How much variance is allowed in segment lengths (parallel to straight line).
         private float parallelNoise = 0.1F;
-        /** How much variance is allowed perpendicular to the straight line vector. Scaled by distance and spread function. */
+        // How much variance is allowed perpendicular to the straight line vector. Scaled by distance and spread function.
         private float spreadFactor = 0.1F;
 
-        /** The chance of creating an additional branch after a certain segment. */
+        // The chance of creating an additional branch after a certain segment.
         private float branchInitiationFactor = 0.0F;
-        /** The chance of a branch continuing (post-initiation). */
+        // The chance of a branch continuing (post-initiation).
         private float branchContinuationFactor = 0.0F;
 
         private Vector4f color = new Vector4f(0.45F, 0.45F, 0.5F, 0.8F);
@@ -330,5 +326,5 @@ public class LightningBoltData {
             this.color = color;
             this.segmentSpreader = SegmentSpreader.memory(closeness);
         }
-    }
+    }*/
 }
