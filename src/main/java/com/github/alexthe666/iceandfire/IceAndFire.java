@@ -71,6 +71,7 @@ public class IceAndFire {
     public static DamageSource dragon;
     public static DamageSource dragonFire;
     public static DamageSource dragonIce;
+    public static DamageSource dragonLightning;
     public static DamageSource gorgon;
     public static IceAndFireConfig CONFIG = new IceAndFireConfig();
     public static Configuration config;
@@ -147,6 +148,14 @@ public class IceAndFire {
             @Override
             public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
                 String s = "death.attack.dragon_ice";
+                String s1 = s + ".player_" + new Random().nextInt(2);
+                return new TextComponentString(entityLivingBaseIn.getDisplayName().getFormattedText() + " ").appendSibling(new TextComponentTranslation(s1, entityLivingBaseIn.getDisplayName()));
+            }
+        };
+        dragonLightning = new DamageSource("dragon_lightning") {
+            @Override
+            public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
+                String s = "death.attack.dragon_lightning";
                 String s1 = s + ".player_" + new Random().nextInt(2);
                 return new TextComponentString(entityLivingBaseIn.getDisplayName().getFormattedText() + " ").appendSibling(new TextComponentTranslation(s1, entityLivingBaseIn.getDisplayName()));
             }

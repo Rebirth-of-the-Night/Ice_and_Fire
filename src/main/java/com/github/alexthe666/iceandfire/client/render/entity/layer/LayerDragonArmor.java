@@ -23,7 +23,7 @@ public class LayerDragonArmor implements LayerRenderer<EntityDragonBase> {
     private final RenderLiving render;
     private static final Map<String, ResourceLocation> LAYERED_ARMOR_CACHE = Maps.newHashMap();
 
-    public LayerDragonArmor(RenderLiving renderIn, boolean isFireDragon) {
+    public LayerDragonArmor(RenderLiving renderIn, int type) {
         this.render = renderIn;
     }
 
@@ -41,8 +41,10 @@ public class LayerDragonArmor implements LayerRenderer<EntityDragonBase> {
                 for (EntityEquipmentSlot slot : ARMOR_SLOTS) {
                     if (dragon.dragonType == DragonType.FIRE) {
                         tex.add(EnumDragonTextures.Armor.getArmorForDragon(dragon, slot).FIRETEXTURE.toString());
-                    } else {
+                    } else if (dragon.dragonType == DragonType.ICE){
                         tex.add(EnumDragonTextures.Armor.getArmorForDragon(dragon, slot).ICETEXTURE.toString());
+                    } else {
+                        tex.add(EnumDragonTextures.Armor.getArmorForDragon(dragon, slot).LIGHTNINGTEXTURE.toString());
                     }
                 }
                 ArrayLayeredTexture layeredBase = new ArrayLayeredTexture(tex);

@@ -1,0 +1,14 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "blockLightningDragonsteel"
+    }
+  ],
+  "result": {
+    "item": "iceandfire:dragonsteel_lightning_ingot",
+    "data": 0,
+    "count": 9
+  }
+}

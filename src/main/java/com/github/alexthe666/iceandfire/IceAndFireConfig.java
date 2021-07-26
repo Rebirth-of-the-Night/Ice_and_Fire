@@ -9,6 +9,8 @@ public class IceAndFireConfig {
     public boolean logCascadingWorldGen = false;
     public boolean generateSilverOre = true;
     public boolean generateSapphireOre = true;
+    public boolean generateCopperOre = true;
+    public boolean generateAmythestOre = true;
     public boolean generateDragonSkeletons = true;
     public int generateDragonSkeletonChance = 300;
     public int worldGenDistance = 300;
@@ -40,6 +42,12 @@ public class IceAndFireConfig {
     public int dragonAttackDamage = 17;
     public double dragonAttackDamageFire = 2;
     public double dragonAttackDamageIce = 2.5;
+    public double dragonAttackDamageLightning = 3.5;
+    public boolean fireDragonsteelAbility = true;
+    public boolean iceDragonsteelAbility = true;
+    public boolean lightningDragonsteelAbility = true;
+    public boolean dragonsteelKnockback = true;
+    public boolean saferBoltStrike = false;
     public int maxDragonFlight = 128;
     public int dragonGoldSearchLength = 30;
     public boolean canDragonsDespawn = true;
@@ -155,9 +163,11 @@ public class IceAndFireConfig {
         this.customMainMenu = config.getBoolean("Custom main menu", "all", true, "Whether to display the dragon on the main menu or not");
         this.useVanillaFont = config.getBoolean("Use Vanilla Font", "all", false, "Whether to use the vanilla font in the bestiary or not");
         this.generateSilverOre = config.getBoolean("Generate Silver Ore", "all", true, "Whether to generate silver ore or not");
+        this.generateCopperOre = config.getBoolean("Generate Copper Ore", "all", true, "Whether to generate copper ore or not");
         this.logCascadingWorldGen = config.getBoolean("Log Cascading World Gen", "all", false, "Whether to log cascading world gen lag. We hope to fix all cascading lag in the future, but the server console spam is over the top.");
         this.worldGenDistance = config.getInt("World Gen Distance", "all", 150, 0, Integer.MAX_VALUE, "How far apart dragon dens, cyclops caves, gorgon temples etc should spawn apart from eachother (this is kept seperate for each type: a dragon roost can still spawn next to a myrmex hive)");
         this.generateSapphireOre = config.getBoolean("Generate Sapphire Ore", "all", true, "Whether to generate sapphire ore or not");
+        this.generateAmythestOre = config.getBoolean("Generate Amythest Ore", "all", true, "Whether to generate amythest ore or not");
         this.generateDragonSkeletons = config.getBoolean("Generate Dragon Skeletons", "all", true, "Whether to generate dragon skeletons or not");
         this.generateDragonSkeletonChance = config.getInt("Generate Dragon Skeleton Chance", "all", 300, 1, 10000, "1 out of this number chance per chunk for generation");
         this.generateDragonDens = config.getBoolean("Generate Dragon Caves", "all", true, "Whether to generate dragon caves or not");
@@ -188,6 +198,12 @@ public class IceAndFireConfig {
         this.dragonAttackDamage = config.getInt("Dragon Attack Damage", "all", 17, 1, 10000, "Max dragon attack damage. Attack Damage is scaled to this");
         this.dragonAttackDamageFire = config.getFloat("Dragon Attack Damage(Fire breath)", "all", 2.0F, 0, 10000, "Damage dealt from a successful fire breath attack. Attack Damage is scaled to by age, so a stage 5 dragon will deal 5x as much as this number");
         this.dragonAttackDamageIce = config.getFloat("Dragon Attack Damage(Ice breath)", "all", 2.5F, 0, 10000, "Damage dealt from a successful ice breath attack. Attack Damage is scaled to by age, so a stage 5 dragon will deal 5x as much as this number");
+        this.dragonAttackDamageLightning = config.getFloat("Dragon Attack Damage(Lightning breath)", "all", 3.5F, 0, 10000, "Damage dealt from a successful lightning breath attack. Attack Damage is scaled to by age, so a stage 5 dragon will deal 5x as much as this number");
+        this.fireDragonsteelAbility = config.getBoolean("Fire Dragonsteel Ability", "all", true, "Whether or not should fire dragonsteel set targets on fire");
+        this.iceDragonsteelAbility = config.getBoolean("Ice Dragonsteel Ability", "all", true, "Whether or not should ice dragonsteel freeze targets");
+        this.lightningDragonsteelAbility = config.getBoolean("Lightning Dragonsteel Ability", "all", true, "Whether or not should lightning dragonsteel strike targets with lightning");
+        this.dragonsteelKnockback = config.getBoolean("Dragonsteel Knockback", "all", true, "Whether or not should dragonsteel tools knockback the target on hit");
+        this.saferBoltStrike = config.getBoolean("Safer Bolt Strike", "all", false, "When this config is on, lightning bolts from lightning dragonsteel will also try to move towards the target. The player can still get hit, but if you maintain your distance you can win without getting hit by the lightning bolts.");
         this.maxDragonFlight = config.getInt("Max Dragon Flight Height", "all", 128, 100, Integer.MAX_VALUE, "How high dragons can fly, in Y height.");
         this.dragonGoldSearchLength = config.getInt("Dragon Gold Search Length", "all", 30, 0, 10000, "How far away dragons will detect gold blocks being destroyed or chests being opened");
         this.canDragonsDespawn = config.getBoolean("Dragons Despawn", "all", true, "True if dragons can despawn. Note that if this is false there may be SERIOUS lag issues.");
@@ -196,7 +212,7 @@ public class IceAndFireConfig {
         this.dragonDropSkull = config.getBoolean("Dragons Drop Skull", "all", true, "True if dragons can drop their skull on death.");
         this.dragonDropHeart = config.getBoolean("Dragons Drop Heart", "all", true, "True if dragons can drop their heart on death.");
         this.dragonDropBlood = config.getBoolean("Dragons Drop Blood", "all", true, "True if dragons can drop their blood on death.");
-        this.explosiveDragonBreath = config.getBoolean("Explosive Dragon Breath", "all", false, "True if dragons fire/ice charges create secondary explosions that launch blocks everywhere. Turn this to true if you like unfair explosions. Or lag.");
+        this.explosiveDragonBreath = config.getBoolean("Explosive Dragon Breath", "all", false, "True if dragons fire/ice/lightning charges create secondary explosions that launch blocks everywhere. Turn this to true if you like unfair explosions. Or lag.");
         this.dragonTargetSearchLength = config.getInt("Dragon Target Search Length", "all", 128, 1, 10000, "How many blocks away can dragons spot potential prey. Note that increasing this could cause lag.");
         this.dragonWanderFromHomeDistance = config.getInt("Dragon Wander From Home Distance", "all", 40, 1, 10000, "How many blocks away can dragons wander from their defined \"home\" position.");
         this.dragonHungerTickRate = config.getInt("Dragon Hunger Tick Rate", "all", 3000, 1, 10000, "Every interval of this number in ticks, dragon hunger decreases.");

@@ -3,14 +3,16 @@ package com.github.alexthe666.iceandfire.enums;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityDragonSkull;
 import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
+import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
+
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 
 public enum EnumDragonTextures {
-    VARIANT1("red_", "blue_"),
-    VARIANT2("green_", "white_"),
-    VARIANT3("bronze_", "sapphire_"),
-    VARIANT4("gray_", "silver_");
+    VARIANT1("red_", "blue_", "electric_"),
+    VARIANT2("green_", "white_", "amythest_"),
+    VARIANT3("bronze_", "sapphire_", "copper_"),
+    VARIANT4("gray_", "silver_", "black_");
 
     public final ResourceLocation FIRESTAGE1TEXTURE;
     public final ResourceLocation FIRESTAGE2TEXTURE;
@@ -54,8 +56,30 @@ public enum EnumDragonTextures {
     public final ResourceLocation ICESTAGE5SKELETONTEXTURE;
     public final ResourceLocation FIRE_MALE_OVERLAY;
     public final ResourceLocation ICE_MALE_OVERLAY;
+    
+    public final ResourceLocation LIGHTNINGSTAGE1TEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE2TEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE3TEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE4TEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE5TEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE1SLEEPINGTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE2SLEEPINGTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE3SLEEPINGTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE4SLEEPINGTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE5SLEEPINGTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE1EYESTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE2EYESTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE3EYESTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE4EYESTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE5EYESTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE1SKELETONTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE2SKELETONTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE3SKELETONTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE4SKELETONTEXTURE;
+    public final ResourceLocation LIGHTNINGSTAGE5SKELETONTEXTURE;
+    public final ResourceLocation LIGHTNING_MALE_OVERLAY;
 
-    EnumDragonTextures(String fireVariant, String iceVariant) {
+    EnumDragonTextures(String fireVariant, String iceVariant, String lightningVariant) {
         FIRESTAGE1TEXTURE = new ResourceLocation("iceandfire:textures/models/firedragon/" + fireVariant + "1.png");
         FIRESTAGE2TEXTURE = new ResourceLocation("iceandfire:textures/models/firedragon/" + fireVariant + "2.png");
         FIRESTAGE3TEXTURE = new ResourceLocation("iceandfire:textures/models/firedragon/" + fireVariant + "3.png");
@@ -98,17 +122,39 @@ public enum EnumDragonTextures {
         ICESTAGE5SKELETONTEXTURE = new ResourceLocation("iceandfire:textures/models/icedragon/ice_skeleton_5.png");
         FIRE_MALE_OVERLAY = new ResourceLocation("iceandfire:textures/models/firedragon/male_" + fireVariant.substring(0, fireVariant.length() - 1) + ".png");
         ICE_MALE_OVERLAY = new ResourceLocation("iceandfire:textures/models/icedragon/male_" + iceVariant.substring(0, iceVariant.length() - 1) + ".png");
+        
+        LIGHTNINGSTAGE1TEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "1.png");
+        LIGHTNINGSTAGE2TEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "2.png");
+        LIGHTNINGSTAGE3TEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "3.png");
+        LIGHTNINGSTAGE4TEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "4.png");
+        LIGHTNINGSTAGE5TEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "5.png");
+        LIGHTNINGSTAGE1SLEEPINGTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "1_sleeping.png");
+        LIGHTNINGSTAGE2SLEEPINGTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "2_sleeping.png");
+        LIGHTNINGSTAGE3SLEEPINGTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "3_sleeping.png");
+        LIGHTNINGSTAGE4SLEEPINGTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "4_sleeping.png");
+        LIGHTNINGSTAGE5SLEEPINGTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "5_sleeping.png");
+        LIGHTNINGSTAGE1EYESTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "1_eyes.png");
+        LIGHTNINGSTAGE2EYESTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "2_eyes.png");
+        LIGHTNINGSTAGE3EYESTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "3_eyes.png");
+        LIGHTNINGSTAGE4EYESTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "4_eyes.png");
+        LIGHTNINGSTAGE5EYESTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + lightningVariant + "5_eyes.png");
+        LIGHTNINGSTAGE1SKELETONTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/lightning_skeleton_1.png");
+        LIGHTNINGSTAGE2SKELETONTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/lightning_skeleton_2.png");
+        LIGHTNINGSTAGE3SKELETONTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/lightning_skeleton_3.png");
+        LIGHTNINGSTAGE4SKELETONTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/lightning_skeleton_4.png");
+        LIGHTNINGSTAGE5SKELETONTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/lightning_skeleton_5.png");
+        LIGHTNING_MALE_OVERLAY = new ResourceLocation("iceandfire:textures/models/lightningdragon/male_" + lightningVariant.substring(0, lightningVariant.length() - 1) + ".png");
     }
-
 
     public static ResourceLocation getTextureFromDragon(EntityDragonBase dragon) {
         if (dragon instanceof EntityIceDragon) {
             return getIceDragonTextures(dragon);
+        } else if (dragon instanceof EntityLightningDragon){
+            return getLightningDragonTextures(dragon);
         } else {
             return getFireDragonTextures(dragon);
         }
     }
-
 
     public static ResourceLocation getEyeTextureFromDragon(EntityDragonBase dragon) {
         EnumDragonTextures textures = getDragonEnum(dragon);
@@ -126,6 +172,21 @@ public enum EnumDragonTextures {
                     return textures.ICESTAGE5EYESTEXTURE;
                 default:
                     return textures.ICESTAGE4EYESTEXTURE;
+            }
+        } else if (dragon instanceof EntityLightningDragon) {
+            switch (dragon.getDragonStage()) {
+                case 1:
+                    return textures.LIGHTNINGSTAGE1EYESTEXTURE;
+                case 2:
+                    return textures.LIGHTNINGSTAGE2EYESTEXTURE;
+                case 3:
+                    return textures.LIGHTNINGSTAGE3EYESTEXTURE;
+                case 4:
+                    return textures.LIGHTNINGSTAGE4EYESTEXTURE;
+                case 5:
+                    return textures.LIGHTNINGSTAGE5EYESTEXTURE;
+                default:
+                    return textures.LIGHTNINGSTAGE4EYESTEXTURE;
             }
         } else {
             switch (dragon.getDragonStage()) {
@@ -280,6 +341,74 @@ public enum EnumDragonTextures {
             }
         }
     }
+    
+    private static ResourceLocation getLightningDragonTextures(EntityDragonBase dragon) {
+        EnumDragonTextures textures = getDragonEnum(dragon);
+        if (dragon.isModelDead()) {
+            if (dragon.getDeathStage() >= (dragon.getAgeInDays() / 5) / 2) {
+                switch (dragon.getDragonStage()) {
+                    case 1:
+                        return textures.LIGHTNINGSTAGE1SKELETONTEXTURE;
+                    case 2:
+                        return textures.LIGHTNINGSTAGE2SKELETONTEXTURE;
+                    case 3:
+                        return textures.LIGHTNINGSTAGE3SKELETONTEXTURE;
+                    case 4:
+                        return textures.LIGHTNINGSTAGE4SKELETONTEXTURE;
+                    case 5:
+                        return textures.LIGHTNINGSTAGE5SKELETONTEXTURE;
+                    default:
+                        return textures.LIGHTNINGSTAGE4SKELETONTEXTURE;
+                }
+            } else {
+                switch (dragon.getDragonStage()) {
+                    case 1:
+                        return textures.LIGHTNINGSTAGE1SLEEPINGTEXTURE;
+                    case 2:
+                        return textures.LIGHTNINGSTAGE2SLEEPINGTEXTURE;
+                    case 3:
+                        return textures.LIGHTNINGSTAGE3SLEEPINGTEXTURE;
+                    case 4:
+                        return textures.LIGHTNINGSTAGE4SLEEPINGTEXTURE;
+                    case 5:
+                        return textures.LIGHTNINGSTAGE5SLEEPINGTEXTURE;
+                    default:
+                        return textures.LIGHTNINGSTAGE4SLEEPINGTEXTURE;
+                }
+            }
+        }
+        if (dragon.isSleeping() || dragon.isBlinking()) {
+            switch (dragon.getDragonStage()) {
+                case 1:
+                    return textures.LIGHTNINGSTAGE1SLEEPINGTEXTURE;
+                case 2:
+                    return textures.LIGHTNINGSTAGE2SLEEPINGTEXTURE;
+                case 3:
+                    return textures.LIGHTNINGSTAGE3SLEEPINGTEXTURE;
+                case 4:
+                    return textures.LIGHTNINGSTAGE4SLEEPINGTEXTURE;
+                case 5:
+                    return textures.LIGHTNINGSTAGE5SLEEPINGTEXTURE;
+                default:
+                    return textures.LIGHTNINGSTAGE4SLEEPINGTEXTURE;
+            }
+        } else {
+            switch (dragon.getDragonStage()) {
+                case 1:
+                    return textures.LIGHTNINGSTAGE1TEXTURE;
+                case 2:
+                    return textures.LIGHTNINGSTAGE2TEXTURE;
+                case 3:
+                    return textures.LIGHTNINGSTAGE3TEXTURE;
+                case 4:
+                    return textures.LIGHTNINGSTAGE4TEXTURE;
+                case 5:
+                    return textures.LIGHTNINGSTAGE5TEXTURE;
+                default:
+                    return textures.LIGHTNINGSTAGE4TEXTURE;
+            }
+        }
+    }
 
     public static EnumDragonTextures getDragonEnum(EntityDragonBase dragon) {
         switch (dragon.getVariant()) {
@@ -327,6 +456,23 @@ public enum EnumDragonTextures {
                 return VARIANT1.ICESTAGE4SKELETONTEXTURE;
         }
     }
+    
+    public static ResourceLocation getLightningDragonSkullTextures(EntityDragonSkull skull) {
+        switch (skull.getDragonStage()) {
+            case 1:
+                return VARIANT1.LIGHTNINGSTAGE1SKELETONTEXTURE;
+            case 2:
+                return VARIANT1.LIGHTNINGSTAGE2SKELETONTEXTURE;
+            case 3:
+                return VARIANT1.LIGHTNINGSTAGE3SKELETONTEXTURE;
+            case 4:
+                return VARIANT1.LIGHTNINGSTAGE4SKELETONTEXTURE;
+            case 5:
+                return VARIANT1.LIGHTNINGSTAGE5SKELETONTEXTURE;
+            default:
+                return VARIANT1.LIGHTNINGSTAGE4SKELETONTEXTURE;
+        }
+    }
 
     public enum Armor {
         EMPTY(""),
@@ -336,35 +482,49 @@ public enum EnumDragonTextures {
         ARMORBODY4("armor_body_4"),
         ARMORBODY5("armor_body_5"),
         ARMORBODY6("armor_body_6"),
+        ARMORBODY7("armor_body_7"),
+        ARMORBODY8("armor_body_8"),
+        
         ARMORHEAD1("armor_head_1"),
         ARMORHEAD2("armor_head_2"),
         ARMORHEAD3("armor_head_3"),
         ARMORHEAD4("armor_head_4"),
         ARMORHEAD5("armor_head_5"),
         ARMORHEAD6("armor_head_6"),
+        ARMORHEAD7("armor_head_7"),
+        ARMORHEAD8("armor_head_8"),
+        
         ARMORNECK1("armor_neck_1"),
         ARMORNECK2("armor_neck_2"),
         ARMORNECK3("armor_neck_3"),
         ARMORNECK4("armor_neck_4"),
         ARMORNECK5("armor_neck_5"),
         ARMORNECK6("armor_neck_6"),
+        ARMORNECK7("armor_neck_7"),
+        ARMORNECK8("armor_neck_8"),
+        
         ARMORTAIL1("armor_tail_1"),
         ARMORTAIL2("armor_tail_2"),
         ARMORTAIL3("armor_tail_3"),
         ARMORTAIL4("armor_tail_4"),
         ARMORTAIL5("armor_tail_5"),
-        ARMORTAIL6("armor_tail_6");
+        ARMORTAIL6("armor_tail_6"),
+        ARMORTAIL7("armor_tail_7"),
+        ARMORTAIL8("armor_tail_8");
 
         public final ResourceLocation FIRETEXTURE;
         public final ResourceLocation ICETEXTURE;
+        public final ResourceLocation LIGHTNINGTEXTURE;
 
         Armor(String resource) {
             if (!resource.isEmpty()) {
                 FIRETEXTURE = new ResourceLocation("iceandfire:textures/models/firedragon/" + resource + ".png");
                 ICETEXTURE = new ResourceLocation("iceandfire:textures/models/icedragon/" + resource + ".png");
+                LIGHTNINGTEXTURE = new ResourceLocation("iceandfire:textures/models/lightningdragon/" + resource + ".png");
             } else {
                 FIRETEXTURE = new ResourceLocation("iceandfire:textures/models/firedragon/empty.png");
                 ICETEXTURE = new ResourceLocation("iceandfire:textures/models/firedragon/empty.png");
+                LIGHTNINGTEXTURE = new ResourceLocation("iceandfire:textures/models/firedragon/empty.png");
             }
         }
 
@@ -388,6 +548,10 @@ public enum EnumDragonTextures {
                             return ARMORNECK5;
                         case 6:
                             return ARMORNECK6;
+                        case 7:
+                            return ARMORNECK7;
+                        case 8:
+                            return ARMORNECK8;
                     }
                 case LEGS:
                     //body
@@ -406,6 +570,10 @@ public enum EnumDragonTextures {
                             return ARMORBODY5;
                         case 6:
                             return ARMORBODY6;
+                        case 7:
+                            return ARMORBODY7;
+                        case 8:
+                            return ARMORBODY8;
                     }
                 case FEET:
                     //tail
@@ -424,6 +592,10 @@ public enum EnumDragonTextures {
                             return ARMORTAIL5;
                         case 6:
                             return ARMORTAIL6;
+                        case 7:
+                            return ARMORTAIL7;
+                        case 8:
+                            return ARMORTAIL8;
                     }
                 default:
                     //head
@@ -442,8 +614,11 @@ public enum EnumDragonTextures {
                             return ARMORHEAD5;
                         case 6:
                             return ARMORHEAD6;
+                        case 7:
+                            return ARMORHEAD7;
+                        case 8:
+                            return ARMORHEAD8;
                     }
-
             }
         }
     }

@@ -19,11 +19,11 @@ import java.util.Random;
 public class BlockElementalFlower extends BlockBush implements IInfusionStabiliser {
     public Item itemBlock;
 
-    public BlockElementalFlower(boolean isFire) {
+    public BlockElementalFlower(String name) {
         this.setTickRandomly(true);
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
-        this.setTranslationKey(isFire ? "iceandfire.fire_lily" : "iceandfire.frost_lily");
-        setRegistryName(IceAndFire.MODID, isFire ? "fire_lily" : "frost_lily");
+        this.setTranslationKey("iceandfire." + name);
+        setRegistryName(IceAndFire.MODID, name);
         this.setSoundType(SoundType.PLANT);
         this.setTickRandomly(true);
     }
@@ -36,6 +36,8 @@ public class BlockElementalFlower extends BlockBush implements IInfusionStabilis
         IBlockState soil = worldIn.getBlockState(pos.down());
         if (this == IafBlockRegistry.fire_lily) {
             return soil.getMaterial() == Material.SAND || soil.getBlock() == Blocks.NETHERRACK;
+        } else  if (this == IafBlockRegistry.lightning_lily) {
+            return soil.getMaterial() == Material.GROUND || soil.getBlock() == Blocks.GRASS;
         } else {
             return soil.getMaterial() == Material.PACKED_ICE || soil.getMaterial() == Material.ICE;
         }

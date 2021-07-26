@@ -1,8 +1,10 @@
 package com.github.alexthe666.iceandfire.block;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.entity.DragonType;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforge;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforgeBrick;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
@@ -20,22 +22,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+
 import java.util.Random;
 
 public class BlockDragonforgeBricks extends BlockContainer implements IDragonProof {
 
     public static final PropertyBool GRILL = PropertyBool.create("grill");
-    private final boolean isFire;
+    private final int isFire;
 
-    public BlockDragonforgeBricks(boolean isFire) {
+    public BlockDragonforgeBricks(int isFire) {
         super(Material.ROCK);
         this.setLightOpacity(2);
         this.setHardness(40F);
         this.setResistance(500F);
         this.setSoundType(SoundType.METAL);
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
-        this.setTranslationKey("iceandfire.dragonforge_" + (isFire ? "fire" : "ice") + "_brick");
-        this.setRegistryName(IceAndFire.MODID, "dragonforge_" + (isFire ? "fire" : "ice") + "_brick");
+        this.setTranslationKey("iceandfire.dragonforge_" + DragonType.getNameFromInt(isFire) + "_brick");
+        this.setRegistryName(IceAndFire.MODID, "dragonforge_" + DragonType.getNameFromInt(isFire) + "_brick");
         this.isFire = isFire;
         this.setDefaultState(this.blockState.getBaseState().withProperty(GRILL, Boolean.valueOf(false)));
     }
@@ -48,7 +51,7 @@ public class BlockDragonforgeBricks extends BlockContainer implements IDragonPro
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (this.getConnectedTileEntity(worldIn, pos) != null) {
             TileEntityDragonforge forge = this.getConnectedTileEntity(worldIn, pos);
-            if (forge.isFire == isFire) {
+            if (forge != null && forge.isFire == isFire) {
                 worldIn.scheduleUpdate(forge.getPos(), this, this.tickRate(worldIn));
                 return forge.getBlockType().onBlockActivated(worldIn, forge.getPos(), worldIn.getBlockState(forge.getPos()), playerIn, hand, facing, hitX, hitY, hitZ);
             }

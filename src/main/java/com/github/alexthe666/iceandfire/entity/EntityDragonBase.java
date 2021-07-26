@@ -19,6 +19,7 @@ import com.github.alexthe666.iceandfire.pathfinding.PathNavigateDragon;
 import com.github.alexthe666.iceandfire.pathfinding.PathNavigateFlyingCreature;
 import com.github.alexthe666.iceandfire.world.DragonPosWorldData;
 import com.google.common.base.Predicate;
+
 import net.ilexiconn.llibrary.client.model.tools.ChainBuffer;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
@@ -42,6 +43,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -69,6 +71,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
 import java.util.List;
 import java.util.Random;
 
@@ -470,11 +473,17 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_silver) {
             return 4;
         }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_copper) {
+            return 7;
+        }
         if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_fire) {
             return 5;
         }
         if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_ice) {
             return 6;
+        }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_lightning) {
+            return 8;
         }
         return 0;
     }
@@ -938,10 +947,16 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 case 4:
                     val += 3D;
                     break;
+                case 7:
+                    val += 1.5D;
+                    break;
                 case 5:
                     val += 10D;
                     break;
                 case 6:
+                    val += 10D;
+                    break;
+                case 8:
                     val += 10D;
                     break;
             }
@@ -974,7 +989,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                     stack.shrink(1);
                 }
                 this.setDeathStage(this.getDeathStage() + 1);
-                player.inventory.addItemStackToInventory(new ItemStack(this instanceof EntityFireDragon ? IafItemRegistry.fire_dragon_blood : IafItemRegistry.ice_dragon_blood, 1));
+                player.inventory.addItemStackToInventory(new ItemStack(this instanceof EntityFireDragon ? IafItemRegistry.fire_dragon_blood : this instanceof EntityLightningDragon ? IafItemRegistry.lightning_dragon_blood : IafItemRegistry.ice_dragon_blood, 1));
                 return true;
             } else if (!world.isRemote && stack.isEmpty() && IceAndFire.CONFIG.dragonDropSkull) {
                 if (this.getDeathStage() == lastDeathStage - 1) {
@@ -989,7 +1004,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                     }
                     this.setDead();
                 } else if (this.getDeathStage() == (lastDeathStage / 2) - 1 && IceAndFire.CONFIG.dragonDropHeart) {
-                    ItemStack heart = new ItemStack(this instanceof EntityFireDragon ? IafItemRegistry.fire_dragon_heart : IafItemRegistry.ice_dragon_heart, 1);
+                    ItemStack heart = new ItemStack(this instanceof EntityFireDragon ? IafItemRegistry.fire_dragon_heart : this instanceof EntityLightningDragon ? IafItemRegistry.lightning_dragon_heart: IafItemRegistry.ice_dragon_heart, 1);
                     ItemStack egg = new ItemStack(this.getVariantEgg(this.rand.nextInt(4)), 1);
                     if (!world.isRemote) {
                         this.entityDropItem(heart, 1);
@@ -1145,7 +1160,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         return super.processInteract(player, hand);
 
     }
-
+    
     protected ItemStack getSkull() {
         return ItemStack.EMPTY;
     }

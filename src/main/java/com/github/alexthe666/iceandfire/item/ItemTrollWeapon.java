@@ -69,5 +69,4 @@ public class ItemTrollWeapon extends ItemSword implements ICustomRendered {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(I18n.format("item.iceandfire.legendary_weapon.desc"));
     }
-
 }

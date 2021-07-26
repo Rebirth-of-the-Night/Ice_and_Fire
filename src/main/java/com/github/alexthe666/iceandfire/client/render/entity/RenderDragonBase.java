@@ -26,15 +26,15 @@ import java.util.Map;
 public class RenderDragonBase extends RenderLiving<EntityDragonBase> {
 
     private Map<String, ResourceLocation> LAYERED_TEXTURE_CACHE = Maps.newHashMap();
-    private boolean fire;
+    private int dragonType;
 
-    public RenderDragonBase(RenderManager renderManager, ModelBase model, boolean fire) {
+    public RenderDragonBase(RenderManager renderManager, ModelBase model, int dragonType) {
         super(renderManager, model, 0.8F);
         this.addLayer(new LayerDragonEyes(this));
         this.addLayer(new LayerDragonRider(this, false));
         this.addLayer(new LayerDragonBanner(this));
-        this.addLayer(new LayerDragonArmor(this, fire));
-        this.fire = fire;
+        this.addLayer(new LayerDragonArmor(this, dragonType));
+        this.dragonType = dragonType;
     }
 
     public boolean shouldRender(EntityDragonBase dragon, ICamera camera, double camX, double camY, double camZ) {
@@ -50,8 +50,7 @@ public class RenderDragonBase extends RenderLiving<EntityDragonBase> {
         GL11.glRotatef(f7, 1, 0, 0);
     }
 
-
-    protected ResourceLocation getEntityTexture(EntityDragonBase entity) {
+    public ResourceLocation getEntityTexture(EntityDragonBase entity) {
         String baseTexture = entity.getVariantName(entity.getVariant()) + " " + entity.getDragonStage() + entity.isModelDead() + entity.isMale() + entity.isSkeletal() + entity.isSleeping() + entity.isBlinking();
         ResourceLocation resourcelocation = LAYERED_TEXTURE_CACHE.get(baseTexture);
         if (resourcelocation == null) {
@@ -59,14 +58,15 @@ public class RenderDragonBase extends RenderLiving<EntityDragonBase> {
             List<String> tex = new ArrayList<String>();
             tex.add(EnumDragonTextures.getTextureFromDragon(entity).toString());
             if (entity.isMale() && !entity.isSkeletal()) {
-                if (fire) {
+                if (dragonType == 0) {
                     tex.add(EnumDragonTextures.getDragonEnum(entity).FIRE_MALE_OVERLAY.toString());
-                } else {
+                } else if(dragonType == 1) {
                     tex.add(EnumDragonTextures.getDragonEnum(entity).ICE_MALE_OVERLAY.toString());
+                } else if(dragonType == 2) {
+                    tex.add(EnumDragonTextures.getDragonEnum(entity).LIGHTNING_MALE_OVERLAY.toString());	
                 }
-            }else{
+            }  else {
                 tex.add(EnumDragonTextures.Armor.EMPTY.FIRETEXTURE.toString());
-
             }
             ArrayLayeredTexture layeredBase = new ArrayLayeredTexture(tex);
             Minecraft.getMinecraft().getTextureManager().loadTexture(resourcelocation, layeredBase);

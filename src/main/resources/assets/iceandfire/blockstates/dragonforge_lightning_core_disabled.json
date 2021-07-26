@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "normal": {
+      "model": "iceandfire:dragonforge_lightning_core_disabled"
+    }
+  }
+}

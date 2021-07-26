@@ -56,7 +56,7 @@ public class ItemDragonHorn extends Item {
             if(!entity.isEmpty()){
                 Class clazz = EntityList.getClassFromName(entity.getString("id"));
                 if(clazz != null){
-                    return  clazz == EntityFireDragon.class ? 1 : 2;
+                    return  clazz == EntityFireDragon.class ? 1 :clazz == EntityIceDragon.class ? 2 : 3;
                 }
             }
         }
@@ -134,7 +134,6 @@ public class ItemDragonHorn extends Item {
                 String stage = StatCollector.translateToLocal("dragon.stage") + stage1 + " " + StatCollector.translateToLocal("dragon.days.front") + stagenumber + " " + StatCollector.translateToLocal("dragon.days.back");
                 tooltip.add("" + stage);
             }
-
         }
     }
 }

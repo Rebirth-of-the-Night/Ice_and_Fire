@@ -1,6 +1,8 @@
 package com.github.alexthe666.iceandfire.compat.tinkers;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
+
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
@@ -26,12 +28,16 @@ public class TraitFreeze extends ModifierTrait {
 
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
+    	if(IceAndFire.CONFIG.iceDragonsteelAbility) {
         FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
         if (frozenProps != null) {
             frozenProps.setFrozenFor(level == 1 ? 200 : 300);
             target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 150 * (level), 2));
+        }
+        	if(IceAndFire.CONFIG.dragonsteelKnockback) { 
             if (level >= 2) {
                 target.knockBack(target, 1F, player.posX - target.posX, player.posZ - target.posZ);
+                }
             }
         }
     }

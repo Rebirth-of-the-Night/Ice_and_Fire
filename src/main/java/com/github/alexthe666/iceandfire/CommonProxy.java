@@ -102,8 +102,10 @@ public class CommonProxy {
         registerUnspawnable(EntityEntryBuilder.<EntityDragonSkull>create(), event, EntityDragonSkull.class, "dragonskull", 3);
         registerSpawnable(EntityEntryBuilder.<EntityFireDragon>create(), event, EntityFireDragon.class, "firedragon", 5, 0X340000, 0XA52929, 256, 3);
         registerSpawnable(EntityEntryBuilder.<EntityIceDragon>create(), event, EntityIceDragon.class, "icedragon", 7, 0XB5DDFB, 0X7EBAF0, 256, 3);
+        registerSpawnable(EntityEntryBuilder.<EntityLightningDragon>create(), event, EntityLightningDragon.class, "lightningdragon", 55, 0X422367, 0X725691, 256, 3);
         registerUnspawnable(EntityEntryBuilder.<EntityDragonFireCharge>create(), event, EntityDragonFireCharge.class, "dragonfirecharge", 8);
         registerUnspawnable(EntityEntryBuilder.<EntityDragonIceCharge>create(), event, EntityDragonIceCharge.class, "dragonicecharge", 9);
+        registerUnspawnable(EntityEntryBuilder.<EntityDragonLightningCharge>create(), event, EntityDragonLightningCharge.class, "dragonlightningcharge", 56);
         registerSpawnable(EntityEntryBuilder.<EntitySnowVillager>create(), event, EntitySnowVillager.class, "snowvillager", 10, 0X3C2A23, 0X70B1CF);
         registerUnspawnable(EntityEntryBuilder.<EntityHippogryphEgg>create(), event, EntityHippogryphEgg.class, "hippogryphegg", 11);
         registerSpawnable(EntityEntryBuilder.<EntityHippogryph>create(), event, EntityHippogryph.class, "hippogryph", 12, 0XD8D8D8, 0XD1B55D);
