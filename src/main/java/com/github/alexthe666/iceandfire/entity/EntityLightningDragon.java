@@ -68,12 +68,12 @@ public class EntityLightningDragon extends EntityDragonBase {
     }
 
     public void onStruckByLightning(EntityLightningBolt lightningBolt) {
-        this.heal(15F);
+        this.heal(IceAndFire.CONFIG.lightningDragonHealAmount);
     }
     @Override
     public boolean isEntityInvulnerable(DamageSource i) {
         if(i.damageType.equals(DamageSource.LIGHTNING_BOLT.damageType)) {
-            this.heal(15F);
+            this.heal(IceAndFire.CONFIG.lightningDragonHealAmount);
             this.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 20, 1));
             return true;
         }
