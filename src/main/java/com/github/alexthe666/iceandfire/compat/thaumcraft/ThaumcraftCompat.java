@@ -42,6 +42,7 @@ public class ThaumcraftCompat {
     public void aspectRegistrationEvent(AspectRegistryEvent evt) {
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.bestiary), new AspectList().add(ThaumcraftCompat.DRAGON, 2).add(ThaumcraftCompat.MYTHICAL, 5).add(Aspect.BEAST, 6).add(Aspect.MAGIC, 2).add(Aspect.MIND, 4).add(Aspect.WATER, 2).add(Aspect.AIR, 1));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.manuscript), new AspectList().add(ThaumcraftCompat.MYTHICAL, 5).add(Aspect.PLANT, 3).add(Aspect.MIND, 2).add(Aspect.WATER, 2).add(Aspect.AIR, 1));
+        evt.register.registerObjectTag(new ItemStack(IafItemRegistry.amythestGem), new AspectList().add(Aspect.CRYSTAL, 15).add(Aspect.DESIRE, 10));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.sapphireGem), new AspectList().add(Aspect.CRYSTAL, 15).add(Aspect.DESIRE, 10));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.fire_stew), new AspectList().add(Aspect.FIRE, 8).add(ThaumcraftCompat.DRAGON, 5));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.frost_stew), new AspectList().add(Aspect.COLD, 8).add(ThaumcraftCompat.DRAGON, 5));
@@ -95,6 +96,10 @@ public class ThaumcraftCompat {
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragon_armor_gold, 1, 1), new AspectList().add(Aspect.METAL, 10).add(ThaumcraftCompat.DRAGON, 10).add(Aspect.DESIRE, 20).add(Aspect.PROTECT, 30));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragon_armor_gold, 1, 2), new AspectList().add(Aspect.METAL, 30).add(ThaumcraftCompat.DRAGON, 10).add(Aspect.DESIRE, 20).add(Aspect.PROTECT, 30));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragon_armor_gold, 1, 3), new AspectList().add(Aspect.METAL, 20).add(ThaumcraftCompat.DRAGON, 10).add(Aspect.DESIRE, 20).add(Aspect.PROTECT, 30));
+        evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragon_armor_copper, 1, 0), new AspectList().add(Aspect.METAL, 20).add(ThaumcraftCompat.DRAGON, 10).add(Aspect.EXCHANGE, 10).add(Aspect.PROTECT, 30));
+        evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragon_armor_copper, 1, 1), new AspectList().add(Aspect.METAL, 10).add(ThaumcraftCompat.DRAGON, 10).add(Aspect.EXCHANGE, 10).add(Aspect.PROTECT, 30));
+        evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragon_armor_copper, 1, 2), new AspectList().add(Aspect.METAL, 30).add(ThaumcraftCompat.DRAGON, 10).add(Aspect.EXCHANGE, 10).add(Aspect.PROTECT, 30));
+        evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragon_armor_copper, 1, 3), new AspectList().add(Aspect.METAL, 20).add(ThaumcraftCompat.DRAGON, 10).add(Aspect.EXCHANGE, 10).add(Aspect.PROTECT, 30));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragon_armor_diamond, 1, 0), new AspectList().add(Aspect.CRYSTAL, 20).add(ThaumcraftCompat.DRAGON, 10).add(Aspect.DESIRE, 30).add(Aspect.PROTECT, 40));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragon_armor_diamond, 1, 1), new AspectList().add(Aspect.CRYSTAL, 10).add(ThaumcraftCompat.DRAGON, 10).add(Aspect.DESIRE, 30).add(Aspect.PROTECT, 40));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragon_armor_diamond, 1, 2), new AspectList().add(Aspect.CRYSTAL, 30).add(ThaumcraftCompat.DRAGON, 10).add(Aspect.DESIRE, 30).add(Aspect.PROTECT, 40));

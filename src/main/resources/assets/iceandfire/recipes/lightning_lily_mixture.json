@@ -2,7 +2,7 @@
   "type": "forge:ore_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:blaze_rod",
+      "item": "minecraft:chorus_fruit",
       "data": 0
     },
     {

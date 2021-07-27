@@ -44,6 +44,7 @@ public class IceAndFireConfig {
     public double dragonAttackDamageFire = 2;
     public double dragonAttackDamageIce = 2.5;
     public double dragonAttackDamageLightning = 3.5;
+    public boolean dragonsCustomDamageSourceUsage = true;
     public boolean saferBoltStrike = false;
     public int maxDragonFlight = 128;
     public int dragonGoldSearchLength = 30;
@@ -201,6 +202,7 @@ public class IceAndFireConfig {
         this.dragonAttackDamageFire = config.getFloat("Dragon Attack Damage(Fire breath)", "all", 2.0F, 0, 10000, "Damage dealt from a successful fire breath attack. Attack Damage is scaled to by age, so a stage 5 dragon will deal 5x as much as this number");
         this.dragonAttackDamageIce = config.getFloat("Dragon Attack Damage(Ice breath)", "all", 2.5F, 0, 10000, "Damage dealt from a successful ice breath attack. Attack Damage is scaled to by age, so a stage 5 dragon will deal 5x as much as this number");
         this.dragonAttackDamageLightning = config.getFloat("Dragon Attack Damage(Lightning breath)", "all", 3.5F, 0, 10000, "Damage dealt from a successful lightning breath attack. Attack Damage is scaled to by age, so a stage 5 dragon will deal 5x as much as this number");
+        this.dragonsCustomDamageSourceUsage = config.getBoolean("Dragons Custom Damage Source Usage", "all", true, "Whether or not dragons use custom damage sources. Setting this to false will disable the custom death messages the player gets they are killed by a dragon. Turn this off if you have compability issues.");
         this.saferBoltStrike = config.getBoolean("Safer Bolt Strike", "all", false, "When this config is on, lightning bolts from lightning dragonsteel will also try to move towards the target. The player can still get hit, but if you maintain your distance you can win without getting hit by the lightning bolts.");
         this.maxDragonFlight = config.getInt("Max Dragon Flight Height", "all", 128, 100, Integer.MAX_VALUE, "How high dragons can fly, in Y height.");
         this.dragonGoldSearchLength = config.getInt("Dragon Gold Search Length", "all", 30, 0, 10000, "How far away dragons will detect gold blocks being destroyed or chests being opened");

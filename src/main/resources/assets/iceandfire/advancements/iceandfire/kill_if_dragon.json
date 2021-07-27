@@ -27,12 +27,21 @@
           "type": "iceandfire:icedragon"
         }
       }
+    },
+	"killed_lightning_dragon": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "iceandfire:lightningdragon"
+        }
+      }
     }
   },
   "requirements": [
     [
       "killed_fire_dragon",
-      "killed_ice_dragon"
+      "killed_ice_dragon",
+	  "killed_lightning_dragon"
     ]
   ]
 }

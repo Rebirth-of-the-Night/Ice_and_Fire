@@ -52,6 +52,16 @@
       ]
     }
   },
+  "copper": {
+    "trigger": "minecraft:inventory_changed",
+    "conditions": {
+      "items": [
+        {
+          "item": "iceandfire:dragonarmor_copper"
+        }
+      ]
+    }
+  },
     "dragonsteel_fire": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -71,6 +81,16 @@
           }
         ]
       }
+    },
+	"dragonsteel_lightning": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "iceandfire:dragonarmor_dragonsteel_lightning"
+          }
+        ]
+      }
     }
   },
   "requirements": [
@@ -79,8 +99,10 @@
       "gold",
       "diamond",
       "silver",
+	  "copper",
       "dragonsteel_fire",
-      "dragonsteel_ice"
+      "dragonsteel_ice",
+	  "dragonsteel_lightning"
     ]
   ]
 }
