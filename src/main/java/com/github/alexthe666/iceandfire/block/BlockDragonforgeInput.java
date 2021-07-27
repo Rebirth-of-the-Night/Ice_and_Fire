@@ -48,7 +48,7 @@ public class BlockDragonforgeInput extends BlockContainer implements IDragonProo
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (this.getConnectedTileEntity(worldIn, pos) != null) {
             TileEntityDragonforge forge = this.getConnectedTileEntity(worldIn, pos);
-            if (forge != null && forge.isFire == dragonType) {
+            if (forge != null && forge.dragonType == dragonType) {
                 worldIn.scheduleUpdate(forge.getPos(), this, this.tickRate(worldIn));
                 return forge.getBlockType().onBlockActivated(worldIn, forge.getPos(), worldIn.getBlockState(forge.getPos()), playerIn, hand, facing, hitX, hitY, hitZ);
             }

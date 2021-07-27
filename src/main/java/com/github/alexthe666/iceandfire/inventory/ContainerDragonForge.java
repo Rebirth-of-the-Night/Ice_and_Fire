@@ -18,7 +18,7 @@ public class ContainerDragonForge extends SyncedFieldContainer {
     public ContainerDragonForge(InventoryPlayer playerInventory, IInventory furnaceInventory) {
         super(furnaceInventory);
         this.tileFurnace = furnaceInventory;
-        isFire = ((TileEntityDragonforge) tileFurnace).isFire;
+        isFire = ((TileEntityDragonforge) tileFurnace).dragonType;
         this.addSlotToContainer(new Slot(furnaceInventory, 0, 68, 34));
         this.addSlotToContainer(new Slot(furnaceInventory, 1, 86, 34));
         this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, furnaceInventory, 2, 148, 35));

@@ -27,7 +27,7 @@ public class GuiDragonForge extends GuiContainer {
         this.playerInventory = playerInv;
         this.tileFurnace = furnaceInv;
         if (tileFurnace instanceof TileEntityDragonforge) {
-            this.dragonType = ((TileEntityDragonforge) tileFurnace).isFire;
+            this.dragonType = ((TileEntityDragonforge) tileFurnace).dragonType;
         }
     }
 

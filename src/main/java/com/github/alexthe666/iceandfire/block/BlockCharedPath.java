@@ -35,7 +35,9 @@ public class BlockCharedPath extends BlockGrassPath {
         this.setHardness(0.6F);
         this.setSoundType(dragonType != 1 ? SoundType.GROUND : SoundType.GLASS);
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
-        this.slipperiness = (dragonType != 1 ? 0.6F : 0.98F);
+        if (dragonType != 1) {
+            this.slipperiness = 0.98F;
+        }
         this.setLightOpacity(0);
         setRegistryName(IceAndFire.MODID, getNameFromType(dragonType));
         this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.valueOf(false)));

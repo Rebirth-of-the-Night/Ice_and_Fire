@@ -23,8 +23,10 @@ import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemModAxe extends ItemAxe {
 
@@ -37,20 +39,31 @@ public class ItemModAxe extends ItemAxe {
         this.setCreativeTab(IceAndFire.TAB_ITEMS);
         this.setRegistryName(IceAndFire.MODID, gameName);
     }
+    
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        ItemStack mat = this.toolMaterial.getRepairItemStack();
+        if (this.toolMaterial == IafItemRegistry.silverTools) {
+            NonNullList<ItemStack> silverItems = OreDictionary.getOres("ingotSilver");
+            for (ItemStack ingot : silverItems) {
+                if (OreDictionary.itemMatches(repair, ingot, false)) {
+                    return true;
+                }
+            }
+        }
+        if (!mat.isEmpty() && net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false)) return true;
+        return super.getIsRepairable(toRepair, repair);
+    }
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         if (this == IafItemRegistry.silver_axe) {
             if (target.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
-                target.attackEntityFrom(DamageSource.causeMobDamage(attacker), 3.0F + toolMaterial.getAttackDamage() + 3.0F);
+                target.attackEntityFrom(DamageSource.causeMobDamage(attacker), toolMaterial.getAttackDamage() + 3.0F);
             }
         }
         if (this.toolMaterial == IafItemRegistry.myrmexChitin) {
-            if (target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD) {
-                target.attackEntityFrom(DamageSource.GENERIC, 3.0F + toolMaterial.getAttackDamage() + 6.0F);
-            }
-            if (target instanceof EntityDeathWorm) {
-                target.attackEntityFrom(DamageSource.GENERIC, 3.0F + toolMaterial.getAttackDamage() + 6.0F);
+            if (target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
+                target.attackEntityFrom(DamageSource.GENERIC, toolMaterial.getAttackDamage() + 6.0F);
             }
         }
         if (this == IafItemRegistry.myrmex_desert_sword_venom || this == IafItemRegistry.myrmex_jungle_sword_venom) {

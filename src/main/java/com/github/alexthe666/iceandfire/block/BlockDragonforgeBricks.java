@@ -28,18 +28,18 @@ import java.util.Random;
 public class BlockDragonforgeBricks extends BlockContainer implements IDragonProof {
 
     public static final PropertyBool GRILL = PropertyBool.create("grill");
-    private final int isFire;
+    private final int dragonType;
 
-    public BlockDragonforgeBricks(int isFire) {
+    public BlockDragonforgeBricks(int dragonType) {
         super(Material.ROCK);
         this.setLightOpacity(2);
         this.setHardness(40F);
         this.setResistance(500F);
         this.setSoundType(SoundType.METAL);
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
-        this.setTranslationKey("iceandfire.dragonforge_" + DragonType.getNameFromInt(isFire) + "_brick");
-        this.setRegistryName(IceAndFire.MODID, "dragonforge_" + DragonType.getNameFromInt(isFire) + "_brick");
-        this.isFire = isFire;
+        this.setTranslationKey("iceandfire.dragonforge_" + DragonType.getNameFromInt(dragonType) + "_brick");
+        this.setRegistryName(IceAndFire.MODID, "dragonforge_" + DragonType.getNameFromInt(dragonType) + "_brick");
+        this.dragonType = dragonType;
         this.setDefaultState(this.blockState.getBaseState().withProperty(GRILL, Boolean.valueOf(false)));
     }
 
@@ -51,7 +51,7 @@ public class BlockDragonforgeBricks extends BlockContainer implements IDragonPro
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (this.getConnectedTileEntity(worldIn, pos) != null) {
             TileEntityDragonforge forge = this.getConnectedTileEntity(worldIn, pos);
-            if (forge != null && forge.isFire == isFire) {
+            if (forge != null && forge.dragonType == dragonType) {
                 worldIn.scheduleUpdate(forge.getPos(), this, this.tickRate(worldIn));
                 return forge.getBlockType().onBlockActivated(worldIn, forge.getPos(), worldIn.getBlockState(forge.getPos()), playerIn, hand, facing, hitX, hitY, hitZ);
             }
