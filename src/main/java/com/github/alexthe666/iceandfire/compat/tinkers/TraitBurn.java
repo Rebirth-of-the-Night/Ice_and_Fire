@@ -28,7 +28,11 @@ public class TraitBurn extends ModifierTrait {
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
     	if(IceAndFire.CONFIG.fireDragonsteelAbility) {
+        if(IceAndFife.CONFIG.dragonsCustomDamageSourceUsage) {
         target.attackEntityFrom(IceAndFire.dragonFire, level * 2F);
+        } else {
+        target.attackEntityFrom(DamageSource.IN_FIRE, level * 2F);
+        }
         target.setFire(level == 1 ? 10 : 15);
     	}
     	if(IceAndFire.CONFIG.dragonsteelKnockback) { 
