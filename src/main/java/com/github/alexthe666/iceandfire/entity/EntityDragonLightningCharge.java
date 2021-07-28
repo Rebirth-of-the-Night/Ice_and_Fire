@@ -123,7 +123,11 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
                         return;
                     }
                     if (shootingEntity != null && shootingEntity instanceof EntityDragonBase) {
+                    	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
                         movingObject.entityHit.attackEntityFrom(IceAndFire.dragonLightning, 10.0F);
+                    	} else {
+                        movingObject.entityHit.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 10.0F);
+                    	}
                         if (movingObject.entityHit instanceof EntityLivingBase && ((EntityLivingBase) movingObject.entityHit).getHealth() == 0) {
                             ((EntityDragonBase) shootingEntity).randomizeAttacks();
                         }

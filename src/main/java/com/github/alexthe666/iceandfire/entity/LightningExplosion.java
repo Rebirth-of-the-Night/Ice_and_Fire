@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-public class FireExplosion extends Explosion {
+public class LightningExplosion extends Explosion {
     private final boolean isSmoking;
     private final Random explosionRNG;
     private final World worldObj;
@@ -43,7 +43,7 @@ public class FireExplosion extends Explosion {
     private final Vec3d position;
     private boolean mobGreifing;
 
-    public FireExplosion(World world, Entity entity, double x, double y, double z, float size, boolean smoke) {
+    public LightningExplosion(World world, Entity entity, double x, double y, double z, float size, boolean smoke) {
         super(world, entity, x, y, z, size, true, smoke);
         this.explosionRNG = new Random();
         this.affectedBlockPositions = Lists.newArrayList();
@@ -138,19 +138,19 @@ public class FireExplosion extends Explosion {
                                 return;
                             }
                             if (entity instanceof EntityLivingBase && ((EntityDragonBase) exploder).isOwner((EntityLivingBase) entity)) {
-                               	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
-                                entity.attackEntityFrom(IceAndFire.dragonFire, ((float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D))) / 6);
-                               	} else {
-                               		entity.attackEntityFrom(DamageSource.IN_FIRE, ((float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D))) / 6);
-                               	}
+                            	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
+                                entity.attackEntityFrom(IceAndFire.dragonLightning, ((float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D))) / 6);
+                            	} else {
+                                    entity.attackEntityFrom(DamageSource.LIGHTNING_BOLT, ((float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D))) / 6);
+                            	}
                                 if (entity.isDead && entity instanceof EntityPlayer) {
                                     //((EntityPlayer) entity).addStat(ModAchievements.dragonSlayer, 1);
                                 }
                             } else if (!entity.isEntityEqual(exploder)) {
                                	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
-                                entity.attackEntityFrom(IceAndFire.dragonFire, (float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D)) / 3);
+                                entity.attackEntityFrom(IceAndFire.dragonLightning, (float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D)) / 3);
                                	} else {
-                                    entity.attackEntityFrom(DamageSource.IN_FIRE, (float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D)) / 3);
+                                    entity.attackEntityFrom(DamageSource.LIGHTNING_BOLT, (float) ((int) ((d10 * d10 + d10) / 2.0D * 7.0D * (double) f3 + 1.0D)) / 3);
                                	}
                                 //if (entity.isDead && entity instanceof EntityPlayer) {
                                 //	((EntityPlayer) entity).addStat(ModAchievements.dragonSlayer, 1);
@@ -210,14 +210,14 @@ public class FireExplosion extends Explosion {
 
                 if (state.getMaterial() != Material.AIR && !state.getBlock().getTranslationKey().contains("grave") && DragonUtils.canDragonBreak(state.getBlock()) && mobGreifing) {
                     if (block == Blocks.GRASS_PATH) {
-                        worldObj.setBlockState(blockpos, IafBlockRegistry.charedGrassPath.getDefaultState());
+                        worldObj.setBlockState(blockpos, IafBlockRegistry.crackledGrassPath.getDefaultState());
                     }
                     if (block instanceof BlockGrass) {
-                        worldObj.setBlockState(blockpos, IafBlockRegistry.charedGrass.getDefaultState());
+                        worldObj.setBlockState(blockpos, IafBlockRegistry.crackledGrass.getDefaultState());
                     }
 
                     if (block instanceof BlockDirt) {
-                        worldObj.setBlockState(blockpos, IafBlockRegistry.charedDirt.getDefaultState());
+                        worldObj.setBlockState(blockpos, IafBlockRegistry.crackledDirt.getDefaultState());
                     }
 
                     if (block instanceof BlockLeaves || state.getMaterial() == Material.WATER) {
@@ -225,17 +225,17 @@ public class FireExplosion extends Explosion {
                     }
 
                     if (block instanceof BlockGravel) {
-                        worldObj.setBlockState(blockpos, IafBlockRegistry.charedGravel.getDefaultState());
+                        worldObj.setBlockState(blockpos, IafBlockRegistry.crackledGravel.getDefaultState());
                     }
 
                     if (state.getMaterial() == Material.WOOD) {
                         worldObj.setBlockState(blockpos, IafBlockRegistry.ash.getDefaultState());
                     }
 
-                    if (state.getMaterial() == Material.ROCK && (block != IafBlockRegistry.charedCobblestone && block != Blocks.COBBLESTONE && block != Blocks.MOSSY_COBBLESTONE && block != Blocks.COBBLESTONE_WALL)) {
-                        worldObj.setBlockState(blockpos, IafBlockRegistry.charedStone.getDefaultState());
+                    if (state.getMaterial() == Material.ROCK && (block != IafBlockRegistry.crackledCobblestone && block != Blocks.COBBLESTONE && block != Blocks.MOSSY_COBBLESTONE && block != Blocks.COBBLESTONE_WALL)) {
+                        worldObj.setBlockState(blockpos, IafBlockRegistry.crackledStone.getDefaultState());
                     } else if (state.getMaterial() == Material.ROCK) {
-                        worldObj.setBlockState(blockpos, IafBlockRegistry.charedCobblestone.getDefaultState());
+                        worldObj.setBlockState(blockpos, IafBlockRegistry.crackledCobblestone.getDefaultState());
                     }
                 }
             }
