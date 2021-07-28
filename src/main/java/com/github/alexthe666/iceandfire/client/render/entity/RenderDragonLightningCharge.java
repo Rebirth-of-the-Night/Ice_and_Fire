@@ -54,9 +54,9 @@ public class RenderDragonLightningCharge extends Render<EntityDragonLightningCha
         GlStateManager.enableBlend();
         GlStateManager.translate(0F, 0.5F, 0F);
         GlStateManager.translate(0F, -0.25F, 0F);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
         GlStateManager.disableLighting();
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 255.0F, 0.0F);
         GlStateManager.translate(0F, 0.25F, 0F);
         GlStateManager.rotate(yaw - 180, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(f * 20, 0.0F, 1.0F, 0.0F);
@@ -70,10 +70,10 @@ public class RenderDragonLightningCharge extends Render<EntityDragonLightningCha
         GlStateManager.enableBlend();
         GlStateManager.translate(0F, 0.5F, 0F);
         GlStateManager.translate(0F, -0.25F, 0F);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
         GlStateManager.disableLighting();
         GlStateManager.scale(1.5F, 1.5F, 1.5F);
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 255.0F, 0.0F);
         GlStateManager.translate(0F, 0.25F, 0F);
         GlStateManager.rotate(yaw - 180, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(f * 15, 0.0F, 1.0F, 0.0F);
@@ -87,10 +87,10 @@ public class RenderDragonLightningCharge extends Render<EntityDragonLightningCha
         GlStateManager.enableBlend();
         GlStateManager.translate(0F, 0.75F, 0F);
         GlStateManager.translate(0F, -0.25F, 0F);
-        GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
         GlStateManager.disableLighting();
         GlStateManager.scale(2.5F, 2.5F, 2.5F);
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 255.0F, 0.0F);
         GlStateManager.translate(0F, 0.25F, 0F);
         GlStateManager.rotate(yaw - 180, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(f * 10, 0.0F, 1.0F, 0.0F);
