@@ -250,7 +250,11 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - 2, (double) center.getY() - 2, (double) center.getZ() - 2, (double) center.getX() + 2, (double) center.getY() + 2, (double) center.getZ() + 2))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
+                    	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
+                            entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
+                        	} else {
+                                entityliving.attackEntityFrom(DamageSource.IN_FIRE, Math.max(1, stage - 1) * 2F);
+                        	}
                         entityliving.setFire(15);
                     }
                 }
@@ -283,7 +287,11 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - j, (double) center.getY() - k, (double) center.getZ() - l, (double) center.getX() + j, (double) center.getY() + k, (double) center.getZ() + l))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
+                    	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
+                            entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
+                        	} else {
+                                entityliving.attackEntityFrom(DamageSource.IN_FIRE, Math.max(1, stage - 1) * 2F);
+                        	}
                         entityliving.setFire(15);
                     }
                 }
@@ -319,7 +327,11 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - 2, (double) center.getY() - 2, (double) center.getZ() - 2, (double) center.getX() + 2, (double) center.getY() + 2, (double) center.getZ() + 2))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
+                    	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
+                            entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
+                        	} else {
+                                entityliving.attackEntityFrom(DamageSource.DROWN, Math.max(1, stage - 1) * 2F);
+                        	}
                         FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
                         if (frozenProps != null) {
                             frozenProps.setFrozenFor(400);
@@ -355,7 +367,11 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - j, (double) center.getY() - k, (double) center.getZ() - l, (double) center.getX() + j, (double) center.getY() + k, (double) center.getZ() + l))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
+                    	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
+                            entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
+                        	} else {
+                                entityliving.attackEntityFrom(DamageSource.DROWN, Math.max(1, stage - 1) * 2F);
+                        	}
                         FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
                         if (frozenProps != null) {
                             frozenProps.setFrozenFor(400);
@@ -393,7 +409,11 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - 2, (double) center.getY() - 2, (double) center.getZ() - 2, (double) center.getX() + 2, (double) center.getY() + 2, (double) center.getZ() + 2))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonLightning, Math.max(1, stage - 1) * 2F);
+                    	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
+                            entityliving.attackEntityFrom(IceAndFire.dragonLightning, Math.max(1, stage - 1) * 2F);
+                        	} else {
+                                entityliving.attackEntityFrom(DamageSource.LIGHTNING_BOLT, Math.max(1, stage - 1) * 2F);
+                        	}
                         double d1 = destroyer.posX - entityliving.posX;
                         double d0 = destroyer.posZ - entityliving.posZ;
                         entityliving.knockBack(entityliving, 0.3F, d1, d0);
@@ -427,7 +447,11 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - j, (double) center.getY() - k, (double) center.getZ() - l, (double) center.getX() + j, (double) center.getY() + k, (double) center.getZ() + l))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonLightning, Math.max(1, stage - 1) * 2F);
+                    	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
+                            entityliving.attackEntityFrom(IceAndFire.dragonLightning, Math.max(1, stage - 1) * 2F);
+                        	} else {
+                                entityliving.attackEntityFrom(DamageSource.LIGHTNING_BOLT, Math.max(1, stage - 1) * 2F);
+                        	}
                         double d1 = destroyer.posX - entityliving.posX;
                         double d0 = destroyer.posZ - entityliving.posZ;
                         entityliving.knockBack(entityliving, 0.3F, d1, d0);
