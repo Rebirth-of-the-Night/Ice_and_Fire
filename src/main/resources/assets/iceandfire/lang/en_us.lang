@@ -1087,6 +1087,9 @@ entity.lightningdragon.name=Lightning Dragon
 entity.dragonlightning.name=Dragon Lightning
 entity.dragonlightningcharge.name=Dragon Lightning Charge
 
+item.iceandfire.lightning_dragon_blood.jei_desc=Obtained by interacting with a dragon corpse while holding an empty bottle.
+item.iceandfire.lightning_stew.jei_desc=Used to breed two male and female dragons. The female will create a nest with an egg afterwards.
+
 iceandfire.lightning_dragon_forge=Lightning Dragon Forge
 tile.iceandfire.dragonforge_lightning_brick.name=Dragonforge Lightning Brick
 tile.iceandfire.dragonforge_lightning_core.name=Dragonforge Lightning Core

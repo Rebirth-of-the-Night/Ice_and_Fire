@@ -50,7 +50,7 @@ public class RenderDragonBase extends RenderLiving<EntityDragonBase> {
         GL11.glRotatef(f7, 1, 0, 0);
     }
 
-    public ResourceLocation getEntityTexture(EntityDragonBase entity) {
+    protected ResourceLocation getEntityTexture(EntityDragonBase entity) {
         String baseTexture = entity.getVariantName(entity.getVariant()) + " " + entity.getDragonStage() + entity.isModelDead() + entity.isMale() + entity.isSkeletal() + entity.isSleeping() + entity.isBlinking();
         ResourceLocation resourcelocation = LAYERED_TEXTURE_CACHE.get(baseTexture);
         if (resourcelocation == null) {
