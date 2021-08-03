@@ -53,9 +53,6 @@ public class EntityLightningDragon extends EntityDragonBase {
     public EntityLightningDragon(World worldIn) {
         super(worldIn, DragonType.LIGHTNING, 1, 1 + IceAndFire.CONFIG.dragonAttackDamage, IceAndFire.CONFIG.dragonHealth * 0.04, IceAndFire.CONFIG.dragonHealth, 0.15F, 0.4F);
         this.setSize(0.78F, 1.2F);
-        this.setPathPriority(PathNodeType.DANGER_FIRE, 0.0F);
-        this.setPathPriority(PathNodeType.DAMAGE_FIRE, 0.0F);
-        this.setPathPriority(PathNodeType.LAVA, 8.0F);
         ANIMATION_SPEAK = Animation.create(20);
         ANIMATION_BITE = Animation.create(35);
         ANIMATION_SHAKEPREY = Animation.create(65);
@@ -207,7 +204,7 @@ public class EntityLightningDragon extends EntityDragonBase {
                 attackEntityAsMob(this.getAttackTarget());
             }
             if (this.groundAttack == IafDragonAttacks.Ground.FIRE && (usingGroundAttack || this.onGround)) {
-                shootFireAtMob(this.getAttackTarget());
+                shootLightningAtMob(this.getAttackTarget());
             }
             if (this.airAttack == IafDragonAttacks.Air.TACKLE && !usingGroundAttack && this.getDistanceSq(this.getAttackTarget()) < 100) {
                 double difX = this.getAttackTarget().posX - this.posX;
@@ -296,7 +293,7 @@ public class EntityLightningDragon extends EntityDragonBase {
         }
     }
 
-    private void shootFireAtMob(EntityLivingBase entity) {
+    private void shootLightningAtMob(EntityLivingBase entity) {
         if (this.usingGroundAttack && this.groundAttack == IafDragonAttacks.Ground.FIRE || !this.usingGroundAttack && (this.airAttack == IafDragonAttacks.Air.SCORCH_STREAM || this.airAttack == IafDragonAttacks.Air.HOVER_BLAST)) {
             if (this.usingGroundAttack && this.getRNG().nextInt(5) == 0 || !this.usingGroundAttack && this.airAttack == IafDragonAttacks.Air.HOVER_BLAST) {
                 if (this.getAnimation() != ANIMATION_FIRECHARGE) {

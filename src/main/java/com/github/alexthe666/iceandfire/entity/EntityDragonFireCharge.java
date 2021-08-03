@@ -131,11 +131,7 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
                         return;
                     }
                     if (shootingEntity != null && shootingEntity instanceof EntityDragonBase) {
-                    	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
                         movingObject.entityHit.attackEntityFrom(IceAndFire.dragonFire, 10.0F);
-                    	} else {
-                            movingObject.entityHit.attackEntityFrom(DamageSource.IN_FIRE, 10.0F);
-                    	}
                         if (movingObject.entityHit instanceof EntityLivingBase && ((EntityLivingBase) movingObject.entityHit).getHealth() == 0) {
                             ((EntityDragonBase) shootingEntity).randomizeAttacks();
                         }

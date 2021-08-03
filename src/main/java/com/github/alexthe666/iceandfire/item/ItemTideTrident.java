@@ -96,7 +96,7 @@ public class ItemTideTrident extends Item {
     }
     
     public int getItemEnchantability() {
-        return 5;
+        return 1;
     }
 
     @Override

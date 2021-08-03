@@ -74,7 +74,9 @@ public class ItemAlchemySword extends ItemSword {
             if(!attacker.world.isRemote && flag) {
 			EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
             target.world.addWeatherEffect(lightningBolt);
-            lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ); 
+        	if(IceAndFire.CONFIG.saferBoltStrike) {
+                lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ); 
+            	}
             }
             if (target instanceof EntityFireDragon || target instanceof EntityIceDragon) {
                 target.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 9.5F);

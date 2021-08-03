@@ -359,7 +359,7 @@ public class ClientProxy extends CommonProxy {
         EnumSeaSerpentAnimations.initializeSerpentModels();
         ModelBase firedragon_model = null;
         ModelBase icedragon_model = null;
-        ModelBase lightningdragon_model = null;
+        IceAndFireTabulaModel lightningdragon_model = null;
         ModelBase seaserpent_model = null;
 
         try {

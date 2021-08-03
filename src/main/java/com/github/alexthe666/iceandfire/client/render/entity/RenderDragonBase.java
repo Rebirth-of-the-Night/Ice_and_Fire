@@ -29,7 +29,7 @@ public class RenderDragonBase extends RenderLiving<EntityDragonBase> {
     private int dragonType;
 
     public RenderDragonBase(RenderManager renderManager, ModelBase model, int dragonType) {
-        super(renderManager, model, 0.8F);
+        super(renderManager, model, 0.15F);
         this.addLayer(new LayerDragonEyes(this));
         this.addLayer(new LayerDragonRider(this, false));
         this.addLayer(new LayerDragonBanner(this));
@@ -45,9 +45,9 @@ public class RenderDragonBase extends RenderLiving<EntityDragonBase> {
     @Override
     protected void preRenderCallback(EntityDragonBase entity, float f) {
         this.shadowSize = entity.getRenderSize() / 3;
-        GL11.glScalef(shadowSize, shadowSize, shadowSize);
         float f7 = entity.prevDragonPitch + (entity.getDragonPitch() - entity.prevDragonPitch) * f;
         GL11.glRotatef(f7, 1, 0, 0);
+        GL11.glScalef(shadowSize, shadowSize, shadowSize);
     }
 
     protected ResourceLocation getEntityTexture(EntityDragonBase entity) {

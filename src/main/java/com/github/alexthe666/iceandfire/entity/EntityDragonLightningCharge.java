@@ -48,8 +48,6 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
     }
 
     public void onUpdate() {
-        this.extinguish();
-
         if (this.world.isRemote || (this.shootingEntity == null || !this.shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
             super.onUpdate();
             this.extinguish();
@@ -82,10 +80,7 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
             this.motionX *= (double) f;
             this.motionY *= (double) f;
             this.motionZ *= (double) f;
-            this.world.spawnParticle(this.getParticleType(), this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
             this.setPosition(this.posX, this.posY, this.posZ);
-        } else {
-            this.setDead();
         }
     }
 
@@ -123,11 +118,7 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
                         return;
                     }
                     if (shootingEntity != null && shootingEntity instanceof EntityDragonBase) {
-                    	if(IceAndFire.CONFIG.dragonsCustomDamageSourceUsage) {
                         movingObject.entityHit.attackEntityFrom(IceAndFire.dragonLightning, 10.0F);
-                    	} else {
-                        movingObject.entityHit.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 10.0F);
-                    	}
                         if (movingObject.entityHit instanceof EntityLivingBase && ((EntityLivingBase) movingObject.entityHit).getHealth() == 0) {
                             ((EntityDragonBase) shootingEntity).randomizeAttacks();
                         }
