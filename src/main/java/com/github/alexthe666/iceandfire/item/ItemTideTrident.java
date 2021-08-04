@@ -78,6 +78,15 @@ public class ItemTideTrident extends Item {
         }
     }
     
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+    	if(repair.getItem() == IafItemRegistry.sea_serpent_fang && toRepair.getItemDamage() != 0) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
+    }
+    
     @Override
     public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
         Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
