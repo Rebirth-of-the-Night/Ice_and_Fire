@@ -61,8 +61,8 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
         if (delta == 0) {
             deltaTicks = 0;
         }
-
-
+        
+        
         for (AdvancedModelRenderer cube : model.getCubes().values()) {
             this.genderMob(entity, cube);
             if (walking && entity.flyProgress <= 0.0F && entity.hoverProgress <= 0.0F && entity.modelDeadProgress <= 0.0F) {
@@ -158,6 +158,7 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
         float degree_walk = 0.5F;
         float degree_idle = entity.isSleeping() ? 0.25F : 0.5F;
         float degree_fly = 0.5F;
+        float sitMod = entity.isSitting() ? 0.15F : 1F;
         if (!entity.isAIDisabled()) {
             if (!walking) {
                 model.bob(model.getCube("BodyUpper"), -speed_fly, degree_fly * 5, false, ageInTicks, 1);
@@ -177,7 +178,7 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
                 model.chainSwing(neckParts, speed_walk, degree_walk * 0.15F, 2, limbSwing, limbSwingAmount);
                 model.chainWave(neckParts, speed_walk, degree_walk * 0.05F, -2, limbSwing, limbSwingAmount);
                 model.chainSwing(tailParts, speed_idle, degree_idle * 0.25F, -2, ageInTicks, 1);
-                model.chainWave(tailParts, speed_idle, degree_idle * 0.15F, -2, ageInTicks, 1);
+                model.chainWave(tailParts, speed_idle, degree_idle * 0.15F * sitMod, -2, ageInTicks, 1);
                 model.chainWave(neckParts, speed_idle, degree_idle * -0.15F, -3, ageInTicks, 1);
                 model.walk(model.getCube("Neck1"), speed_idle, degree_idle * 0.05F, false, 0, 0, ageInTicks, 1);
             }
@@ -206,6 +207,19 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
             }
 
         }
+        if (entity.turn_buffer != null && !entity.isBeingRidden() && !entity.isPassenger(entity) && !entity.isBreathingFire()) {
+            entity.turn_buffer.applyChainSwingBuffer(neckParts);
+        }
+        if (entity.tail_buffer != null && !entity.isPassenger(entity)) {
+            entity.tail_buffer.applyChainSwingBuffer(tailPartsWBody);
+        }
+        if (entity.roll_buffer != null && entity.pitch_buffer_body != null && entity.pitch_buffer != null) {
+            if (entity.flyProgress > 0 || entity.hoverProgress > 0) {
+                entity.roll_buffer.applyChainFlapBuffer(model.getCube("BodyUpper"));
+                entity.pitch_buffer_body.applyChainWaveBuffer(model.getCube("BodyUpper"));
+                entity.pitch_buffer.applyChainWaveBufferReverse(tailPartsWBody);
+            }
+        }
         if (entity.width >= 2 && entity.flyProgress == 0 && entity.hoverProgress == 0) {
             LegArticulator.articulateQuadruped(entity, entity.legSolver, model.getCube("BodyUpper"), model.getCube("BodyLower"), model.getCube("Neck1"),
                     model.getCube("ThighL"), model.getCube("LegL"), toesPartsL,
@@ -217,7 +231,7 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
             );
         }
     }
-
+    
     private void genderMob(EntityLightningDragon entity, AdvancedModelRenderer cube) {
         if (!entity.isMale()) {
             IceAndFireTabulaModel maleModel = EnumDragonAnimations.MALE.lightningdragon_model;
