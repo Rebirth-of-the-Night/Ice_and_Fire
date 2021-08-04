@@ -49,6 +49,14 @@ public class ItemModSword extends ItemSword {
                 }
             }
         }
+        if (this.toolMaterial == IafItemRegistry.copperTools) {
+            NonNullList<ItemStack> copperItems = OreDictionary.getOres("ingotCopper");
+            for (ItemStack ingot : copperItems) {
+                if (OreDictionary.itemMatches(repair, ingot, false)) {
+                    return true;
+                }
+            }
+        }
         if (!mat.isEmpty() && net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false)) return true;
         return super.getIsRepairable(toRepair, repair);
     }
@@ -98,7 +106,7 @@ public class ItemModSword extends ItemSword {
 			EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
             target.world.addWeatherEffect(lightningBolt);
         	if(IceAndFire.CONFIG.saferBoltStrike) {
-            lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ); 
+        		lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ); 
         	    }
             }
         	if(IceAndFire.CONFIG.dragonsteelKnockback) {  

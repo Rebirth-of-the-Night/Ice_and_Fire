@@ -99,7 +99,7 @@ public class ItemModAxe extends ItemAxe {
 			EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
             target.world.addWeatherEffect(lightningBolt);
         	if(IceAndFire.CONFIG.saferBoltStrike) {
-            lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ); 
+                lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ); 
         	    }
             }
         	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
