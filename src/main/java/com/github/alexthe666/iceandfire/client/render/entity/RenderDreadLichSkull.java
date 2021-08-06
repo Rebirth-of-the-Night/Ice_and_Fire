@@ -27,6 +27,7 @@ public class RenderDreadLichSkull extends Render<EntityDreadLichSkull> {
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableAlpha();
         this.bindEntityTexture(entity);
+
         if (this.renderOutlines) {
             GlStateManager.enableColorMaterial();
             GlStateManager.enableOutlineMode(this.getTeamColor(entity));

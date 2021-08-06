@@ -473,14 +473,14 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_silver) {
             return 4;
         }
-        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_copper) {
-            return 7;
-        }
         if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_fire) {
             return 5;
         }
         if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_ice) {
             return 6;
+        }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_copper) {
+            return 7;
         }
         if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_lightning) {
             return 8;
@@ -947,14 +947,14 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 case 4:
                     val += 3D;
                     break;
-                case 7:
-                    val += 1.5D;
-                    break;
                 case 5:
                     val += 10D;
                     break;
                 case 6:
                     val += 10D;
+                    break;
+                case 7:
+                    val += 1.5D;
                     break;
                 case 8:
                     val += 10D;
