@@ -50,6 +50,14 @@ public class ItemModAxe extends ItemAxe {
                 }
             }
         }
+        if (this.toolMaterial == IafItemRegistry.copperTools) {
+            NonNullList<ItemStack> copperItems = OreDictionary.getOres("ingotCopper");
+            for (ItemStack ingot : copperItems) {
+                if (OreDictionary.itemMatches(repair, ingot, false)) {
+                    return true;
+                }
+            }
+        }
         if (!mat.isEmpty() && net.minecraftforge.oredict.OreDictionary.itemMatches(mat, repair, false)) return true;
         return super.getIsRepairable(toRepair, repair);
     }
@@ -63,49 +71,8 @@ public class ItemModAxe extends ItemAxe {
         }
         if (this.toolMaterial == IafItemRegistry.myrmexChitin) {
             if (target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
-                target.attackEntityFrom(DamageSource.GENERIC, 3.0F + toolMaterial.getAttackDamage() + 6.0F);
+                target.attackEntityFrom(DamageSource.GENERIC, 3.0F + toolMaterial.getAttackDamage() + 5.0F);
             }
-        }
-        if (this == IafItemRegistry.myrmex_desert_sword_venom || this == IafItemRegistry.myrmex_jungle_sword_venom) {
-            target.addPotionEffect(new PotionEffect(MobEffects.POISON, 200, 2));
-        }
-        if (toolMaterial == IafItemRegistry.dragonsteel_fire_tools) {
-        	if(IceAndFire.CONFIG.fireDragonsteelAbility) {
-        		target.setFire(15);
-        	}
-        	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
-        		target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
-        	}
-        }
-        if (toolMaterial == IafItemRegistry.dragonsteel_ice_tools) {
-        	if(IceAndFire.CONFIG.iceDragonsteelAbility) {
-        		FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
-        		frozenProps.setFrozenFor(300);
-        		target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 2));
-        	}
-        	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
-            target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
-        	}
-        }
-        if (toolMaterial == IafItemRegistry.dragonsteel_lightning_tools) {
-        	if(IceAndFire.CONFIG.lightningDragonsteelAbility) {
-            boolean flag = true;
-            if(attacker instanceof EntityPlayer) {
-                if(((EntityPlayer)attacker).swingProgress > 0.2) {
-                    flag = false;
-                }
-            }
-            if(!attacker.world.isRemote && flag) {
-			EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
-            target.world.addWeatherEffect(lightningBolt);
-        	if(IceAndFire.CONFIG.saferBoltStrike) {
-                lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ); 
-        	    }
-            }
-        	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
-                target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
-            	} 
-        	}
         }
         return super.hitEntity(stack, target, attacker);
     }
@@ -117,21 +84,6 @@ public class ItemModAxe extends ItemAxe {
         }
         if (this == IafItemRegistry.myrmex_desert_axe || this == IafItemRegistry.myrmex_jungle_axe) {
             tooltip.add(TextFormatting.GREEN + StatCollector.translateToLocal("myrmextools.hurt"));
-        }
-        if (this == IafItemRegistry.dragonsteel_fire_sword) {
-            tooltip.add(TextFormatting.GREEN + StatCollector.translateToLocal("dragon_sword_fire.hurt2"));
-        }
-        if (this == IafItemRegistry.dragonsteel_ice_sword) {
-            tooltip.add(TextFormatting.GREEN + StatCollector.translateToLocal("dragon_sword_ice.hurt2"));
-        }
-        if (toolMaterial == IafItemRegistry.dragonsteel_fire_tools) {
-            tooltip.add(TextFormatting.DARK_RED + StatCollector.translateToLocal("dragon_sword_fire.hurt2"));
-        }
-        if (toolMaterial == IafItemRegistry.dragonsteel_ice_tools) {
-            tooltip.add(TextFormatting.AQUA + StatCollector.translateToLocal("dragon_sword_ice.hurt2"));
-        }
-        if (toolMaterial == IafItemRegistry.dragonsteel_lightning_tools) {
-            tooltip.add(TextFormatting.DARK_PURPLE + StatCollector.translateToLocal("dragon_sword_lightning.hurt2"));
         }
     }
 

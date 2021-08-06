@@ -66,11 +66,8 @@ public class ItemModPickaxe extends ItemPickaxe {
         }
         if (this.toolMaterial == IafItemRegistry.myrmexChitin) {
             if (target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
-                target.attackEntityFrom(DamageSource.GENERIC, 3.0F + toolMaterial.getAttackDamage() + 6.0F);
+                target.attackEntityFrom(DamageSource.GENERIC, 3.0F + toolMaterial.getAttackDamage() + 5.0F);
             }
-        }
-        if (this == IafItemRegistry.myrmex_desert_sword_venom || this == IafItemRegistry.myrmex_jungle_sword_venom) {
-            target.addPotionEffect(new PotionEffect(MobEffects.POISON, 200, 2));
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_fire_tools) {
         	if(IceAndFire.CONFIG.fireDragonsteelAbility) {
