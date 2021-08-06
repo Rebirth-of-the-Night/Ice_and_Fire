@@ -64,7 +64,7 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
         
         
         for (AdvancedModelRenderer cube : model.getCubes().values()) {
-            this.genderMob(entity, cube);
+            //this.genderMob(entity, cube);
             if (walking && entity.flyProgress <= 0.0F && entity.hoverProgress <= 0.0F && entity.modelDeadProgress <= 0.0F) {
                 AdvancedModelRenderer walkPart = EnumDragonAnimations.GROUND_POSE.lightningdragon_model.getCube(cube.boxName);
                 float prevX = prevPosition.getCube(cube.boxName).rotateAngleX;
@@ -206,19 +206,6 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
                 entity.pitch_buffer.applyChainWaveBufferReverse(tailPartsWBody);
             }
 
-        }
-        if (entity.turn_buffer != null && !entity.isBeingRidden() && !entity.isPassenger(entity) && !entity.isBreathingFire()) {
-            entity.turn_buffer.applyChainSwingBuffer(neckParts);
-        }
-        if (entity.tail_buffer != null && !entity.isPassenger(entity)) {
-            entity.tail_buffer.applyChainSwingBuffer(tailPartsWBody);
-        }
-        if (entity.roll_buffer != null && entity.pitch_buffer_body != null && entity.pitch_buffer != null) {
-            if (entity.flyProgress > 0 || entity.hoverProgress > 0) {
-                entity.roll_buffer.applyChainFlapBuffer(model.getCube("BodyUpper"));
-                entity.pitch_buffer_body.applyChainWaveBuffer(model.getCube("BodyUpper"));
-                entity.pitch_buffer.applyChainWaveBufferReverse(tailPartsWBody);
-            }
         }
         if (entity.width >= 2 && entity.flyProgress == 0 && entity.hoverProgress == 0) {
             LegArticulator.articulateQuadruped(entity, entity.legSolver, model.getCube("BodyUpper"), model.getCube("BodyLower"), model.getCube("Neck1"),
