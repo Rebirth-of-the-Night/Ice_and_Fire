@@ -62,22 +62,22 @@ public class ItemDragonsteelAxe extends ItemAxe {
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_lightning_tools) {
         	if(IceAndFire.CONFIG.lightningDragonsteelAbility) {
-            boolean flag = true;
-            if(attacker instanceof EntityPlayer) {
-                if(((EntityPlayer)attacker).swingProgress > 0.2) {
-                    flag = false;
-                }
-            }
+        		boolean flag = true;
+        		if(attacker instanceof EntityPlayer) {
+        			if(((EntityPlayer)attacker).swingProgress > 0.2) {
+        				flag = false;
+        			}
+        		}
             if(!attacker.world.isRemote && flag) {
-			EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
-            target.world.addWeatherEffect(lightningBolt);
-        	if(IceAndFire.CONFIG.saferBoltStrike) {
-                lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ); 
+            	EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
+            	target.world.addWeatherEffect(lightningBolt);
+            	if(IceAndFire.CONFIG.saferBoltStrike) {
+            		lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ); 
         	    }
             }
         	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
                 target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
-            	} 
+            	}
         	}
         }
         return super.hitEntity(stack, target, attacker);

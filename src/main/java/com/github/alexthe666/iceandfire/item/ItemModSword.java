@@ -65,12 +65,12 @@ public class ItemModSword extends ItemSword {
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         if (this == IafItemRegistry.silver_sword) {
             if (target.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
-                target.attackEntityFrom(DamageSource.causeMobDamage(attacker), 3.0F + toolMaterial.getAttackDamage() + 3.0F);
+                target.attackEntityFrom(DamageSource.MAGIC, 3.0F + this.getAttackDamage() + 3.0F);
             }
         }
         if (this.toolMaterial == IafItemRegistry.myrmexChitin) {
             if (target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
-                target.attackEntityFrom(DamageSource.GENERIC, 3.0F + toolMaterial.getAttackDamage() + 5.0F);
+                target.attackEntityFrom(DamageSource.GENERIC, 3.0F + this.getAttackDamage() + 5.0F);
             }
         }
         if (this == IafItemRegistry.myrmex_desert_sword_venom || this == IafItemRegistry.myrmex_jungle_sword_venom) {
@@ -96,17 +96,17 @@ public class ItemModSword extends ItemSword {
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_lightning_tools) {
         	if(IceAndFire.CONFIG.lightningDragonsteelAbility) {
-            boolean flag = true;
-            if(attacker instanceof EntityPlayer) {
-                if(((EntityPlayer)attacker).swingProgress > 0.2) {
-                    flag = false;
-                }
-            }
+        		boolean flag = true;
+        		if(attacker instanceof EntityPlayer) {
+        			if(((EntityPlayer)attacker).swingProgress > 0.2) {
+        				flag = false;
+        			}
+        		}
             if(!attacker.world.isRemote && flag) {
-			EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
-            target.world.addWeatherEffect(lightningBolt);
-        	if(IceAndFire.CONFIG.saferBoltStrike) {
-        		lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ); 
+            	EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
+            	target.world.addWeatherEffect(lightningBolt);
+            	if(IceAndFire.CONFIG.saferBoltStrike) {
+            		lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ); 
         	    }
             }
         	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
