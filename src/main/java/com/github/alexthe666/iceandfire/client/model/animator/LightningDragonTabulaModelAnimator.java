@@ -64,7 +64,7 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
         
         
         for (AdvancedModelRenderer cube : model.getCubes().values()) {
-            //this.genderMob(entity, cube);
+            this.genderMob(entity, cube);
             if (walking && entity.flyProgress <= 0.0F && entity.hoverProgress <= 0.0F && entity.modelDeadProgress <= 0.0F) {
                 AdvancedModelRenderer walkPart = EnumDragonAnimations.GROUND_POSE.lightningdragon_model.getCube(cube.boxName);
                 float prevX = prevPosition.getCube(cube.boxName).rotateAngleX;
@@ -223,16 +223,16 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
         if (!entity.isMale()) {
             IceAndFireTabulaModel maleModel = EnumDragonAnimations.MALE.lightningdragon_model;
             IceAndFireTabulaModel femaleModel = EnumDragonAnimations.FEMALE.lightningdragon_model;
-            if (femaleModel != null) {
-            float x = femaleModel.getCube(cube.boxName).rotateAngleX;
-            float y = femaleModel.getCube(cube.boxName).rotateAngleY;
-            float z = femaleModel.getCube(cube.boxName).rotateAngleZ;
-            if (x != maleModel.getCube(cube.boxName).rotateAngleX || y != maleModel.getCube(cube.boxName).rotateAngleY || z != maleModel.getCube(cube.boxName).rotateAngleZ) {
-                this.setRotateAngle(cube, 1F, x, y, z);
+            if (femaleModel.getCube(cube.boxName) != null) {
+                float x = femaleModel.getCube(cube.boxName).rotateAngleX;
+                float y = femaleModel.getCube(cube.boxName).rotateAngleY;
+                float z = femaleModel.getCube(cube.boxName).rotateAngleZ;
+                if (x != maleModel.getCube(cube.boxName).rotateAngleX || y != maleModel.getCube(cube.boxName).rotateAngleY || z != maleModel.getCube(cube.boxName).rotateAngleZ) {
+                    this.setRotateAngle(cube, 1F, x, y, z);
+                }
             }
         }
     }
-}
 
     private boolean isWing(IceAndFireTabulaModel model, AdvancedModelRenderer modelRenderer) {
 
@@ -339,7 +339,7 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
         moveToPose(model, EnumDragonAnimations.ROAR1.lightningdragon_model);
         model.llibAnimator.endKeyframe();
         model.llibAnimator.startKeyframe(10);
-        moveToPose(model, EnumDragonAnimations.ROAR2.lightningdragon_model);
+        //moveToPose(model, EnumDragonAnimations.ROAR2.lightningdragon_model);
         model.llibAnimator.endKeyframe();
         model.llibAnimator.startKeyframe(10);
         moveToPose(model, EnumDragonAnimations.ROAR3.lightningdragon_model);
@@ -368,6 +368,7 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
         model.llibAnimator.move(model.getCube("BodyUpper"), 0, -6.8F, 0);
         model.llibAnimator.endKeyframe();
         model.llibAnimator.resetKeyframe(10);
+        
     }
 
 
