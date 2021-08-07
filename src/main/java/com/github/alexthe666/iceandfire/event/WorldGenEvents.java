@@ -172,6 +172,7 @@ public class WorldGenEvents implements IWorldGenerator {
                 EntityFireDragon firedragon = new EntityFireDragon(world);
                 firedragon.setPosition(x, height.getY() + 1, z);
                 int dragonage = 10 + random.nextInt(100);
+                firedragon.setGender(random.nextBoolean());
                 firedragon.growDragon(dragonage);
                 firedragon.modelDeadProgress = 20;
                 firedragon.setModelDead(true);
@@ -185,6 +186,7 @@ public class WorldGenEvents implements IWorldGenerator {
                 EntityIceDragon icedragon = new EntityIceDragon(world);
                 icedragon.setPosition(x, height.getY() + 1, z);
                 int dragonage = 10 + random.nextInt(100);
+                icedragon.setGender(random.nextBoolean());
                 icedragon.growDragon(dragonage);
                 icedragon.modelDeadProgress = 20;
                 icedragon.setModelDead(true);
@@ -198,6 +200,7 @@ public class WorldGenEvents implements IWorldGenerator {
                 EntityLightningDragon lightningdragon = new EntityLightningDragon(world);
                 lightningdragon.setPosition(x, height.getY() + 1, z);
                 int dragonage = 10 + random.nextInt(100);
+                lightningdragon.setGender(random.nextBoolean());
                 lightningdragon.growDragon(dragonage);
                 lightningdragon.modelDeadProgress = 20;
                 lightningdragon.setModelDead(true);
@@ -334,7 +337,7 @@ public class WorldGenEvents implements IWorldGenerator {
             }
             lastMyrmexHive = height;
         }
-        if (!isDimensionBlacklisted(world.provider.getDimension(), false)) {
+        if (!isDimensionBlacklisted(world.provider.getDimension(), true)) {
             if (BiomeDictionary.hasType(world.getBiome(height), Type.COLD) && BiomeDictionary.hasType(world.getBiome(height), Type.SNOWY)) {
                 if (random.nextInt(15) == 0) {
                     BlockPos surface = world.getHeight(new BlockPos(x, 0, z));
