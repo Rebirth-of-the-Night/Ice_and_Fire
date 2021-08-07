@@ -385,7 +385,6 @@ public class EntityLightningDragon extends EntityDragonBase {
             }
             return;
         }
-        this.getNavigator().clearPath();
         this.burnParticleX = burnX;
         this.burnParticleY = burnY;
         this.burnParticleZ = burnZ;
@@ -394,7 +393,7 @@ public class EntityLightningDragon extends EntityDragonBase {
         double d3 = burnY - headPos.y;
         double d4 = burnZ - headPos.z;
         float particleScale = MathHelper.clamp(this.getRenderSize() * 0.08F, 0.55F, 3F);
-        double distance = Math.max(5 * this.getDistance(burnX, burnY, burnZ), 0);
+        double distance = Math.max(2.5F * this.getDistance(burnX, burnY, burnZ), 0);
         double conqueredDistance = burnProgress / 40D * distance;
         int increment = (int) Math.ceil(conqueredDistance / 100);
         for (int i = 0; i < conqueredDistance; i += increment) {
@@ -494,7 +493,7 @@ public class EntityLightningDragon extends EntityDragonBase {
         float pitchY = 0;
         float pitchAdjustment = 0;
         float pitchMinus = 0;
-        float dragonPitch = -getDragonPitch();//
+        float dragonPitch = -getDragonPitch();
         if (this.isFlying() || this.isHovering()) {
             if(dragonPitch > 0) {
                 pitchY = (dragonPitch / 90F) * 1.2F;
@@ -510,7 +509,7 @@ public class EntityLightningDragon extends EntityDragonBase {
         float headPosX = (float) (this.posX + (xzModSine) * Math.cos((renderYawOffset + 90) * Math.PI / 180));
         float headPosY = (float) (this.posY + (0.7F + (sitProg * 5F) + hoverProg + deadProg + epicRoarProg + sleepProg + flyProg + pitchY) * getRenderSize() * 0.3F);
         float headPosZ = (float) (this.posZ + (xzModSine) * Math.sin((renderYawOffset + 90) * Math.PI / 180));
-        return new Vec3d(headPosX, headPosY -10F, headPosZ);
+        return new Vec3d(headPosX, headPosY, headPosZ);
     }
     
     public int getStartMetaForType(){

@@ -10,11 +10,13 @@ import net.minecraft.util.math.Vec3d;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.util.vector.Vector4f;
+
 /*
-    Lightning bolt effect code dragged from the 1.16 source code of IaF. Original code belongs to aidancbrady
-    
-    STILL NEED TO ASK FOR PERSMISSON(?), AS A RESULT IT WON'T BE USED FOR NOW. */
-public class LightningBoltData { /*
+ * Lightning bolt effect code is dragged from the 1.16 source code of IaF.
+ * Original code is from Mekanism and belongs to Aidan C. Brady and PupNewfster. 
+ * Mekanism is owned by Aidan C. Brady.
+ */
+public class LightningBoltData { 
 
     private final Random random = new Random();
 
@@ -316,7 +318,8 @@ public class LightningBoltData { /*
             return new BoltRenderInfo(0.5F, 0.25F, 0.25F, 0.15F, new Vector4f(0.70F, 0.45F, 0.89F, 0.8F), 0.8F);
         }
 
-        public BoltRenderInfo(){}
+        public BoltRenderInfo() { 	
+        }
 
         public BoltRenderInfo(float parallelNoise, float spreadFactor, float branchInitiationFactor, float branchContinuationFactor, Vector4f color, float closeness) {
             this.parallelNoise = parallelNoise;
@@ -326,5 +329,5 @@ public class LightningBoltData { /*
             this.color = color;
             this.segmentSpreader = SegmentSpreader.memory(closeness);
         }
-    }*/
+    }
 }

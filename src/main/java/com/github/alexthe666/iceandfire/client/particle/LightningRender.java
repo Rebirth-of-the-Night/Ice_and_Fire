@@ -12,13 +12,17 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Matrix4f;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
 /*
-Lightning bolt effect code dragged from the 1.16 source code of IaF. Original code belongs to aidancbrady
-
-STILL NEED TO ASK FOR PERSMISSON(?), AS A RESULT IT WON'T BE USED FOR NOW. */
-public class LightningRender { /*
+ * Lightning bolt effect code is dragged from the 1.16 source code of IaF.
+ * Original code is from Mekanism and belongs to Aidan C. Brady and PupNewfster. 
+ * Mekanism is owned by Aidan C. Brady.
+ */
+public class LightningRender {
 
     private static final float REFRESH_TIME = 3F;
     private static final double MAX_OWNER_TRACK_TIME = 100;
@@ -30,9 +34,9 @@ public class LightningRender { /*
 
     private final Map<Object, BoltOwnerData> boltOwners = new Object2ObjectOpenHashMap<>();
 
-    public void doRender(float partialTicks, BufferBuilder buffer) {
-        Matrix4f matrix = new Matrix4f();
+    public void doRender(float partialTicks) {     
         Timestamp timestamp = new Timestamp(minecraft.world.getWorldTime(), partialTicks);
+        
         boolean refresh = timestamp.isPassed(refreshTimestamp, (1 / REFRESH_TIME));
         if (refresh) {
             refreshTimestamp = timestamp;
@@ -42,12 +46,12 @@ public class LightningRender { /*
             BoltOwnerData data = entry.getValue();
             // tick our bolts based on the refresh rate, removing if they're now finished
             if (refresh) {
-                data.bolts.removeIf(bolt -> bolt.tick(timestamp));
+                data.bolts.removeIf(bolt -> bolt.onUpdate(timestamp));
             }
             if (data.bolts.isEmpty() && data.lastBolt != null && data.lastBolt.getSpawnFunction().isConsecutive()) {
                 data.addBolt(new BoltInstance(data.lastBolt, timestamp), timestamp);
             }
-            data.bolts.forEach(bolt -> bolt.doRender(matrix, buffer, timestamp));
+            data.bolts.forEach(bolt -> bolt.doRender(timestamp));
             
             if (data.bolts.isEmpty() && timestamp.isPassed(data.lastUpdateTimestamp, MAX_OWNER_TRACK_TIME)) {
                 iter.remove();
@@ -55,7 +59,7 @@ public class LightningRender { /*
         }
     }
 
-    public void doUpdate(Object owner, LightningBoltData newBoltData, float partialTicks) {
+    public void onUpdate(Object owner, LightningBoltData newBoltData, float partialTicks) {
         if (minecraft.world == null) {
             return;
         }
@@ -95,17 +99,28 @@ public class LightningRender { /*
             this.createdTimestamp = timestamp;
         }
 
-        public void doRender(Matrix4f matrix, BufferBuilder buffer, Timestamp timestamp) {
+        public void doRender(Timestamp timestamp) {
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder bufferbuilder = tessellator.getBuffer();
             float lifeScale = timestamp.subtract(createdTimestamp).value() / bolt.getLifespan();
             Pair<Integer, Integer> bounds = bolt.getFadeFunction().getRenderBounds(renderQuads.size(), lifeScale);
+            
+            GlStateManager.enableBlend();
+            GlStateManager.disableLighting();
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 255.0F, 0.0F);
+            GlStateManager.disableTexture2D();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
             for (int i = bounds.getLeft(); i < bounds.getRight(); i++) {
-                renderQuads.get(i).getVecs().forEach(v -> buffer.pos((float) v.x, (float) v.y, (float) v.z)
-                        .color(bolt.getColor().getX(), bolt.getColor().getY(), bolt.getColor().getZ(), bolt.getColor().getW())
-                        .endVertex());
+                bufferbuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
+                renderQuads.get(i).getVecs().forEach(v -> bufferbuilder.pos((float) v.x, (float) v.y, (float) v.z).color(bolt.getColor().getX(), bolt.getColor().getY(), bolt.getColor().getZ(), bolt.getColor().getW()).endVertex());    
+                tessellator.draw();
             }
+            GlStateManager.enableTexture2D();
+            GlStateManager.enableLighting();
+            GlStateManager.disableBlend();
         }
 
-        public boolean tick(Timestamp timestamp) {
+        public boolean onUpdate(Timestamp timestamp) {
             return timestamp.isPassed(createdTimestamp, bolt.getLifespan());
         }
     }
@@ -147,5 +162,5 @@ public class LightningRender { /*
                 return false;
             return (partial - prev.partial) >= duration;
         }
-    } */
+    }
 }
