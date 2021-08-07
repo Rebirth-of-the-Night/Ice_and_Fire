@@ -6,4 +6,4 @@ Add lightning dragons to the beastiary.
 Add the lightning dragon breath effects.
 
 ISSUES LIST:
-Female lightning dragons do not render.
+Female lightning dragons and male lightning dragons use the same model.
