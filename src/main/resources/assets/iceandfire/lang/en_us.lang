@@ -1076,9 +1076,9 @@ tile.iceandfire.copperpile.name=Pile of Copper
 tile.iceandfire.copperOre.name=Copper Ore
 tile.iceandfire.copperBlock.name=Block of Copper
 
-item.iceandfire.amythest_gem.name=Amythest
-tile.iceandfire.amythestOre.name=Amythest Ore
-tile.iceandfire.amythestBlock.name=Block of Amythest
+item.iceandfire.amythest_gem.name=Amethyst
+tile.iceandfire.amythestOre.name=Amethyst Ore
+tile.iceandfire.amythestBlock.name=Block of Amethyst
 
 tile.iceandfire.lightning_lily.name=Lightning Lily
 tile.iceandfire.dragonsteel_lightning_block.name=Block of Lightning Dragonsteel
@@ -1099,7 +1099,7 @@ dragon_sword_lightning.hurt1=+4 damage against Fire Dragons and Ice Dragons
 dragon_sword_lightning.hurt2=Strikes targets with lightning
 
 dragon.electric=Electric
-dragon.amythest=Amythest
+dragon.amythest=Amethyst
 dragon.copper=Copper
 dragon.black=Black
 
