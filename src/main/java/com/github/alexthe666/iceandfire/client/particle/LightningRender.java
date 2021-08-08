@@ -101,23 +101,23 @@ public class LightningRender {
 
         public void doRender(Timestamp timestamp) {
             Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferbuilder = tessellator.getBuffer();
+            BufferBuilder buffer = tessellator.getBuffer();
             float lifeScale = timestamp.subtract(createdTimestamp).value() / bolt.getLifespan();
             Pair<Integer, Integer> bounds = bolt.getFadeFunction().getRenderBounds(renderQuads.size(), lifeScale);
             
-            GlStateManager.enableBlend();
-            GlStateManager.disableLighting();
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 255.0F, 0.0F);
             GlStateManager.disableTexture2D();
+            GlStateManager.disableLighting();
+            GlStateManager.enableBlend();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 255.0F, 0.0F);
             for (int i = bounds.getLeft(); i < bounds.getRight(); i++) {
-                bufferbuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
-                renderQuads.get(i).getVecs().forEach(v -> bufferbuilder.pos((float) v.x, (float) v.y, (float) v.z).color(bolt.getColor().getX(), bolt.getColor().getY(), bolt.getColor().getZ(), bolt.getColor().getW()).endVertex());    
+                buffer.begin(5, DefaultVertexFormats.POSITION_COLOR);
+                renderQuads.get(i).getVecs().forEach(v -> buffer.pos((float) v.x, (float) v.y, (float) v.z).color(bolt.getColor().getX(), bolt.getColor().getY(), bolt.getColor().getZ(), bolt.getColor().getW()).endVertex());
                 tessellator.draw();
             }
-            GlStateManager.enableTexture2D();
-            GlStateManager.enableLighting();
             GlStateManager.disableBlend();
+            GlStateManager.enableLighting();
+            GlStateManager.enableTexture2D();
         }
 
         public boolean onUpdate(Timestamp timestamp) {
