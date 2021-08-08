@@ -91,6 +91,7 @@ public class EntityLightningDragon extends EntityDragonBase {
     public boolean isDaytime() {
         return !this.world.isDaytime();
     }
+    
     @Override
     protected void initEntityAI() {
         super.initEntityAI();
@@ -377,6 +378,7 @@ public class EntityLightningDragon extends EntityDragonBase {
                 this.playSound(IafSoundRegistry.LIGHTNINGDRAGON_BREATH_CRACKLE, 4, 1);
                 EntityDragonLightningCharge entitylargefireball = new EntityDragonLightningCharge(world, this, d2, d3, d4);
                 float size = this.isChild() ? 0.4F : this.isAdult() ? 1.3F : 0.8F;
+                entitylargefireball.setSizes(size, size);
                 entitylargefireball.setPosition(headVec.x, headVec.y, headVec.z);
                 if (!world.isRemote) {
                     world.spawnEntity(entitylargefireball);
