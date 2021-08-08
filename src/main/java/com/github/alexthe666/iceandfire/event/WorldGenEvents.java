@@ -308,7 +308,7 @@ public class WorldGenEvents implements IWorldGenerator {
             }
         }
         if (IceAndFire.CONFIG.generateAmythestOre) {
-            if (BiomeDictionary.hasType(world.getBiome(height), Type.JUNGLE) || BiomeDictionary.hasType(world.getBiome(height), Type.MESA) || BiomeDictionary.hasType(world.getBiome(height), Type.SAVANNA)) {
+            if (BiomeDictionary.hasType(world.getBiome(height), Type.SAVANNA)) {
                 int count = 3 + random.nextInt(6);
                 for (int sapphireAmount = 0; sapphireAmount < count; sapphireAmount++) {
                     int oreHeight = random.nextInt(28) + 4;
