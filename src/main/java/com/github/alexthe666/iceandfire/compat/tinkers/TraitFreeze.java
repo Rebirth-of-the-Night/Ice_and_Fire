@@ -28,16 +28,12 @@ public class TraitFreeze extends ModifierTrait {
 
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
-    	if(IceAndFire.CONFIG.iceDragonsteelAbility) {
         FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
         if (frozenProps != null) {
             frozenProps.setFrozenFor(level == 1 ? 200 : 300);
             target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 150 * (level), 2));
-        }
-        	if(IceAndFire.CONFIG.dragonsteelKnockback) { 
-            if (level >= 2) {
+            if (level >= 2 && IceAndFire.CONFIG.dragonsteelKnockback) {
                 target.knockBack(target, 1F, player.posX - target.posX, player.posZ - target.posZ);
-                }
             }
         }
     }

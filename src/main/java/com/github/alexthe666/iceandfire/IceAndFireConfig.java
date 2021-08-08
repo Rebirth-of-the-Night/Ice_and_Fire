@@ -3,7 +3,6 @@ package com.github.alexthe666.iceandfire;
 import net.minecraftforge.common.config.Configuration;
 
 public class IceAndFireConfig {
-
     public boolean customMainMenu = true;
     public boolean useVanillaFont = false;
     public boolean logCascadingWorldGen = false;
@@ -137,9 +136,6 @@ public class IceAndFireConfig {
     public double dragonsteelBaseDamage = 25F;
     public int dragonsteelBaseArmor = 12;
     public int dragonsteelBaseDurability = 8000;
-    public boolean fireDragonsteelAbility = true;
-    public boolean iceDragonsteelAbility = true;
-    public boolean lightningDragonsteelAbility = true;
     public boolean dragonsteelKnockback = true;
     public boolean spawnStructuresOnSuperflat = true;
     public boolean dragonMovedWronglyFix = false;
@@ -317,9 +313,6 @@ public class IceAndFireConfig {
         this.dragonsteelBaseDamage = (double) config.getFloat("Dragonsteel Sword Base Attack Strength", "all", 25, 5, Integer.MAX_VALUE, "Default attack strength of a dragonsteel sword.");
         this.dragonsteelBaseArmor = config.getInt("Dragonsteel Base Armor", "all", 12, 7, Integer.MAX_VALUE, "Default armor value of dragonsteel chestplate.");
         this.dragonsteelBaseDurability = config.getInt("Dragonsteel Base Durability", "all", 8000, 1, Integer.MAX_VALUE, "Default durability value of dragonsteel sword.");
-        this.fireDragonsteelAbility = config.getBoolean("Fire Dragonsteel Ability", "all", true, "Whether or not should fire dragonsteel set targets on fire");
-        this.iceDragonsteelAbility = config.getBoolean("Ice Dragonsteel Ability", "all", true, "Whether or not should ice dragonsteel freeze targets");
-        this.lightningDragonsteelAbility = config.getBoolean("Lightning Dragonsteel Ability", "all", true, "Whether or not should lightning dragonsteel strike targets with lightning");
         this.dragonsteelKnockback = config.getBoolean("Dragonsteel Knockback", "all", true, "Whether or not should dragonsteel tools knockback the target on hit");
         this.dragonMovedWronglyFix = config.getBoolean("Dragon Moved Wrongly Error Fix", "all", false, "Enable this if your server is being bombarded with moved wrongly or moved too fast console messages. REQUIRES RESTART!");
         this.weezerTinkers = config.getBoolean("Weezer", "all", true, "Disable this to remove easter egg with tinkers installed.");

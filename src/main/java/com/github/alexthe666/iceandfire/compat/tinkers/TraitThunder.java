@@ -35,25 +35,21 @@ public class TraitThunder extends ModifierTrait {
 
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
-    	if(IceAndFire.CONFIG.lightningDragonsteelAbility) {
         boolean flag = true;
         if(player instanceof EntityPlayer) {
             if(((EntityPlayer)player).swingProgress > 0.2) {
                 flag = false;
             }
         }
-        if(!player.world.isRemote && flag) {
+        if(!player.world.isRemote && flag && !target.isDead) {
 		EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
-        target.world.addWeatherEffect(lightningBolt);
+		    target.world.addWeatherEffect(lightningBolt);
     	if(IceAndFire.CONFIG.saferBoltStrike) {
-        lightningBolt.move(MoverType.SELF, target.posX - player.posX, target.posY, target.posZ - player.posZ); 
+    		lightningBolt.move(MoverType.SELF, target.posX - player.posX, target.posY, target.posZ - player.posZ); 	    
     	    }
         }
-    }
-    	if(IceAndFire.CONFIG.dragonsteelKnockback) {
-        if (level >= 2) {
+        if (level >= 2 && IceAndFire.CONFIG.dragonsteelKnockback) {
             target.knockBack(target, 1F, player.posX - target.posX, player.posZ - target.posZ);
-            }
-        }  
+        }
     }
 }
