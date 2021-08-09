@@ -79,7 +79,7 @@ public class ItemTideTrident extends Item {
     }
     
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-    	if(repair.getItem() == IafItemRegistry.sea_serpent_fang && toRepair.getItemDamage() != 0) {
+    	if(repair.getItem() == Items.DIAMOND && toRepair.getItemDamage() != 0) {
     		return true;
     	}
     	else {
