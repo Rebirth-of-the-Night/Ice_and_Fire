@@ -33,28 +33,30 @@ public class LightningRender {
     private final Minecraft minecraft = Minecraft.getMinecraft();
 
     private final Map<Object, BoltOwnerData> boltOwners = new Object2ObjectOpenHashMap<>();
-
-    public void doRender(float partialTicks) {     
+    
+    public void doRender(float partialTicks) {
         Timestamp timestamp = new Timestamp(minecraft.world.getWorldTime(), partialTicks);
         
         boolean refresh = timestamp.isPassed(refreshTimestamp, (1 / REFRESH_TIME));
         if (refresh) {
             refreshTimestamp = timestamp;
         }
-        for (Iterator<Map.Entry<Object, BoltOwnerData>> iter = boltOwners.entrySet().iterator(); iter.hasNext(); ) {
-            Map.Entry<Object, BoltOwnerData> entry = iter.next();
-            BoltOwnerData data = entry.getValue();
-            // tick our bolts based on the refresh rate, removing if they're now finished
-            if (refresh) {
-                data.bolts.removeIf(bolt -> bolt.onUpdate(timestamp));
-            }
-            if (data.bolts.isEmpty() && data.lastBolt != null && data.lastBolt.getSpawnFunction().isConsecutive()) {
-                data.addBolt(new BoltInstance(data.lastBolt, timestamp), timestamp);
-            }
-            data.bolts.forEach(bolt -> bolt.doRender(timestamp));
-            
-            if (data.bolts.isEmpty() && timestamp.isPassed(data.lastUpdateTimestamp, MAX_OWNER_TRACK_TIME)) {
-                iter.remove();
+        synchronized (boltOwners) {
+            for (Iterator<Map.Entry<Object, BoltOwnerData>> iter = boltOwners.entrySet().iterator(); iter.hasNext(); ) {
+                Map.Entry<Object, BoltOwnerData> entry = iter.next();
+                BoltOwnerData data = entry.getValue();
+                // tick our bolts based on the refresh rate, removing if they're now finished
+                if (refresh) {
+                    data.bolts.removeIf(bolt -> bolt.onUpdate(timestamp));
+                }
+                if (data.bolts.isEmpty() && data.lastBolt != null && data.lastBolt.getSpawnFunction().isConsecutive()) {
+                    data.addBolt(new BoltInstance(data.lastBolt, timestamp), timestamp);
+                }
+                data.bolts.forEach(bolt -> bolt.doRender(timestamp));
+
+                if (data.bolts.isEmpty() && timestamp.isPassed(data.lastUpdateTimestamp, MAX_OWNER_TRACK_TIME)) {
+                    iter.remove();
+                }
             }
         }
     }
@@ -63,13 +65,15 @@ public class LightningRender {
         if (minecraft.world == null) {
             return;
         }
-        BoltOwnerData data = boltOwners.computeIfAbsent(owner, o -> new BoltOwnerData());
-        data.lastBolt = newBoltData;
-        Timestamp timestamp = new Timestamp(minecraft.world.getWorldTime(), partialTicks);
-        if ((!data.lastBolt.getSpawnFunction().isConsecutive() || data.bolts.isEmpty()) && timestamp.isPassed(data.lastBoltTimestamp, data.lastBoltDelay)) {
-            data.addBolt(new BoltInstance(newBoltData, timestamp), timestamp);
+        synchronized (boltOwners) {
+            BoltOwnerData data = boltOwners.computeIfAbsent(owner, o -> new BoltOwnerData());
+            data.lastBolt = newBoltData;
+            Timestamp timestamp = new Timestamp(minecraft.world.getWorldTime(), partialTicks);
+            if ((!data.lastBolt.getSpawnFunction().isConsecutive() || data.bolts.isEmpty()) && timestamp.isPassed(data.lastBoltTimestamp, data.lastBoltDelay)) {
+                data.addBolt(new BoltInstance(newBoltData, timestamp), timestamp);
+            }
+            data.lastUpdateTimestamp = timestamp;
         }
-        data.lastUpdateTimestamp = timestamp;
     }
 
     public class BoltOwnerData {
@@ -125,10 +129,10 @@ public class LightningRender {
         }
     }
 
-    public class Timestamp {
+    public static class Timestamp {
 
-        private long ticks;
-        private float partial;
+        private final long ticks;
+        private final float partial;
 
         public Timestamp() {
             this(0, 0);
@@ -155,11 +159,13 @@ public class LightningRender {
 
         public boolean isPassed(Timestamp prev, double duration) {
             long ticksPassed = ticks - prev.ticks;
-            if (ticksPassed > duration)
+            if (ticksPassed > duration) {
                 return true;
+            }
             duration -= ticksPassed;
-            if (duration >= 1)
+            if (duration >= 1) {
                 return false;
+            }
             return (partial - prev.partial) >= duration;
         }
     }

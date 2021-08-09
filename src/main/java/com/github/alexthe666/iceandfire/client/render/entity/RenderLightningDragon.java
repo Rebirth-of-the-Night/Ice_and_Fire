@@ -1,10 +1,5 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
-import com.github.alexthe666.iceandfire.client.particle.LightningBoltData;
-import com.github.alexthe666.iceandfire.client.particle.LightningRender;
-import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
-import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,6 +7,11 @@ import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
+
+import com.github.alexthe666.iceandfire.client.particle.LightningBoltData;
+import com.github.alexthe666.iceandfire.client.particle.LightningRender;
+import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
+import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
 
 /*
  * Lightning bolt effect code is dragged from the 1.16 source code of IaF.
@@ -40,9 +40,9 @@ public class RenderLightningDragon extends RenderDragonBase {
         }
     }
     
-    public void doRender(EntityDragonBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        super.doRender(entity, x, y, z, entityYaw, partialTicks);
-        EntityLightningDragon lightningDragon = (EntityLightningDragon)entity;
+    public void doRender(EntityDragonBase dragon, double x, double y, double z, float entityYaw, float partialTicks) {
+        super.doRender(dragon, x, y, z, entityYaw, partialTicks);
+        EntityLightningDragon lightningDragon = (EntityLightningDragon)dragon;
         GlStateManager.pushMatrix();
         if (lightningDragon.hasLightningTarget()) {
             double dist = Minecraft.getMinecraft().player.getDistance(lightningDragon);

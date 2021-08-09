@@ -91,20 +91,21 @@ public class LightningBoltData {
         Vec3d diff = end.subtract(start);
         float totalDistance = (float) diff.length();
         for (int i = 0; i < count; i++) {
-            LinkedList<BoltInstructions> drawQueue = new LinkedList<>();
+        	LinkedList<BoltInstructions> drawQueue = new LinkedList<>();
             drawQueue.add(new BoltInstructions(start, 0, new Vec3d(0, 0, 0), null, false));
             while (!drawQueue.isEmpty()) {
                 BoltInstructions data = drawQueue.poll();
                 Vec3d perpendicularDist = data.perpendicularDist;
                 float progress = data.progress + (1F / segments) * (1 - renderInfo.parallelNoise + random.nextFloat() * renderInfo.parallelNoise * 2);
                 Vec3d segmentEnd;
-                if (progress >= 1) {
+                float segmentDiffScale = renderInfo.spreadFunction.getMaxSpread(progress);
+                if (progress >= 1 && segmentDiffScale <= 0) {
                     segmentEnd = end;
                 } else {
-                    float segmentDiffScale = renderInfo.spreadFunction.getMaxSpread(progress);
-                    float maxDiff = renderInfo.spreadFactor * segmentDiffScale * totalDistance * renderInfo.randomFunction.getRandom(random);
+                    float maxDiff = renderInfo.spreadFactor * segmentDiffScale * totalDistance;
                     Vec3d randVec = findRandomOrthogonalVector(diff, random);
-                    perpendicularDist = renderInfo.segmentSpreader.getSegmentAdd(perpendicularDist, randVec, maxDiff, segmentDiffScale, progress);
+                    double rand = renderInfo.randomFunction.getRandom(random);
+                    perpendicularDist = renderInfo.segmentSpreader.getSegmentAdd(perpendicularDist, randVec, maxDiff, segmentDiffScale, progress, rand);
                     // new vector is original + current progress through segments + perpendicular change
                     segmentEnd = start.add(diff.scale(progress)).add(perpendicularDist);
                 }
@@ -112,7 +113,7 @@ public class LightningBoltData {
                 Pair<BoltQuads, QuadCache> quadData = createQuads(data.cache, data.start, segmentEnd, boltSize);
                 quads.add(quadData.getLeft());
 
-                if (segmentEnd == end) {
+                if (progress >= 1) {
                     break; // break if we've reached the defined end point
                 } else if (!data.isBranch) {
                     // continue the bolt if this is the primary (non-branch) segment
@@ -220,22 +221,23 @@ public class LightningBoltData {
     public interface SegmentSpreader {
 
         // Don't remember where the last segment left off, just randomly move from the straight-line vector.
-        SegmentSpreader NO_MEMORY = (perpendicularDist, randVec, maxDiff, scale, progress) -> randVec.scale(maxDiff);
+        SegmentSpreader NO_MEMORY = (perpendicularDist, randVec, maxDiff, scale, progress, rand) -> randVec.scale(maxDiff * rand);
 
         // Move from where the previous segment ended by a certain memory factor. Higher memory will restrict perpendicular movement.
         static SegmentSpreader memory(float memoryFactor) {
-            return (perpendicularDist, randVec, maxDiff, spreadScale, progress) -> {
-                float nextDiff = maxDiff * (1 - memoryFactor);
+            return (perpendicularDist, randVec, maxDiff, spreadScale, progress, rand) -> {
+                double nextDiff = maxDiff * (1 - memoryFactor) * rand;
                 Vec3d cur = randVec.scale(nextDiff);
-                if (progress > 0.5F) {
-                    // begin to come back to the center after we pass halfway mark
-                    cur = cur.add(perpendicularDist.scale(-1 * (1 - spreadScale)));
+                perpendicularDist = perpendicularDist.add(cur);
+                double length = perpendicularDist.length();
+                if (length > maxDiff) {
+                    perpendicularDist = perpendicularDist.scale(maxDiff / length);
                 }
                 return perpendicularDist.add(cur);
             };
         }
 
-        Vec3d getSegmentAdd(Vec3d perpendicularDist, Vec3d randVec, float maxDiff, float scale, float progress);
+        Vec3d getSegmentAdd(Vec3d perpendicularDist, Vec3d randVec, float maxDiff, float scale, float progress, double rand);
     }
 
     public interface SpawnFunction {
@@ -256,12 +258,12 @@ public class LightningBoltData {
 
         // Spawn bolts with a specified constant delay.
         static SpawnFunction delay(float delay) {
-            return (rand) -> Pair.of(delay, delay);
+            return rand -> Pair.of(delay, delay);
         }
 
          // Spawns bolts with a specified delay and specified noise value, which will be randomly applied at either end of the delay bounds.
         static SpawnFunction noise(float delay, float noise) {
-            return (rand) -> Pair.of(delay - noise, delay + noise);
+            return rand -> Pair.of(delay - noise, delay + noise);
         }
 
         Pair<Float, Float> getSpawnDelayBounds(Random rand);
@@ -313,21 +315,41 @@ public class LightningBoltData {
         private RandomFunction randomFunction = RandomFunction.GAUSSIAN;
         private SpreadFunction spreadFunction = SpreadFunction.SINE;
         private SegmentSpreader segmentSpreader = SegmentSpreader.NO_MEMORY;
-
+        
         public static BoltRenderInfo electricity() {
-            return new BoltRenderInfo(0.5F, 0.25F, 0.25F, 0.15F, new Vector4f(0.70F, 0.45F, 0.89F, 0.8F), 0.8F);
+            return new BoltRenderInfo().color(new Vector4f(0.70F, 0.45F, 0.89F, 0.8F)).noise(0.5F, 0.25F).branching(0.25F, 0.15F).spreader(SegmentSpreader.memory(0.8F));
         }
 
-        public BoltRenderInfo() { 	
-        }
-
-        public BoltRenderInfo(float parallelNoise, float spreadFactor, float branchInitiationFactor, float branchContinuationFactor, Vector4f color, float closeness) {
+        public BoltRenderInfo noise(float parallelNoise, float spreadFactor) {
             this.parallelNoise = parallelNoise;
             this.spreadFactor = spreadFactor;
+            return this;
+        }
+
+        public BoltRenderInfo branching(float branchInitiationFactor, float branchContinuationFactor) {
             this.branchInitiationFactor = branchInitiationFactor;
             this.branchContinuationFactor = branchContinuationFactor;
+            return this;
+        }
+
+        public BoltRenderInfo spreader(SegmentSpreader segmentSpreader) {
+            this.segmentSpreader = segmentSpreader;
+            return this;
+        }
+
+        public BoltRenderInfo randomFunction(RandomFunction randomFunction) {
+            this.randomFunction = randomFunction;
+            return this;
+        }
+
+        public BoltRenderInfo spreadFunction(SpreadFunction spreadFunction) {
+            this.spreadFunction = spreadFunction;
+            return this;
+        }
+
+        public BoltRenderInfo color(Vector4f color) {
             this.color = color;
-            this.segmentSpreader = SegmentSpreader.memory(closeness);
+            return this;
         }
     }
 }

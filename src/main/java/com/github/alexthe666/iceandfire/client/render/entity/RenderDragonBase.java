@@ -38,8 +38,7 @@ public class RenderDragonBase extends RenderLiving<EntityDragonBase> {
     }
 
     public boolean shouldRender(EntityDragonBase dragon, ICamera camera, double camX, double camY, double camZ) {
-        return true;
-        //return super.shouldRender(dragon, camera, camX, camY, camZ) ||  dragon.shouldRender(camera)|| Minecraft.getMinecraft().player.isRidingOrBeingRiddenBy(dragon);
+        return super.shouldRender(dragon, camera, camX, camY, camZ) || dragon.shouldRender(camera) || Minecraft.getMinecraft().player.isRidingOrBeingRiddenBy(dragon);
     }
 
     @Override
