@@ -7,6 +7,8 @@ import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.github.alexthe666.iceandfire.client.particle.LightningBoltData;
 import com.github.alexthe666.iceandfire.client.particle.LightningRender;
@@ -18,9 +20,10 @@ import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
  * Original code is from Mekanism and belongs to Aidan C. Brady and PupNewfster. 
  * Mekanism is owned by Aidan C. Brady.
  */
+@SideOnly(Side.CLIENT)
 public class RenderLightningDragon extends RenderDragonBase {
 
-    private LightningRender lightningRender = new LightningRender();
+    private final LightningRender lightningRender = new LightningRender();
 
     public RenderLightningDragon(RenderManager renderManager, ModelBase model, int dragonType) {
         super(renderManager, model, dragonType);

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.util.vector.Vector4f;
@@ -16,6 +18,7 @@ import org.lwjgl.util.vector.Vector4f;
  * Original code is from Mekanism and belongs to Aidan C. Brady and PupNewfster. 
  * Mekanism is owned by Aidan C. Brady.
  */
+@SideOnly(Side.CLIENT)
 public class LightningBoltData { 
 
     private final Random random = new Random();
@@ -44,27 +47,62 @@ public class LightningBoltData {
         this.end = end;
         this.segments = segments;
     }
-
+    
+    /**
+     * Set the amount of bolts to render for this single bolt instance.
+     *
+     * @param count amount of bolts to render
+     *
+     * @return this
+     */
     public LightningBoltData count(int count) {
         this.count = count;
         return this;
     }
 
+    /**
+     * Set the starting size (or width) of bolt segments.
+     *
+     * @param size starting size of bolt segments
+     *
+     * @return this
+     */
     public LightningBoltData size(float size) {
         this.size = size;
         return this;
     }
 
+    /**
+     * Define the {@link SpawnFunction} for this bolt effect.
+     *
+     * @param spawnFunction spawn function to use
+     *
+     * @return this
+     */
     public LightningBoltData spawn(SpawnFunction spawnFunction) {
         this.spawnFunction = spawnFunction;
         return this;
     }
 
+    /**
+     * Define the {@link FadeFunction} for this bolt effect.
+     *
+     * @param fadeFunction fade function to use
+     *
+     * @return this
+     */
     public LightningBoltData fade(FadeFunction fadeFunction) {
         this.fadeFunction = fadeFunction;
         return this;
     }
 
+    /**
+     * Define the lifespan (in ticks) of this bolt, at the end of which the bolt will expire.
+     *
+     * @param lifespan lifespan to use in ticks
+     *
+     * @return this
+     */
     public LightningBoltData lifespan(int lifespan) {
         this.lifespan = lifespan;
         return this;
@@ -198,10 +236,16 @@ public class LightningBoltData {
         }
     }
 
+    /**
+     * A SpreadFunction defines how far bolt segments can stray from the straight-line vector, based on parallel 'progress' from start to finish.
+     *
+     * @author aidancbrady
+     */
     public interface SpreadFunction {
 
         // A steady linear increase in perpendicular noise.
         SpreadFunction LINEAR_ASCENT = (progress) -> progress;
+        
         // A steady linear increase in perpendicular noise, followed by a steady decrease after the halfway point.
         SpreadFunction LINEAR_ASCENT_DESCENT = (progress) -> (progress - Math.max(0, 2 * progress - 1)) / 0.5F;
         // Represents a unit sine wave from 0 to PI, scaled by progress.
@@ -210,6 +254,11 @@ public class LightningBoltData {
         float getMaxSpread(float progress);
     }
 
+    /**
+     * A RandomFunction defines the behavior of the RNG used in various bolt generation calculations.
+     *
+     * @author aidancbrady
+     */
     public interface RandomFunction {
 
         RandomFunction UNIFORM = Random::nextFloat;
@@ -218,6 +267,11 @@ public class LightningBoltData {
         float getRandom(Random rand);
     }
 
+    /**
+     * A SegmentSpreader defines how successive bolt segments are arranged in the bolt generation calculation, based on previous state.
+     *
+     * @author aidancbrady
+     */
     public interface SegmentSpreader {
 
         // Don't remember where the last segment left off, just randomly move from the straight-line vector.
@@ -240,6 +294,13 @@ public class LightningBoltData {
         Vec3d getSegmentAdd(Vec3d perpendicularDist, Vec3d randVec, float maxDiff, float scale, float progress, double rand);
     }
 
+    /**
+     * A bolt's spawn function defines its spawn behavior (handled by the renderer). A spawn function generates a lower and upper bound on a spawn delay (via
+     * getSpawnDelayBounds()), for which an intermediate value is chosen randomly from a uniform distribution (getSpawnDelay()). Spawn functions can also be defined as
+     * 'consecutive,' in which cases the Bolt Renderer will always begin rendering a new bolt instance when one expires.
+     *
+     * @author aidancbrady
+     */
     public interface SpawnFunction {
 
         // Allow for bolts to be spawned each update call without any delay.
@@ -278,6 +339,12 @@ public class LightningBoltData {
         }
     }
 
+    /**
+     * A bolt's fade function allows one to define lower and upper bounds on the bolt segments rendered based on lifespan. This allows for dynamic 'fade-in' and
+     * 'fade-out' effects.
+     *
+     * @author aidancbrady
+     */
     public interface FadeFunction {
 
         // No fade; render the bolts entirely throughout their lifespan.

@@ -16,15 +16,20 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /*
  * Lightning bolt effect code is dragged from the 1.16 source code of IaF.
  * Original code is from Mekanism and belongs to Aidan C. Brady and PupNewfster. 
  * Mekanism is owned by Aidan C. Brady.
  */
+@SideOnly(Side.CLIENT)
 public class LightningRender {
 
+    // Amount of times per tick we refresh. 3 implies 60 Hz.
     private static final float REFRESH_TIME = 3F;
+    // We will keep track of an owner's render data for 100 ticks after there are no bolts remaining.
     private static final double MAX_OWNER_TRACK_TIME = 100;
 
     private Timestamp refreshTimestamp = new Timestamp();
