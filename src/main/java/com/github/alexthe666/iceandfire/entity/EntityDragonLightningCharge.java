@@ -50,11 +50,7 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
     public void onUpdate() {
         this.extinguish();
         if (this.world.isRemote || (this.shootingEntity == null || !this.shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
-            if (!this.world.isRemote) {
-                this.setFlag(6, this.isGlowing());
-            }
-
-            this.onEntityUpdate();
+        	super.onUpdate();
             
             this.extinguish();
 

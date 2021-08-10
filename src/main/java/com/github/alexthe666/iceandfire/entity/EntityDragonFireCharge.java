@@ -56,11 +56,7 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
         }
 
         if (this.world.isRemote || (this.shootingEntity == null || !this.shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
-            if (!this.world.isRemote) {
-                this.setFlag(6, this.isGlowing());
-            }
-
-            this.onEntityUpdate();
+        	super.onUpdate();
 
             if (this.isFireballFiery()) {
                 this.setFire(1);
