@@ -201,12 +201,13 @@ public class EntityLightningDragon extends EntityDragonBase {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+
         if (!world.isRemote && this.getAttackTarget() != null) {
             if (this.getEntityBoundingBox().grow(2.5F + this.getRenderSize() * 0.33F, 2.5F + this.getRenderSize() * 0.33F, 2.5F + this.getRenderSize() * 0.33F).intersects(this.getAttackTarget().getEntityBoundingBox())) {
                 attackEntityAsMob(this.getAttackTarget());
             }
             if (this.groundAttack == IafDragonAttacks.Ground.FIRE && (usingGroundAttack || this.onGround)) {
-                shootLightningAtMob(this.getAttackTarget());
+            	shootLightningAtMob(this.getAttackTarget());
             }
             if (this.airAttack == IafDragonAttacks.Air.TACKLE && !usingGroundAttack && this.getDistanceSq(this.getAttackTarget()) < 100) {
                 double difX = this.getAttackTarget().posX - this.posX;
@@ -229,19 +230,38 @@ public class EntityLightningDragon extends EntityDragonBase {
         }
     }
 
-
     @Override
     protected void breathFireAtPos(BlockPos burningTarget) {
         if (this.isBreathingFire()) {
             if (this.isActuallyBreathingFire()) {
                 rotationYaw = renderYawOffset;
-                if (this.ticksExisted % 5 == 0) {
+                if (this.fireTicks % 7 == 0) {
                     this.playSound(IafSoundRegistry.LIGHTNINGDRAGON_BREATH, 4, 1);
                 }
                 stimulateFire(burningTarget.getX() + 0.5F, burningTarget.getY() + 0.5F, burningTarget.getZ() + 0.5F, 1);
             }
         } else {
             this.setBreathingFire(true);
+        }
+    }
+    
+    @Override
+    public void tryScorchTarget() {
+        EntityLivingBase entity = this.getAttackTarget();
+        if (entity != null) {
+            float distX = (float) (entity.posX - this.posX);
+            float distZ = (float) (entity.posZ - this.posZ);
+            if (this.isBreathingFire()) {
+                if (this.isActuallyBreathingFire()) {
+                    rotationYaw = renderYawOffset;
+                    if (this.fireTicks % 7 == 0) {
+                        this.playSound(IafSoundRegistry.LIGHTNINGDRAGON_BREATH, 4, 1);
+                    }
+                    stimulateFire(this.posX + distX * this.fireTicks / 40, entity.posY, this.posZ + distZ * this.fireTicks / 40, 1);
+                }
+            } else {
+                this.setBreathingFire(true);
+            }
         }
     }
 
@@ -389,7 +409,7 @@ public class EntityLightningDragon extends EntityDragonBase {
         this.burnParticleX = burnX;
         this.burnParticleY = burnY;
         this.burnParticleZ = burnZ;
-        Vec3d headPos = getHeadPosition();
+        Vec3d headPos = this.getHeadPosition();
         double d2 = burnX - headPos.x;
         double d3 = burnY - headPos.y;
         double d4 = burnZ - headPos.z;
