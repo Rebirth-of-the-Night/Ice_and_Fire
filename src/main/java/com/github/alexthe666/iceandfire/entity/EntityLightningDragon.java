@@ -235,7 +235,7 @@ public class EntityLightningDragon extends EntityDragonBase {
         if (this.isBreathingFire()) {
             if (this.isActuallyBreathingFire()) {
                 rotationYaw = renderYawOffset;
-                if (this.fireTicks % 7 == 0) {
+	                if (this.fireTicks % 7 == 0) {
                     this.playSound(IafSoundRegistry.LIGHTNINGDRAGON_BREATH, 4, 1);
                 }
                 stimulateFire(burningTarget.getX() + 0.5F, burningTarget.getY() + 0.5F, burningTarget.getZ() + 0.5F, 1);
@@ -292,7 +292,7 @@ public class EntityLightningDragon extends EntityDragonBase {
             if (this.isBreathingFire()) {
                 if (this.isActuallyBreathingFire()) {
                     rotationYaw = renderYawOffset;
-                    if (this.ticksExisted % 5 == 0) {
+                    if (this.fireTicks % 7 == 0) {
                         this.playSound(IafSoundRegistry.LIGHTNINGDRAGON_BREATH, 4, 1);
                     }
                     RayTraceResult mop = rayTraceRider(controller, 10 * this.getDragonStage(), 1.0F);
@@ -347,7 +347,7 @@ public class EntityLightningDragon extends EntityDragonBase {
                 if (this.isBreathingFire()) {
                     if (this.isActuallyBreathingFire()) {
                         rotationYaw = renderYawOffset;
-                        if (this.ticksExisted % 5 == 0) {
+                        if (this.fireTicks % 7 == 0) {
                             this.playSound(IafSoundRegistry.LIGHTNINGDRAGON_BREATH, 4, 1);
                         }
                         stimulateFire(entity.posX, entity.posY, entity.posZ, 1);
