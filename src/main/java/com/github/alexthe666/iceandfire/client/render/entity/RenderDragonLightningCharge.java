@@ -59,7 +59,7 @@ public class RenderDragonLightningCharge extends Render<EntityDragonLightningCha
         GlStateManager.translate(0F, -0.25F, 0F);
         GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.disableLighting();
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 255.0F, 0.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
         GlStateManager.translate(0F, 0.25F, 0F);
         GlStateManager.rotate(yaw - 180, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(f * 20, 0.0F, 1.0F, 0.0F);
