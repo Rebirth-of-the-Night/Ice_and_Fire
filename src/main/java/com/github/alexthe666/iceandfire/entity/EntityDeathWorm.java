@@ -73,8 +73,8 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     private Animation currentAnimation;
     private EntityMutlipartPart[] segments = new EntityMutlipartPart[6];
     private boolean isSandNavigator;
-    private float prevScale = 0.0F;
-    private EntityLookHelper lookHelper;
+    private final float prevScale = 0.0F;
+    private final EntityLookHelper lookHelper;
     private int growthCounter = 0;
 
     public EntityDeathWorm(World worldIn) {
@@ -104,7 +104,7 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
                 if (EntityDeathWorm.this.isTamed()) {
                     return input instanceof EntityMob;
                 } else {
-                    return (IceAndFire.CONFIG.deathWormAttackMonsters ? input instanceof EntityLivingBase : (input instanceof EntityAnimal || input instanceof EntityPlayer)) && DragonUtils.isAlive(input) && !(input instanceof EntityDragonBase && ((EntityDragonBase) input).isModelDead()) && !EntityDeathWorm.this.isOwner(input);
+                    return (IceAndFire.CONFIG.deathWormAttackMonsters ? input != null : (input instanceof EntityAnimal || input instanceof EntityPlayer)) && DragonUtils.isAlive(input) && !(input instanceof EntityDragonBase && ((EntityDragonBase) input).isModelDead()) && !EntityDeathWorm.this.isOwner(input);
                 }
             }
         }));
@@ -219,7 +219,7 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     public void fall(float distance, float damageMultiplier) {
     }
 
-    @Nullable
+    
     private EntityItem dropItemAt(ItemStack stack, double x, double y, double z) {
         EntityItem entityitem = new EntityItem(this.world, x, y, z, stack);
         entityitem.setDefaultPickupDelay();
@@ -252,10 +252,10 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(VARIANT, Integer.valueOf(0));
-        this.dataManager.register(SCALE, Float.valueOf(1F));
-        this.dataManager.register(CONTROL_STATE, Byte.valueOf((byte) 0));
-        this.dataManager.register(WORM_AGE, Integer.valueOf(10));
+        this.dataManager.register(VARIANT, 0);
+        this.dataManager.register(SCALE, 1F);
+        this.dataManager.register(CONTROL_STATE, (byte) 0);
+        this.dataManager.register(WORM_AGE, 10);
         this.dataManager.register(HOME, BlockPos.ORIGIN);
     }
 
@@ -282,7 +282,7 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     }
 
     private void setStateField(int i, boolean newState) {
-        byte prevState = dataManager.get(CONTROL_STATE).byteValue();
+        byte prevState = dataManager.get(CONTROL_STATE);
         if (newState) {
             dataManager.set(CONTROL_STATE, (byte) (prevState | (1 << i)));
         } else {
@@ -295,15 +295,15 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     }
 
     public void setControlState(byte state) {
-        dataManager.set(CONTROL_STATE, Byte.valueOf(state));
+        dataManager.set(CONTROL_STATE, state);
     }
 
     public int getVariant() {
-        return Integer.valueOf(this.dataManager.get(VARIANT).intValue());
+        return this.dataManager.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.dataManager.set(VARIANT, Integer.valueOf(variant));
+        this.dataManager.set(VARIANT, variant);
     }
 
     public BlockPos getWormHome() {
@@ -311,21 +311,21 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     }
 
     public void setWormHome(BlockPos home) {
-        if (home instanceof BlockPos) {
+        if (home != null) {
             this.dataManager.set(HOME, home);
         }
     }
 
     public int getWormAge() {
-        return Math.max(1, Integer.valueOf(dataManager.get(WORM_AGE).intValue()));
+        return Math.max(1, dataManager.get(WORM_AGE));
     }
 
     public void setWormAge(int age) {
-        this.dataManager.set(WORM_AGE, Integer.valueOf(age));
+        this.dataManager.set(WORM_AGE, age);
     }
 
     public float getScale() {
-        return Float.valueOf(this.dataManager.get(SCALE).floatValue());
+        return this.dataManager.get(SCALE);
     }
 
     public float getScaleForAge() {
@@ -338,7 +338,7 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     }
 
     public void setDeathWormScale(float scale) {
-        this.dataManager.set(SCALE, Float.valueOf(scale));
+        this.dataManager.set(SCALE, scale);
         this.updateAttributes();
         clearSegments();
         if (!this.world.isRemote) {
@@ -755,15 +755,15 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     }
 
     public boolean up() {
-        return (dataManager.get(CONTROL_STATE).byteValue() & 1) == 1;
+        return (dataManager.get(CONTROL_STATE) & 1) == 1;
     }
 
     public boolean dismount() {
-        return (dataManager.get(CONTROL_STATE).byteValue() >> 1 & 1) == 1;
+        return (dataManager.get(CONTROL_STATE) >> 1 & 1) == 1;
     }
 
     public boolean attack() {
-        return (dataManager.get(CONTROL_STATE).byteValue() >> 2 & 1) == 1;
+        return (dataManager.get(CONTROL_STATE) >> 2 & 1) == 1;
     }
 
     public void up(boolean up) {
@@ -939,7 +939,7 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     }
 
     public class SandMoveHelper extends EntityMoveHelper {
-        private EntityDeathWorm worm = EntityDeathWorm.this;
+        private final EntityDeathWorm worm = EntityDeathWorm.this;
 
         public SandMoveHelper() {
             super(EntityDeathWorm.this);
