@@ -52,15 +52,12 @@ public class ItemModShovel extends ItemSpade {
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         if (this == IafItemRegistry.silver_shovel) {
             if (target.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
-                target.attackEntityFrom(DamageSource.causeMobDamage(attacker), attackDamage + 3.0F);
+                target.attackEntityFrom(DamageSource.MAGIC, toolMaterial.getAttackDamage() + 4.0F);
             }
         }
         if (this.toolMaterial == IafItemRegistry.myrmexChitin) {
-            if (target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD) {
-                target.attackEntityFrom(DamageSource.GENERIC, attackDamage + 6.0F);
-            }
-            if (target instanceof EntityDeathWorm) {
-                target.attackEntityFrom(DamageSource.GENERIC, attackDamage + 6.0F);
+            if (target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
+                target.attackEntityFrom(DamageSource.GENERIC, toolMaterial.getAttackDamage() + 6.0F);
             }
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_fire_tools) {

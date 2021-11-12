@@ -30,10 +30,8 @@ import java.util.List;
 public class ItemModAxe extends ItemAxe {
 
     public ItemModAxe(ToolMaterial toolmaterial, String gameName, String name) {
-        super(ToolMaterial.DIAMOND);
+        super(toolmaterial, toolmaterial.getAttackDamage() + 5, -3.0F);
         this.toolMaterial = toolmaterial;
-        this.attackDamage = toolmaterial.getAttackDamage() + 5;
-        this.attackSpeed = -3;
         this.setTranslationKey(name);
         this.setCreativeTab(IceAndFire.TAB_ITEMS);
         this.setRegistryName(IceAndFire.MODID, gameName);
@@ -57,15 +55,12 @@ public class ItemModAxe extends ItemAxe {
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         if (this == IafItemRegistry.silver_axe) {
             if (target.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
-                target.attackEntityFrom(DamageSource.causeMobDamage(attacker), attackDamage + 3.0F);
+                target.attackEntityFrom(DamageSource.MAGIC, 4.0F + toolMaterial.getAttackDamage() + 4.0F);
             }
         }
         if (this.toolMaterial == IafItemRegistry.myrmexChitin) {
-            if (target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD) {
-                target.attackEntityFrom(DamageSource.GENERIC, attackDamage + 6.0F);
-            }
-            if (target instanceof EntityDeathWorm) {
-                target.attackEntityFrom(DamageSource.GENERIC, attackDamage + 6.0F);
+            if (target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
+                target.attackEntityFrom(DamageSource.GENERIC, toolMaterial.getAttackDamage() + 6.0F);
             }
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_fire_tools) {

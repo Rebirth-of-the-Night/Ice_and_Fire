@@ -52,29 +52,16 @@ public class ItemModPickaxe extends ItemPickaxe {
 	
 	@Override
 	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-		if (this == IafItemRegistry.silver_pickaxe) {
-			if (target.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
-				target.attackEntityFrom(DamageSource.causeMobDamage(attacker), attackDamage + 3.0F);
-			}
-		}
-		if (this.toolMaterial == IafItemRegistry.myrmexChitin) {
-			if (target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD) {
-				target.attackEntityFrom(DamageSource.GENERIC, attackDamage + 6.0F);
-			}
-			if (target instanceof EntityDeathWorm) {
-				target.attackEntityFrom(DamageSource.GENERIC, attackDamage + 6.0F);
-			}
-		}
-//        if (toolMaterial == IafItemRegistry.dragonsteel_fire_tools) {
-//            target.setFire(15);
-//            target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
-//        }
-//        if (toolMaterial == IafItemRegistry.dragonsteel_ice_tools) {
-//            FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
-//            frozenProps.setFrozenFor(300);
-//            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 2));
-//            target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
-//        }
+        if (this == IafItemRegistry.silver_pickaxe) {
+            if (target.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
+                target.attackEntityFrom(DamageSource.MAGIC, toolMaterial.getAttackDamage() + 4.0F);
+            }
+        }
+        if (this.toolMaterial == IafItemRegistry.myrmexChitin) {
+            if (target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
+                target.attackEntityFrom(DamageSource.GENERIC, toolMaterial.getAttackDamage() + 6.0F);
+            }
+        }
 		if (toolMaterial == IafItemRegistry.dragonsteel_fire_tools) {
 			if (!IsImmune.toDragonFire(target)) {
 				target.setFire(15);
