@@ -464,23 +464,20 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     }
 
     public int getArmorOrdinal(ItemStack stack) {
-        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_iron) {
-            return 1;
-        }
-        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_gold) {
-            return 2;
-        }
-        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_diamond) {
-            return 3;
-        }
-        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_silver) {
-            return 4;
-        }
-        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_fire) {
-            return 5;
-        }
-        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_ice) {
-            return 6;
+        if (!stack.isEmpty() && stack.getItem() != null) {
+            if (stack.getItem() == IafItemRegistry.dragon_armor_iron) {
+                return 1;
+            } else if (stack.getItem() == IafItemRegistry.dragon_armor_gold) {
+                return 2;
+            } else if (stack.getItem() == IafItemRegistry.dragon_armor_diamond) {
+                return 3;
+            } else if (stack.getItem() == IafItemRegistry.dragon_armor_silver) {
+                return 4;
+            } else if (stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_fire) {
+                return 5;
+            } else if (stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_ice) {
+                return 6;
+            }
         }
         return 0;
     }

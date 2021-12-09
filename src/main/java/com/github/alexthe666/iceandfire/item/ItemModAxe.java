@@ -5,6 +5,7 @@ import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityDeathWorm;
 import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
+import com.github.alexthe666.iceandfire.util.IsImmune;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -68,15 +69,13 @@ public class ItemModAxe extends ItemAxe {
             }
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_fire_tools) {
-            // FIXME use IsImmune
-	        if (!(target instanceof EntityCow)) {
+	        if (!IsImmune.toDragonFire(target)) {
 		        target.setFire(15);
 	        }
 	        target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_ice_tools) {
-            // FIXME use IsImmune
-	        if (!(target instanceof EntityHippogryph)) {
+	        if (!IsImmune.toDragonIce(target)) {
 		        FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
 		        frozenProps.setFrozenFor(300);
 		        target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 2));

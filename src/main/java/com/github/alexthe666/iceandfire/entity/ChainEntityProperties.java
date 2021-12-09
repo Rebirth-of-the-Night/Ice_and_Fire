@@ -76,7 +76,7 @@ public class ChainEntityProperties extends EntityProperties<EntityLivingBase> {
         minimizeLists();
         connectedEntityUUID.remove(entity.getUniqueID());
         connectedEntities.remove(entity);
-        if (!entity.world.isRemote) {
+        if (entity != null && !entity.world.isRemote) {
             IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageRemoveChainedEntity(us.getEntityId(), entity.getEntityId()));
         }
         wasJustDisconnected = true;
