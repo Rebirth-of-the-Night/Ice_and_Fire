@@ -67,6 +67,8 @@ public class IceAndFireConfig {
     public boolean spawnPixies = true;
     public int spawnPixiesChance = 60;
     public int pixieVillageSize = 5;
+    public String[] pixieVillageBiomeBlacklist = {};
+    public boolean pixieVillageBiomeBlacklistIsWhitelist = false;
     public boolean pixiesStealItems = true;
     public boolean generateCyclopsCaves = true;
     public boolean generateWanderingCyclops = true;

@@ -62,4 +62,24 @@ public class IceAndFireCoreUtils {
 			.map(EntityEntry::getEntityClass)
 			.anyMatch((cls) -> cls.isInstance(entity));
 	}
+
+	/**
+	 * Returns true if `resourceLocation` is either not in the blacklist or in the whitelist, false otherwise
+	 */
+	public static boolean blackOrWhitelistCheck(String[] configList, boolean isWhitelist, ResourceLocation resourceLocation) {
+		if (isWhitelist) {
+			for (String string : configList) {
+				if (new ResourceLocation(string).equals(resourceLocation)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		for (String string : configList) {
+			if (new ResourceLocation(string).equals(resourceLocation)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
