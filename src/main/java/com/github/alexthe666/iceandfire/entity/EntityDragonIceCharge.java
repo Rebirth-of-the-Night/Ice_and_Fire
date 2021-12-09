@@ -70,10 +70,12 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
 
             ++this.ticksInAir;
             RayTraceResult raytraceresult = ProjectileHelper.forwardsRaycast(this, false, this.ticksInAir >= 25, shootingEntity);
-	
-	        this.onImpact(raytraceresult);
-	
-	        this.posX += this.motionX;
+
+            if (raytraceresult != null) {
+                this.onImpact(raytraceresult);
+            }
+
+            this.posX += this.motionX;
             this.posY += this.motionY;
             this.posZ += this.motionZ;
             ProjectileHelper.rotateTowardsMovement(this, 0.2F);

@@ -17,8 +17,11 @@ import java.util.Random;
 public class WorldGenAnimalFarm extends WorldGenerator {
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
-	
-	    Biome biome = worldIn.getBiome(position);
+        if (worldIn == null) {
+            return false;
+        }
+
+        Biome biome = worldIn.getBiome(position);
         boolean sandy = BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY);
         Block fence = Blocks.OAK_FENCE;
         Block fence_gate = Blocks.OAK_FENCE_GATE;

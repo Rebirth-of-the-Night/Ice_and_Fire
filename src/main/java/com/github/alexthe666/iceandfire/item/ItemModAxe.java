@@ -68,12 +68,14 @@ public class ItemModAxe extends ItemAxe {
             }
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_fire_tools) {
+            // FIXME use IsImmune
 	        if (!(target instanceof EntityCow)) {
 		        target.setFire(15);
 	        }
 	        target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_ice_tools) {
+            // FIXME use IsImmune
 	        if (!(target instanceof EntityHippogryph)) {
 		        FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
 		        frozenProps.setFrozenFor(300);

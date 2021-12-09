@@ -436,7 +436,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
         compound.setInteger("zTile", this.zTile);
         compound.setShort("life", (short) this.ticksInGround);
         ResourceLocation resourcelocation = Block.REGISTRY.getNameForObject(this.inTile);
-        compound.setString("inTile", resourcelocation.toString());
+        compound.setString("inTile", resourcelocation == null ? "" : resourcelocation.toString());
         compound.setByte("inData", (byte) this.inData);
         compound.setByte("shake", (byte) this.arrowShake);
         compound.setByte("inGround", (byte) (this.inGround ? 1 : 0));

@@ -38,7 +38,7 @@ public enum EnumTroll {
     public Item leggings;
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":troll_boots")
     public Item boots;
-    private final Weapon[] weapons;
+    private Weapon[] weapons;
 
     EnumTroll(BiomeDictionary.Type biome, ItemArmor.ArmorMaterial material, Weapon... weapons) {
         spawnBiome = biome;

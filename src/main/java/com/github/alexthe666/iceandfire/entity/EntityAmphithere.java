@@ -158,7 +158,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
         if (player.getHeldItem(hand).interactWithEntity(player, this, hand)) {
             return true;
         }
-        if (itemstack.getItem() == Items.COOKIE) {
+        if (itemstack != null && itemstack.getItem() == Items.COOKIE) {
             if (this.getGrowingAge() == 0 && !isInLove()) {
                 this.setSitting(false);
                 this.setInLove(player);
@@ -169,8 +169,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
             }
             return true;
         }
-        if (itemstack.getItem() == Items.DYE && itemstack.getItemDamage() == EnumDyeColor.BROWN.getDyeDamage() && this.getHealth() < this
-		        .getMaxHealth()) {
+        if (itemstack != null && itemstack.getItem() == Items.DYE && itemstack.getItemDamage() == EnumDyeColor.BROWN.getDyeDamage() && this.getHealth() < this.getMaxHealth()) {
             this.heal(5);
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
             if (!player.isCreative()) {
@@ -179,7 +178,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
             return true;
         }
         if (!super.processInteract(player, hand)) {
-            if (itemstack.getItem() == IafItemRegistry.dragon_stick && this.isOwner(player)) {
+            if (itemstack != null && itemstack.getItem() == IafItemRegistry.dragon_stick && this.isOwner(player)) {
                 if (player.isSneaking()) {
                     BlockPos pos = new BlockPos(this);
                     this.homePos = pos;

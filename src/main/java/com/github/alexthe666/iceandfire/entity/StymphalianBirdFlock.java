@@ -19,7 +19,7 @@ public class StymphalianBirdFlock {
     private BlockPos leaderTarget;
     private BlockPos prevLeaderTarget;
     private Random random;
-    private final int distance = 15;
+    private int distance = 15;
 
     private StymphalianBirdFlock() {
     }

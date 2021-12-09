@@ -60,7 +60,7 @@ public class CommonProxy {
     public static void registerVillagers(RegistryEvent.Register<VillagerRegistry.VillagerProfession> event) {
         IForgeRegistry<VillagerRegistry.VillagerProfession> professionRegistry = event.getRegistry();
         IafVillagerRegistry villagerRegistry = IafVillagerRegistry.INSTANCE;
-        if(villagerRegistry.fisherman == null) villagerRegistry.init();
+        villagerRegistry.init();
         professionRegistry.register(villagerRegistry.fisherman);
         professionRegistry.register(villagerRegistry.craftsman);
         professionRegistry.register(villagerRegistry.shaman);

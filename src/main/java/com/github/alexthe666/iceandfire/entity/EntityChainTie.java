@@ -52,11 +52,8 @@ public class EntityChainTie extends EntityHanging {
         int k = pos.getZ();
 
         for (EntityChainTie entityleashknot : worldIn.getEntitiesWithinAABB(EntityChainTie.class, new AxisAlignedBB((double) i - 1.0D, (double) j - 1.0D, (double) k - 1.0D, (double) i + 1.0D, (double) j + 1.0D, (double) k + 1.0D))) {
-            if (entityleashknot != null) {
-	            entityleashknot.getHangingPosition();
-	            if (entityleashknot.getHangingPosition().equals(pos)) {
-		            return entityleashknot;
-	            }
+            if (entityleashknot != null && entityleashknot.getHangingPosition() != null && entityleashknot.getHangingPosition().equals(pos)) {
+                return entityleashknot;
             }
         }
 
@@ -91,10 +88,12 @@ public class EntityChainTie extends EntityHanging {
 
     public void writeEntityToNBT(NBTTagCompound compound) {
         BlockPos blockpos = this.getHangingPosition();
-	    compound.setInteger("TileX", blockpos.getX());
-	    compound.setInteger("TileY", blockpos.getY());
-	    compound.setInteger("TileZ", blockpos.getZ());
-	
+        if(blockpos != null){
+            compound.setInteger("TileX", blockpos.getX());
+            compound.setInteger("TileY", blockpos.getY());
+            compound.setInteger("TileZ", blockpos.getZ());
+        }
+
     }
 
     public void readEntityFromNBT(NBTTagCompound compound) {

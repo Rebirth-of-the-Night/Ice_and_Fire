@@ -375,10 +375,7 @@ public class ServerEvents {
                 ((EntityLiving) event.getTarget()).setHealth(((EntityLiving) event.getTarget()).getMaxHealth());
                 if (event.getEntityPlayer() != null) {
                     ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
-	                stack.getItem();
-	                if (stack.getItem().canHarvestBlock(Blocks.STONE.getDefaultState()) || stack.getItem()
-			                .getTranslationKey()
-			                .contains("pickaxe")) {
+                    if (stack.getItem() != null && (stack.getItem().canHarvestBlock(Blocks.STONE.getDefaultState()) || stack.getItem().getTranslationKey().contains("pickaxe"))) {
                         boolean silkTouch = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0;
                         boolean ready = false;
                         if (properties != null && !stonePlayer) {
@@ -532,7 +529,7 @@ public class ServerEvents {
                         event.getEntityLiving().dropItem(IafItemRegistry.rotten_egg, 1);
                     }
                     chickenProps.timeUntilNextEgg = chickenProps.generateTime();
-                } else {
+                } else if (chickenProps.timeUntilNextEgg > 0) {
                     chickenProps.timeUntilNextEgg--;
                 }
             }

@@ -464,41 +464,23 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     }
 
     public int getArmorOrdinal(ItemStack stack) {
-        if (!stack.isEmpty()) {
-	        stack.getItem();
-	        if (stack.getItem() == IafItemRegistry.dragon_armor_iron) {
-		        return 1;
-	        }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_iron) {
+            return 1;
         }
-        if (!stack.isEmpty()) {
-	        stack.getItem();
-	        if (stack.getItem() == IafItemRegistry.dragon_armor_gold) {
-		        return 2;
-	        }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_gold) {
+            return 2;
         }
-        if (!stack.isEmpty()) {
-	        stack.getItem();
-	        if (stack.getItem() == IafItemRegistry.dragon_armor_diamond) {
-		        return 3;
-	        }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_diamond) {
+            return 3;
         }
-        if (!stack.isEmpty()) {
-	        stack.getItem();
-	        if (stack.getItem() == IafItemRegistry.dragon_armor_silver) {
-		        return 4;
-	        }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_silver) {
+            return 4;
         }
-        if (!stack.isEmpty()) {
-	        stack.getItem();
-	        if (stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_fire) {
-		        return 5;
-	        }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_fire) {
+            return 5;
         }
-        if (!stack.isEmpty()) {
-	        stack.getItem();
-	        if (stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_ice) {
-		        return 6;
-	        }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.dragon_armor_dragonsteel_ice) {
+            return 6;
         }
         return 0;
     }
@@ -629,8 +611,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         compound.setBoolean("ModelDead", this.isModelDead());
         compound.setFloat("DeadProg", this.modelDeadProgress);
         compound.setBoolean("Tackle", this.isTackling());
-	    this.getCustomNameTag();
-	    if (!this.getCustomNameTag().isEmpty()) {
+        if (this.getCustomNameTag() != null && !this.getCustomNameTag().isEmpty()) {
             compound.setString("CustomName", this.getCustomNameTag());
         }
         compound.setBoolean("HasHomePosition", this.hasHomePosition);
@@ -990,7 +971,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             return true;
         }
         if (this.isModelDead() && this.getDeathStage() < lastDeathStage && player.capabilities.allowEdit) {
-            if (!world.isRemote && !stack.isEmpty() && stack.getItem() == Items.GLASS_BOTTLE && this.getDeathStage() < lastDeathStage / 2 && IceAndFire.CONFIG.dragonDropBlood) {
+            if (!world.isRemote && !stack.isEmpty() && stack.getItem() != null && stack.getItem() == Items.GLASS_BOTTLE && this.getDeathStage() < lastDeathStage / 2 && IceAndFire.CONFIG.dragonDropBlood) {
                 if (!player.capabilities.isCreativeMode) {
                     stack.shrink(1);
                 }
@@ -1704,7 +1685,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 } else if (!world.isAirBlock(pos)) {
                     return true;
                 }
-                return rayTrace.typeOfHit != RayTraceResult.Type.BLOCK;
+                return rayTrace != null && rayTrace.typeOfHit != RayTraceResult.Type.BLOCK;
             }
         }
         return false;

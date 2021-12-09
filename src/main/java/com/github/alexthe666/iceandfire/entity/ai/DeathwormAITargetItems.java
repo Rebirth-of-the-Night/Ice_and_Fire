@@ -64,7 +64,7 @@ public class DeathwormAITargetItems<T extends EntityItem> extends EntityAITarget
     @Override
     public void updateTask() {
         super.updateTask();
-        if (this.targetEntity == null || this.targetEntity.isDead) {
+        if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
             this.resetTask();
         }
         if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {

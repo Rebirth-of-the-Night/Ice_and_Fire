@@ -247,11 +247,14 @@ public class EntityMyrmexRoyal extends EntityMyrmexBase {
         } else if (otherAnimal.getClass() != this.getClass()) {
             return false;
         } else {
-	        if (((EntityMyrmexBase) otherAnimal).getHive() != null && this.getHive() != null) {
-	            return !this.getHive().equals(((EntityMyrmexBase) otherAnimal).getHive());
-	        } else {
-	            return true;
-	        }
+            if (otherAnimal instanceof EntityMyrmexBase) {
+                if (((EntityMyrmexBase) otherAnimal).getHive() != null && this.getHive() != null) {
+                    return !this.getHive().equals(((EntityMyrmexBase) otherAnimal).getHive());
+                } else {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

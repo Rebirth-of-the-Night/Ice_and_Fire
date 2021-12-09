@@ -81,7 +81,7 @@ public class WorldGenMyrmexDecoration {
                 }
             }
             int i1 = 0;
-            for (int i = 0; i < 3; ++i) {
+            for (int i = 0; i1 >= 0 && i < 3; ++i) {
                 int j = i1 + rand.nextInt(2);
                 int k = i1 + rand.nextInt(2);
                 int l = i1 + rand.nextInt(2);
@@ -158,7 +158,7 @@ public class WorldGenMyrmexDecoration {
                     break;
             }
             int i1 = 0;
-            for (int i = 0; i < 3; ++i) {
+            for (int i = 0; i1 >= 0 && i < 3; ++i) {
                 int j = i1 + rand.nextInt(2);
                 int k = i1 + rand.nextInt(2);
                 int l = i1 + rand.nextInt(2);

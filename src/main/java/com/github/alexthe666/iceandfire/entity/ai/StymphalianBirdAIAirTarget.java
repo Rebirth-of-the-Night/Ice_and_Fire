@@ -35,31 +35,34 @@ public class StymphalianBirdAIAirTarget extends EntityAIBase {
     }
 
     public boolean shouldExecute() {
-	    if (!bird.isFlying()) {
-	        return false;
-	    }
-	    if (bird.isChild()) {
-	        return false;
-	    }
-	    if (bird.doesWantToLand()) {
-	        return false;
-	    }
-	    if (bird.airTarget != null && (bird.isTargetBlocked(new Vec3d(bird.airTarget)))) {
-	        bird.airTarget = null;
-	    }
-	
-	    if (bird.airTarget != null) {
-	        return false;
-	    } else {
-	        Vec3d vec = this.findAirTarget();
-	
-	        if (vec == null) {
-	            return false;
-	        } else {
-	            bird.airTarget = new BlockPos(vec.x, vec.y, vec.z);
-	            return true;
-	        }
-	    }
+        if (bird != null) {
+            if (!bird.isFlying()) {
+                return false;
+            }
+            if (bird.isChild()) {
+                return false;
+            }
+            if (bird.doesWantToLand()) {
+                return false;
+            }
+            if (bird.airTarget != null && (bird.isTargetBlocked(new Vec3d(bird.airTarget)))) {
+                bird.airTarget = null;
+            }
+
+            if (bird.airTarget != null) {
+                return false;
+            } else {
+                Vec3d vec = this.findAirTarget();
+
+                if (vec == null) {
+                    return false;
+                } else {
+                    bird.airTarget = new BlockPos(vec.x, vec.y, vec.z);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean continueExecuting() {

@@ -83,22 +83,23 @@ public class BlockSilverPile extends Block {
         ItemStack item = playerIn.inventory.getCurrentItem();
 
         if (!item.isEmpty()) {
-	        item.getItem();
-	        if (item.getItem() == Item.getItemFromBlock(IafBlockRegistry.silverPile)) {
-	            if (!item.isEmpty()) {
-	                if (this.getMetaFromState(state) < 7) {
-	                    WorldUtils.setBlock(worldIn, pos.getX(), pos.getY(), pos.getZ(), IafBlockRegistry.silverPile, this.getMetaFromState(state) + 1, 3);
-	                    if (!playerIn.capabilities.isCreativeMode) {
-	                        item.shrink(1);
-	
-	                        if (item.isEmpty()) {
-	                            playerIn.inventory.setInventorySlotContents(playerIn.inventory.currentItem, ItemStack.EMPTY);
-	                        }
-	                    }
-	                    return true;
-	                }
-	            }
-	        }
+            if (item.getItem() != null) {
+                if (item.getItem() == Item.getItemFromBlock(IafBlockRegistry.silverPile)) {
+                    if (!item.isEmpty()) {
+                        if (this.getMetaFromState(state) < 7) {
+                            WorldUtils.setBlock(worldIn, pos.getX(), pos.getY(), pos.getZ(), IafBlockRegistry.silverPile, this.getMetaFromState(state) + 1, 3);
+                            if (!playerIn.capabilities.isCreativeMode) {
+                                item.shrink(1);
+
+                                if (item.isEmpty()) {
+                                    playerIn.inventory.setInventorySlotContents(playerIn.inventory.currentItem, ItemStack.EMPTY);
+                                }
+                            }
+                            return true;
+                        }
+                    }
+                }
+            }
         }
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ);
     }

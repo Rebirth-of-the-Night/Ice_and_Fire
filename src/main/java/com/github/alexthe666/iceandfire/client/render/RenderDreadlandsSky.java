@@ -46,12 +46,21 @@ public class RenderDreadlandsSky extends IRenderHandler {
             GLAllocation.deleteDisplayLists(this.glSkyList2);
             this.glSkyList2 = -1;
         }
-	
-	    this.sky2VBO = new VertexBuffer(this.vertexBufferFormat);
-	    this.renderSky(bufferbuilder, -16.0F, true);
-	    bufferbuilder.finishDrawing();
-	    bufferbuilder.reset();
-	    this.sky2VBO.bufferData(bufferbuilder.getByteBuffer());
+
+        if (true)//this.vboEnabled)
+        {
+            this.sky2VBO = new VertexBuffer(this.vertexBufferFormat);
+            this.renderSky(bufferbuilder, -16.0F, true);
+            bufferbuilder.finishDrawing();
+            bufferbuilder.reset();
+            this.sky2VBO.bufferData(bufferbuilder.getByteBuffer());
+        } else {
+            this.glSkyList2 = GLAllocation.generateDisplayLists(1);
+            GlStateManager.glNewList(this.glSkyList2, 4864);
+            this.renderSky(bufferbuilder, -16.0F, true);
+            tessellator.draw();
+            GlStateManager.glEndList();
+        }
     }
 
     private void generateSky() {
@@ -66,12 +75,21 @@ public class RenderDreadlandsSky extends IRenderHandler {
             GLAllocation.deleteDisplayLists(this.glSkyList);
             this.glSkyList = -1;
         }
-	
-	    this.skyVBO = new VertexBuffer(this.vertexBufferFormat);
-	    this.renderSky(bufferbuilder, 16.0F, false);
-	    bufferbuilder.finishDrawing();
-	    bufferbuilder.reset();
-	    this.skyVBO.bufferData(bufferbuilder.getByteBuffer());
+
+        if (true)//this.vboEnabled)
+        {
+            this.skyVBO = new VertexBuffer(this.vertexBufferFormat);
+            this.renderSky(bufferbuilder, 16.0F, false);
+            bufferbuilder.finishDrawing();
+            bufferbuilder.reset();
+            this.skyVBO.bufferData(bufferbuilder.getByteBuffer());
+        } else {
+            this.glSkyList = GLAllocation.generateDisplayLists(1);
+            GlStateManager.glNewList(this.glSkyList, 4864);
+            this.renderSky(bufferbuilder, 16.0F, false);
+            tessellator.draw();
+            GlStateManager.glEndList();
+        }
     }
 
     private void renderSky(BufferBuilder bufferBuilderIn, float posY, boolean reverseX) {
@@ -109,12 +127,23 @@ public class RenderDreadlandsSky extends IRenderHandler {
             GLAllocation.deleteDisplayLists(this.starGLCallList);
             this.starGLCallList = -1;
         }
-	
-	    this.starVBO = new VertexBuffer(this.vertexBufferFormat);
-	    this.renderStars(bufferbuilder);
-	    bufferbuilder.finishDrawing();
-	    bufferbuilder.reset();
-	    this.starVBO.bufferData(bufferbuilder.getByteBuffer());
+
+        if (true) //this.vboEnabled)
+        {
+            this.starVBO = new VertexBuffer(this.vertexBufferFormat);
+            this.renderStars(bufferbuilder);
+            bufferbuilder.finishDrawing();
+            bufferbuilder.reset();
+            this.starVBO.bufferData(bufferbuilder.getByteBuffer());
+        } else {
+            this.starGLCallList = GLAllocation.generateDisplayLists(1);
+            GlStateManager.pushMatrix();
+            GlStateManager.glNewList(this.starGLCallList, 4864);
+            this.renderStars(bufferbuilder);
+            tessellator.draw();
+            GlStateManager.glEndList();
+            GlStateManager.popMatrix();
+        }
     }
 
     private void renderStars(BufferBuilder bufferBuilderIn) {
@@ -178,15 +207,20 @@ public class RenderDreadlandsSky extends IRenderHandler {
         GlStateManager.depthMask(false);
         GlStateManager.enableFog();
         GlStateManager.color(f, f1, f2);
-	
-	    skyVBO.bindBuffer();
-	    GlStateManager.glEnableClientState(32884);
-	    GlStateManager.glVertexPointer(3, 5126, 12, 0);
-	    skyVBO.drawArrays(7);
-	    skyVBO.unbindBuffer();
-	    GlStateManager.glDisableClientState(32884);
-	
-	    GlStateManager.disableFog();
+
+        if (true)//vboEnabled)
+        {
+            skyVBO.bindBuffer();
+            GlStateManager.glEnableClientState(32884);
+            GlStateManager.glVertexPointer(3, 5126, 12, 0);
+            skyVBO.drawArrays(7);
+            skyVBO.unbindBuffer();
+            GlStateManager.glDisableClientState(32884);
+        } else {
+            GlStateManager.callList(glSkyList);
+        }
+
+        GlStateManager.disableFog();
         GlStateManager.disableAlpha();
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
@@ -264,13 +298,18 @@ public class RenderDreadlandsSky extends IRenderHandler {
 
         if (f15 > 0.0F) {
             GlStateManager.color(f15, f15, f15, f15);
-	
-	        starVBO.bindBuffer();
-	        GlStateManager.glEnableClientState(32884);
-	        GlStateManager.glVertexPointer(3, 5126, 12, 0);
-	        starVBO.drawArrays(7);
-	        starVBO.unbindBuffer();
-	        GlStateManager.glDisableClientState(32884);
+
+            if (true) //vboEnabled)
+            {
+                starVBO.bindBuffer();
+                GlStateManager.glEnableClientState(32884);
+                GlStateManager.glVertexPointer(3, 5126, 12, 0);
+                starVBO.drawArrays(7);
+                starVBO.unbindBuffer();
+                GlStateManager.glDisableClientState(32884);
+            } else {
+                GlStateManager.callList(starGLCallList);
+            }
         }
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -285,15 +324,20 @@ public class RenderDreadlandsSky extends IRenderHandler {
         if (d3 < 0.0D) {
             GlStateManager.pushMatrix();
             GlStateManager.translate(0.0F, 12.0F, 0.0F);
-	
-	        sky2VBO.bindBuffer();
-	        GlStateManager.glEnableClientState(32884);
-	        GlStateManager.glVertexPointer(3, 5126, 12, 0);
-	        sky2VBO.drawArrays(7);
-	        sky2VBO.unbindBuffer();
-	        GlStateManager.glDisableClientState(32884);
-	
-	        GlStateManager.popMatrix();
+
+            if (true) //vboEnabled)
+            {
+                sky2VBO.bindBuffer();
+                GlStateManager.glEnableClientState(32884);
+                GlStateManager.glVertexPointer(3, 5126, 12, 0);
+                sky2VBO.drawArrays(7);
+                sky2VBO.unbindBuffer();
+                GlStateManager.glDisableClientState(32884);
+            } else {
+                GlStateManager.callList(glSkyList2);
+            }
+
+            GlStateManager.popMatrix();
             float f18 = 1.0F;
             float f19 = -((float) (d3 + 65.0D));
             float f20 = -1.0F;

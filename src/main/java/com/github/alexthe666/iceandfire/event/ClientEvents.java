@@ -258,11 +258,8 @@ public class ClientEvents {
                     }
 
                 }
-                if (IceAndFire.CONFIG.sirenShader && !sirenProps.isCharmed && renderer != null) {
-	                ShaderGroup shaderGroup = renderer.getShaderGroup();
-	                if (shaderGroup != null && SIREN_SHADER.toString().equals(shaderGroup.getShaderGroupName())) {
-		                renderer.stopUseShader();
-	                }
+                if (IceAndFire.CONFIG.sirenShader && !sirenProps.isCharmed && renderer != null && renderer.getShaderGroup() != null && renderer.getShaderGroup().getShaderGroupName() != null && SIREN_SHADER.toString().equals(renderer.getShaderGroup().getShaderGroupName())) {
+                    renderer.stopUseShader();
                 }
             }
         }

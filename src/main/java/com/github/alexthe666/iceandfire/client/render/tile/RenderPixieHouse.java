@@ -31,7 +31,7 @@ public class RenderPixieHouse extends TileEntitySpecialRenderer<TileEntityPixieH
         int rotation = 0;
         int meta = 0;
 
-        if (entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockPixieHouse) {
+        if (entity != null && entity.getWorld() != null && entity.getWorld().getBlockState(entity.getPos()).getBlock() instanceof BlockPixieHouse) {
             meta = entity.houseType;
             if (entity.getWorld().getBlockState(entity.getPos()).getValue(BlockPixieHouse.FACING) == EnumFacing.NORTH) {
                 rotation = 180;
@@ -51,58 +51,57 @@ public class RenderPixieHouse extends TileEntitySpecialRenderer<TileEntityPixieH
         GL11.glPushMatrix();
         GL11.glRotatef(180, 1, 0, 0);
         GL11.glRotatef(rotation, 0, 1F, 0);
-	    entity.getWorld();
-	    if (entity.hasPixie) {
-		    GL11.glPushMatrix();
-		    GL11.glTranslatef(0F, 0.95F, 0F);
-		    GL11.glScalef(0.55F, 0.55F, 0.55F);
-		    GL11.glPushMatrix();
-		    //GL11.glRotatef(MathHelper.clampAngle(entity.ticksExisted * 3), 0, 1, 0);
-		    switch (entity.pixieType) {
-			    default:
-				    this.bindTexture(RenderPixie.TEXTURE_0);
-				    break;
-			    case 1:
-				    this.bindTexture(RenderPixie.TEXTURE_1);
-				    break;
-			    case 2:
-				    this.bindTexture(RenderPixie.TEXTURE_2);
-				    break;
-			    case 3:
-				    this.bindTexture(RenderPixie.TEXTURE_3);
-				    break;
-			    case 4:
-				    this.bindTexture(RenderPixie.TEXTURE_4);
-				    break;
-			    case 5:
-				    this.bindTexture(RenderPixie.TEXTURE_5);
-				    break;
-		    }
-		    GL11.glPushMatrix();
-		    GlStateManager.enableBlend();
-		    GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.CONSTANT_ALPHA);
-		    GlStateManager.disableLighting();
-		    GlStateManager.depthMask(true);
-		    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 61680.0F, 0.0F);
-		    GlStateManager.enableLighting();
-		    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		    GlStateManager.enableColorMaterial();
-		    MODEL_PIXIE.animateInHouse(entity);
-		    GlStateManager.disableColorMaterial();
-		    int i = entity.getWorld().getCombinedLight(entity.getPos(), entity.getWorld().getLightFor(EnumSkyBlock.BLOCK, entity.getPos()));
-		    int j = i % 65536;
-		    int k = i / 65536;
-		    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
-		    GlStateManager.depthMask(true);
-		    GlStateManager.disableBlend();
-		    GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-		    GlStateManager.enableTexture2D();
-		    GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
-		    GL11.glPopMatrix();
-		    GL11.glPopMatrix();
-		    GL11.glPopMatrix();
-	    }
-	    switch (meta) {
+        if (entity != null && entity.getWorld() != null && entity.hasPixie) {
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0F, 0.95F, 0F);
+            GL11.glScalef(0.55F, 0.55F, 0.55F);
+            GL11.glPushMatrix();
+            //GL11.glRotatef(MathHelper.clampAngle(entity.ticksExisted * 3), 0, 1, 0);
+            switch (entity.pixieType) {
+                default:
+                    this.bindTexture(RenderPixie.TEXTURE_0);
+                    break;
+                case 1:
+                    this.bindTexture(RenderPixie.TEXTURE_1);
+                    break;
+                case 2:
+                    this.bindTexture(RenderPixie.TEXTURE_2);
+                    break;
+                case 3:
+                    this.bindTexture(RenderPixie.TEXTURE_3);
+                    break;
+                case 4:
+                    this.bindTexture(RenderPixie.TEXTURE_4);
+                    break;
+                case 5:
+                    this.bindTexture(RenderPixie.TEXTURE_5);
+                    break;
+            }
+            GL11.glPushMatrix();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.CONSTANT_ALPHA);
+            GlStateManager.disableLighting();
+            GlStateManager.depthMask(true);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 61680.0F, 0.0F);
+            GlStateManager.enableLighting();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.enableColorMaterial();
+            MODEL_PIXIE.animateInHouse(entity);
+            GlStateManager.disableColorMaterial();
+            int i = entity.getWorld().getCombinedLight(entity.getPos(), entity.getWorld().getLightFor(EnumSkyBlock.BLOCK, entity.getPos()));
+            int j = i % 65536;
+            int k = i / 65536;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
+            GlStateManager.depthMask(true);
+            GlStateManager.disableBlend();
+            GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+            GlStateManager.enableTexture2D();
+            GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+            GL11.glPopMatrix();
+            GL11.glPopMatrix();
+            GL11.glPopMatrix();
+        }
+        switch (meta) {
             case 0:
                 this.bindTexture(TEXTURE_0);
                 break;

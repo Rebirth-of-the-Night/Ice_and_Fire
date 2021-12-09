@@ -477,9 +477,11 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
         } else if (!jumping && jumpProgress > 0.0F) {
             jumpProgress -= 0.5F;
         }
-	    if (wantJumpProgress > 0.0F) {
-	        wantJumpProgress -= 2F;
-	    }
+        if (wantJumping && wantJumpProgress < 10.0F) {
+            wantJumpProgress += 2F;
+        } else if (!wantJumping && wantJumpProgress > 0.0F) {
+            wantJumpProgress -= 2F;
+        }
         if (this.isJumpingOutOfWater() && jumpRot < 1.0F) {
             jumpRot += 0.1F;
         } else if (!this.isJumpingOutOfWater() && jumpRot > 0.0F) {
@@ -554,9 +556,11 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
                     this.swimBehavior = SwimBehavior.WANDER;
                 }
             } else {
-	            if (this.swimBehavior == SwimBehavior.JUMP) {
-		            this.getAttackTarget();
-	            }
+                if (this.swimBehavior == SwimBehavior.JUMP && this.getAttackTarget() != null && this.getDistanceSq(this.getAttackTarget()) > 200 * getSeaSerpentScale()) {
+                    this.swimBehavior = SwimBehavior.WANDER;
+                    this.ticksSinceJump = 0;
+                    setJumpingOutOfWater(false);
+                }
             }
             if (this.swimBehavior != SwimBehavior.JUMP && this.swimBehavior != SwimBehavior.ATTACK && this.ticksSinceJump > TIME_BETWEEN_JUMPS) {
                 this.swimBehavior = SwimBehavior.JUMP;

@@ -61,16 +61,12 @@ public class GuiBestiary extends GuiScreen {
     public GuiBestiary(ItemStack book) {
         this.book = book;
         int indexPageTotal = 0;
-        if (!book.isEmpty()) {
-	        book.getItem();
-	        if (book.getItem() == IafItemRegistry.bestiary) {
-		        if (book.getTagCompound() != null) {
-			        List<EnumBestiaryPages> pages = EnumBestiaryPages.containedPages(EnumBestiaryPages.toList(book.getTagCompound()
-					        .getIntArray("Pages")));
-			        allPageTypes.addAll(pages);
-			        indexPagesTotal = (int) Math.ceil(pages.size() / 10D);
-		        }
-	        }
+        if (!book.isEmpty() && book.getItem() != null && book.getItem() == IafItemRegistry.bestiary) {
+            if (book.getTagCompound() != null) {
+                List<EnumBestiaryPages> pages = EnumBestiaryPages.containedPages(EnumBestiaryPages.toList(book.getTagCompound().getIntArray("Pages")));
+                allPageTypes.addAll(pages);
+                indexPagesTotal = (int) Math.ceil(pages.size() / 10D);
+            }
         }
         index = true;
     }

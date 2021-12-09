@@ -134,7 +134,7 @@ public class EntitySnowVillager extends EntityVillager {
         Team team = this.getTeam();
         String s = this.getCustomNameTag();
 
-        if (!s.isEmpty()) {
+        if (s != null && !s.isEmpty()) {
             TextComponentString textcomponentstring = new TextComponentString(ScorePlayerTeam.formatPlayerName(team, s));
             textcomponentstring.getStyle().setHoverEvent(this.getHoverEvent());
             textcomponentstring.getStyle().setInsertion(this.getCachedUniqueIdString());

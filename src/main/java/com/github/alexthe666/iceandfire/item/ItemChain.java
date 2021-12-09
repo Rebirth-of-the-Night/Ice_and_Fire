@@ -27,7 +27,7 @@ import java.util.List;
 
 public class ItemChain extends Item {
 
-    private final boolean sticky;
+    private boolean sticky;
 
     public ItemChain(boolean sticky) {
         this.sticky = sticky;

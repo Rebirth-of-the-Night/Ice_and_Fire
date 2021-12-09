@@ -112,25 +112,24 @@ public class TileEntityMyrmexCocoon extends TileEntityLockableLoot {
     }
 
     public void fillWithLoot(@Nullable EntityPlayer player) {
-        if (this.lootTable != null && this.world != null) {
-	        this.world.getLootTableManager();
-	        LootTable loottable = this.world.getLootTableManager().getLootTableFromLocation(this.lootTable);
-	        this.lootTable = null;
-	        Random random;
-	
-	        if (this.lootTableSeed == 0L) {
-		        random = new Random();
-	        } else {
-		        random = new Random(this.lootTableSeed);
-	        }
-	
-	        LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer) this.world);
-	
-	        if (player != null) {
-		        lootcontext$builder.withLuck(player.getLuck()).withPlayer(player); // Forge: add player to LootContext
-	        }
-	
-	        loottable.fillInventory(this, random, lootcontext$builder.build());
+        if (this.lootTable != null && this.world != null && this.world.getLootTableManager() != null) {
+            LootTable loottable = this.world.getLootTableManager().getLootTableFromLocation(this.lootTable);
+            this.lootTable = null;
+            Random random;
+
+            if (this.lootTableSeed == 0L) {
+                random = new Random();
+            } else {
+                random = new Random(this.lootTableSeed);
+            }
+
+            LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer) this.world);
+
+            if (player != null) {
+                lootcontext$builder.withLuck(player.getLuck()).withPlayer(player); // Forge: add player to LootContext
+            }
+
+            loottable.fillInventory(this, random, lootcontext$builder.build());
         }
     }
 

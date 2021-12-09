@@ -71,31 +71,23 @@ public class PixieAIPickupItem<T extends EntityItem> extends EntityAITarget {
     @Override
     public void updateTask() {
         super.updateTask();
-        if (this.targetEntity == null || this.targetEntity.isDead) {
+        if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
             this.resetTask();
         }
         if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {
             EntityPixie pixie = (EntityPixie) this.taskOwner;
-	        this.targetEntity.getItem();
-	        this.targetEntity.getItem().getItem();
-	        if (this.targetEntity.getItem().getItem() == Items.SUGAR) {
-		        pixie.heal(5);
-	        }
-	        this.targetEntity.getItem();
-	        this.targetEntity.getItem().getItem();
-	        if (this.targetEntity.getItem().getItem() == Items.CAKE) {
-		        if (!pixie.isTamed()) {
-			        this.targetEntity.getThrower();
-			        if (!this.targetEntity.getThrower()
-					        .isEmpty() && this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower()) != null) {
-				        EntityPlayer owner = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
-				        pixie.setTamed(true);
-				        pixie.setOwnerId(owner.getUniqueID());
-				        pixie.setSitting(true);
-			        }
-		        }
-	        }
-	        this.targetEntity.getItem().shrink(1);
+            if (this.targetEntity.getItem() != null && this.targetEntity.getItem().getItem() != null && this.targetEntity.getItem().getItem() == Items.SUGAR) {
+                pixie.heal(5);
+            }
+            if (this.targetEntity.getItem() != null && this.targetEntity.getItem().getItem() != null && this.targetEntity.getItem().getItem() == Items.CAKE) {
+                if (!pixie.isTamed() && this.targetEntity.getThrower() != null && !this.targetEntity.getThrower().isEmpty() && this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower()) != null) {
+                    EntityPlayer owner = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
+                    pixie.setTamed(true);
+                    pixie.setOwnerId(owner.getUniqueID());
+                    pixie.setSitting(true);
+                }
+            }
+            this.targetEntity.getItem().shrink(1);
             pixie.playSound(IafSoundRegistry.PIXIE_TAUNT, 1F, 1F);
             resetTask();
         }

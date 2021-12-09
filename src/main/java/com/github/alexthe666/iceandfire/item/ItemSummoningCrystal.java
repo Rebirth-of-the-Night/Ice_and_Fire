@@ -119,21 +119,25 @@ public class ItemSummoningCrystal extends Item {
                                 ForgeChunkManager.Ticket ticket = null;
                                 DragonPosWorldData data = DragonPosWorldData.get(worldIn);
                                 BlockPos dragonChunkPos = null;
-	                            dragonChunkPos = data.getDragonPos(id);
-	                            if(IceAndFire.CONFIG.chunkLoadSummonCrystal){
+                                if(data != null) {
+                                    dragonChunkPos = data.getDragonPos(id);
+                                }
+                                if(IceAndFire.CONFIG.chunkLoadSummonCrystal){
                                     try {
                                         boolean flag2 = false;
                                         if (!flag) {//server side but couldn't find dragon
-	                                        ticket = ForgeChunkManager.requestPlayerTicket(IceAndFire.INSTANCE, player.getName(), worldIn, ForgeChunkManager.Type.NORMAL);
-	                                        if (ticket != null) {
-	                                            if (dragonChunkPos != null) {
-	                                                ForgeChunkManager.forceChunk(ticket, new ChunkPos(dragonChunkPos));
-	                                            } else {
-	                                                displayError = true;
-	                                            }
-	                                            lastChunkTicket = ticket;
-	                                            flag2 = true;
-	                                        }
+                                            if (data != null) {
+                                                ticket = ForgeChunkManager.requestPlayerTicket(IceAndFire.INSTANCE, player.getName(), worldIn, ForgeChunkManager.Type.NORMAL);
+                                                if (ticket != null) {
+                                                    if (dragonChunkPos != null) {
+                                                        ForgeChunkManager.forceChunk(ticket, new ChunkPos(dragonChunkPos));
+                                                    } else {
+                                                        displayError = true;
+                                                    }
+                                                    lastChunkTicket = ticket;
+                                                    flag2 = true;
+                                                }
+                                            }
                                         }
                                         if (flag2) {
                                             try {
@@ -181,7 +185,9 @@ public class ItemSummoningCrystal extends Item {
         }
         if(IceAndFire.CONFIG.chunkLoadSummonCrystal) {
             DragonPosWorldData data = DragonPosWorldData.get(worldIn);
-	        data.removeDragon(entity.getUniqueID());
+            if (data != null) {
+                data.removeDragon(entity.getUniqueID());
+            }
         }
     }
 

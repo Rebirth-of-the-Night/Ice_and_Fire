@@ -6,7 +6,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class ItemBlockMyrmexResin extends ItemBlock {
-    private final boolean sticky;
+    private boolean sticky;
 
     public ItemBlockMyrmexResin(Block block) {
         super(block);

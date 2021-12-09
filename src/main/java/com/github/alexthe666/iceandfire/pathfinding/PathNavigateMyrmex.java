@@ -80,11 +80,12 @@ public class PathNavigateMyrmex extends PathNavigateGround {
                     int particle = EnumParticleTypes.HEART.getParticleID();
                     IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageSpawnParticleAt(point.x, point.y, point.z, particle));
                 }
-	            currentPath.getCurrentPos();
-	            Vec3d point = currentPath.getCurrentPos();
-	            int particle = EnumParticleTypes.CLOUD.getParticleID();
-	            IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageSpawnParticleAt(point.x, point.y, point.z, particle));
-	
+                if(currentPath.getCurrentPos() != null){
+                    Vec3d point = currentPath.getCurrentPos();
+                    int particle = EnumParticleTypes.CLOUD.getParticleID();
+                    IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageSpawnParticleAt(point.x, point.y, point.z, particle));
+
+                }
             }catch (Exception e){
                 //Pathfinders are always unfriendly.
             }

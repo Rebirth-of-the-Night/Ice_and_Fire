@@ -300,10 +300,10 @@ public class ChunkProviderDreadLands implements IChunkGenerator {
         boolean flag = false;
         ChunkPos chunkpos = new ChunkPos(x, z);
         biome.decorate(this.world, this.rand, new BlockPos(i, 0, j));
-        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, false, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS))
+        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ANIMALS))
             WorldEntitySpawner.performWorldGenSpawning(this.world, biome, i + 8, j + 8, 16, 16, this.rand);
         blockpos = blockpos.add(8, 0, 8);
-        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, false, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE)) {
+        if (net.minecraftforge.event.terraingen.TerrainGen.populate(this, this.world, this.rand, x, z, flag, net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE)) {
             for (int k2 = 0; k2 < 16; ++k2) {
                 for (int j3 = 0; j3 < 16; ++j3) {
                     BlockPos blockpos1 = this.world.getPrecipitationHeight(blockpos.add(k2, 0, j3));
@@ -327,7 +327,7 @@ public class ChunkProviderDreadLands implements IChunkGenerator {
             }
         }//Forge: End ICE
 
-        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, x, z, false);
+        net.minecraftforge.event.ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, x, z, flag);
 
         BlockFalling.fallInstantly = false;
     }

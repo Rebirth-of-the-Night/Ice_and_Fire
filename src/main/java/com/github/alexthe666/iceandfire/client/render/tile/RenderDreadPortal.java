@@ -10,7 +10,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 
-import javax.annotation.Nullable;
 import java.nio.FloatBuffer;
 import java.util.Random;
 
@@ -22,7 +21,7 @@ public class RenderDreadPortal extends TileEntitySpecialRenderer<TileEntityDread
 	private static final FloatBuffer PROJECTION = GLAllocation.createDirectFloatBuffer(16);
 	private final FloatBuffer buffer = GLAllocation.createDirectFloatBuffer(16);
 
-    public void render(@Nullable TileEntityDreadPortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+    public void render(TileEntityDreadPortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.disableLighting();
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
         RANDOM.setSeed(31100L);

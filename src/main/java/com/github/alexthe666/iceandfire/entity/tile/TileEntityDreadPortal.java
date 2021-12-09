@@ -25,7 +25,7 @@ public class TileEntityDreadPortal extends TileEntity {
         }
 
         if (this.exactTeleport) {
-            compound.setBoolean("ExactTeleport", true);
+            compound.setBoolean("ExactTeleport", this.exactTeleport);
         }
 
         return compound;

@@ -60,6 +60,6 @@ public class DragonAITarget<T extends EntityLivingBase> extends EntityAINearestA
 
     protected double getTargetDistance() {
         IAttributeInstance iattributeinstance = this.taskOwner.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
-        return iattributeinstance.getAttributeValue();
+        return iattributeinstance == null ? 64.0D : iattributeinstance.getAttributeValue();
     }
 }

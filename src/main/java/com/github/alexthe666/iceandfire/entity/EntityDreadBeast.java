@@ -37,7 +37,7 @@ public class EntityDreadBeast extends EntityDreadMob implements IAnimatedEntity,
     public static Animation ANIMATION_BITE = Animation.create(15);
     private int animationTick;
     private Animation currentAnimation;
-    private final int hostileTicks = 0;
+    private int hostileTicks = 0;
     private static final DataParameter<Float> SCALE = EntityDataManager.createKey(EntityDreadBeast.class, DataSerializers.FLOAT);
    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(EntityDreadBeast.class, DataSerializers.VARINT);
     private static final float INITIAL_WIDTH = 1.2F;

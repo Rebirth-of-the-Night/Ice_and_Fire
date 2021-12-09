@@ -31,8 +31,8 @@ public class ParticleDragonFrost extends ParticleFlame {
     private double targetX;
     private double targetY;
     private double targetZ;
-    private final int touchedTime = 0;
-    private final float speedBonus;
+    private int touchedTime = 0;
+    private float speedBonus;
     @Nullable
     private EntityDragonBase dragon;
     private final boolean big;
@@ -158,6 +158,9 @@ public class ParticleDragonFrost extends ParticleFlame {
             this.motionX += d2 * speed;
             this.motionY += d3 * speed;
             this.motionZ += d4 * speed;
+            if (touchedTime > 3) {
+                this.setExpired();
+            }
         }
     }
 

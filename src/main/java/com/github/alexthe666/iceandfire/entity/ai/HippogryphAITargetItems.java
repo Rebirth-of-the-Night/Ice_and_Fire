@@ -71,7 +71,7 @@ public class HippogryphAITargetItems<T extends EntityItem> extends EntityAITarge
     @Override
     public void updateTask() {
         super.updateTask();
-        if (this.targetEntity == null || this.targetEntity.isDead) {
+        if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
             this.resetTask();
         }
         if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {
@@ -81,18 +81,14 @@ public class HippogryphAITargetItems<T extends EntityItem> extends EntityAITarge
             hippo.setAnimation(EntityHippogryph.ANIMATION_EAT);
             hippo.feedings++;
             hippo.heal(4);
-            if (hippo.feedings > 3 && (hippo.feedings > 7 || hippo.getRNG().nextInt(3) == 0) && !hippo.isTamed()) {
-	            this.targetEntity.getThrower();
-	            if (!this.targetEntity.getThrower()
-			            .isEmpty() && this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower()) != null) {
-		            EntityPlayer owner = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
-		            hippo.setTamed(true);
-		            hippo.setOwnerId(owner.getUniqueID());
-		            hippo.setAttackTarget(null);
-		            hippo.setCommand(1);
-		            //owner.addStat(ModAchievements.tameHippogryph);
-		            hippo.setSitting(true);
-	            }
+            if (hippo.feedings > 3 &&(hippo.feedings > 7 || hippo.getRNG().nextInt(3) == 0) && !hippo.isTamed() && this.targetEntity.getThrower() != null && !this.targetEntity.getThrower().isEmpty() && this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower()) != null) {
+                EntityPlayer owner = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
+                hippo.setTamed(true);
+                hippo.setOwnerId(owner.getUniqueID());
+                hippo.setAttackTarget(null);
+                hippo.setCommand(1);
+                //owner.addStat(ModAchievements.tameHippogryph);
+                hippo.setSitting(true);
             }
             resetTask();
         }

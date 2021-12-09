@@ -28,6 +28,7 @@ public class TraitBurn extends ModifierTrait {
 
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
+        // FIXME check magical fire immunity, not cowness
 	    if (!(target instanceof EntityCow)) {
 		    target.attackEntityFrom(IceAndFire.dragonFire, level * 2F);
 		    target.setFire(level == 1 ? 10 : 15);

@@ -37,9 +37,7 @@ public class ContainerDragon extends Container {
 
             @Override
             public boolean isItemValid(ItemStack stack) {
-	            if (!super.isItemValid(stack) || stack.isEmpty()) return false;
-	            stack.getItem();
-	            return stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 0;
+                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 0;
             }
         });
         this.addSlotToContainer(new Slot(dragon.dragonInventory, 2, 8, 36) {
@@ -49,9 +47,7 @@ public class ContainerDragon extends Container {
 
             @Override
             public boolean isItemValid(ItemStack stack) {
-	            if (!super.isItemValid(stack) || stack.isEmpty()) return false;
-	            stack.getItem();
-	            return stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 1;
+                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 1;
             }
         });
         this.addSlotToContainer(new Slot(dragon.dragonInventory, 3, 153, 18) {
@@ -61,9 +57,7 @@ public class ContainerDragon extends Container {
 
             @Override
             public boolean isItemValid(ItemStack stack) {
-	            if (!super.isItemValid(stack) || stack.isEmpty()) return false;
-	            stack.getItem();
-	            return stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 2;
+                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 2;
             }
         });
         this.addSlotToContainer(new Slot(dragon.dragonInventory, 4, 153, 36) {
@@ -73,9 +67,7 @@ public class ContainerDragon extends Container {
 
             @Override
             public boolean isItemValid(ItemStack stack) {
-	            if (!super.isItemValid(stack) || stack.isEmpty()) return false;
-	            stack.getItem();
-	            return stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 3;
+                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() != null && stack.getItem() instanceof ItemDragonArmor && stack.getMetadata() == 3;
             }
         });
         int j;

@@ -141,7 +141,7 @@ public class EntityDreadLichSkull extends EntityArrow {
     }
     protected void arrowHit(EntityLivingBase living) {
         super.arrowHit(living);
-        if (this.shootingEntity == null || !living.isEntityEqual(this.shootingEntity)){
+        if (living != null && (this.shootingEntity == null || !living.isEntityEqual(this.shootingEntity))){
             if (living instanceof EntityPlayer) {
                 this.damageShield((EntityPlayer) living, (float) this.getDamage());
             }

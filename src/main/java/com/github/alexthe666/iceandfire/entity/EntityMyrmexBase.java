@@ -410,7 +410,7 @@ public abstract class EntityMyrmexBase extends EntityAnimal implements IAnimated
         Team team = this.getTeam();
         String s = this.getCustomNameTag();
 
-        if (!s.isEmpty()) {
+        if (s != null && !s.isEmpty()) {
             TextComponentString textcomponentstring = new TextComponentString(ScorePlayerTeam.formatPlayerName(team, s));
             textcomponentstring.getStyle().setHoverEvent(this.getHoverEvent());
             textcomponentstring.getStyle().setInsertion(this.getCachedUniqueIdString());
@@ -844,14 +844,15 @@ public abstract class EntityMyrmexBase extends EntityAnimal implements IAnimated
                 float f7 = f2 * f6 - f3 * f5;
                 float f8 = f3 * f6 + f2 * f5;
                 PathNavigate pathnavigate = this.entity.getNavigator();
-	            NodeProcessor nodeprocessor = pathnavigate.getNodeProcessor();
-	            if (nodeprocessor.getPathNodeType(this.entity.world, MathHelper.floor(this.entity.posX + (double) f7), MathHelper
-			            .floor(this.entity.posY), MathHelper.floor(this.entity.posZ + (double) f8)) != PathNodeType.WALKABLE) {
-	                this.moveForward = 1.0F;
-	                this.moveStrafe = 0.0F;
-	                f1 = f;
-	            }
-	            this.entity.setAIMoveSpeed(f1);
+                if (pathnavigate != null) {
+                    NodeProcessor nodeprocessor = pathnavigate.getNodeProcessor();
+                    if (nodeprocessor != null && nodeprocessor.getPathNodeType(this.entity.world, MathHelper.floor(this.entity.posX + (double) f7), MathHelper.floor(this.entity.posY), MathHelper.floor(this.entity.posZ + (double) f8)) != PathNodeType.WALKABLE) {
+                        this.moveForward = 1.0F;
+                        this.moveStrafe = 0.0F;
+                        f1 = f;
+                    }
+                }
+                this.entity.setAIMoveSpeed(f1);
                 this.entity.setMoveForward(this.moveForward);
                 this.entity.setMoveStrafing(this.moveStrafe);
                 this.action = EntityMoveHelper.Action.WAIT;

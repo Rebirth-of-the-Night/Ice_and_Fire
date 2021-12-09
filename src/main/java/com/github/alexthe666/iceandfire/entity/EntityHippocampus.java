@@ -168,23 +168,14 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
     }
 
     public int getIntFromArmor(ItemStack stack) {
-        if (!stack.isEmpty()) {
-	        stack.getItem();
-	        if (stack.getItem() == Items.IRON_HORSE_ARMOR) {
-		        return 1;
-	        }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == Items.IRON_HORSE_ARMOR) {
+            return 1;
         }
-        if (!stack.isEmpty()) {
-	        stack.getItem();
-	        if (stack.getItem() == Items.GOLDEN_HORSE_ARMOR) {
-		        return 2;
-	        }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == Items.GOLDEN_HORSE_ARMOR) {
+            return 2;
         }
-        if (!stack.isEmpty()) {
-	        stack.getItem();
-	        if (stack.getItem() == Items.DIAMOND_HORSE_ARMOR) {
-		        return 3;
-	        }
+        if (!stack.isEmpty() && stack.getItem() != null && stack.getItem() == Items.DIAMOND_HORSE_ARMOR) {
+            return 3;
         }
         return 0;
     }
@@ -357,8 +348,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
             }
             compound.setTag("Items", nbttaglist);
         }
-	    this.getCustomNameTag();
-	    if (!this.getCustomNameTag().isEmpty()) {
+        if (this.getCustomNameTag() != null && !this.getCustomNameTag().isEmpty()) {
             compound.setString("CustomName", this.getCustomNameTag());
         }
 
@@ -687,14 +677,12 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
     public void refreshInventory() {
         ItemStack saddle = this.hippocampusInventory.getStackInSlot(0);
         ItemStack chest = this.hippocampusInventory.getStackInSlot(1);
-        this.setSaddled(saddle.getItem() == Items.SADDLE && !saddle.isEmpty());
-        this.setChested(chest.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !chest.isEmpty());
+        this.setSaddled(saddle != null && saddle.getItem() == Items.SADDLE && !saddle.isEmpty());
+        this.setChested(chest != null && chest.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !chest.isEmpty());
         this.setArmor(getIntFromArmor(this.hippocampusInventory.getStackInSlot(2)));
         if (this.world.isRemote) {
-            IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 0, saddle.getItem() == Items.SADDLE && !saddle
-		            .isEmpty() ? 1 : 0));
-            IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 1, chest.getItem() == Item
-		            .getItemFromBlock(Blocks.CHEST) && !chest.isEmpty() ? 1 : 0));
+            IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 0, saddle != null && saddle.getItem() == Items.SADDLE && !saddle.isEmpty() ? 1 : 0));
+            IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 1, chest != null && chest.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !chest.isEmpty() ? 1 : 0));
             IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 2, this.getIntFromArmor(this.hippocampusInventory.getStackInSlot(2))));
         }
     }

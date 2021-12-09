@@ -165,7 +165,10 @@ public class ModelPixie extends ModelDragonBase {
         //this.Right_Leg.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.0F * f1 * 0.5F / 1;
 
         float f12 = 0;//f1;
-	    if (f12 > Math.toRadians(20)) {
+        if (f12 < 0.0F) {
+            f12 = 0.0F;
+        }
+        if (f12 > Math.toRadians(20)) {
             f12 = (float) Math.toRadians(20);
         }
 
@@ -215,7 +218,10 @@ public class ModelPixie extends ModelDragonBase {
         //this.Right_Leg.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.0F * f1 * 0.5F / 1;
 
         float f12 = 0;//f1;
-	    if (f12 > Math.toRadians(20)) {
+        if (f12 < 0.0F) {
+            f12 = 0.0F;
+        }
+        if (f12 > Math.toRadians(20)) {
             f12 = (float) Math.toRadians(20);
         }
         if (sitting) {

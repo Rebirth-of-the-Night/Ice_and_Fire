@@ -6,7 +6,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class SlotLectern extends Slot {
-    private final EntityPlayer thePlayer;
+    private EntityPlayer thePlayer;
     private int field_75228_b;
 
     public SlotLectern(EntityPlayer player, IInventory inv, int slotIndex, int xPosition, int yPosition) {

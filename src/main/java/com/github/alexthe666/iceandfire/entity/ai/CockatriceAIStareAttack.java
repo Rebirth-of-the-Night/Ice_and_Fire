@@ -17,9 +17,9 @@ public class CockatriceAIStareAttack extends EntityAIBase {
     private int seeTime;
     private boolean strafingClockwise;
     private boolean strafingBackwards;
-    private final int strafingTime = -1;
+    private int strafingTime = -1;
     private BlockPos target = null;
-    private final int walkingTime = -1;
+    private int walkingTime = -1;
     private float prevYaw;
 
     public CockatriceAIStareAttack(EntityCockatrice cockatrice, double speedAmplifier, int delay, float maxDistance) {
