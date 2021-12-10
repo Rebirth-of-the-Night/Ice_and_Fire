@@ -71,8 +71,9 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
 	}
 	
 	public static boolean isBlindfolded(EntityLivingBase attackTarget) {
-		return attackTarget != null && attackTarget.getItemStackFromSlot(EntityEquipmentSlot.HEAD)
-				.getItem() == IafItemRegistry.blindfold;
+		return attackTarget != null && (attackTarget.getItemStackFromSlot(EntityEquipmentSlot.HEAD)
+				.getItem() == IafItemRegistry.blindfold
+				|| attackTarget.isPotionActive(MobEffects.BLINDNESS));
 	}
 	
 	@Nullable
