@@ -132,8 +132,7 @@ public class WorldGenEvents implements IWorldGenerator {
             }
         }
         if (IceAndFire.CONFIG.spawnPixies && isFarEnoughFromSpawn(world, height) && !isDimensionBlacklisted(world.provider.getDimension(), false) && (lastPixieVillage == null || lastPixieVillage.distanceSq(height) >= spawnCheck)) {
-            boolean isSpookyForest = BiomeDictionary.hasType(world.getBiome(height), Type.FOREST) && (BiomeDictionary.hasType(world.getBiome(height), Type.SPOOKY) || BiomeDictionary.hasType(world.getBiome(height), Type.MAGICAL));
-            if (isSpookyForest && random.nextInt(IceAndFire.CONFIG.spawnPixiesChance + 1) == 0) {
+            if (random.nextInt(IceAndFire.CONFIG.spawnPixiesChance + 1) == 0) {
                 PIXIE_VILLAGE.generate(world, random, height);
                 lastPixieVillage = height;
             }
