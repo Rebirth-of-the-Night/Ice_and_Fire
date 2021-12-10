@@ -239,8 +239,8 @@ public class IceAndFireConfig {
         this.spawnPixies = config.getBoolean("Spawn Pixies", "all", true, "True if pixie villages are allowed to spawn");
         this.spawnPixiesChance = config.getInt("Spawn Pixies Chance", "all", 60, 1, 10000, "1 out of this number chance per chunk for generation");
         this.pixieVillageSize = config.getInt("Pixie Village Size", "all", 5, 1, 10000, "size of pixie villages");
-        this.pixieVillageBiomeBlacklist = config.getStringList("Blacklisted Biomes from Pixie Village Generation", "all", new String[] {/*TODO*/}, "Biomes that pixie villages will not be generated in (e.g. minecraft:plains or roofed_forest)");
-        this.pixieVillageBiomeBlacklistIsWhitelist = config.getBoolean("Blacklisted Biomes from Pixie Village Generation is a Whitelist", "all", false, "If true, then the blacklist will act as a whitelist.");
+        this.pixieVillageBiomeBlacklist = config.getStringList("Blacklisted Biomes from Pixie Village Generation", "all", new String[] {"minecraft:roofed_forest", "biomesoplenty:ominous_woods", "biomesoplenty:mystic_grove"}, "Biomes that pixie villages will not be generated in (e.g. minecraft:plains or roofed_forest)");
+        this.pixieVillageBiomeBlacklistIsWhitelist = config.getBoolean("Blacklisted Biomes from Pixie Village Generation is a Whitelist", "all", true, "If true, then the blacklist will act as a whitelist.");
         this.pixiesStealItems = config.getBoolean("Pixies Steal Items", "all", true, "True if pixies are allowed to steal from players");
 
         this.generateCyclopsCaves = config.getBoolean("Spawn Cyclopes Caves", "all", true, "True if cyclops caves are allowed to spawn");
