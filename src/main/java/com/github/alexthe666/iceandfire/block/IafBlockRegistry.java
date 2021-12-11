@@ -111,6 +111,8 @@ public class IafBlockRegistry {
     public static Block eggInIce = new BlockEggInIce();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":pixie_house")
     public static Block pixieHouse = new BlockPixieHouse();
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":venerable_stump")
+    public static Block venerableStump = new BlockVenerableStump();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":jar_empty")
     public static Block jar_empty = new BlockJar(true);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":jar_pixie")
