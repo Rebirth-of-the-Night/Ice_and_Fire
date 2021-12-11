@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,12 +34,12 @@ public class RenderTroll extends RenderLiving<EntityTroll> implements ICustomSto
     }
 
     @Override
-    public LayerRenderer getStoneLayer(RenderLivingBase render) {
+    public LayerRenderer<EntityLivingBase> getStoneLayer(RenderLivingBase<? extends EntityLivingBase> render) {
         return new LayerTrollStone(render);
     }
 
     @Override
-    public LayerRenderer getCrackLayer(RenderLivingBase render) {
+    public LayerRenderer<EntityLivingBase> getCrackLayer(RenderLivingBase<? extends EntityLivingBase> render) {
         return new LayerStoneEntityCrack(render);
     }
 }

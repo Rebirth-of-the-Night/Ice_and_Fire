@@ -53,6 +53,7 @@ public class BlockCharedPath extends BlockGrassPath {
     }
 
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         switch (side) {
             case UP:
@@ -78,9 +79,7 @@ public class BlockCharedPath extends BlockGrassPath {
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
 
-        if (worldIn.getBlockState(pos.up()).getMaterial().isSolid()) {
-            worldIn.setBlockState(pos, isFire ? IafBlockRegistry.charedDirt.getDefaultState() : IafBlockRegistry.frozenDirt.getDefaultState());
-        }
+        updateBlockState(worldIn, pos);
     }
 
     private void updateBlockState(World worldIn, BlockPos pos) {

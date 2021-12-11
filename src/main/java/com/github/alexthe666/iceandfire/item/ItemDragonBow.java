@@ -58,16 +58,16 @@ public class ItemDragonBow extends ItemBow implements ICustomRendered {
         return f;
     }
 
-    private ItemStack findAmmo(EntityPlayer player) {
-        if (this.func_185058_h_(player.getHeldItem(EnumHand.OFF_HAND))) {
+    public ItemStack findAmmo(EntityPlayer player) {
+        if (this.isArrow(player.getHeldItem(EnumHand.OFF_HAND))) {
             return player.getHeldItem(EnumHand.OFF_HAND);
-        } else if (this.func_185058_h_(player.getHeldItem(EnumHand.MAIN_HAND))) {
+        } else if (this.isArrow(player.getHeldItem(EnumHand.MAIN_HAND))) {
             return player.getHeldItem(EnumHand.MAIN_HAND);
         } else {
             for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
                 ItemStack itemstack = player.inventory.getStackInSlot(i);
 
-                if (this.func_185058_h_(itemstack)) {
+                if (this.isArrow(itemstack)) {
                     return itemstack;
                 }
             }
@@ -76,7 +76,8 @@ public class ItemDragonBow extends ItemBow implements ICustomRendered {
         }
     }
 
-    protected boolean func_185058_h_(ItemStack stack) {
+    @Override
+    protected boolean isArrow(ItemStack stack) {
         return !stack.isEmpty() && stack.getItem() == IafItemRegistry.dragonbone_arrow;
     }
 

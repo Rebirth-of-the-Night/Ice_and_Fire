@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Random;
 
 public class BlockPodium extends BlockContainer implements ICustomRendered {
-    public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockPodium.EnumType.class);
+    public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", BlockPodium.EnumType.class);
     public Item itemBlock;
 
     public BlockPodium() {
@@ -40,11 +40,10 @@ public class BlockPodium extends BlockContainer implements ICustomRendered {
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
         this.setTranslationKey("iceandfire.podium");
         this.setRegistryName(IceAndFire.MODID, "podium");
-        GameRegistry.registerTileEntity(TileEntityPodium.class, "podium");
+        GameRegistry.registerTileEntity(TileEntityPodium.class, new ResourceLocation(IceAndFire.MODID, "podium"));
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return new AxisAlignedBB(0.125F, 0, 0.125F, 0.875F, 1.4375F, 0.875F);
     }
@@ -90,7 +89,6 @@ public class BlockPodium extends BlockContainer implements ICustomRendered {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
         BlockPodium.EnumType[] aenumtype = BlockPodium.EnumType.values();
-        int i = aenumtype.length;
 
         for (EnumType enumtype : aenumtype) {
             items.add(new ItemStack(this, 1, enumtype.getMetadata()));
@@ -98,7 +96,6 @@ public class BlockPodium extends BlockContainer implements ICustomRendered {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(VARIANT, BlockPodium.EnumType.byMetadata(meta));
     }
@@ -114,13 +111,11 @@ public class BlockPodium extends BlockContainer implements ICustomRendered {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState blockstate) {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState blockstate) {
         return false;
     }
@@ -168,11 +163,10 @@ public class BlockPodium extends BlockContainer implements ICustomRendered {
     public enum EnumType implements IStringSerializable {
         OAK(0, "oak"), SPRUCE(1, "spruce"), BIRCH(2, "birch"), JUNGLE(3, "jungle"), ACACIA(4, "acacia"), DARK_OAK(5, "dark_oak", "big_oak");
         private static final BlockPodium.EnumType[] META_LOOKUP = new BlockPodium.EnumType[values().length];
-        private static final String __OBFID = "CL_00002081";
+        // private static final String __OBFID = "CL_00002081";
 
         static {
             BlockPodium.EnumType[] var0 = values();
-            int var1 = var0.length;
 
             for (EnumType var3 : var0) {
                 META_LOOKUP[var3.getMetadata()] = var3;

@@ -14,7 +14,6 @@ public class BlockGenericStairs extends BlockStairs {
         this.setRegistryName(name);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;

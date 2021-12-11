@@ -46,6 +46,7 @@ public class BlockMyrmexCocoon extends BlockContainer {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         if (face == EnumFacing.UP) {
             return BlockFaceShape.SOLID;

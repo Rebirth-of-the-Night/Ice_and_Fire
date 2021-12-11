@@ -56,7 +56,7 @@ public class PixieVillagePieces {
     }
 
     private static Village findAndCreateComponentFactory(Start start, PieceWeight weight, List<StructureComponent> structureComponents, Random rand, int structureMinX, int structureMinY, int structureMinZ, EnumFacing facing, int componentType) {
-        Class<? extends PixieVillagePieces.Village> oclass = weight.villagePieceClass;
+        // Class<? extends PixieVillagePieces.Village> oclass = weight.villagePieceClass;
         Object village = PixieHouse.createPiece(start, structureComponents, rand, structureMinX, structureMinY, structureMinZ, facing, componentType);
         return (Village) village;
     }
@@ -181,7 +181,6 @@ public class PixieVillagePieces {
             return true;
         }
 
-        @SuppressWarnings("deprecation")
         protected int chooseProfession(int villagersSpawnedIn, int currentVillagerProfession) {
             return 1;
         }
@@ -407,15 +406,15 @@ public class PixieVillagePieces {
             Biome biome = chunkManagerIn.getBiome(new BlockPos(p_i2104_4_, 0, p_i2104_5_), Biomes.DEFAULT);
             this.biome = biome;
             this.startPiece = this;
-            this.func_189924_a(this.field_189928_h);
-            this.field_189929_i = rand.nextInt(50) == 0;
+            this.setStructureType(this.structureType);
+            this.isZombieInfested = rand.nextInt(50) == 0;
         }
     }
 
     public abstract static class Village extends StructureComponent {
         protected int averageGroundLvl = -1;
-        protected int field_189928_h;
-        protected boolean field_189929_i;
+        protected int structureType;
+        protected boolean isZombieInfested;
         protected Start startPiece;
         /**
          * The number of villagers that have been spawned in this component.
@@ -429,8 +428,8 @@ public class PixieVillagePieces {
             super(type);
 
             if (start != null) {
-                this.field_189928_h = start.field_189928_h;
-                this.field_189929_i = start.field_189929_i;
+                this.structureType = start.structureType;
+                this.isZombieInfested = start.isZombieInfested;
                 startPiece = start;
             }
         }
@@ -445,8 +444,8 @@ public class PixieVillagePieces {
         protected void writeStructureToNBT(NBTTagCompound tagCompound) {
             tagCompound.setInteger("HPos", this.averageGroundLvl);
             tagCompound.setInteger("VCount", this.villagersSpawned);
-            tagCompound.setByte("Type", (byte) this.field_189928_h);
-            tagCompound.setBoolean("Zombie", this.field_189929_i);
+            tagCompound.setByte("Type", (byte) this.structureType);
+            tagCompound.setBoolean("Zombie", this.isZombieInfested);
         }
 
         /**
@@ -455,13 +454,13 @@ public class PixieVillagePieces {
         protected void readStructureFromNBT(NBTTagCompound tagCompound) {
             this.averageGroundLvl = tagCompound.getInteger("HPos");
             this.villagersSpawned = tagCompound.getInteger("VCount");
-            this.field_189928_h = tagCompound.getByte("Type");
+            this.structureType = tagCompound.getByte("Type");
 
             if (tagCompound.getBoolean("Desert")) {
-                this.field_189928_h = 1;
+                this.structureType = 1;
             }
 
-            this.field_189929_i = tagCompound.getBoolean("Zombie");
+            this.isZombieInfested = tagCompound.getBoolean("Zombie");
         }
 
         /**
@@ -578,7 +577,7 @@ public class PixieVillagePieces {
             net.minecraftforge.common.MinecraftForge.TERRAIN_GEN_BUS.post(event);
             if (event.getResult() == net.minecraftforge.fml.common.eventhandler.Event.Result.DENY)
                 return event.getReplacement();
-            if (this.field_189928_h == 1) {
+            if (this.structureType == 1) {
                 if (blockstateIn.getBlock() == Blocks.LOG || blockstateIn.getBlock() == Blocks.LOG2) {
                     return Blocks.SANDSTONE.getDefaultState();
                 }
@@ -602,7 +601,7 @@ public class PixieVillagePieces {
                 if (blockstateIn.getBlock() == Blocks.GRAVEL) {
                     return Blocks.SANDSTONE.getDefaultState();
                 }
-            } else if (this.field_189928_h == 3) {
+            } else if (this.structureType == 3) {
                 if (blockstateIn.getBlock() == Blocks.LOG || blockstateIn.getBlock() == Blocks.LOG2) {
                     return Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE).withProperty(BlockLog.LOG_AXIS, blockstateIn.getValue(BlockLog.LOG_AXIS));
                 }
@@ -618,7 +617,7 @@ public class PixieVillagePieces {
                 if (blockstateIn.getBlock() == Blocks.OAK_FENCE) {
                     return Blocks.SPRUCE_FENCE.getDefaultState();
                 }
-            } else if (this.field_189928_h == 2) {
+            } else if (this.structureType == 2) {
                 if (blockstateIn.getBlock() == Blocks.LOG || blockstateIn.getBlock() == Blocks.LOG2) {
                     return Blocks.LOG2.getDefaultState().withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.ACACIA).withProperty(BlockLog.LOG_AXIS, blockstateIn.getValue(BlockLog.LOG_AXIS));
                 }
@@ -648,8 +647,8 @@ public class PixieVillagePieces {
             super.replaceAirAndLiquidDownwards(worldIn, iblockstate, x, y, z, boundingboxIn);
         }
 
-        protected void func_189924_a(int p_189924_1_) {
-            this.field_189928_h = p_189924_1_;
+        protected void setStructureType(int p_189924_1_) {
+            this.structureType = p_189924_1_;
         }
     }
 

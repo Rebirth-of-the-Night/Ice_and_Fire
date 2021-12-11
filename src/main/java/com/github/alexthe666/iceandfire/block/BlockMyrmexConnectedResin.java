@@ -76,6 +76,7 @@ public class BlockMyrmexConnectedResin extends Block {
 
 
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
         Block block = iblockstate.getBlock();

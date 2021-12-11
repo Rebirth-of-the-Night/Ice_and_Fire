@@ -180,7 +180,8 @@ public class BlockBreakExplosion extends Explosion {
         return exploder;
     }
 
-    public void func_180342_d() {
+    @Override
+    public void clearAffectedBlockPositions() {
         this.affectedBlockPositions.clear();
     }
 

@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 
 public class BlockMyrmexResin extends Block implements ICustomRendered {
 
-    public static final PropertyEnum VARIANT = PropertyEnum.create("variant", BlockMyrmexResin.EnumType.class);
+    public static final PropertyEnum<EnumType> VARIANT = PropertyEnum.create("variant", BlockMyrmexResin.EnumType.class);
     protected static final AxisAlignedBB STICKY_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
     private final boolean sticky;
 
@@ -42,6 +42,7 @@ public class BlockMyrmexResin extends Block implements ICustomRendered {
         this.sticky = sticky;
     }
 
+    @SuppressWarnings("deprecation")
     public float getSlipperiness(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable Entity entity) {
         return entity != null && entity instanceof EntityMyrmexBase ? slipperiness : 0.75F;
     }
@@ -65,7 +66,6 @@ public class BlockMyrmexResin extends Block implements ICustomRendered {
 
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(VARIANT, EnumType.values()[MathHelper.clamp(meta, 0, 1)]);
     }
@@ -85,12 +85,6 @@ public class BlockMyrmexResin extends Block implements ICustomRendered {
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, VARIANT);
     }
-
-    @Nullable
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return super.getCollisionBoundingBox(blockState, worldIn, pos);
-    }
-
 
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         if (sticky) {

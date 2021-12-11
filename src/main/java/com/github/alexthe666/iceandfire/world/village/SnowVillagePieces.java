@@ -246,7 +246,7 @@ public class SnowVillagePieces {
             this.setBlockState(worldIn, Blocks.CRAFTING_TABLE.getDefaultState(), 7, 1, 1, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 1, 1, 0, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 1, 2, 0, structureBoundingBoxIn);
-            this.func_189927_a(worldIn, structureBoundingBoxIn, randomIn, 1, 1, 0, EnumFacing.NORTH);
+            this.createVillageDoor(worldIn, structureBoundingBoxIn, randomIn, 1, 1, 0, EnumFacing.NORTH);
 
             if (this.getBlockStateFromPos(worldIn, 1, 0, -1, structureBoundingBoxIn).getMaterial() == Material.AIR && this.getBlockStateFromPos(worldIn, 1, -1, -1, structureBoundingBoxIn).getMaterial() != Material.AIR) {
                 this.setBlockState(worldIn, iblockstate5, 1, 0, -1, structureBoundingBoxIn);
@@ -527,8 +527,8 @@ public class SnowVillagePieces {
             this.setBlockState(worldIn, iblockstate5, 5, 5, 10, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 2, 1, 0, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 2, 2, 0, structureBoundingBoxIn);
-            this.func_189926_a(worldIn, EnumFacing.NORTH, 2, 3, 1, structureBoundingBoxIn);
-            this.func_189927_a(worldIn, structureBoundingBoxIn, randomIn, 2, 1, 0, EnumFacing.NORTH);
+            this.placeTorch(worldIn, EnumFacing.NORTH, 2, 3, 1, structureBoundingBoxIn);
+            this.createVillageDoor(worldIn, structureBoundingBoxIn, randomIn, 2, 1, 0, EnumFacing.NORTH);
             this.fillWithBlocks(worldIn, structureBoundingBoxIn, 1, 0, -1, 3, 2, -1, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 
             if (this.getBlockStateFromPos(worldIn, 2, 0, -1, structureBoundingBoxIn).getMaterial() == Material.AIR && this.getBlockStateFromPos(worldIn, 2, -1, -1, structureBoundingBoxIn).getMaterial() != Material.AIR) {
@@ -773,8 +773,8 @@ public class SnowVillagePieces {
             Biome biome = chunkManagerIn.getBiome(new BlockPos(p_i2104_4_, 0, p_i2104_5_), Biomes.DEFAULT);
             this.biome = biome;
             this.startPiece = this;
-            this.func_189924_a(this.field_189928_h);
-            this.field_189929_i = rand.nextInt(50) == 0;
+            this.setStructureType(this.structureType);
+            this.isZombieInfested = rand.nextInt(50) == 0;
         }
     }
 
@@ -815,10 +815,10 @@ public class SnowVillagePieces {
             this.setBlockState(worldIn, iblockstate, 1, 1, 0, structureBoundingBoxIn);
             this.setBlockState(worldIn, iblockstate, 1, 2, 0, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.WOOL.getStateFromMeta(EnumDyeColor.WHITE.getDyeDamage()), 1, 3, 0, structureBoundingBoxIn);
-            this.func_189926_a(worldIn, EnumFacing.EAST, 2, 3, 0, structureBoundingBoxIn);
-            this.func_189926_a(worldIn, EnumFacing.NORTH, 1, 3, 1, structureBoundingBoxIn);
-            this.func_189926_a(worldIn, EnumFacing.WEST, 0, 3, 0, structureBoundingBoxIn);
-            this.func_189926_a(worldIn, EnumFacing.SOUTH, 1, 3, -1, structureBoundingBoxIn);
+            this.placeTorch(worldIn, EnumFacing.EAST, 2, 3, 0, structureBoundingBoxIn);
+            this.placeTorch(worldIn, EnumFacing.NORTH, 1, 3, 1, structureBoundingBoxIn);
+            this.placeTorch(worldIn, EnumFacing.WEST, 0, 3, 0, structureBoundingBoxIn);
+            this.placeTorch(worldIn, EnumFacing.SOUTH, 1, 3, -1, structureBoundingBoxIn);
             return true;
         }
 
@@ -830,8 +830,8 @@ public class SnowVillagePieces {
 
     public abstract static class Village extends StructureComponent {
         protected int averageGroundLvl = -1;
-        protected int field_189928_h;
-        protected boolean field_189929_i;
+        protected int structureType;
+        protected boolean isZombieInfested;
         protected Start startPiece;
         /**
          * The number of villagers that have been spawned in this component.
@@ -845,8 +845,8 @@ public class SnowVillagePieces {
             super(type);
 
             if (start != null) {
-                this.field_189928_h = start.field_189928_h;
-                this.field_189929_i = start.field_189929_i;
+                this.structureType = start.structureType;
+                this.isZombieInfested = start.isZombieInfested;
                 startPiece = start;
             }
         }
@@ -861,8 +861,8 @@ public class SnowVillagePieces {
         protected void writeStructureToNBT(NBTTagCompound tagCompound) {
             tagCompound.setInteger("HPos", this.averageGroundLvl);
             tagCompound.setInteger("VCount", this.villagersSpawned);
-            tagCompound.setByte("Type", (byte) this.field_189928_h);
-            tagCompound.setBoolean("Zombie", this.field_189929_i);
+            tagCompound.setByte("Type", (byte) this.structureType);
+            tagCompound.setBoolean("Zombie", this.isZombieInfested);
         }
 
         /**
@@ -871,13 +871,13 @@ public class SnowVillagePieces {
         protected void readStructureFromNBT(NBTTagCompound tagCompound) {
             this.averageGroundLvl = tagCompound.getInteger("HPos");
             this.villagersSpawned = tagCompound.getInteger("VCount");
-            this.field_189928_h = tagCompound.getByte("Type");
+            this.structureType = tagCompound.getByte("Type");
 
             if (tagCompound.getBoolean("Desert")) {
-                this.field_189928_h = 1;
+                this.structureType = 1;
             }
 
-            this.field_189929_i = tagCompound.getBoolean("Zombie");
+            this.isZombieInfested = tagCompound.getBoolean("Zombie");
         }
 
         /**
@@ -970,7 +970,7 @@ public class SnowVillagePieces {
 
                     ++this.villagersSpawned;
 
-                    if (this.field_189929_i) {
+                    if (this.isZombieInfested) {
                         EntityZombieVillager entityzombie = new EntityZombieVillager(worldIn);
                         entityzombie.setLocationAndAngles((double) j + 0.5D, k, (double) l + 0.5D, 0.0F, 0.0F);
                         entityzombie.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityzombie)), null);
@@ -1003,7 +1003,7 @@ public class SnowVillagePieces {
             net.minecraftforge.common.MinecraftForge.TERRAIN_GEN_BUS.post(event);
             if (event.getResult() == net.minecraftforge.fml.common.eventhandler.Event.Result.DENY)
                 return event.getReplacement();
-            if (this.field_189928_h == 1) {
+            if (this.structureType == 1) {
                 if (blockstateIn.getBlock() == Blocks.LOG || blockstateIn.getBlock() == Blocks.LOG2) {
                     return Blocks.SANDSTONE.getDefaultState();
                 }
@@ -1027,7 +1027,7 @@ public class SnowVillagePieces {
                 if (blockstateIn.getBlock() == Blocks.GRAVEL) {
                     return Blocks.SANDSTONE.getDefaultState();
                 }
-            } else if (this.field_189928_h == 3) {
+            } else if (this.structureType == 3) {
                 if (blockstateIn.getBlock() == Blocks.LOG || blockstateIn.getBlock() == Blocks.LOG2) {
                     return Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE).withProperty(BlockLog.LOG_AXIS, blockstateIn.getValue(BlockLog.LOG_AXIS));
                 }
@@ -1043,7 +1043,7 @@ public class SnowVillagePieces {
                 if (blockstateIn.getBlock() == Blocks.OAK_FENCE) {
                     return Blocks.SPRUCE_FENCE.getDefaultState();
                 }
-            } else if (this.field_189928_h == 2) {
+            } else if (this.structureType == 2) {
                 if (blockstateIn.getBlock() == Blocks.LOG || blockstateIn.getBlock() == Blocks.LOG2) {
                     return Blocks.LOG2.getDefaultState().withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.ACACIA).withProperty(BlockLog.LOG_AXIS, blockstateIn.getValue(BlockLog.LOG_AXIS));
                 }
@@ -1068,18 +1068,18 @@ public class SnowVillagePieces {
             return blockstateIn;
         }
 
-        protected BlockDoor func_189925_i() {
+        protected BlockDoor biomeDoor() {
             return Blocks.SPRUCE_DOOR;
         }
 
-        protected void func_189927_a(World p_189927_1_, StructureBoundingBox p_189927_2_, Random p_189927_3_, int p_189927_4_, int p_189927_5_, int p_189927_6_, EnumFacing p_189927_7_) {
-            if (!this.field_189929_i) {
-                this.generateDoor(p_189927_1_, p_189927_2_, p_189927_3_, p_189927_4_, p_189927_5_, p_189927_6_, EnumFacing.NORTH, this.func_189925_i());
+        protected void createVillageDoor(World p_189927_1_, StructureBoundingBox p_189927_2_, Random p_189927_3_, int p_189927_4_, int p_189927_5_, int p_189927_6_, EnumFacing p_189927_7_) {
+            if (!this.isZombieInfested) {
+                this.generateDoor(p_189927_1_, p_189927_2_, p_189927_3_, p_189927_4_, p_189927_5_, p_189927_6_, EnumFacing.NORTH, this.biomeDoor());
             }
         }
 
-        protected void func_189926_a(World p_189926_1_, EnumFacing p_189926_2_, int p_189926_3_, int p_189926_4_, int p_189926_5_, StructureBoundingBox p_189926_6_) {
-            if (!this.field_189929_i) {
+        protected void placeTorch(World p_189926_1_, EnumFacing p_189926_2_, int p_189926_3_, int p_189926_4_, int p_189926_5_, StructureBoundingBox p_189926_6_) {
+            if (!this.isZombieInfested) {
                 this.setBlockState(p_189926_1_, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, p_189926_2_), p_189926_3_, p_189926_4_, p_189926_5_, p_189926_6_);
             }
         }
@@ -1093,8 +1093,8 @@ public class SnowVillagePieces {
             super.replaceAirAndLiquidDownwards(worldIn, iblockstate, x, y, z, boundingboxIn);
         }
 
-        protected void func_189924_a(int p_189924_1_) {
-            this.field_189928_h = p_189924_1_;
+        protected void setStructureType(int p_189924_1_) {
+            this.structureType = p_189924_1_;
         }
     }
 
@@ -1192,10 +1192,10 @@ public class SnowVillagePieces {
             this.setBlockState(worldIn, iblockstate, 1, 1, 0, structureBoundingBoxIn);
             this.setBlockState(worldIn, iblockstate, 1, 2, 0, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.WOOL.getStateFromMeta(EnumDyeColor.BLACK.getDyeDamage()), 1, 3, 0, structureBoundingBoxIn);
-            this.func_189926_a(worldIn, EnumFacing.EAST, 2, 3, 0, structureBoundingBoxIn);
-            this.func_189926_a(worldIn, EnumFacing.NORTH, 1, 3, 1, structureBoundingBoxIn);
-            this.func_189926_a(worldIn, EnumFacing.WEST, 0, 3, 0, structureBoundingBoxIn);
-            this.func_189926_a(worldIn, EnumFacing.SOUTH, 1, 3, -1, structureBoundingBoxIn);
+            this.placeTorch(worldIn, EnumFacing.EAST, 2, 3, 0, structureBoundingBoxIn);
+            this.placeTorch(worldIn, EnumFacing.NORTH, 1, 3, 1, structureBoundingBoxIn);
+            this.placeTorch(worldIn, EnumFacing.WEST, 0, 3, 0, structureBoundingBoxIn);
+            this.placeTorch(worldIn, EnumFacing.SOUTH, 1, 3, -1, structureBoundingBoxIn);
             return true;
         }
 
@@ -1299,7 +1299,7 @@ public class SnowVillagePieces {
 
             this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 1, 1, 0, structureBoundingBoxIn);
             this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), 1, 2, 0, structureBoundingBoxIn);
-            this.func_189927_a(worldIn, structureBoundingBoxIn, randomIn, 1, 1, 0, EnumFacing.NORTH);
+            this.createVillageDoor(worldIn, structureBoundingBoxIn, randomIn, 1, 1, 0, EnumFacing.NORTH);
 
             if (this.getBlockStateFromPos(worldIn, 1, 0, -1, structureBoundingBoxIn).getMaterial() == Material.AIR && this.getBlockStateFromPos(worldIn, 1, -1, -1, structureBoundingBoxIn).getMaterial() != Material.AIR) {
                 this.setBlockState(worldIn, iblockstate2, 1, 0, -1, structureBoundingBoxIn);

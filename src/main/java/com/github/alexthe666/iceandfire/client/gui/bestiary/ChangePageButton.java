@@ -11,6 +11,8 @@ import org.lwjgl.opengl.GL11;
 public class ChangePageButton extends GuiButton {
     private final boolean right;
     public int lastpage = 1;
+
+    @SuppressWarnings("unused")
     private final int page;
     private final int color;
 

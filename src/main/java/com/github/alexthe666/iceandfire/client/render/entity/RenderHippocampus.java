@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
@@ -63,13 +62,14 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
     }
 
     @SideOnly(Side.CLIENT)
-    private class LayerHippocampusSaddle implements LayerRenderer {
+    private class LayerHippocampusSaddle implements LayerRenderer<EntityHippocampus> {
         private final RenderHippocampus renderer;
 
         public LayerHippocampusSaddle(RenderHippocampus renderer) {
             this.renderer = renderer;
         }
 
+        @Override
         public void doRenderLayer(EntityHippocampus entity, float f, float f1, float i, float f2, float f3, float f4, float f5) {
             if (entity.isSaddled()) {
                 this.renderer.bindTexture(new ResourceLocation("iceandfire:textures/models/hippocampus/saddle.png"));
@@ -81,14 +81,9 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
         public boolean shouldCombineTextures() {
             return false;
         }
-
-        @Override
-        public void doRenderLayer(EntityLivingBase entity, float f, float f1, float f2, float f3, float f4, float f5, float f6) {
-            this.doRenderLayer((EntityHippocampus) entity, f, f1, f2, f3, f4, f5, f6);
-        }
     }
 
-    private class LayerHippocampusRainbow implements LayerRenderer {
+    private class LayerHippocampusRainbow implements LayerRenderer<EntityHippocampus> {
         private final RenderHippocampus renderer;
         private final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/hippocampus/rainbow.png");
         private final ResourceLocation TEXTURE_BLINK = new ResourceLocation("iceandfire:textures/models/hippocampus/rainbow_blink.png");
@@ -97,16 +92,17 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
             this.renderer = renderer;
         }
 
+        @Override
         public void doRenderLayer(EntityHippocampus entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
             if (entitylivingbaseIn.hasCustomName() && entitylivingbaseIn.getCustomNameTag().toLowerCase().contains("rainbow")) {
                 GL11.glPushMatrix();
                 this.renderer.bindTexture(entitylivingbaseIn.isBlinking() ? TEXTURE_BLINK : TEXTURE);
                 int i1 = 25;
-                int i = entitylivingbaseIn.ticksExisted / 25 + entitylivingbaseIn.getEntityId();
+                int i = entitylivingbaseIn.ticksExisted / i1 + entitylivingbaseIn.getEntityId();
                 int j = EnumDyeColor.values().length;
                 int k = i % j;
                 int l = (i + 1) % j;
-                float f = ((float) (entitylivingbaseIn.ticksExisted % 25) + partialTicks) / 25.0F;
+                float f = ((float) (entitylivingbaseIn.ticksExisted % i1) + partialTicks) / (float) i1;
                 float[] afloat1 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(k));
                 float[] afloat2 = EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(l));
                 GlStateManager.color(afloat1[0] * (1.0F - f) + afloat2[0] * f, afloat1[1] * (1.0F - f) + afloat2[1] * f, afloat1[2] * (1.0F - f) + afloat2[2] * f);
@@ -119,16 +115,11 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
         public boolean shouldCombineTextures() {
             return false;
         }
-
-        @Override
-        public void doRenderLayer(EntityLivingBase entity, float f, float f1, float f2, float f3, float f4, float f5, float f6) {
-            this.doRenderLayer((EntityHippocampus) entity, f, f1, f2, f3, f4, f5, f6);
-        }
     }
 
 
     @SideOnly(Side.CLIENT)
-    private class LayerHippocampusBridle implements LayerRenderer {
+    private class LayerHippocampusBridle implements LayerRenderer<EntityHippocampus> {
         private final RenderHippocampus renderer;
         private final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/hippocampus/bridle.png");
 
@@ -136,6 +127,7 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
             this.renderer = renderer;
         }
 
+        @Override
         public void doRenderLayer(EntityHippocampus entity, float f, float f1, float i, float f2, float f3, float f4, float f5) {
             if (entity.isSaddled() && entity.getControllingPassenger() != null) {
                 this.renderer.bindTexture(TEXTURE);
@@ -147,15 +139,10 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
         public boolean shouldCombineTextures() {
             return false;
         }
-
-        @Override
-        public void doRenderLayer(EntityLivingBase entity, float f, float f1, float f2, float f3, float f4, float f5, float f6) {
-            this.doRenderLayer((EntityHippocampus) entity, f, f1, f2, f3, f4, f5, f6);
-        }
     }
 
     @SideOnly(Side.CLIENT)
-    private class LayerHippocampusChest implements LayerRenderer {
+    private class LayerHippocampusChest implements LayerRenderer<EntityHippocampus> {
         private final RenderHippocampus renderer;
         private final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/hippocampus/chest.png");
 
@@ -163,6 +150,7 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
             this.renderer = renderer;
         }
 
+        @Override
         public void doRenderLayer(EntityHippocampus entity, float f, float f1, float i, float f2, float f3, float f4, float f5) {
             if (entity.isChested()) {
                 this.renderer.bindTexture(TEXTURE);
@@ -174,15 +162,10 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
         public boolean shouldCombineTextures() {
             return false;
         }
-
-        @Override
-        public void doRenderLayer(EntityLivingBase entity, float f, float f1, float f2, float f3, float f4, float f5, float f6) {
-            this.doRenderLayer((EntityHippocampus) entity, f, f1, f2, f3, f4, f5, f6);
-        }
     }
 
     @SideOnly(Side.CLIENT)
-    private class LayerHippocampusArmor implements LayerRenderer {
+    private class LayerHippocampusArmor implements LayerRenderer<EntityHippocampus> {
         private final RenderHippocampus renderer;
         private final ResourceLocation TEXTURE_DIAMOND = new ResourceLocation("iceandfire:textures/models/hippocampus/armor_diamond.png");
         private final ResourceLocation TEXTURE_GOLD = new ResourceLocation("iceandfire:textures/models/hippocampus/armor_gold.png");
@@ -192,6 +175,7 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
             this.renderer = renderer;
         }
 
+        @Override
         public void doRenderLayer(EntityHippocampus entity, float f, float f1, float i, float f2, float f3, float f4, float f5) {
             if (entity.getArmor() != 0) {
                 GL11.glPushMatrix();
@@ -215,11 +199,6 @@ public class RenderHippocampus extends RenderLiving<EntityHippocampus> {
         @Override
         public boolean shouldCombineTextures() {
             return false;
-        }
-
-        @Override
-        public void doRenderLayer(EntityLivingBase entity, float f, float f1, float f2, float f3, float f4, float f5, float f6) {
-            this.doRenderLayer((EntityHippocampus) entity, f, f1, f2, f3, f4, f5, f6);
         }
     }
 }

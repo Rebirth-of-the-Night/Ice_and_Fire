@@ -42,7 +42,6 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
@@ -59,19 +58,20 @@ public class ClientEvents {
     private static final ResourceLocation CHAIN_TEXTURE = new ResourceLocation("iceandfire:textures/models/misc/chain_link.png");
     private final Random rand = new Random();
 
+    @SuppressWarnings("unchecked")
     public static void initializeStoneLayer() {
         for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : Minecraft.getMinecraft().getRenderManager().entityRenderMap.entrySet()) {
-            Render render = entry.getValue();
+            Render<? extends Entity> render = entry.getValue();
             if (render instanceof RenderLivingBase && EntityLiving.class.isAssignableFrom(entry.getKey())) {
-                ((RenderLivingBase) render).addLayer(new LayerStoneEntity((RenderLivingBase) render));
+                ((RenderLivingBase<?>) render).addLayer(new LayerStoneEntity((RenderLivingBase<?>) render));
                 ((RenderLivingBase) render).addLayer(new LayerStoneEntityCrack((RenderLivingBase) render));
                 ((RenderLivingBase) render).addLayer(new LayerChainedEntity(render));
             }
         }
 
-        Field renderingRegistryField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "INSTANCE", "INSTANCE"));
-        Field entityRendersField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "entityRenderers", "entityRenderers"));
-        Field entityRendersOldField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "entityRenderersOld", "entityRenderersOld"));
+        Field renderingRegistryField = ObfuscationReflectionHelper.getPrivateValue(RenderingRegistry.class, null, "INSTANCE");
+        Field entityRendersField = ObfuscationReflectionHelper.getPrivateValue(RenderingRegistry.class, null, "entityRenderers");
+        Field entityRendersOldField = ObfuscationReflectionHelper.getPrivateValue(RenderingRegistry.class, null, "entityRenderersOld");
         RenderingRegistry registry = null;
         try {
             Field modifier = Field.class.getDeclaredField("modifiers");

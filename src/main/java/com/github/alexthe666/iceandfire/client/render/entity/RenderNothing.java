@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderNothing extends Render {
+public class RenderNothing extends Render<Entity> {
 
     public RenderNothing(RenderManager renderManager) {
         super(renderManager);

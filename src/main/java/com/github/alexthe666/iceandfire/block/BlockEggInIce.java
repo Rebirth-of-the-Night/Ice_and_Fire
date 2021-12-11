@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -38,7 +39,7 @@ public class BlockEggInIce extends BlockContainer {
         this.setLightOpacity(3);
         this.setSoundType(SoundType.GLASS);
         this.setTranslationKey("iceandfire.egginice");
-        GameRegistry.registerTileEntity(TileEntityEggInIce.class, "eggInIce");
+        GameRegistry.registerTileEntity(TileEntityEggInIce.class, new ResourceLocation(IceAndFire.MODID, "eggInIce"));
         setRegistryName(IceAndFire.MODID, "egginice");
     }
 
@@ -130,13 +131,11 @@ public class BlockEggInIce extends BlockContainer {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState blockstate) {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState blockstate) {
         return false;
     }

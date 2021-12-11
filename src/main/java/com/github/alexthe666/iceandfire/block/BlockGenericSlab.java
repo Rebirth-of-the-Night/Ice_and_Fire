@@ -23,6 +23,7 @@ import java.util.Random;
 
 public abstract class BlockGenericSlab extends BlockSlab {
 
+	@SuppressWarnings("unused")
 	private final Block baseBlock;
 
 	public BlockGenericSlab(String name, float hardness, float resistance, SoundType soundType, Material material, Block baseBlock) {
@@ -60,13 +61,11 @@ public abstract class BlockGenericSlab extends BlockSlab {
 
 	public abstract ItemBlock getItemBlock();
 
-	@SuppressWarnings("deprecation")
 	@Override
     public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
 		return new ItemStack(getSlabItem());
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
     public IBlockState getStateFromMeta(int meta) {
 		IBlockState iblockstate = this.getDefaultState();

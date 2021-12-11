@@ -35,8 +35,8 @@ public class BlockDreadTorch extends BlockTorch implements IDreadBlock {
         double d4 = 0.27D;
         if (enumfacing.getAxis().isHorizontal()) {
             EnumFacing enumfacing1 = enumfacing.getOpposite();
-            //worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + 0.27D * (double)enumfacing1.getXOffset(), d1 + 0.22D, d2 + 0.27D * (double)enumfacing1.getZOffset(), 0.0D, 0.0D, 0.0D);
-            IceAndFire.PROXY.spawnParticle("dread_torch", d0 + 0.27D * (double) enumfacing1.getXOffset(), d1 + 0.22D, d2 + 0.27D * (double) enumfacing1.getZOffset(), 0.0D, 0.0D, 0.0D);
+            //worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4 * (double)enumfacing1.getXOffset(), d1 + d3, d2 + d4 * (double)enumfacing1.getZOffset(), 0.0D, 0.0D, 0.0D);
+            IceAndFire.PROXY.spawnParticle("dread_torch", d0 + d4 * (double) enumfacing1.getXOffset(), d1 + d3, d2 + d4 * (double) enumfacing1.getZOffset(), 0.0D, 0.0D, 0.0D);
 
         } else {
             //worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, 0.0D, 0.0D, 0.0D);

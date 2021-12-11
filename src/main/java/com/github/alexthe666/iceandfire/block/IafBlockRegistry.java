@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class IafBlockRegistry {
@@ -174,12 +175,12 @@ public class IafBlockRegistry {
     public static Block burnt_torch = new BlockBurntTorch();
 
     static {
-        GameRegistry.registerTileEntity(TileEntityDummyGorgonHead.class, "dummyGorgonHeadIdle");
-        GameRegistry.registerTileEntity(TileEntityDummyGorgonHeadActive.class, "dummyGorgonHeadActive");
-        GameRegistry.registerTileEntity(TileEntityMyrmexCocoon.class, "myrmexCocoon");
-        GameRegistry.registerTileEntity(TileEntityDragonforge.class, "dragonforge");
-        GameRegistry.registerTileEntity(TileEntityDragonforgeInput.class, "dragonforgeInput");
-        GameRegistry.registerTileEntity(TileEntityDragonforgeBrick.class, "dragonforgeBrick");
+        GameRegistry.registerTileEntity(TileEntityDummyGorgonHead.class, new ResourceLocation(IceAndFire.MODID, "dummyGorgonHeadIdle"));
+        GameRegistry.registerTileEntity(TileEntityDummyGorgonHeadActive.class, new ResourceLocation(IceAndFire.MODID, "dummyGorgonHeadActive"));
+        GameRegistry.registerTileEntity(TileEntityMyrmexCocoon.class, new ResourceLocation(IceAndFire.MODID, "myrmexCocoon"));
+        GameRegistry.registerTileEntity(TileEntityDragonforge.class, new ResourceLocation(IceAndFire.MODID, "dragonforge"));
+        GameRegistry.registerTileEntity(TileEntityDragonforgeInput.class, new ResourceLocation(IceAndFire.MODID, "dragonforgeInput"));
+        GameRegistry.registerTileEntity(TileEntityDragonforgeBrick.class, new ResourceLocation(IceAndFire.MODID, "dragonforgeBrick"));
     }
 
 }

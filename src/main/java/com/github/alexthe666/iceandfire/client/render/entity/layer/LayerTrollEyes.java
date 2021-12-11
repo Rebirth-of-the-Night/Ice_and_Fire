@@ -3,8 +3,6 @@ package com.github.alexthe666.iceandfire.client.render.entity.layer;
 import com.github.alexthe666.iceandfire.client.render.entity.RenderTroll;
 import com.github.alexthe666.iceandfire.entity.EntityGorgon;
 import com.github.alexthe666.iceandfire.entity.EntityTroll;
-import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
-import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -20,7 +18,7 @@ public class LayerTrollEyes implements LayerRenderer<EntityTroll> {
 
     @Override
     public void doRenderLayer(EntityTroll troll, float f, float f1, float f6, float f2, float f3, float f4, float f5) {
-        StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(troll, StoneEntityProperties.class);
+        // StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(troll, StoneEntityProperties.class);
         if (!EntityGorgon.isStoneMob(troll)) {
             this.renderer.bindTexture(troll.getType().TEXTURE_EYES);
             GlStateManager.enableBlend();

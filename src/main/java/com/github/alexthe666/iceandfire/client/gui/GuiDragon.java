@@ -11,14 +11,15 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiDragon extends GuiContainer {
     private static final ResourceLocation texture = new ResourceLocation("iceandfire:textures/gui/dragon.png");
+    @SuppressWarnings("unused")
     private final IInventory playerInventory;
+    @SuppressWarnings("unused")
     private final IInventory dragonInv;
     private final EntityDragonBase dragon;
     private float mousePosx;

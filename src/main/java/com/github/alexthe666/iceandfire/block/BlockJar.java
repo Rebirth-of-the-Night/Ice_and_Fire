@@ -45,7 +45,7 @@ public class BlockJar extends BlockContainer implements ICustomRendered {
         this.setRegistryName(IceAndFire.MODID, "jar" + (empty ? "_empty" : "_pixie"));
         if (!empty) {
             this.setLightLevel(0.75F);
-            GameRegistry.registerTileEntity(TileEntityJar.class, "jar");
+            GameRegistry.registerTileEntity(TileEntityJar.class, new ResourceLocation(IceAndFire.MODID, "jar"));
         }
         this.empty = empty;
     }
@@ -56,19 +56,16 @@ public class BlockJar extends BlockContainer implements ICustomRendered {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return AABB;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState blockstate) {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState blockstate) {
         return false;
     }
@@ -84,7 +81,6 @@ public class BlockJar extends BlockContainer implements ICustomRendered {
         super.breakBlock(worldIn, pos, state);
     }
 
-    @SuppressWarnings("deprecation")
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
     }
@@ -93,6 +89,7 @@ public class BlockJar extends BlockContainer implements ICustomRendered {
         //this.checkFall(world, pos);
     }
 
+    @SuppressWarnings("unused")
     private boolean checkFall(World worldIn, BlockPos pos) {
         if (!this.canPlaceBlockAt(worldIn, pos)) {
             worldIn.destroyBlock(pos, true);

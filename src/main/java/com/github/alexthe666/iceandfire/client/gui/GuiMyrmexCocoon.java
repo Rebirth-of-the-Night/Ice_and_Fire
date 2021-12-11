@@ -21,8 +21,8 @@ public class GuiMyrmexCocoon extends GuiContainer {
         this.upperChestInventory = upperInv;
         this.lowerChestInventory = lowerInv;
         this.allowUserInput = false;
-        int i = 222;
-        int j = 114;
+        // int i = 222;
+        // int j = 114;
         this.inventoryRows = lowerInv.getSizeInventory() / 9;
         this.ySize = 114 + this.inventoryRows * 18;
     }

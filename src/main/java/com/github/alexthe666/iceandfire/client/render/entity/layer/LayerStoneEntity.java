@@ -5,7 +5,6 @@ import com.github.alexthe666.iceandfire.client.model.ModelGuardianStatue;
 import com.github.alexthe666.iceandfire.client.model.ModelHorseStatue;
 import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -15,16 +14,15 @@ import net.minecraft.entity.monster.EntityGuardian;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityLlama;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
-public class LayerStoneEntity implements LayerRenderer {
+public class LayerStoneEntity<T extends EntityLivingBase> implements LayerRenderer<T> {
 
     private static final ModelHorseStatue HORSE_MODEL = new ModelHorseStatue();
     private static final ModelGuardianStatue GUARDIAN_MODEL = new ModelGuardianStatue();
     private static final ResourceLocation STONE_TEXTURE = new ResourceLocation( "textures/blocks/stone.png");
-    private final RenderLivingBase renderer;
+    private final RenderLivingBase<? extends EntityLivingBase> renderer;
 
-    public LayerStoneEntity(RenderLivingBase renderer) {
+    public LayerStoneEntity(RenderLivingBase<? extends EntityLivingBase> renderer) {
         this.renderer = renderer;
     }
 
