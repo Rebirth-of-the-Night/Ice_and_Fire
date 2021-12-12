@@ -12,7 +12,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderChainTie extends Render<EntityChainTie> {
     private static final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/misc/chain_tie.png");
-    private final ModelChainTie leashKnotModel = new ModelChainTie();
 
     public RenderChainTie(RenderManager renderManagerIn) {
         super(renderManagerIn);
@@ -22,7 +21,7 @@ public class RenderChainTie extends Render<EntityChainTie> {
         GlStateManager.pushMatrix();
         GlStateManager.disableCull();
         GlStateManager.translate((float) x, (float) y, (float) z);
-        float f = 0.0625F;
+        // float f = 0.0625F;
         GlStateManager.enableRescaleNormal();
         GlStateManager.scale(1.0F, 1.0F, 1.0F);
         GlStateManager.enableAlpha();

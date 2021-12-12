@@ -10,9 +10,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.AbstractSkeleton;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.MathHelper;
@@ -36,6 +33,7 @@ public class ModelDreadQueen extends ModelDragonBase {
     public ModelBiped.ArmPose rightArmPose;
     public boolean isSneak;
     private final ModelAnimator animator;
+    @SuppressWarnings("unused")
     private boolean armor = false;
 
     public ModelDreadQueen(float modelSize, boolean armorArms) {
@@ -114,7 +112,6 @@ public class ModelDreadQueen extends ModelDragonBase {
     public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
         this.rightArmPose = ModelBiped.ArmPose.EMPTY;
         this.leftArmPose = ModelBiped.ArmPose.EMPTY;
-        ItemStack itemstack = entitylivingbaseIn.getHeldItem(EnumHand.MAIN_HAND);
         
         super.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTickTime);
     }
@@ -123,7 +120,6 @@ public class ModelDreadQueen extends ModelDragonBase {
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
         this.resetToDefaultPose();
         animate((IAnimatedEntity) entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-        ItemStack itemstack = ((EntityLivingBase) entityIn).getHeldItemMainhand();
         EntityDreadQueen thrall = (EntityDreadQueen) entityIn;
         this.faceTarget(netHeadYaw, headPitch, 1.0F, head);
         float f = 1.0F;
@@ -195,10 +191,10 @@ public class ModelDreadQueen extends ModelDragonBase {
         this.armLeft.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
         this.armRight.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
         this.armLeft.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-        float speed_walk = 0.6F;
-        float speed_idle = 0.05F;
-        float degree_walk = 1F;
-        float degree_idle = 0.5F;
+        // float speed_walk = 0.6F;
+        // float speed_idle = 0.05F;
+        // float degree_walk = 1F;
+        // float degree_idle = 0.5F;
         if (thrall.getAnimation() == EntityDreadQueen.ANIMATION_SPAWN) {
             //this.walk(armRight, 1.5F, 0.4F, false, 2, -0.3F, thrall.ticksExisted, 1);
             //this.walk(armLeft, 1.5F,  0.4F, true, 2, 0.3F, thrall.ticksExisted, 1);

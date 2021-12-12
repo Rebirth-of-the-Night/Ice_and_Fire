@@ -97,20 +97,20 @@ public class RenderDreadlandsSky extends IRenderHandler {
         int j = 6;
         bufferBuilderIn.begin(7, DefaultVertexFormats.POSITION);
 
-        for (int k = -384; k <= 384; k += 64) {
-            for (int l = -384; l <= 384; l += 64) {
+        for (int k = -i*j; k <= i*j; k += i) {
+            for (int l = -i*j; l <= i*j; l += i) {
                 float f = (float) k;
-                float f1 = (float) (k + 64);
+                float f1 = (float) (k + i);
 
                 if (reverseX) {
                     f1 = (float) k;
-                    f = (float) (k + 64);
+                    f = (float) (k + i);
                 }
 
                 bufferBuilderIn.pos(f, posY, l).endVertex();
                 bufferBuilderIn.pos(f1, posY, l).endVertex();
-                bufferBuilderIn.pos(f1, posY, l + 64).endVertex();
-                bufferBuilderIn.pos(f, posY, l + 64).endVertex();
+                bufferBuilderIn.pos(f1, posY, l + i).endVertex();
+                bufferBuilderIn.pos(f, posY, l + i).endVertex();
             }
         }
     }
@@ -176,14 +176,13 @@ public class RenderDreadlandsSky extends IRenderHandler {
                 double d16 = Math.cos(d14);
 
                 for (int j = 0; j < 4; ++j) {
-                    double d17 = 0.0D;
                     double d18 = (double) ((j & 2) - 1) * d3;
                     double d19 = (double) ((j + 1 & 2) - 1) * d3;
                     double d20 = 0.0D;
                     double d21 = d18 * d16 - d19 * d15;
                     double d22 = d19 * d16 + d18 * d15;
-                    double d23 = d21 * d12 + 0.0D * d13;
-                    double d24 = 0.0D * d12 - d21 * d13;
+                    double d23 = d21 * d12 + d20 * d13;
+                    double d24 = d20 * d12 - d21 * d13;
                     double d25 = d24 * d9 - d22 * d10;
                     double d26 = d22 * d9 + d24 * d10;
                     bufferBuilderIn.pos(d5 + d25, d6 + d23, d7 + d26).endVertex();
@@ -251,8 +250,8 @@ public class RenderDreadlandsSky extends IRenderHandler {
             bufferbuilder.pos(0.0D, 100.0D, 0.0D).color(f6, f7, f8, afloat[3]).endVertex();
             int l1 = 16;
 
-            for (int j2 = 0; j2 <= 16; ++j2) {
-                float f21 = (float) j2 * ((float) Math.PI * 2F) / 16.0F;
+            for (int j2 = 0; j2 <= l1; ++j2) {
+                float f21 = (float) j2 * ((float) Math.PI * 2F) / (float) l1;
                 float f12 = MathHelper.sin(f21);
                 float f13 = MathHelper.cos(f21);
                 bufferbuilder.pos(f12 * 120.0F, f13 * 120.0F, -f13 * 40.0F * afloat[3]).color(afloat[0], afloat[1], afloat[2], 0.0F).endVertex();
@@ -342,26 +341,26 @@ public class RenderDreadlandsSky extends IRenderHandler {
             float f19 = -((float) (d3 + 65.0D));
             float f20 = -1.0F;
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-            bufferbuilder.pos(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-            bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f20, f19, f18).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f18, f19, f18).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f18, f20, f18).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f20, f20, f18).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f20, f20, f20).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f18, f20, f20).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f18, f19, f20).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f20, f19, f20).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f18, f20, f20).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f18, f20, f18).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f18, f19, f18).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f18, f19, f20).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f20, f19, f20).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f20, f19, f18).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f20, f20, f18).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f20, f20, f20).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f20, f20, f20).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f20, f20, f18).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f18, f20, f18).color(0, 0, 0, 255).endVertex();
+            bufferbuilder.pos(f18, f20, f20).color(0, 0, 0, 255).endVertex();
             tessellator.draw();
         }
 

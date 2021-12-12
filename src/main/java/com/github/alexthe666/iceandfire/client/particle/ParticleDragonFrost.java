@@ -80,8 +80,8 @@ public class ParticleDragonFrost extends ParticleFlame {
         float f3 = (float) (this.prevPosX + (this.posX - this.prevPosX) * partialTicks - interpPosX);
         float f4 = (float) (this.prevPosY + (this.posY - this.prevPosY) * partialTicks - interpPosY);
         float f5 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * partialTicks - interpPosZ);
-        float distX = (float) (this.initialX - this.posX);
-        float distZ = (float) (this.initialZ - this.posZ);
+        // float distX = (float) (this.initialX - this.posX);
+        // float distZ = (float) (this.initialZ - this.posZ);
         float width = particleScale * 0.09F;
         int i = this.getBrightnessForRender(partialTicks);
         int j = i >> 16 & 65535;
@@ -103,13 +103,12 @@ public class ParticleDragonFrost extends ParticleFlame {
             Minecraft.getMinecraft().getTextureManager().bindTexture(SNOWFLAKE_BIG);
         } else {
             Minecraft.getMinecraft().getTextureManager().bindTexture(SNOWFLAKE);
-
         }
         GlStateManager.disableLighting();
-        double currentMinU = 0.25D * particleTextureIndexX;
-        double currentMaxU = currentMinU + 0.25D;
-        double currentMinV = 0.25D * particleTextureIndexY;
-        double currentMaxV = currentMinV + 0.25D;
+        // double currentMinU = 0.25D * particleTextureIndexX;
+        // double currentMaxU = currentMinU + 0.25D;
+        // double currentMinV = 0.25D * particleTextureIndexY;
+        // double currentMaxV = currentMinV + 0.25D;
         float alpha = 1;
         GL11.glPushMatrix();
         buffer.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
@@ -153,7 +152,7 @@ public class ParticleDragonFrost extends ParticleFlame {
             double d2 = this.targetX - initialX;
             double d3 = this.targetY - initialY;
             double d4 = this.targetZ - initialZ;
-            double dist = MathHelper.sqrt(d2 * d2 + d3 * d3 + d4 * d4);
+            // double dist = MathHelper.sqrt(d2 * d2 + d3 * d3 + d4 * d4);
             float speed = 0.015F + speedBonus;
             this.motionX += d2 * speed;
             this.motionY += d3 * speed;

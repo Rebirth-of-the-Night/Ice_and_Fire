@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.client.model.util;
 
-import com.github.alexthe666.iceandfire.client.model.ModelDreadThrall;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.minecraft.client.model.ModelBox;

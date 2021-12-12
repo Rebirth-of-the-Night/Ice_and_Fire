@@ -12,9 +12,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class LayerDragonEyes implements LayerRenderer<EntityDragonBase> {
-    private final RenderLiving render;
+    private final RenderLiving<EntityDragonBase> render;
 
-    public LayerDragonEyes(RenderLiving renderIn) {
+    public LayerDragonEyes(RenderLiving<EntityDragonBase> renderIn) {
         this.render = renderIn;
     }
 

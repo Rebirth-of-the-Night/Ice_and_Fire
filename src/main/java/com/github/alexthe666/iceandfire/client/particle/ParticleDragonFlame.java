@@ -1,6 +1,8 @@
 package com.github.alexthe666.iceandfire.client.particle;
 
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleFlame;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
@@ -96,6 +98,7 @@ public class ParticleDragonFlame extends ParticleFlame {
                 avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double) (f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale(2.0F * f9));
             }
         }
+        Minecraft.getMinecraft().getTextureManager().bindTexture(DRAGONFLAME);
         GL11.glPushMatrix();
         buffer.pos((double) f5 + avec3d[0].x, (double) f6 + avec3d[0].y, (double) f7 + avec3d[0].z).tex(f1, f3).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
         buffer.pos((double) f5 + avec3d[1].x, (double) f6 + avec3d[1].y, (double) f7 + avec3d[1].z).tex(f1, f2).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
@@ -121,7 +124,7 @@ public class ParticleDragonFlame extends ParticleFlame {
             double d2 = this.targetX - initialX;
             double d3 = this.targetY - initialY;
             double d4 = this.targetZ - initialZ;
-            double dist = MathHelper.sqrt(d2 * d2 + d3 * d3 + d4 * d4);
+            // double dist = MathHelper.sqrt(d2 * d2 + d3 * d3 + d4 * d4);
             float speed = 0.015F + speedBonus;
             this.motionX += d2 * speed;
             this.motionY += d3 * speed;

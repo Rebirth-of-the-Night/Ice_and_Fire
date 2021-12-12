@@ -24,10 +24,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class LayerDragonRider implements LayerRenderer<EntityDragonBase> {
-    private final RenderLiving render;
+    private final RenderLiving<EntityDragonBase> render;
     private final boolean excludeDreadQueenMob;
 
-    public LayerDragonRider(RenderLiving renderIn, boolean excludeDreadQueenMob) {
+    public LayerDragonRider(RenderLiving<EntityDragonBase> renderIn, boolean excludeDreadQueenMob) {
         this.render = renderIn;
         this.excludeDreadQueenMob = excludeDreadQueenMob;
     }
@@ -53,10 +53,10 @@ public class LayerDragonRider implements LayerRenderer<EntityDragonBase> {
                 if (prey) {
                     if (animationTicks == 0 || animationTicks >= 15 || dragon.isFlying()) {
                         translateToHead();
-                        Render render = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(passenger);
+                        Render<Entity> render = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(passenger);
                         ModelBase modelBase = null;
                         if (render instanceof RenderLiving) {
-                            modelBase = ((RenderLiving) render).getMainModel();
+                            modelBase = ((RenderLiving<?>) render).getMainModel();
                         }
                         if ((passenger.height > passenger.width || modelBase instanceof ModelBiped) && !(modelBase instanceof ModelQuadruped) && !(modelBase instanceof ModelHorse)) {
                             GlStateManager.translate(-0.15F * passenger.height, 0.1F * dragonScale - 0.1F * passenger.height, -0.1F * dragonScale - 0.1F * passenger.width);
@@ -87,15 +87,17 @@ public class LayerDragonRider implements LayerRenderer<EntityDragonBase> {
         GlStateManager.popMatrix();
     }
 
+    @SuppressWarnings("unchecked")
     protected void translateToBody() {
-        postRender(((IceAndFireTabulaModel) this.render.getMainModel()).getCube("BodyUpper"), 0.0625F);
-        postRender(((IceAndFireTabulaModel) this.render.getMainModel()).getCube("Neck1"), 0.0625F);
+        postRender(((IceAndFireTabulaModel<? extends EntityDragonBase>) this.render.getMainModel()).getCube("BodyUpper"), 0.0625F);
+        postRender(((IceAndFireTabulaModel<? extends EntityDragonBase>) this.render.getMainModel()).getCube("Neck1"), 0.0625F);
     }
 
+    @SuppressWarnings("unchecked")
     protected void translateToHead() {
-        postRender(((IceAndFireTabulaModel) this.render.getMainModel()).getCube("Neck2"), 0.0625F);
-        postRender(((IceAndFireTabulaModel) this.render.getMainModel()).getCube("Neck3"), 0.0625F);
-        postRender(((IceAndFireTabulaModel) this.render.getMainModel()).getCube("Head"), 0.0625F);
+        postRender(((IceAndFireTabulaModel<? extends EntityDragonBase>) this.render.getMainModel()).getCube("Neck2"), 0.0625F);
+        postRender(((IceAndFireTabulaModel<? extends EntityDragonBase>) this.render.getMainModel()).getCube("Neck3"), 0.0625F);
+        postRender(((IceAndFireTabulaModel<? extends EntityDragonBase>) this.render.getMainModel()).getCube("Head"), 0.0625F);
     }
 
     protected void postRender(AdvancedModelRenderer renderer, float scale) {

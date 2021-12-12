@@ -1,7 +1,5 @@
 package com.github.alexthe666.iceandfire.client.model;
 
-import com.github.alexthe666.iceandfire.entity.EntityDreadBeast;
-import com.github.alexthe666.iceandfire.entity.EntityDreadGhoul;
 import com.github.alexthe666.iceandfire.entity.EntityDreadScuttler;
 import net.ilexiconn.llibrary.client.model.ModelAnimator;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;

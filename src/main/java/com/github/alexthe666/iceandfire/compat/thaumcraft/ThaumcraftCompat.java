@@ -1,14 +1,14 @@
 package com.github.alexthe666.iceandfire.compat.thaumcraft;
 
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
-import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.enums.EnumHippogryphTypes;
 import com.github.alexthe666.iceandfire.enums.EnumSeaSerpent;
 import com.github.alexthe666.iceandfire.enums.EnumSkullType;
 import com.github.alexthe666.iceandfire.enums.EnumTroll;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
@@ -19,23 +19,11 @@ public class ThaumcraftCompat {
 
     static final Aspect MYTHICAL = new Aspect("mythus", 0XD9D5AB, new Aspect[]{Aspect.BEAST, Aspect.MAGIC}, new ResourceLocation("iceandfire:textures/thaumcraft/mythical.png"), 1);
     static final Aspect DRAGON = getOrCreateAspect("draco", 0XA2271F, new Aspect[]{ThaumcraftCompat.MYTHICAL, Aspect.DESIRE}, new ResourceLocation("iceandfire", "textures/thaumcraft/dragon.png"), 1);
-    private static final ThaumcraftCompat INSTANCE = new ThaumcraftCompat();
-    private static boolean registered = false;
 
     static Aspect getOrCreateAspect(String tag, int color, Aspect[] components, ResourceLocation image, int blend) {
         Aspect a = Aspect.getAspect(tag);
         if (a != null) return a;
         return new Aspect(tag, color, components, image, blend);
-    }
-
-    @Deprecated
-    public static void register() {
-        if (!registered) {
-            registered = true;
-            MinecraftForge.EVENT_BUS.register(INSTANCE);
-        } else {
-            throw new RuntimeException("You can only call ThaumcraftCompat.register() once");
-        }
     }
 
     @SubscribeEvent

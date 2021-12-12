@@ -1,21 +1,22 @@
 package com.github.alexthe666.iceandfire.compat.waila;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityMutlipartPart;
 import com.google.common.base.Strings;
+
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;
 import mcp.mobius.waila.config.FormattingConfig;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 import static mcp.mobius.waila.api.SpecialChars.getRenderString;
 
@@ -48,17 +49,17 @@ public class HUDHandlerMultipartMob implements IWailaEntityProvider {
             float maxhp = part.getParent().getMaxHealth() / 2.0f;
 
             if (part.getParent().getMaxHealth() > maxhpfortext)
-                currenttip.add(String.format(I18n.translateToLocal("hud.msg.health") + ": %.0f / %.0f", part.getParent().getHealth(), part.getParent().getMaxHealth()));
+                currenttip.add(String.format(I18n.format("hud.msg.health") + ": %.0f / %.0f", part.getParent().getHealth(), part.getParent().getMaxHealth()));
             else
                 currenttip.add(getRenderString("waila.health", String.valueOf(nhearts), String.valueOf(health), String.valueOf(maxhp)));
 
             if (part.getParent() instanceof EntityDragonBase) {
                 EntityDragonBase dragon = (EntityDragonBase) part.getParent();
-                currenttip.add(String.format(I18n.translateToLocal("dragon.stage") + dragon.getDragonStage()));
+                currenttip.add(String.format(I18n.format("dragon.stage") + dragon.getDragonStage()));
                 if (dragon.isMale()) {
-                    currenttip.add(String.format(I18n.translateToLocal("dragon.gender.male")));
+                    currenttip.add(String.format(I18n.format("dragon.gender.male")));
                 } else {
-                    currenttip.add(String.format(I18n.translateToLocal("dragon.gender.female")));
+                    currenttip.add(String.format(I18n.format("dragon.gender.female")));
                 }
             }
         }

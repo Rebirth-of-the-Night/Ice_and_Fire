@@ -12,15 +12,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class DragonParticleManager {
 
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("unchecked")
     public static void translateToDragon(EntityDragonBase dragonBase) {
-        RenderLiving render = (RenderLiving) Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(dragonBase);
+        RenderLiving<EntityDragonBase> render = (RenderLiving<EntityDragonBase>) Minecraft.getMinecraft().getRenderManager().<EntityDragonBase>getEntityRenderObject(dragonBase);
         if (render instanceof RenderDragonBase) {
             RenderDragonBase renderDragonBase = (RenderDragonBase) render;
-            ((IceAndFireTabulaModel) renderDragonBase.getMainModel()).getCube("BodyUpper").postRender(0.0625F);
-            ((IceAndFireTabulaModel) renderDragonBase.getMainModel()).getCube("Neck1").postRender(0.0625F);
-            ((IceAndFireTabulaModel) renderDragonBase.getMainModel()).getCube("Neck2").postRender(0.0625F);
-            ((IceAndFireTabulaModel) renderDragonBase.getMainModel()).getCube("Neck3").postRender(0.0625F);
-            ((IceAndFireTabulaModel) renderDragonBase.getMainModel()).getCube("Head").postRender(0.0625F);
+            ((IceAndFireTabulaModel<? extends EntityDragonBase>) renderDragonBase.getMainModel()).getCube("BodyUpper").postRender(0.0625F);
+            ((IceAndFireTabulaModel<? extends EntityDragonBase>) renderDragonBase.getMainModel()).getCube("Neck1").postRender(0.0625F);
+            ((IceAndFireTabulaModel<? extends EntityDragonBase>) renderDragonBase.getMainModel()).getCube("Neck2").postRender(0.0625F);
+            ((IceAndFireTabulaModel<? extends EntityDragonBase>) renderDragonBase.getMainModel()).getCube("Neck3").postRender(0.0625F);
+            ((IceAndFireTabulaModel<? extends EntityDragonBase>) renderDragonBase.getMainModel()).getCube("Head").postRender(0.0625F);
         }
     }
 }

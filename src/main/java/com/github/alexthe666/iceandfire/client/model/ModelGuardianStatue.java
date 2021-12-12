@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.client.model;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -77,11 +76,11 @@ public class ModelGuardianStatue extends ModelBase {
         }
 
         this.guardianEye.rotationPointZ = -8.25F;
-        Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+        // Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
 
-        if (entityguardian.hasTargetedEntity()) {
-            entity = entityguardian.getTargetedEntity();
-        }
+        // if (entityguardian.hasTargetedEntity()) {
+        //     entity = entityguardian.getTargetedEntity();
+        // }
 
         this.guardianEye.showModel = true;
         float f2 = entityguardian.getTailAnimation(f);

@@ -1,10 +1,7 @@
 package com.github.alexthe666.iceandfire.compat.tinkers;
 
-import com.github.alexthe666.iceandfire.IceAndFire;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;

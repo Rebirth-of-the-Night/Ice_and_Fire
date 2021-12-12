@@ -63,10 +63,10 @@ public class ParticleDreadTorch extends ParticleFlame {
             Minecraft.getMinecraft().getTextureManager().bindTexture(SNOWFLAKE);
         }
         GlStateManager.disableLighting();
-        double currentMinU = 0.25D * particleTextureIndexX;
-        double currentMaxU = currentMinU + 0.25D;
-        double currentMinV = 0.25D * particleTextureIndexY;
-        double currentMaxV = currentMinV + 0.25D;
+        // double currentMinU = 0.25D * particleTextureIndexX;
+        // double currentMaxU = currentMinU + 0.25D;
+        // double currentMinV = 0.25D * particleTextureIndexY;
+        // double currentMaxV = currentMinV + 0.25D;
         float alpha = 1;
         GL11.glPushMatrix();
         buffer.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);

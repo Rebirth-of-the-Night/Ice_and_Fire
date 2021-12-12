@@ -16,8 +16,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class FireDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator implements IIceAndFireTabulaModelAnimator<EntityFireDragon> {
 
-    private final IceAndFireTabulaModel[] walkPoses = {EnumDragonAnimations.WALK1.firedragon_model, EnumDragonAnimations.WALK2.firedragon_model, EnumDragonAnimations.WALK3.firedragon_model, EnumDragonAnimations.WALK4.firedragon_model};
-    private final IceAndFireTabulaModel[] flyPoses = {EnumDragonAnimations.FLIGHT1.firedragon_model, EnumDragonAnimations.FLIGHT2.firedragon_model, EnumDragonAnimations.FLIGHT3.firedragon_model, EnumDragonAnimations.FLIGHT4.firedragon_model, EnumDragonAnimations.FLIGHT5.firedragon_model, EnumDragonAnimations.FLIGHT6.firedragon_model};
+    @SuppressWarnings("unchecked")
+    private final IceAndFireTabulaModel<? extends EntityDragonBase>[] walkPoses = (IceAndFireTabulaModel<? extends EntityDragonBase>[]) new Object[] {
+            EnumDragonAnimations.WALK1.firedragon_model,
+            EnumDragonAnimations.WALK2.firedragon_model,
+            EnumDragonAnimations.WALK3.firedragon_model,
+            EnumDragonAnimations.WALK4.firedragon_model };
+    @SuppressWarnings("unchecked")
+    private final IceAndFireTabulaModel<? extends EntityDragonBase>[] flyPoses = (IceAndFireTabulaModel<? extends EntityDragonBase>[]) new Object[] {
+            EnumDragonAnimations.FLIGHT1.firedragon_model,
+            EnumDragonAnimations.FLIGHT2.firedragon_model,
+            EnumDragonAnimations.FLIGHT3.firedragon_model,
+            EnumDragonAnimations.FLIGHT4.firedragon_model,
+            EnumDragonAnimations.FLIGHT5.firedragon_model,
+            EnumDragonAnimations.FLIGHT6.firedragon_model };
     AdvancedModelRenderer[] neckParts;
     AdvancedModelRenderer[] tailParts;
     AdvancedModelRenderer[] tailPartsWBody;
@@ -31,7 +43,7 @@ public class FireDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator
     }
 
     @Override
-    public void init(IceAndFireTabulaModel model) {
+    public void init(IceAndFireTabulaModel<EntityFireDragon> model) {
         neckParts = new AdvancedModelRenderer[]{model.getCube("Neck1"), model.getCube("Neck2"), model.getCube("Neck3"), model.getCube("Neck3"), model.getCube("Head")};
         tailParts = new AdvancedModelRenderer[]{model.getCube("Tail1"), model.getCube("Tail2"), model.getCube("Tail3"), model.getCube("Tail4")};
         tailPartsWBody = new AdvancedModelRenderer[]{model.getCube("BodyLower"), model.getCube("Tail1"), model.getCube("Tail2"), model.getCube("Tail3"), model.getCube("Tail4")};
@@ -42,18 +54,18 @@ public class FireDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator
     }
 
     @Override
-    public void setRotationAngles(IceAndFireTabulaModel model, EntityFireDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
+    public void setRotationAngles(IceAndFireTabulaModel<EntityFireDragon> model, EntityFireDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
         model.resetToDefaultPose();
         animate(model, entity, limbSwing, limbSwingAmount, ageInTicks, rotationYaw, rotationPitch, scale);
         boolean walking = !entity.isHovering() && !entity.isFlying() && entity.hoverProgress <= 0 && entity.flyProgress <= 0;
         int currentIndex = walking ? (entity.walkCycle / 10) : (entity.flightCycle / 10);
         int prevIndex = currentIndex - 1;
-        float dive = (10 - entity.diveProgress) * 0.1F;
+        // float dive = (10 - entity.diveProgress) * 0.1F;
         if (prevIndex < 0) {
             prevIndex = walking ? 3 : 5;
         }
-        IceAndFireTabulaModel currentPosition = walking ? walkPoses[currentIndex] : flyPoses[currentIndex];
-        IceAndFireTabulaModel prevPosition = walking ? walkPoses[prevIndex] : flyPoses[prevIndex];
+        IceAndFireTabulaModel<? extends EntityDragonBase> currentPosition = walking ? walkPoses[currentIndex] : flyPoses[currentIndex];
+        IceAndFireTabulaModel<? extends EntityDragonBase> prevPosition = walking ? walkPoses[prevIndex] : flyPoses[prevIndex];
         float delta = ((walking ? entity.walkCycle : entity.flightCycle) / 10.0F) % 1.0F;
         float deltaTicks = delta + (LLibrary.PROXY.getPartialTicks() / 10.0F);
         if (delta == 0) {
@@ -213,8 +225,8 @@ public class FireDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator
 
     private void genderMob(EntityFireDragon entity, AdvancedModelRenderer cube) {
         if (!entity.isMale()) {
-            IceAndFireTabulaModel maleModel = EnumDragonAnimations.MALE.firedragon_model;
-            IceAndFireTabulaModel femaleModel = EnumDragonAnimations.FEMALE.firedragon_model;
+            IceAndFireTabulaModel<? extends EntityDragonBase> maleModel = EnumDragonAnimations.MALE.firedragon_model;
+            IceAndFireTabulaModel<? extends EntityDragonBase> femaleModel = EnumDragonAnimations.FEMALE.firedragon_model;
             float x = femaleModel.getCube(cube.boxName).rotateAngleX;
             float y = femaleModel.getCube(cube.boxName).rotateAngleY;
             float z = femaleModel.getCube(cube.boxName).rotateAngleZ;
@@ -224,12 +236,12 @@ public class FireDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator
         }
     }
 
-    private boolean isWing(IceAndFireTabulaModel model, AdvancedModelRenderer modelRenderer) {
+    private boolean isWing(IceAndFireTabulaModel<? extends EntityDragonBase> model, AdvancedModelRenderer modelRenderer) {
 
         return model.getCube("armL1") == modelRenderer || model.getCube("armR1") == modelRenderer || model.getCube("armL1").childModels.contains(modelRenderer) || model.getCube("armR1").childModels.contains(modelRenderer);
     }
 
-    public void animate(IceAndFireTabulaModel model, EntityFireDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
+    public void animate(IceAndFireTabulaModel<? extends EntityDragonBase> model, EntityFireDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
         model.llibAnimator.update(entity);
         model.llibAnimator.setAnimation(EntityFireDragon.ANIMATION_FIRECHARGE);
         model.llibAnimator.startKeyframe(10);

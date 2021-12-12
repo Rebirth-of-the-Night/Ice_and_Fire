@@ -1,18 +1,20 @@
 package com.github.alexthe666.iceandfire.compat.waila;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityMutlipartPart;
+
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
-import java.util.List;
 
 public class HUDHandlerDragon implements IWailaEntityProvider {
     public static int nhearts = 20;
@@ -23,11 +25,11 @@ public class HUDHandlerDragon implements IWailaEntityProvider {
     @Override
     public List<String> getWailaBody(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config) {
         EntityDragonBase dragon = (EntityDragonBase) entity;
-        currenttip.add(String.format(I18n.translateToLocal("dragon.stage") + dragon.getDragonStage()));
+        currenttip.add(String.format(I18n.format("dragon.stage") + dragon.getDragonStage()));
         if (dragon.isMale()) {
-            currenttip.add(String.format(I18n.translateToLocal("dragon.gender.male")));
+            currenttip.add(String.format(I18n.format("dragon.gender.male")));
         } else {
-            currenttip.add(String.format(I18n.translateToLocal("dragon.gender.female")));
+            currenttip.add(String.format(I18n.format("dragon.gender.female")));
         }
         return currenttip;
     }

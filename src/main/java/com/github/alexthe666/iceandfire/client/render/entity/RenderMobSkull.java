@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.client.render.entity;
 import com.github.alexthe666.iceandfire.client.model.*;
 import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
 import com.github.alexthe666.iceandfire.entity.EntityMobSkull;
+import com.github.alexthe666.iceandfire.entity.EntitySeaSerpent;
 import com.github.alexthe666.iceandfire.enums.EnumSkullType;
 import com.google.common.collect.Maps;
 import net.minecraft.client.model.ModelBase;
@@ -28,8 +29,9 @@ public class RenderMobSkull extends Render<EntityMobSkull> {
     private final ModelTroll trollModel;
     private final ModelAmphithere amphithereModel;
     private final ModelHydraHead hydraModel;
-    private final IceAndFireTabulaModel seaSerpentModel;
+    private final IceAndFireTabulaModel<EntitySeaSerpent> seaSerpentModel;
 
+    @SuppressWarnings("unchecked")
     public RenderMobSkull(RenderManager renderManager, ModelBase seaSerpentModel) {
         super(renderManager);
         this.hippogryphModel = new ModelHippogryph();
@@ -38,7 +40,7 @@ public class RenderMobSkull extends Render<EntityMobSkull> {
         this.stymphalianBirdModel = new ModelStymphalianBird();
         this.trollModel = new ModelTroll();
         this.amphithereModel = new ModelAmphithere();
-        this.seaSerpentModel = (IceAndFireTabulaModel) seaSerpentModel;
+        this.seaSerpentModel = (IceAndFireTabulaModel<EntitySeaSerpent>) seaSerpentModel;
         this.hydraModel = new ModelHydraHead(0);
     }
 
@@ -53,7 +55,7 @@ public class RenderMobSkull extends Render<EntityMobSkull> {
         GlStateManager.disableCull();
         GlStateManager.translate((float) x, (float) y, (float) z);
         GlStateManager.rotate(entity.getYaw(), 0, -1, 0);
-        float f = 0.0625F;
+        // float f = 0.0625F;
         GlStateManager.enableRescaleNormal();
         GlStateManager.scale(1.0F, -1.0F, 1.0F);
         GlStateManager.enableAlpha();

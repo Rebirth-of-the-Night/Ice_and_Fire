@@ -43,14 +43,14 @@ public class ParticleSirenAppearance extends ParticleMobAppearance {
         if (this.entity != null) {
             RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
             rendermanager.setRenderPosition(Particle.interpPosX, Particle.interpPosY, Particle.interpPosZ);
-            float f = 0.42553192F;
+            // float f = 0.42553192F;
             float f1 = ((float) this.particleAge + partialTicks) / (float) this.particleMaxAge;
             GlStateManager.depthMask(true);
             GlStateManager.enableBlend();
             GlStateManager.enableDepth();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             float f2 = 240.0F;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, f2, f2);
             GlStateManager.pushMatrix();
             float f3 = 0.05F + 0.5F * MathHelper.sin(f1 * (float) Math.PI);
             GlStateManager.color(1.0F, 1.0F, 1.0F, f3);

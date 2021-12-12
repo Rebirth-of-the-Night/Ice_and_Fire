@@ -1,6 +1,8 @@
 package com.github.alexthe666.iceandfire.client.model.util;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.entity.EntitySeaSerpent;
+
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -25,7 +27,7 @@ public enum EnumSeaSerpentAnimations {
     JUMPING2("Jumping2");
 
     @SideOnly(Side.CLIENT)
-    public IceAndFireTabulaModel seaserpent_model;
+    public IceAndFireTabulaModel<EntitySeaSerpent> seaserpent_model;
     private final String fileSuffix;
 
     EnumSeaSerpentAnimations(String fileSuffix) {
@@ -37,7 +39,7 @@ public enum EnumSeaSerpentAnimations {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
             for (EnumSeaSerpentAnimations animation : values()) {
                 try {
-                    animation.seaserpent_model = new IceAndFireTabulaModel(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/seaserpent/seaserpent" + animation.fileSuffix));
+                    animation.seaserpent_model = new IceAndFireTabulaModel<EntitySeaSerpent>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/seaserpent/seaserpent" + animation.fileSuffix));
                 } catch (Exception e) {
                     IceAndFire.logger.warn("sea serpent model at: seaserpent" + animation.fileSuffix + ".tbl doesn't exist!");
                     e.printStackTrace();

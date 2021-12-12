@@ -12,12 +12,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
-public class RenderPodium extends TileEntitySpecialRenderer {
+public class RenderPodium extends TileEntitySpecialRenderer<TileEntityPodium> {
 
     protected static ResourceLocation getEggTexture(EnumDragonEgg type) {
         switch (type) {
@@ -41,9 +40,8 @@ public class RenderPodium extends TileEntitySpecialRenderer {
     }
 
     @Override
-    public void render(TileEntity entity, double x, double y, double z, float f, int f1, float alpha) {
+    public void render(TileEntityPodium podium, double x, double y, double z, float f, int f1, float alpha) {
         ModelDragonEgg model = new ModelDragonEgg();
-        TileEntityPodium podium = (TileEntityPodium) entity;
 
         if (!podium.getStackInSlot(0).isEmpty()) {
             if (podium.getStackInSlot(0).getItem() instanceof ItemDragonEgg) {

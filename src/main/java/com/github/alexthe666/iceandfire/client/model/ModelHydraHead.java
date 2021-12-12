@@ -7,7 +7,6 @@ import net.ilexiconn.llibrary.client.model.ModelAnimator;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
 
 public class ModelHydraHead extends ModelDragonBase {
     public AdvancedModelRenderer Neck1;
@@ -136,8 +135,8 @@ public class ModelHydraHead extends ModelDragonBase {
         this.chainSwing(ENTIRE_HEAD, speed_walk, degree_walk * 0.75F, -3, f, f1);
         float speakProgress =  entity.prevSpeakingProgress[headIndex] + LLibrary.PROXY.getPartialTicks() * (entity.speakingProgress[headIndex] - entity.prevSpeakingProgress[headIndex]);
         this.progressRotationInterp(LowerJaw1, (float) (Math.sin(speakProgress * Math.PI) * 10F), (float) Math.toRadians(25), 0.0F, 0.0F, 10F);
-        float limbSwingProgress = f1;
         /*
+        float limbSwingProgress = f1;
         this.progressRotationInterp(Neck1, (float)limbSwingProgress, (float) Math.toRadians(5), 0.0F, 0.0F, 1F);
         this.progressRotationInterp(Neck2, (float)limbSwingProgress, (float) Math.toRadians(-5), 0.0F, 0.0F, 1F);
         this.progressRotationInterp(Neck3, (float)limbSwingProgress, (float) Math.toRadians(-5), 0.0F, 0.0F, 1F);

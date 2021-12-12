@@ -46,7 +46,6 @@ public class RenderDreadlandsWeather extends IRenderHandler {
         }
         float f = 1.0F;//mc.world.getRainStrength(partialTicks);
         rendererUpdateCount++;
-        boolean building = false;
         if (f > 0.0F) {
             this.enableLightmap(mc);
             Entity entity = mc.getRenderViewEntity();
@@ -71,7 +70,6 @@ public class RenderDreadlandsWeather extends IRenderHandler {
                 i1 = 10;
             }
 
-            int j1 = -1;
             float f1 = (float) this.rendererUpdateCount + partialTicks;
             bufferbuilder.setTranslation(-d0, -d1, -d2);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -106,7 +104,7 @@ public class RenderDreadlandsWeather extends IRenderHandler {
                         if (k2 != l2) {
                             this.random.setSeed((long) (l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
                             blockpos$mutableblockpos.setPos(l1, k2, k1);
-                            float f2 = biome.getTemperature(blockpos$mutableblockpos);
+                            // float f2 = biome.getTemperature(blockpos$mutableblockpos);
                             double d8 = (double) (-((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F);
                             double d9 = this.random.nextDouble() + (double) f1 * 0;
                             double d10 = this.random.nextDouble() + (double) (f1) * -0.001D;
@@ -143,7 +141,7 @@ public class RenderDreadlandsWeather extends IRenderHandler {
         GlStateManager.matrixMode(5890);
         GlStateManager.loadIdentity();
         float f = 0.00390625F;
-        GlStateManager.scale(0.00390625F, 0.00390625F, 0.00390625F);
+        GlStateManager.scale(f, f, f);
         GlStateManager.translate(8.0F, 8.0F, 8.0F);
         GlStateManager.matrixMode(5888);
         GlStateManager.glTexParameteri(3553, 10241, 9729);

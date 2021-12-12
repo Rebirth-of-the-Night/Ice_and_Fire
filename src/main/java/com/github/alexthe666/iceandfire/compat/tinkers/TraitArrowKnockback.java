@@ -41,7 +41,11 @@ public class TraitArrowKnockback extends AbstractProjectileTrait {
                     double d3 = 10.0D;
                     double xRatio = entity.motionX * height;
                     double zRatio = entity.motionZ * height;
-                    world.spawnParticle(EnumParticleTypes.CLOUD, entity.posX + xRatio + (double) (world.rand.nextFloat() * entity.width * 5.0F) - (double) entity.width - d0 * 10.0D, entity.posY + (double) (world.rand.nextFloat() * entity.height) - d1 * 10.0D + height, entity.posZ + zRatio + (double) (world.rand.nextFloat() * entity.width * 5.0F) - (double) entity.width - d2 * 10.0D, d0, d1, d2);
+                    world.spawnParticle(EnumParticleTypes.CLOUD, 
+                            entity.posX + xRatio + (double) (world.rand.nextFloat() * entity.width * 5.0F) - (double) entity.width - d0 * d3,
+                            entity.posY + (double) (world.rand.nextFloat() * entity.height) - d1 * d3 + height,
+                            entity.posZ + zRatio + (double) (world.rand.nextFloat() * entity.width * 5.0F) - (double) entity.width - d2 * d3,
+                            d0, d1, d2);
                 }
             }
         }
@@ -60,8 +64,11 @@ public class TraitArrowKnockback extends AbstractProjectileTrait {
             double d3 = 10.0D;
             double xRatio = projectile.motionX * projectile.height;
             double zRatio = projectile.motionZ * projectile.height;
-            world.spawnParticle(EnumParticleTypes.CLOUD, projectile.posX + xRatio + (double) (world.rand.nextFloat() * projectile.width * 1.0F) - (double) projectile.width - d0 * 10.0D, projectile.posY + (double) (world.rand.nextFloat() * projectile.height) - d1 * 10.0D, projectile.posZ + zRatio + (double) (world.rand.nextFloat() * projectile.width * 1.0F) - (double) projectile.width - d2 * 10.0D, d0, d1, d2);
-
+            world.spawnParticle(EnumParticleTypes.CLOUD,
+                    projectile.posX + xRatio + (double) (world.rand.nextFloat() * projectile.width * 1.0F) - (double) projectile.width - d0 * d3,
+                    projectile.posY + (double) (world.rand.nextFloat() * projectile.height) - d1 * d3,
+                    projectile.posZ + zRatio + (double) (world.rand.nextFloat() * projectile.width * 1.0F) - (double) projectile.width - d2 * d3,
+                    d0, d1, d2);
         }
     }
 }

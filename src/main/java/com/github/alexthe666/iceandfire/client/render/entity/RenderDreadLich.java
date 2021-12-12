@@ -1,20 +1,18 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.client.model.ModelDreadLich;
-import com.github.alexthe666.iceandfire.client.model.ModelDreadThrall;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerGenericGlowing;
 import com.github.alexthe666.iceandfire.entity.EntityDreadLich;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
-import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHandSide;
-import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nullable;
+import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
+import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.ResourceLocation;
 
 public class RenderDreadLich extends RenderLiving<EntityDreadLich> {
     public static final ResourceLocation TEXTURE_EYES = new ResourceLocation("iceandfire:textures/models/dread/dread_lich_eyes.png");
@@ -26,7 +24,7 @@ public class RenderDreadLich extends RenderLiving<EntityDreadLich> {
 
     public RenderDreadLich(RenderManager renderManager) {
         super(renderManager, new ModelDreadLich(0.0F, false), 0.6F);
-        this.addLayer(new LayerGenericGlowing(this, TEXTURE_EYES));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURE_EYES));
         this.addLayer(new LayerHeldItem(this) {
             protected void translateToHand(EnumHandSide p_191361_1_) {
                 ((ModelDreadLich) this.livingEntityRenderer.getMainModel()).postRenderArm(0.0625F, p_191361_1_);

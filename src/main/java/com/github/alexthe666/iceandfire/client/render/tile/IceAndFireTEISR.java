@@ -2,8 +2,10 @@ package com.github.alexthe666.iceandfire.client.render.tile;
 
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.client.render.item.RenderDeathWormGauntlet;
+import com.github.alexthe666.iceandfire.client.render.item.RenderTrollWeapon;
 import com.github.alexthe666.iceandfire.item.ItemDeathwormGauntlet;
 import com.github.alexthe666.iceandfire.item.ItemTrollWeapon;
+
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,6 +19,7 @@ public class IceAndFireTEISR extends TileEntityItemStackRenderer {
     private final RenderDeathWormGauntlet renderDeathWormGauntlet = new RenderDeathWormGauntlet();
     private final RenderDreadPortal renderDreadPortal = new RenderDreadPortal();
 
+    @Override
     public void renderByItem(ItemStack itemStackIn) {
         if (itemStackIn.getItem() instanceof ItemTrollWeapon) {
             ItemTrollWeapon weaponItem = (ItemTrollWeapon) itemStackIn.getItem();

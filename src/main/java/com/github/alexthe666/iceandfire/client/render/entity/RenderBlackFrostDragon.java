@@ -1,24 +1,15 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
 import com.github.alexthe666.iceandfire.client.render.entity.layer.*;
-import com.github.alexthe666.iceandfire.client.texture.ArrayLayeredTexture;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
-import com.github.alexthe666.iceandfire.enums.EnumDragonTextures;
-import com.google.common.collect.Maps;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 @SideOnly(Side.CLIENT)
 public class RenderBlackFrostDragon extends RenderLiving<EntityDragonBase> {
@@ -28,7 +19,7 @@ public class RenderBlackFrostDragon extends RenderLiving<EntityDragonBase> {
 
     public RenderBlackFrostDragon(RenderManager renderManager, ModelBase model, boolean fire) {
         super(renderManager, model, 0.8F);
-        this.addLayer(new LayerGenericGlowing(this, TEXTURE_EYES));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURE_EYES));
         this.addLayer(new LayerDragonRider(this, true));
         this.addLayer(new LayerDragonBanner(this));
     }

@@ -5,7 +5,6 @@ import com.github.alexthe666.iceandfire.entity.EntityHydra;
 import net.ilexiconn.llibrary.client.model.ModelAnimator;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 
 public class ModelHydraBody extends ModelDragonBase {

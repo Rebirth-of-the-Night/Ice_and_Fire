@@ -6,7 +6,7 @@ import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.client.resources.I18n;
 
 public class IceDragonForgeCatagory implements IRecipeCategory<IceDragonForgeRecipeWrapper> {
 
@@ -21,10 +21,9 @@ public class IceDragonForgeCatagory implements IRecipeCategory<IceDragonForgeRec
         return IceAndFireJEIPlugin.ICE_DRAGON_FORGE_ID;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public String getTitle() {
-        return I18n.translateToLocal("iceandfire.ice_dragon_forge");
+        return I18n.format("iceandfire.ice_dragon_forge");
     }
 
     @Override

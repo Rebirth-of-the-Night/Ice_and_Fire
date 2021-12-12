@@ -11,15 +11,15 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderHydra extends RenderLiving<EntityHydra> {
 
-    public static final ResourceLocation TEXUTURE_0 = new ResourceLocation("iceandfire:textures/models/hydra/hydra_0.png");
-    public static final ResourceLocation TEXUTURE_1 = new ResourceLocation("iceandfire:textures/models/hydra/hydra_1.png");
-    public static final ResourceLocation TEXUTURE_2 = new ResourceLocation("iceandfire:textures/models/hydra/hydra_2.png");
-    public static final ResourceLocation TEXUTURE_EYES = new ResourceLocation("iceandfire:textures/models/hydra/hydra_eyes.png");
+    public static final ResourceLocation TEXTURE_0 = new ResourceLocation("iceandfire:textures/models/hydra/hydra_0.png");
+    public static final ResourceLocation TEXTURE_1 = new ResourceLocation("iceandfire:textures/models/hydra/hydra_1.png");
+    public static final ResourceLocation TEXTURE_2 = new ResourceLocation("iceandfire:textures/models/hydra/hydra_2.png");
+    public static final ResourceLocation TEXTURE_EYES = new ResourceLocation("iceandfire:textures/models/hydra/hydra_eyes.png");
 
     public RenderHydra(RenderManager renderManager) {
         super(renderManager, new ModelHydraBody(), 1.2F);
         this.addLayer(new LayerHydraHead(this));
-        this.addLayer(new LayerGenericGlowing(this, TEXUTURE_EYES));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURE_EYES));
     }
 
     @Override
@@ -31,11 +31,11 @@ public class RenderHydra extends RenderLiving<EntityHydra> {
     protected ResourceLocation getEntityTexture(EntityHydra gorgon) {
         switch (gorgon.getVariant()) {
             default:
-                return TEXUTURE_0;
+                return TEXTURE_0;
             case 1:
-                return TEXUTURE_1;
+                return TEXTURE_1;
             case 2:
-                return TEXUTURE_2;
+                return TEXTURE_2;
         }
     }
 

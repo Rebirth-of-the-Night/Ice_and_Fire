@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 public class RenderDreadLichSkull extends Render<EntityDreadLichSkull> {
 
     public static final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/dread/dread_lich_skull.png");
-    private static final ModelDreadLichSkull MODEL_SPIRIT = new ModelDreadLichSkull();
+    // private static final ModelDreadLichSkull MODEL_SPIRIT = new ModelDreadLichSkull();
 
     public RenderDreadLichSkull(RenderManager manager) {
         super(manager);
@@ -42,7 +42,7 @@ public class RenderDreadLichSkull extends Render<EntityDreadLichSkull> {
         float yaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks;
         GlStateManager.translate(0F, 0.0F, 0F);
         GlStateManager.rotate(yaw - 180, 0.0F, 1.0F, 0.0F);
-        new ModelDreadLichSkull().render(entity, 0, 0, partialTicks, 0, 0, 0.0625F);
+        new ModelDreadLichSkull().render(entity, 0, 0, partialTicks, 0, 0, f);
         GlStateManager.enableLighting();
         GlStateManager.disableBlend();
         GlStateManager.popMatrix();
@@ -56,6 +56,7 @@ public class RenderDreadLichSkull extends Render<EntityDreadLichSkull> {
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 
+    @SuppressWarnings("unused")
     private float interpolateValue(float start, float end, float pct) {
         return start + (end - start) * pct;
     }

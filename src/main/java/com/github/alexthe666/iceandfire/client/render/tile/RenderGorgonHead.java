@@ -2,13 +2,14 @@ package com.github.alexthe666.iceandfire.client.render.tile;
 
 import com.github.alexthe666.iceandfire.client.model.ModelGorgonHead;
 import com.github.alexthe666.iceandfire.client.model.ModelGorgonHeadActive;
+import com.github.alexthe666.iceandfire.entity.tile.TileEntityDummyGorgonHead;
+
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class RenderGorgonHead extends TileEntitySpecialRenderer {
+public class RenderGorgonHead extends TileEntitySpecialRenderer<TileEntityDummyGorgonHead> {
     private static final ResourceLocation ACTIVE_TEXTURE = new ResourceLocation("iceandfire:textures/models/gorgon/head_active.png");
     private static final ResourceLocation INACTIVE_TEXTURE = new ResourceLocation("iceandfire:textures/models/gorgon/head_inactive.png");
     private static final ModelBase ACTIVE_MODEL = new ModelGorgonHeadActive();
@@ -20,7 +21,7 @@ public class RenderGorgonHead extends TileEntitySpecialRenderer {
     }
 
     @Override
-    public void render(TileEntity entity, double x, double y, double z, float f, int f1, float alpha) {
+    public void render(TileEntityDummyGorgonHead entity, double x, double y, double z, float f, int f1, float alpha) {
         ModelBase model = active ? ACTIVE_MODEL : INACTIVE_MODEL;
 
         GL11.glPushMatrix();
