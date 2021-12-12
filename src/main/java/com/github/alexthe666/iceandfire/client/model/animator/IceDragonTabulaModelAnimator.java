@@ -9,35 +9,18 @@ import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
 import net.ilexiconn.llibrary.LLibrary;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Collection;
+
 @SideOnly(Side.CLIENT)
 public class IceDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator implements IIceAndFireTabulaModelAnimator<EntityIceDragon> {
 
-    @SuppressWarnings("unchecked")
-    private final IceAndFireTabulaModel<? extends EntityDragonBase>[] walkPoses = (IceAndFireTabulaModel<? extends EntityDragonBase>[]) new Object[] {
-            EnumDragonAnimations.WALK1.icedragon_model,
-            EnumDragonAnimations.WALK2.icedragon_model,
-            EnumDragonAnimations.WALK3.icedragon_model,
-            EnumDragonAnimations.WALK4.icedragon_model };
-    @SuppressWarnings("unchecked")
-    private final IceAndFireTabulaModel<? extends EntityDragonBase>[] flyPoses = (IceAndFireTabulaModel<? extends EntityDragonBase>[]) new Object[] {
-            EnumDragonAnimations.FLIGHT1.icedragon_model,
-            EnumDragonAnimations.FLIGHT2.icedragon_model,
-            EnumDragonAnimations.FLIGHT3.icedragon_model,
-            EnumDragonAnimations.FLIGHT4.icedragon_model,
-            EnumDragonAnimations.FLIGHT5.icedragon_model,
-            EnumDragonAnimations.FLIGHT6.icedragon_model };
-    @SuppressWarnings("unchecked")
-    private final IceAndFireTabulaModel<? extends EntityDragonBase>[] swimPoses = (IceAndFireTabulaModel<? extends EntityDragonBase>[]) new Object[] {
-            EnumDragonAnimations.SWIM1.icedragon_model,
-            EnumDragonAnimations.SWIM2.icedragon_model,
-            EnumDragonAnimations.SWIM3.icedragon_model,
-            EnumDragonAnimations.SWIM4.icedragon_model,
-            EnumDragonAnimations.SWIM5.icedragon_model };
+    private final IceAndFireTabulaModel[] walkPoses = {EnumDragonAnimations.WALK1.icedragon_model, EnumDragonAnimations.WALK2.icedragon_model, EnumDragonAnimations.WALK3.icedragon_model, EnumDragonAnimations.WALK4.icedragon_model};
+    private final IceAndFireTabulaModel[] flyPoses = {EnumDragonAnimations.FLIGHT1.icedragon_model, EnumDragonAnimations.FLIGHT2.icedragon_model, EnumDragonAnimations.FLIGHT3.icedragon_model, EnumDragonAnimations.FLIGHT4.icedragon_model, EnumDragonAnimations.FLIGHT5.icedragon_model, EnumDragonAnimations.FLIGHT6.icedragon_model};
+    private final IceAndFireTabulaModel[] swimPoses = {EnumDragonAnimations.SWIM1.icedragon_model, EnumDragonAnimations.SWIM2.icedragon_model, EnumDragonAnimations.SWIM3.icedragon_model, EnumDragonAnimations.SWIM4.icedragon_model, EnumDragonAnimations.SWIM5.icedragon_model};
     private AdvancedModelRenderer[] neckParts;
     private AdvancedModelRenderer[] tailParts;
     private AdvancedModelRenderer[] tailPartsWBody;
@@ -51,7 +34,7 @@ public class IceDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator 
     }
 
     @Override
-    public void init(IceAndFireTabulaModel<EntityIceDragon> model) {
+    public void init(IceAndFireTabulaModel model) {
         neckParts = new AdvancedModelRenderer[]{model.getCube("Neck1"), model.getCube("Neck2"), model.getCube("Neck3"), model.getCube("Neck3"), model.getCube("Head")};
         tailParts = new AdvancedModelRenderer[]{model.getCube("Tail1"), model.getCube("Tail2"), model.getCube("Tail3"), model.getCube("Tail4")};
         tailPartsWBody = new AdvancedModelRenderer[]{model.getCube("BodyLower"), model.getCube("Tail1"), model.getCube("Tail2"), model.getCube("Tail3"), model.getCube("Tail4")};
@@ -62,7 +45,7 @@ public class IceDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator 
     }
 
     @Override
-    public void setRotationAngles(IceAndFireTabulaModel<EntityIceDragon> model, EntityIceDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
+    public void setRotationAngles(IceAndFireTabulaModel model, EntityIceDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
         model.resetToDefaultPose();
         animate(model, entity, limbSwing, limbSwingAmount, ageInTicks, rotationYaw, rotationPitch, scale);
         boolean walking = !entity.isHovering() && !entity.isFlying() && entity.hoverProgress <= 0 && entity.flyProgress <= 0;
@@ -75,8 +58,8 @@ public class IceDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator 
         if (prevIndex < 0) {
             prevIndex = swimming ? 4 : walking ? 3 : 5;
         }
-        IceAndFireTabulaModel<? extends EntityDragonBase> currentPosition = swimming ? swimPoses[currentIndex] : walking ? walkPoses[currentIndex] : flyPoses[currentIndex];
-        IceAndFireTabulaModel<? extends EntityDragonBase> prevPosition = swimming ? swimPoses[prevIndex] : walking ? walkPoses[prevIndex] : flyPoses[prevIndex];
+        IceAndFireTabulaModel currentPosition = swimming ? swimPoses[currentIndex] : walking ? walkPoses[currentIndex] : flyPoses[currentIndex];
+        IceAndFireTabulaModel prevPosition = swimming ? swimPoses[prevIndex] : walking ? walkPoses[prevIndex] : flyPoses[prevIndex];
         float delta = ((walking ? entity.walkCycle : entity.flightCycle) / 10.0F) % 1.0F;
         if (swimming) {
             delta = ((entity.swimCycle) / 10.0F) % 1.0F;
@@ -87,7 +70,7 @@ public class IceDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator 
         }
 
 
-        for (AdvancedModelRenderer cube : model.getCubes().values()) {
+        for (AdvancedModelRenderer cube : (Collection<AdvancedModelRenderer>) model.getCubes().values()) {
             this.genderMob(entity, cube);
             if (!swimming && walking && entity.flyProgress <= 0.0F && entity.hoverProgress <= 0.0F && entity.modelDeadProgress <= 0.0F) {
                 AdvancedModelRenderer walkPart = EnumDragonAnimations.GROUND_POSE.icedragon_model.getCube(cube.boxName);
@@ -263,8 +246,8 @@ public class IceDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator 
 
     private void genderMob(EntityIceDragon entity, AdvancedModelRenderer cube) {
         if (!entity.isMale()) {
-            IceAndFireTabulaModel<? extends EntityDragonBase> maleModel = EnumDragonAnimations.MALE.icedragon_model;
-            IceAndFireTabulaModel<? extends EntityDragonBase> femaleModel = EnumDragonAnimations.FEMALE.icedragon_model;
+            IceAndFireTabulaModel maleModel = EnumDragonAnimations.MALE.icedragon_model;
+            IceAndFireTabulaModel femaleModel = EnumDragonAnimations.FEMALE.icedragon_model;
             float x = femaleModel.getCube(cube.boxName).rotateAngleX;
             float y = femaleModel.getCube(cube.boxName).rotateAngleY;
             float z = femaleModel.getCube(cube.boxName).rotateAngleZ;
@@ -274,7 +257,7 @@ public class IceDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator 
         }
     }
 
-    private boolean isWing(IceAndFireTabulaModel<? extends Entity> model, AdvancedModelRenderer modelRenderer) {
+    private boolean isWing(IceAndFireTabulaModel model, AdvancedModelRenderer modelRenderer) {
         return model.getCube("armL1") == modelRenderer || model.getCube("armR1") == modelRenderer || model.getCube("armL1").childModels.contains(modelRenderer) || model.getCube("armR1").childModels.contains(modelRenderer);
     }
 
@@ -282,7 +265,7 @@ public class IceDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator 
         return modelRenderer.boxName.contains("Horn");
     }
 
-    public void animate(IceAndFireTabulaModel<? extends Entity> model, EntityIceDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
+    public void animate(IceAndFireTabulaModel model, EntityIceDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
         model.llibAnimator.update(entity);
         model.llibAnimator.setAnimation(EntityIceDragon.ANIMATION_FIRECHARGE);
         model.llibAnimator.startKeyframe(10);
