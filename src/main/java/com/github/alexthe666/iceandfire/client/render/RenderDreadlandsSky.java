@@ -14,6 +14,7 @@ import net.minecraftforge.client.IRenderHandler;
 
 import java.util.Random;
 
+@SuppressWarnings("unused")
 public class RenderDreadlandsSky extends IRenderHandler {
 
     private static final ResourceLocation MOON_PHASES_TEXTURES = new ResourceLocation("textures/environment/moon_phases.png");
