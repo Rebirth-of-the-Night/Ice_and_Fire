@@ -4,15 +4,14 @@ import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
 import com.github.alexthe666.iceandfire.util.IAFMath;
 import net.ilexiconn.llibrary.client.model.ModelAnimator;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-
-import java.util.Collection;
 
 public class IceAndFireTabulaModelAnimator {
 
-    protected IceAndFireTabulaModel baseModel;
+    protected IceAndFireTabulaModel<? extends Entity> baseModel;
 
-    public IceAndFireTabulaModelAnimator(IceAndFireTabulaModel baseModel) {
+    public IceAndFireTabulaModelAnimator(IceAndFireTabulaModel<? extends Entity> baseModel) {
         this.baseModel = baseModel;
     }
 
@@ -67,8 +66,8 @@ public class IceAndFireTabulaModelAnimator {
         animator.rotate(model, (float) Math.toRadians(x), (float) Math.toRadians(y), (float) Math.toRadians(z));
     }
 
-    public void moveToPose(IceAndFireTabulaModel model, IceAndFireTabulaModel modelTo) {
-        for (AdvancedModelRenderer cube : (Collection<AdvancedModelRenderer>) model.getCubes().values()) {
+    public void moveToPose(IceAndFireTabulaModel<? extends Entity> model, IceAndFireTabulaModel<? extends Entity> modelTo) {
+        for (AdvancedModelRenderer cube : model.getCubes().values()) {
             if (!isPartEqual(baseModel.getCube(cube.boxName), modelTo.getCube(cube.boxName))) {
                 float toX = modelTo.getCube(cube.boxName).rotateAngleX;
                 float toY = modelTo.getCube(cube.boxName).rotateAngleY;

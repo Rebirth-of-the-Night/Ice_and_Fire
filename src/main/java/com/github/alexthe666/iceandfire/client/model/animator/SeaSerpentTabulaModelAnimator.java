@@ -1,5 +1,8 @@
 package com.github.alexthe666.iceandfire.client.model.animator;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.github.alexthe666.iceandfire.client.model.util.EnumSeaSerpentAnimations;
 import com.github.alexthe666.iceandfire.client.model.util.IIceAndFireTabulaModelAnimator;
 import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
@@ -9,23 +12,25 @@ import net.ilexiconn.llibrary.LLibrary;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 
-import java.util.Collection;
-
 public class SeaSerpentTabulaModelAnimator extends IceAndFireTabulaModelAnimator implements IIceAndFireTabulaModelAnimator<EntitySeaSerpent> {
 
-    public IceAndFireTabulaModel[] swimPose = {EnumSeaSerpentAnimations.SWIM1.seaserpent_model, EnumSeaSerpentAnimations.SWIM3.seaserpent_model, EnumSeaSerpentAnimations.SWIM4.seaserpent_model, EnumSeaSerpentAnimations.SWIM6.seaserpent_model};
+    public List<IceAndFireTabulaModel<EntitySeaSerpent>> swimPose = Arrays.asList(
+            EnumSeaSerpentAnimations.SWIM1.seaserpent_model,
+            EnumSeaSerpentAnimations.SWIM3.seaserpent_model,
+            EnumSeaSerpentAnimations.SWIM4.seaserpent_model,
+            EnumSeaSerpentAnimations.SWIM6.seaserpent_model );
 
     public SeaSerpentTabulaModelAnimator() {
         super(EnumSeaSerpentAnimations.T_POSE.seaserpent_model);
     }
 
     @Override
-    public void init(IceAndFireTabulaModel model) {
+    public void init(IceAndFireTabulaModel<EntitySeaSerpent> model) {
 
     }
 
     @Override
-    public void setRotationAngles(IceAndFireTabulaModel model, EntitySeaSerpent entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
+    public void setRotationAngles(IceAndFireTabulaModel<EntitySeaSerpent> model, EntitySeaSerpent entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
         model.resetToDefaultPose();
         model.getCube("BodyUpper").rotationPointY += 9;//model was made too high
         StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(entity, StoneEntityProperties.class);
@@ -39,13 +44,13 @@ public class SeaSerpentTabulaModelAnimator extends IceAndFireTabulaModelAnimator
         if (prevIndex < 0) {
             prevIndex = 3;
         }
-        IceAndFireTabulaModel prevPosition = swimPose[prevIndex];
-        IceAndFireTabulaModel currentPosition = swimPose[currentIndex];
+        IceAndFireTabulaModel<EntitySeaSerpent> prevPosition = swimPose.get(prevIndex);
+        IceAndFireTabulaModel<EntitySeaSerpent> currentPosition = swimPose.get(currentIndex);
         float delta = ((entity.swimCycle) / 10.0F) % 1.0F + (LLibrary.PROXY.getPartialTicks() / 10.0F);
         AdvancedModelRenderer[] tailParts = {model.getCube("Tail1"), model.getCube("Tail2"), model.getCube("Tail3"), model.getCube("Tail4"), model.getCube("Tail5"), model.getCube("Tail6")};
         AdvancedModelRenderer[] neckParts = {model.getCube("Neck1"), model.getCube("Neck2"), model.getCube("Neck3"), model.getCube("Head")};
 
-        for (AdvancedModelRenderer cube : (Collection<AdvancedModelRenderer>) model.getCubes().values()) {
+        for (AdvancedModelRenderer cube : model.getCubes().values()) {
             if (entity.jumpProgress > 0.0F) {
                 if (!isPartEqual(cube, EnumSeaSerpentAnimations.JUMPING2.seaserpent_model.getCube(cube.boxName))) {
                     transitionTo(cube, EnumSeaSerpentAnimations.JUMPING2.seaserpent_model.getCube(cube.boxName), entity.jumpProgress, 5, false);
@@ -92,7 +97,7 @@ public class SeaSerpentTabulaModelAnimator extends IceAndFireTabulaModelAnimator
         model.rotateAngleZ += progress * (rotZ - model.defaultRotationZ) / 20.0F;
     }
 
-    private void animate(IceAndFireTabulaModel model, EntitySeaSerpent entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
+    private void animate(IceAndFireTabulaModel<EntitySeaSerpent> model, EntitySeaSerpent entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
         model.llibAnimator.setAnimation(EntitySeaSerpent.ANIMATION_SPEAK);
         model.llibAnimator.startKeyframe(5);
         this.rotate(model.llibAnimator, model.getCube("Jaw"), 25, 0, 0);

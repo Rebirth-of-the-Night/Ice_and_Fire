@@ -42,7 +42,6 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
@@ -59,38 +58,22 @@ public class ClientEvents {
     private static final ResourceLocation CHAIN_TEXTURE = new ResourceLocation("iceandfire:textures/models/misc/chain_link.png");
     private final Random rand = new Random();
 
+    @SuppressWarnings("unchecked")
     public static void initializeStoneLayer() {
         for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : Minecraft.getMinecraft().getRenderManager().entityRenderMap.entrySet()) {
-            Render render = entry.getValue();
+            Render<? extends Entity> render = entry.getValue();
             if (render instanceof RenderLivingBase && EntityLiving.class.isAssignableFrom(entry.getKey())) {
-                ((RenderLivingBase) render).addLayer(new LayerStoneEntity((RenderLivingBase) render));
-                ((RenderLivingBase) render).addLayer(new LayerStoneEntityCrack((RenderLivingBase) render));
-                ((RenderLivingBase) render).addLayer(new LayerChainedEntity(render));
+                ((RenderLivingBase<?>) render).addLayer(new LayerStoneEntity<>((RenderLivingBase<?>) render));
+                ((RenderLivingBase<?>) render).addLayer(new LayerStoneEntityCrack((RenderLivingBase<?>) render));
+                ((RenderLivingBase<?>) render).addLayer(new LayerChainedEntity(render));
             }
         }
 
-        Field renderingRegistryField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "INSTANCE", "INSTANCE"));
-        Field entityRendersField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "entityRenderers", "entityRenderers"));
-        Field entityRendersOldField = ReflectionHelper.findField(RenderingRegistry.class, ObfuscationReflectionHelper.remapFieldNames(RenderingRegistry.class.getName(), "entityRenderersOld", "entityRenderersOld"));
-        RenderingRegistry registry = null;
-        try {
-            Field modifier = Field.class.getDeclaredField("modifiers");
-            modifier.setAccessible(true);
-            registry = (RenderingRegistry) renderingRegistryField.get(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        RenderingRegistry registry = ObfuscationReflectionHelper.getPrivateValue(RenderingRegistry.class, null, "INSTANCE");
+        Map<Class<? extends Entity>, IRenderFactory<? extends Entity>> entityRenders = ObfuscationReflectionHelper.getPrivateValue(RenderingRegistry.class, registry, "entityRenderers");
+        Map<Class<? extends Entity>, Render<? extends Entity>> entityRendersOld = ObfuscationReflectionHelper.getPrivateValue(RenderingRegistry.class, registry, "entityRenderersOld");
+
         if (registry != null) {
-            Map<Class<? extends Entity>, IRenderFactory<? extends Entity>> entityRenders = null;
-            Map<Class<? extends Entity>, Render<? extends Entity>> entityRendersOld = null;
-            try {
-                Field modifier1 = Field.class.getDeclaredField("modifiers");
-                modifier1.setAccessible(true);
-                entityRenders = (Map<Class<? extends Entity>, IRenderFactory<? extends Entity>>) entityRendersField.get(registry);
-                entityRendersOld = (Map<Class<? extends Entity>, Render<? extends Entity>>) entityRendersOldField.get(registry);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             if (entityRenders != null) {
                 for (Map.Entry<Class<? extends Entity>, IRenderFactory<? extends Entity>> entry : entityRenders.entrySet()) {
                     if (entry.getValue() != null) {
