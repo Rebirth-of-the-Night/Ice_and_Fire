@@ -1,23 +1,31 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "textures": {
-      "0": "iceandfire:blocks/redwood_mossy",
-      "1": "iceandfire:blocks/redwood_mossy_top",
-      "2": "iceandfire:blocks/redwood_mossy_bot",
-      "particle": "iceandfire:blocks/redwood_mossy"
-    },
-    "model": "iceandfire:venerable_stump",
-    "uvlock": true,
-    "transform": "forge:default-block"
-  },
   "variants": {
-    "normal": [{}],
-    "inventory": [{
-      "model": "iceandfire:item/venerable_stump",
-      "textures": {
-        "layer0": "iceandfire:items/venerable_stump"
-      }
-    }]
+    "part=north_west": {
+      "model": "venerable_stump_north_west"
+    },
+    "part=west": {
+      "model": "venerable_stump_west"
+    },
+    "part=south_west": {
+      "model": "venerable_stump_south_west"
+    },
+    "part=north": {
+      "model": "venerable_stump_north"
+    },
+    "part=center": {
+      "model": "venerable_stump_center"
+    },
+    "part=south": {
+      "model": "venerable_stump_south"
+    },
+    "part=north_east": {
+      "model": "venerable_stump_north_east"
+    },
+    "part=east": {
+      "model": "venerable_stump_east"
+    },
+    "part=south_east": {
+      "model": "venerable_stump_south_east"
+    }
   }
 }
