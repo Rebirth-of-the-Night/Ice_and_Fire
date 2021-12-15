@@ -7,6 +7,7 @@ import com.github.alexthe666.iceandfire.enums.EnumSeaSerpent;
 import com.github.alexthe666.iceandfire.enums.EnumSkullType;
 import com.github.alexthe666.iceandfire.enums.EnumTroll;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+import com.github.alexthe666.iceandfire.item.ItemBlockVenerableStump;
 import com.github.alexthe666.iceandfire.item.block.ItemBlockMyrmexResin;
 import com.github.alexthe666.iceandfire.item.block.ItemBlockPodium;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
@@ -200,6 +201,8 @@ public class CommonProxy {
                         itemBlock = new ItemBlockMyrmexResin((Block) obj);
                     } else if (obj instanceof BlockGenericSlab) {
                         itemBlock = ((BlockGenericSlab)obj).getItemBlock();
+                    } else if (obj instanceof BlockVenerableStump) {
+                        itemBlock = new ItemBlockVenerableStump((Block) obj);
                     } else {
                         itemBlock = new ItemBlock((Block) obj);
                     }
