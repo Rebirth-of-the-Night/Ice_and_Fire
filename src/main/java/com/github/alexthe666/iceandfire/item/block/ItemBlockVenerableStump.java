@@ -1,4 +1,4 @@
-package com.github.alexthe666.iceandfire.item;
+package com.github.alexthe666.iceandfire.item.block;
 
 import com.github.alexthe666.iceandfire.block.BlockVenerableStump;
 import com.github.alexthe666.iceandfire.block.BlockVenerableStump.StumpPart;
