@@ -19,17 +19,6 @@ public class BlockVenerableStump extends Block {
     public static final PropertyEnum<BlockVenerableStump.StumpPart> PART =
             PropertyEnum.create("part", BlockVenerableStump.StumpPart.class);
 
-    // FIXME make dependent on BlockState.part
-    @SuppressWarnings("PointlessArithmeticExpression")
-    static AxisAlignedBB boundingBox = new AxisAlignedBB(
-            -16.0 / 16.0,
-            0.0 / 16.0,
-            -16.0 / 16.0,
-            29.0 / 16.0,
-            16.0 / 16.0,
-            29.0 / 16.0
-    );
-
     public BlockVenerableStump() {
         super(Material.WOOD);
         this.setTranslationKey("iceandfire.venerable_stump");
@@ -62,13 +51,13 @@ public class BlockVenerableStump extends Block {
     @Nonnull
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return boundingBox;
+        return state.getValue(PART).boundingBox;
     }
 
     @Nonnull
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
-        return boundingBox;
+        return blockState.getValue(PART).boundingBox;
     }
 
     @Nonnull
@@ -79,28 +68,120 @@ public class BlockVenerableStump extends Block {
 
     enum StumpPart implements IStringSerializable {
         // --
-        NORTH_WEST(new Vec3i(-1, 0, -1)),
+        NORTH_WEST(
+            new Vec3i(-1, 0, -1),
+            new AxisAlignedBB(
+                3.0 / 16.0,
+                0.0 / 16.0,
+                3.0 / 16.0,
+                16.0 / 16.0,
+                14.0 / 16.0,
+                16.0 / 16.0
+            )
+        ),
         // -0
-        WEST(new Vec3i(-1, 0, 0)),
+        WEST(
+            new Vec3i(-1, 0, 0),
+            new AxisAlignedBB(
+                3.0 / 16.0,
+                0.0 / 16.0,
+                0.0 / 16.0,
+                16.0 / 16.0,
+                14.0 / 16.0,
+                16.0 / 16.0
+            )
+        ),
         // -+
-        SOUTH_WEST(new Vec3i(-1, 0, +1)),
+        SOUTH_WEST(
+            new Vec3i(-1, 0, +1),
+            new AxisAlignedBB(
+                3.0 / 16.0,
+                0.0 / 16.0,
+                0.0 / 16.0,
+                16.0 / 16.0,
+                14.0 / 16.0,
+                13.0 / 16.0
+            )
+        ),
         // 0-
-        NORTH(new Vec3i(0, 0, -1)),
+        NORTH(
+            new Vec3i(0, 0, -1),
+            new AxisAlignedBB(
+                0.0 / 16.0,
+                0.0 / 16.0,
+                3.0 / 16.0,
+                16.0 / 16.0,
+                14.0 / 16.0,
+                16.0 / 16.0
+            )
+        ),
         // 00
-        MIDDLE(new Vec3i(0, 0, 0)),
+        MIDDLE(
+            new Vec3i(0, 0, 0),
+            new AxisAlignedBB(
+                0.0 / 16.0,
+                0.0 / 16.0,
+                0.0 / 16.0,
+                16.0 / 16.0,
+                14.0 / 16.0,
+                16.0 / 16.0
+            )
+        ),
         // 0+
-        SOUTH(new Vec3i(0, 0, +1)),
+        SOUTH(
+            new Vec3i(0, 0, +1),
+            new AxisAlignedBB(
+                0.0 / 16.0,
+                0.0 / 16.0,
+                0.0 / 16.0,
+                16.0 / 16.0,
+                14.0 / 16.0,
+                13.0 / 16.0
+            )
+        ),
         // +-
-        NORTH_EAST(new Vec3i(+1, 0, -1)),
+        NORTH_EAST(
+            new Vec3i(+1, 0, -1),
+            new AxisAlignedBB(
+                0.0 / 16.0,
+                0.0 / 16.0,
+                3.0 / 16.0,
+                13.0 / 16.0,
+                14.0 / 16.0,
+                16.0 / 16.0
+            )
+        ),
         // +0
-        EAST(new Vec3i(+1, 0, 0)),
+        EAST(
+            new Vec3i(+1, 0, 0),
+            new AxisAlignedBB(
+                0.0 / 16.0,
+                0.0 / 16.0,
+                0.0 / 16.0,
+                13.0 / 16.0,
+                14.0 / 16.0,
+                16.0 / 16.0
+            )
+        ),
         // ++
-        SOUTH_EAST(new Vec3i(+1, 0, +1));
+        SOUTH_EAST(
+            new Vec3i(+1, 0, +1),
+            new AxisAlignedBB(
+                0.0 / 16.0,
+                0.0 / 16.0,
+                0.0 / 16.0,
+                13.0 / 16.0,
+                14.0 / 16.0,
+                13.0 / 16.0
+            )
+        );
 
         Vec3i fromCenter;
+        AxisAlignedBB boundingBox;
 
-        StumpPart(Vec3i fromCenter) {
+        StumpPart(Vec3i fromCenter, AxisAlignedBB boundingBox) {
             this.fromCenter = fromCenter;
+            this.boundingBox = boundingBox;
         }
 
         @Override
