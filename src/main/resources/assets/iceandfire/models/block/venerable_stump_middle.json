@@ -4,7 +4,7 @@
 	"textures": {
 		"1": "iceandfire:blocks/redwood_mossy_bot",
 		"2": "iceandfire:blocks/redwood_mossy_top",
-		"particle": "iceandfire:blocks/redwood_mossy"
+		"particle": "iceandfire:blocks/redwood_mossy_bot"
 	},
 	"elements": [
 		{
