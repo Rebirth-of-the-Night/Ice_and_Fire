@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -61,11 +62,23 @@ public class BlockVenerableStump extends Block {
     }
 
     @Nonnull
-    @Override
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
-        return boundingBox;
+    protected BlockStateContainer createBlockState()
+    {
+        return new BlockStateContainer(this, PART);
     }
 
+    @Override
+    @Nonnull
+    public IBlockState getStateFromMeta(int meta) {
+        return meta < StumpPart.values().length ? getDefaultState().withProperty(PART, StumpPart.values()[meta]) : getDefaultState();
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(PART).ordinal();
+    }
+
+    @SuppressWarnings("PointlessArithmeticExpression")
     enum StumpPart implements IStringSerializable {
         // --
         NORTH_WEST(
