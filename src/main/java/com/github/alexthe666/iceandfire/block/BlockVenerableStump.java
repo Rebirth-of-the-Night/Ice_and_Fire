@@ -12,7 +12,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
@@ -79,7 +78,7 @@ public class BlockVenerableStump extends Block {
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
-    enum StumpPart implements IStringSerializable {
+    public enum StumpPart implements IStringSerializable {
         // --
         NORTH_WEST(
             new Vec3i(-1, 0, -1),
@@ -189,8 +188,8 @@ public class BlockVenerableStump extends Block {
             )
         );
 
-        Vec3i fromCenter;
-        AxisAlignedBB boundingBox;
+        private final Vec3i fromCenter;
+        private final AxisAlignedBB boundingBox;
 
         StumpPart(Vec3i fromCenter, AxisAlignedBB boundingBox) {
             this.fromCenter = fromCenter;
@@ -201,6 +200,14 @@ public class BlockVenerableStump extends Block {
         @Nonnull
         public String getName() {
             return this.toString().toLowerCase();
+        }
+
+        public Vec3i getFromCenter() {
+            return fromCenter;
+        }
+
+        public AxisAlignedBB getBoundingBox() {
+            return boundingBox;
         }
     }
 }
