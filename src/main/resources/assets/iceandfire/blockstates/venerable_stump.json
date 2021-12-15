@@ -1,31 +1,31 @@
 {
   "variants": {
     "part=north_west": {
-      "model": "venerable_stump_north_west"
+      "model": "iceandfire:venerable_stump_north_west"
     },
     "part=west": {
-      "model": "venerable_stump_west"
+      "model": "iceandfire:venerable_stump_west"
     },
     "part=south_west": {
-      "model": "venerable_stump_south_west"
+      "model": "iceandfire:venerable_stump_south_west"
     },
     "part=north": {
-      "model": "venerable_stump_north"
+      "model": "iceandfire:venerable_stump_north"
     },
-    "part=center": {
-      "model": "venerable_stump_center"
+    "part=middle": {
+      "model": "iceandfire:venerable_stump_middle"
     },
     "part=south": {
-      "model": "venerable_stump_south"
+      "model": "iceandfire:venerable_stump_south"
     },
     "part=north_east": {
-      "model": "venerable_stump_north_east"
+      "model": "iceandfire:venerable_stump_north_east"
     },
     "part=east": {
-      "model": "venerable_stump_east"
+      "model": "iceandfire:venerable_stump_east"
     },
     "part=south_east": {
-      "model": "venerable_stump_south_east"
+      "model": "iceandfire:venerable_stump_south_east"
     }
   }
 }
