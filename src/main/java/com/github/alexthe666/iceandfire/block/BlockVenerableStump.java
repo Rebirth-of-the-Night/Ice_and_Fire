@@ -13,8 +13,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -100,6 +102,25 @@ public class BlockVenerableStump extends Block {
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
         if (face == EnumFacing.DOWN) return BlockFaceShape.SOLID;
         return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    @ParametersAreNonnullByDefault
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockFrom, BlockPos posFrom) {
+        if (blockFrom == this && world.getBlockState(posFrom).getBlock() != this && posFrom.getY() == pos.getY()) {
+            StumpPart part = state.getValue(PART);
+            // a stump part around the middle was broken => break the middle
+            if (part == StumpPart.MIDDLE) {
+                world.setBlockToAir(pos);
+                return;
+            }
+            // broken stump part is at least two from the center of this stump and does therefore not belong to it
+            if (MathHelper.abs(part.getFromCenter().getX() + posFrom.getX() - pos.getX()) > 1)
+                return;
+            if (MathHelper.abs(part.getFromCenter().getZ() + posFrom.getZ() - pos.getZ()) > 1)
+                return;
+            world.setBlockToAir(pos);
+        }
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
