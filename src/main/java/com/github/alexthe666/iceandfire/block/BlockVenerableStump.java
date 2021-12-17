@@ -39,27 +39,32 @@ public class BlockVenerableStump extends Block {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
         return false;
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean isFullCube(IBlockState state) {
         return false;
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Nonnull
+    @ParametersAreNonnullByDefault
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return state.getValue(PART).boundingBox;
     }
 
     @Nonnull
+    @ParametersAreNonnullByDefault
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
         return blockState.getValue(PART).boundingBox;
