@@ -2,6 +2,8 @@ package com.github.alexthe666.iceandfire.event;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockBurntTorch;
+import com.github.alexthe666.iceandfire.block.BlockVenerableStump;
+import com.github.alexthe666.iceandfire.block.BlockVenerableStump.StumpPart;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
@@ -34,12 +36,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
@@ -54,11 +55,13 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 
 public class ServerEvents {
@@ -874,5 +877,100 @@ public class ServerEvents {
         } catch (Exception e) {
             IceAndFire.logger.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
         }
+    }
+
+    @SubscribeEvent
+    void onWorldLoad(WorldEvent.Load event) {
+        World world = event.getWorld();
+        if (world.isRemote)
+            return;
+        world.addEventListener(new IWorldEventListener() {
+            @Override
+            @ParametersAreNonnullByDefault
+            public void notifyBlockUpdate(World worldIn, BlockPos pos, IBlockState oldState, IBlockState newState, int flags) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void notifyLightSet(BlockPos pos) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void markBlockRangeForRenderUpdate(int x1, int y1, int z1, int x2, int y2, int z2) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void playSoundToAllNearExcept(@Nullable EntityPlayer player, SoundEvent soundIn, SoundCategory category, double x, double y, double z, float volume, float pitch) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void playRecord(SoundEvent soundIn, BlockPos pos) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void spawnParticle(int particleID, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void spawnParticle(int id, boolean ignoreRange, boolean minimiseParticleLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int... parameters) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void onEntityAdded(Entity entityIn) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void onEntityRemoved(Entity entityIn) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void broadcastSound(int soundID, BlockPos pos, int data) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void playEvent(EntityPlayer player, int type, BlockPos blockPosIn, int data) {
+
+            }
+
+            private final Set<BlockPos> breakingStumpCenters = new HashSet<>();
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) {
+                IBlockState state = world.getBlockState(pos);
+                if (state.getBlock() != IafBlockRegistry.venerableStump)
+                    return;
+                StumpPart originalPart = state.getValue(BlockVenerableStump.PART);
+                BlockPos centerPos = pos.subtract(originalPart.getFromCenter());
+                if (breakingStumpCenters.contains(centerPos))
+                    return;
+                breakingStumpCenters.add(centerPos);
+                Random random = new Random(breakerId);
+                for (StumpPart part : StumpPart.values()) {
+                    if (part == originalPart) continue;
+                    world.sendBlockBreakProgress(random.nextInt(), centerPos.add(part.getFromCenter()), progress - 1);
+                }
+                breakingStumpCenters.remove(centerPos);
+            }
+        });
     }
 }
