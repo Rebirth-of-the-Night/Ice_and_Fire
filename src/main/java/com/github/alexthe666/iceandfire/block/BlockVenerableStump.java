@@ -39,17 +39,17 @@ public class BlockVenerableStump extends Block {
 
     @Override
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return fullBlock;
+        return false;
     }
 
     @Override
     public boolean isFullCube(IBlockState state) {
-        return fullBlock;
+        return false;
     }
 
     @Override
     public boolean isOpaqueCube(IBlockState state) {
-        return fullBlock;
+        return false;
     }
 
     @Nonnull
