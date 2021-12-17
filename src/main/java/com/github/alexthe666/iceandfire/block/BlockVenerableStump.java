@@ -31,7 +31,7 @@ public class BlockVenerableStump extends Block {
         this.setSoundType(SoundType.WOOD);
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
         this.setLightOpacity(0);
-        this.setLightLevel(1f);
+        this.setLightLevel(2 / 15f);
         this.translucent = true;
         this.fullBlock = false;
         this.setRegistryName(IceAndFire.MODID, "venerable_stump");
