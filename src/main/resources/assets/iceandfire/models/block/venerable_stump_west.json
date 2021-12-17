@@ -3,9 +3,9 @@
 	"texture_size": [48, 48],
 	"textures": {
 		"0": "iceandfire:blocks/redwood_mossy",
-		"1": "iceandfire:blocks/redwood_mossy_bot",
-		"2": "iceandfire:blocks/redwood_mossy_top",
-		"particle": "iceandfire:blocks/redwood_mossy_bot"
+		"1": "iceandfire:blocks/redwood_mossy_bot_centered",
+		"2": "iceandfire:blocks/redwood_mossy_top_centered",
+		"particle": "iceandfire:blocks/redwood_mossy_bot_centered"
 	},
 	"elements": [
 		{
@@ -13,8 +13,8 @@
 			"to": [16, 14, 16],
 			"faces": {
 				"west": {"uv": [4.33333, 11.33333, 9.66667, 16], "texture": "#0"},
-				"up": {"uv": [0, 4.33333, 4.33333, 9.66667], "texture": "#2"},
-				"down": {"uv": [0, 4.33333, 4.33333, 9.66667], "texture": "#1"}
+				"up": {"uv": [1, 5.33333, 5.33333, 10.66667], "texture": "#2"},
+				"down": {"uv": [1, 5.33333, 5.33333, 10.66667], "texture": "#1"}
 			}
 		}
 	]
