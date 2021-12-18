@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-@SuppressWarnings("deprecation")
 public class BlockVenerableStump extends Block {
     public static final PropertyEnum<BlockVenerableStump.StumpPart> PART =
             PropertyEnum.create("part", BlockVenerableStump.StumpPart.class);

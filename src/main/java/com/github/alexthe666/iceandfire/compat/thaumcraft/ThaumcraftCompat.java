@@ -26,6 +26,7 @@ public class ThaumcraftCompat {
         return new Aspect(tag, color, components, image, blend);
     }
 
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void aspectRegistrationEvent(AspectRegistryEvent evt) {
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.bestiary), new AspectList().add(ThaumcraftCompat.DRAGON, 2).add(ThaumcraftCompat.MYTHICAL, 5).add(Aspect.BEAST, 6).add(Aspect.MAGIC, 2).add(Aspect.MIND, 4).add(Aspect.WATER, 2).add(Aspect.AIR, 1));

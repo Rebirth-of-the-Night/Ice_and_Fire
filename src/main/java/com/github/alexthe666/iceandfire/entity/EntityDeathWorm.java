@@ -73,7 +73,6 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     private Animation currentAnimation;
     private EntityMutlipartPart[] segments = new EntityMutlipartPart[6];
     private boolean isSandNavigator;
-    private final float prevScale = 0.0F;
     private final EntityLookHelper lookHelper;
     private int growthCounter = 0;
 

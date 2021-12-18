@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class AmphithereAIHurtByTarget extends EntityAIHurtByTarget {
 
-    public AmphithereAIHurtByTarget(EntityAmphithere amphithere, boolean help, Class[] classes) {
+    public AmphithereAIHurtByTarget(EntityAmphithere amphithere, boolean help, Class<?>... classes) {
         super(amphithere, help, classes);
     }
 
