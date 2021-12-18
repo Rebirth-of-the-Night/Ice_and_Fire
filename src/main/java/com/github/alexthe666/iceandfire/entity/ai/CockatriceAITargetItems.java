@@ -1,21 +1,23 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.api.FoodUtils;
 import com.github.alexthe666.iceandfire.entity.EntityCockatrice;
 import com.google.common.base.Predicate;
+
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-
 public class CockatriceAITargetItems<T extends EntityItem> extends EntityAITarget {
     protected final DragonAITargetItems.Sorter theNearestAttackableTargetSorter;
     protected final Predicate<? super EntityItem> targetEntitySelector;
+    @SuppressWarnings("unused")
     private final int targetChance;
     protected EntityItem targetEntity;
 

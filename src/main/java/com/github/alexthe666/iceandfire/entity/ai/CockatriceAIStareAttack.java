@@ -12,21 +12,17 @@ public class CockatriceAIStareAttack extends EntityAIBase {
     private final EntityCockatrice entity;
     private final double moveSpeedAmp;
     private final float maxAttackDistance;
+
+    @SuppressWarnings("unused")
     private int attackCooldown;
-    private int attackTime = -1;
     private int seeTime;
-    private boolean strafingClockwise;
-    private boolean strafingBackwards;
-    private int strafingTime = -1;
     private BlockPos target = null;
-    private int walkingTime = -1;
-    private float prevYaw;
 
     public CockatriceAIStareAttack(EntityCockatrice cockatrice, double speedAmplifier, int delay, float maxDistance) {
         this.entity = cockatrice;
         this.moveSpeedAmp = speedAmplifier;
         this.attackCooldown = delay;
-        this.maxAttackDistance = maxDistance * maxDistance;
+        this.maxAttackDistance = maxDistance;
         this.setMutexBits(3);
     }
 
@@ -54,7 +50,6 @@ public class CockatriceAIStareAttack extends EntityAIBase {
     public void resetTask() {
         super.resetTask();
         this.seeTime = 0;
-        this.attackTime = -1;
         this.entity.resetActiveHand();
         this.entity.getNavigator().clearPath();
         target = null;
@@ -72,7 +67,6 @@ public class CockatriceAIStareAttack extends EntityAIBase {
             }
             if (!isEntityLookingAt(entitylivingbase, entity, EntityCockatrice.VIEW_RADIUS) || (entitylivingbase.prevPosX != entity.posX || entitylivingbase.prevPosY != entity.posY || entitylivingbase.prevPosZ != entity.posZ)) {
                 this.entity.getNavigator().clearPath();
-                this.prevYaw = entitylivingbase.rotationYaw;
                 BlockPos pos = DragonUtils.getBlockInTargetsViewCockatrice(this.entity, entitylivingbase);
                 if (target == null || pos.distanceSq(target) > 4) {
                     target = pos;
@@ -80,7 +74,7 @@ public class CockatriceAIStareAttack extends EntityAIBase {
             }
             this.entity.setTargetedEntity(entitylivingbase.getEntityId());
 
-            double d0 = this.entity.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
+            // double d0 = this.entity.getDistanceSq(entitylivingbase.posX, entitylivingbase.getEntityBoundingBox().minY, entitylivingbase.posZ);
             boolean flag = this.entity.getEntitySenses().canSee(entitylivingbase);
             boolean flag1 = this.seeTime > 0;
 
@@ -94,7 +88,7 @@ public class CockatriceAIStareAttack extends EntityAIBase {
                 --this.seeTime;
             }
             if (target != null) {
-                if (this.entity.getDistance(target.getX(), target.getY(), target.getZ()) > 4 && !isEntityLookingAt(entitylivingbase, entity, EntityCockatrice.VIEW_RADIUS)) {
+                if (this.entity.getDistance(target.getX(), target.getY(), target.getZ()) > maxAttackDistance && !isEntityLookingAt(entitylivingbase, entity, EntityCockatrice.VIEW_RADIUS)) {
                     this.entity.getNavigator().tryMoveToXYZ(target.getX(), target.getY(), target.getZ(), moveSpeedAmp);
                 }
 

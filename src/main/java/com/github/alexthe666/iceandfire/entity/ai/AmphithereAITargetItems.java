@@ -1,27 +1,27 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
-import com.github.alexthe666.iceandfire.entity.EntityAmphithere;
+import java.util.Comparator;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.entity.EntityAmphithere;
 import com.google.common.base.Predicate;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.AxisAlignedBB;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 public class AmphithereAITargetItems<T extends EntityItem> extends EntityAITarget {
     protected final DragonAITargetItems.Sorter theNearestAttackableTargetSorter;
     protected final Predicate<? super EntityItem> targetEntitySelector;
+
+    @SuppressWarnings("unused")
     private final int targetChance;
     protected EntityItem targetEntity;
 
@@ -33,16 +33,17 @@ public class AmphithereAITargetItems<T extends EntityItem> extends EntityAITarge
         this(creature, 20, checkSight, onlyNearby, null);
     }
 
+    @SuppressWarnings("unchecked")
     public AmphithereAITargetItems(EntityCreature creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector) {
         super(creature, checkSight, onlyNearby);
         this.targetChance = chance;
         this.theNearestAttackableTargetSorter = new DragonAITargetItems.Sorter(creature);
-        this.targetEntitySelector = new Predicate<EntityItem>() {
+        this.targetEntitySelector = targetSelector == null ? new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
                 return item != null && !item.getItem().isEmpty() && item.getItem().getItem() == Items.DYE && item.getItem().getItemDamage() == EnumDyeColor.BROWN.getDyeDamage();
             }
-        };
+        } : (Predicate<EntityItem>) targetSelector;
     }
 
     @Override

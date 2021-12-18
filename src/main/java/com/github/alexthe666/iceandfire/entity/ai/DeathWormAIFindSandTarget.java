@@ -14,7 +14,6 @@ import java.util.List;
 public class DeathWormAIFindSandTarget extends EntityAIBase {
     private final EntityDeathWorm mob;
     private int range;
-    private boolean avoidAttacker;
 
     public DeathWormAIFindSandTarget(EntityDeathWorm mob, int range) {
         this.mob = mob;
@@ -29,7 +28,7 @@ public class DeathWormAIFindSandTarget extends EntityAIBase {
         }
         if (this.mob.getRNG().nextFloat() < 0.5F) {
             Path path = this.mob.getNavigator().getPath();
-            if (path != null || !this.mob.getNavigator().noPath() && !isDirectPathBetweenPoints(this.mob, this.mob.getPositionVector(), new Vec3d(path.getFinalPathPoint().x, path.getFinalPathPoint().y, path.getFinalPathPoint().z))) {
+            if (!this.mob.getNavigator().noPath() || path != null && !isDirectPathBetweenPoints(this.mob, this.mob.getPositionVector(), new Vec3d(path.getFinalPathPoint().x, path.getFinalPathPoint().y, path.getFinalPathPoint().z))) {
                 this.mob.getNavigator().clearPath();
             }
             if (this.mob.getNavigator().noPath()) {
@@ -52,7 +51,6 @@ public class DeathWormAIFindSandTarget extends EntityAIBase {
         if (this.mob.getAttackTarget() == null || this.mob.getAttackTarget().isDead) {
             List<BlockPos> sand = new ArrayList<>();
             if (this.mob.isTamed() && this.mob.getWormHome() != null) {
-                range = 25;
                 for (int x = this.mob.getWormHome().getX() - range; x < this.mob.getWormHome().getX() + range; x++) {
                     for (int y = this.mob.getWormHome().getY() - range; y < this.mob.getWormHome().getY() + range; y++) {
                         for (int z = this.mob.getWormHome().getZ() - range; z < this.mob.getWormHome().getZ() + range; z++) {

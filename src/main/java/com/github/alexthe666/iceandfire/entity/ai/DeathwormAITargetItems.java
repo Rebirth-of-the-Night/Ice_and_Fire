@@ -1,17 +1,18 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.entity.EntityDeathWorm;
 import com.google.common.base.Predicate;
+
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.AxisAlignedBB;
-
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
 
 public class DeathwormAITargetItems<T extends EntityItem> extends EntityAITarget {
     protected final DragonAITargetItems.Sorter theNearestAttackableTargetSorter;
@@ -24,7 +25,7 @@ public class DeathwormAITargetItems<T extends EntityItem> extends EntityAITarget
     }
 
     public DeathwormAITargetItems(EntityDeathWorm creature, boolean checkSight, boolean onlyNearby) {
-        this(creature, 0, checkSight, onlyNearby, null);
+        this(creature, 100, checkSight, onlyNearby, null);
     }
 
     public DeathwormAITargetItems(EntityDeathWorm creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector) {
@@ -64,16 +65,19 @@ public class DeathwormAITargetItems<T extends EntityItem> extends EntityAITarget
     @Override
     public void updateTask() {
         super.updateTask();
-        if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
-            this.resetTask();
-        }
-        if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {
-            EntityDeathWorm deathWorm = (EntityDeathWorm) this.taskOwner;
-            this.targetEntity.getItem().shrink(1);
-            this.taskOwner.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
-            deathWorm.setAnimation(EntityDeathWorm.ANIMATION_BITE);
-            deathWorm.setExplosive(true);
-            resetTask();
+
+        if (this.target.getRNG().nextFloat() < targetChance/100f) {
+            if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
+                this.resetTask();
+            }
+            if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {
+                EntityDeathWorm deathWorm = (EntityDeathWorm) this.taskOwner;
+                this.targetEntity.getItem().shrink(1);
+                this.taskOwner.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
+                deathWorm.setAnimation(EntityDeathWorm.ANIMATION_BITE);
+                deathWorm.setExplosive(true);
+                resetTask();
+            }
         }
     }
 
