@@ -208,7 +208,7 @@ public class RenderDreadlandsSky extends IRenderHandler {
         GlStateManager.enableFog();
         GlStateManager.color(f, f1, f2);
 
-        if (true)//vboEnabled)
+        if (mc.gameSettings.useVbo)
         {
             skyVBO.bindBuffer();
             GlStateManager.glEnableClientState(32884);
@@ -299,7 +299,7 @@ public class RenderDreadlandsSky extends IRenderHandler {
         if (f15 > 0.0F) {
             GlStateManager.color(f15, f15, f15, f15);
 
-            if (true) //vboEnabled)
+            if (mc.gameSettings.useVbo)
             {
                 starVBO.bindBuffer();
                 GlStateManager.glEnableClientState(32884);
@@ -325,7 +325,7 @@ public class RenderDreadlandsSky extends IRenderHandler {
             GlStateManager.pushMatrix();
             GlStateManager.translate(0.0F, 12.0F, 0.0F);
 
-            if (true) //vboEnabled)
+            if (mc.gameSettings.useVbo)
             {
                 sky2VBO.bindBuffer();
                 GlStateManager.glEnableClientState(32884);
