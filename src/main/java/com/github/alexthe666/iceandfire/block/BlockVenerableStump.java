@@ -2,6 +2,7 @@ package com.github.alexthe666.iceandfire.block;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFire;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
@@ -108,7 +109,29 @@ public class BlockVenerableStump extends Block {
     @Override
     @ParametersAreNonnullByDefault
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockFrom, BlockPos posFrom) {
-        if (blockFrom == this && world.getBlockState(posFrom).getBlock() != this && posFrom.getY() == pos.getY()) {
+        IBlockState stateFrom = world.getBlockState(posFrom);
+        if (stateFrom.getBlock() == Blocks.FIRE && posFrom.equals(pos.up())) {
+            BlockPos center = pos.subtract(state.getValue(PART).getFromCenter());
+            for (StumpPart part : StumpPart.values()) {
+                BlockPos firePos = center.add(part.getFromCenter()).up();
+                if (!world.isRainingAt(firePos)) {
+                    int age = stateFrom.getValue(BlockFire.AGE) + world.rand.nextInt(5) / 4;
+                    if (age > 15)
+                        age = 15;
+                    world.setBlockState(firePos, Blocks.FIRE.getDefaultState().withProperty(BlockFire.AGE, age), 2);
+
+                    if(net.minecraftforge.event.ForgeEventFactory.onNeighborNotify(world, firePos, world.getBlockState(firePos), java.util.EnumSet.allOf(EnumFacing.class), true).isCanceled())
+                        return;
+
+                    world.neighborChanged(firePos.west(), Blocks.FIRE, firePos);
+                    world.neighborChanged(firePos.east(), Blocks.FIRE, firePos);
+//                    world.neighborChanged(firePos.down(), Blocks.FIRE, firePos); // don't send update to stump part (prevents infinite recursion)
+                    world.neighborChanged(firePos.up(), Blocks.FIRE, firePos);
+                    world.neighborChanged(firePos.north(), Blocks.FIRE, firePos);
+                    world.neighborChanged(firePos.south(), Blocks.FIRE, firePos);
+                }
+            }
+        } else if (blockFrom == this && stateFrom.getBlock() != this && posFrom.getY() == pos.getY()) {
             StumpPart part = state.getValue(PART);
             // a stump part around the middle was broken => break the middle
             if (part == StumpPart.MIDDLE) {
