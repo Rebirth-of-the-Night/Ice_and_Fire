@@ -9,6 +9,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -34,6 +35,7 @@ public class BlockVenerableStump extends Block {
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
         this.setLightOpacity(0);
         this.setLightLevel(2 / 15f);
+        Blocks.FIRE.setFireInfo(this, 15, 1);
         this.translucent = true;
         this.fullBlock = false;
         this.setRegistryName(IceAndFire.MODID, "venerable_stump");
