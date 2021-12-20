@@ -118,6 +118,38 @@ public class BlockIceSpikes extends BlockDirectional {
         }
     }
 
+    @Override
+    @ParametersAreNonnullByDefault
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side) {
+        return canPlaceBlock(worldIn, pos, side);
+    }
+
+    @Override
+    @ParametersAreNonnullByDefault
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        for (EnumFacing enumfacing : EnumFacing.values()) {
+            if (canPlaceBlock(worldIn, pos, enumfacing)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected static boolean canPlaceBlock(World worldIn, BlockPos pos, EnumFacing direction) {
+        BlockPos blockpos = pos.offset(direction.getOpposite());
+        IBlockState iblockstate = worldIn.getBlockState(blockpos);
+        return iblockstate.getBlockFaceShape(worldIn, blockpos, direction) == BlockFaceShape.SOLID;
+    }
+
+    @Override
+    @ParametersAreNonnullByDefault
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        if (!canPlaceBlock(worldIn, pos, state.getValue(FACING))) {
+            worldIn.setBlockToAir(pos);
+        }
+    }
+
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
