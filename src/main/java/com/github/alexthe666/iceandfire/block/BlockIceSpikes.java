@@ -126,6 +126,13 @@ public class BlockIceSpikes extends BlockDirectional {
         return false;
     }
 
+    @Override
+    @Nonnull
+    @ParametersAreNonnullByDefault
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+        return BlockFaceShape.UNDEFINED;
+    }
+
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.TRANSLUCENT;
