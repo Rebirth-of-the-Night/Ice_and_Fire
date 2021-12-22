@@ -38,7 +38,7 @@ public class PixieAIFlee<T extends Entity> extends EntityAIBase {
         this.setMutexBits(1);
     }
 
-
+    @SuppressWarnings("unchecked")
     public boolean shouldExecute() {
         if (this.pixie.getHeldItem(EnumHand.MAIN_HAND) == ItemStack.EMPTY) {
             return false;
@@ -46,8 +46,15 @@ public class PixieAIFlee<T extends Entity> extends EntityAIBase {
         if (this.pixie.isTamed()) {
             return false;
         }
-        List<T> list = this.pixie.world.getEntitiesWithinAABB(this.classToAvoid, this.pixie.getEntityBoundingBox().grow(this.avoidDistance, 3.0D, this.avoidDistance),
-                Predicates.and(new Predicate[]{EntitySelectors.NOT_SPECTATING, this.canBeSeenSelector, this.avoidTargetSelector}));
+        List<T> list = this.pixie.world.getEntitiesWithinAABB(
+                this.classToAvoid, 
+                this.pixie.getEntityBoundingBox().grow(this.avoidDistance, 3.0D, this.avoidDistance),
+                Predicates.and(
+                        EntitySelectors.NOT_SPECTATING, 
+                        this.canBeSeenSelector, 
+                        this.avoidTargetSelector
+                )
+            );
 
         if (list.isEmpty()) {
             return false;

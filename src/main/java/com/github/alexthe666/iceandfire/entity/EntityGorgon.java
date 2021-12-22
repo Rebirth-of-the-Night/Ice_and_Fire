@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.entity.ai.GorgonAIStareAttack;
+import com.github.alexthe666.iceandfire.entity.ai.GorgonAIStare;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.message.MessageStoneStatue;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
@@ -36,7 +36,7 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
 	public static Animation ANIMATION_HIT;
 	private int animationTick;
 	private Animation currentAnimation;
-	private GorgonAIStareAttack aiStare;
+	private GorgonAIStare aiStare;
 	private EntityAIAttackMelee aiMelee;
 	private int playerStatueCooldown;
 	
@@ -85,9 +85,9 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAIRestrictSun(this));
 		this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-		this.tasks.addTask(3, aiStare = new GorgonAIStareAttack(this, 1.0D, 0, 15.0F));
+		this.tasks.addTask(3, aiStare = new GorgonAIStare(this, 1.0D, 15.0F));
 		this.tasks.addTask(3, aiMelee = new EntityAIAttackMelee(this, 1.0D, false));
-		this.tasks.addTask(4, new GorgonAIStareAttack(this, 1.0D, 0, 15.0F));
+		this.tasks.addTask(4, new GorgonAIStare(this, 1.0D, 15.0F));
 		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D) {
 			public boolean shouldExecute() {
 				executionChance = 20;

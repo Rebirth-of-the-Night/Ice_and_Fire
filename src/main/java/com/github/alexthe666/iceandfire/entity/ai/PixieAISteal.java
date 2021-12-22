@@ -16,11 +16,6 @@ import java.util.Random;
 public class PixieAISteal extends EntityAIBase {
     private final EntityPixie temptedEntity;
     private final double speed;
-    private double targetX;
-    private double targetY;
-    private double targetZ;
-    private double pitch;
-    private double yaw;
     private EntityPlayer temptingPlayer;
     private int delayTemptCounter;
     private boolean isRunning;
@@ -55,9 +50,6 @@ public class PixieAISteal extends EntityAIBase {
     }
 
     public void startExecuting() {
-        this.targetX = this.temptingPlayer.posX;
-        this.targetY = this.temptingPlayer.posY;
-        this.targetZ = this.temptingPlayer.posZ;
         this.isRunning = true;
     }
 
@@ -89,7 +81,7 @@ public class PixieAISteal extends EntityAIBase {
             }
 
         } else {
-            this.temptedEntity.getMoveHelper().setMoveTo(this.temptingPlayer.posX, this.temptingPlayer.posY + 1.5F, this.temptingPlayer.posZ, 1D);
+            this.temptedEntity.getMoveHelper().setMoveTo(this.temptingPlayer.posX, this.temptingPlayer.posY + 1.5F, this.temptingPlayer.posZ, this.speed);
         }
     }
 

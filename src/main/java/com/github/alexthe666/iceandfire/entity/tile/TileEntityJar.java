@@ -1,23 +1,28 @@
 package com.github.alexthe666.iceandfire.entity.tile;
 
+import java.util.Random;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityPixie;
 import com.github.alexthe666.iceandfire.message.MessageUpdatePixieHouse;
 import com.github.alexthe666.iceandfire.message.MessageUpdatePixieHouseModel;
 import com.github.alexthe666.iceandfire.message.MessageUpdatePixieJar;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
+
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.MathHelper;
-
-import javax.annotation.Nullable;
-import java.util.Random;
-import java.util.UUID;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
+import net.minecraftforge.common.capabilities.Capability;
 
 public class TileEntityJar extends TileEntity implements ITickable {
 
@@ -33,7 +38,7 @@ public class TileEntityJar extends TileEntity implements ITickable {
     public NonNullList<ItemStack> pixieItems = NonNullList.withSize(1, ItemStack.EMPTY);
     public float rotationYaw;
     public float prevRotationYaw;
-    net.minecraftforge.items.IItemHandler handlerBottom = new PixieJarInvWrapper(this, net.minecraft.util.EnumFacing.DOWN);
+    net.minecraftforge.items.IItemHandler handlerBottom = new PixieJarInvWrapper(this);
     private final Random rand;
 
     public TileEntityJar() {
@@ -139,29 +144,16 @@ public class TileEntityJar extends TileEntity implements ITickable {
     }
 
     @Override
-    @javax.annotation.Nullable
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.EnumFacing facing) {
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public <T> T getCapability(Capability<T> capability, @Nullable net.minecraft.util.EnumFacing facing) {
         if (facing != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return (T) handlerBottom;
         return null;
     }
 
     @Override
-    public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable net.minecraft.util.EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable net.minecraft.util.EnumFacing facing) {
         return capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.hasPixie;
-    }
-
-    private float updateRotation(float float1, float float2, float float3) {
-        float f = MathHelper.wrapDegrees(float2 - float1);
-
-        if (f > float3) {
-            f = float3;
-        }
-
-        if (f < -float3) {
-            f = -float3;
-        }
-
-        return float1 + f;
     }
 }

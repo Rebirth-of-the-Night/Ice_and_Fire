@@ -14,9 +14,9 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class DeathwormAITargetItems<T extends EntityItem> extends EntityAITarget {
+public class DeathwormAITargetItems extends EntityAITarget {
     protected final DragonAITargetItems.Sorter theNearestAttackableTargetSorter;
-    protected final Predicate<? super EntityItem> targetEntitySelector;
+    protected final Predicate<EntityItem> targetEntitySelector;
     private final int targetChance;
     protected EntityItem targetEntity;
 
@@ -28,16 +28,16 @@ public class DeathwormAITargetItems<T extends EntityItem> extends EntityAITarget
         this(creature, 100, checkSight, onlyNearby, null);
     }
 
-    public DeathwormAITargetItems(EntityDeathWorm creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector) {
+    public DeathwormAITargetItems(EntityDeathWorm creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<EntityItem> targetSelector) {
         super(creature, checkSight, onlyNearby);
         this.targetChance = chance;
         this.theNearestAttackableTargetSorter = new DragonAITargetItems.Sorter(creature);
-        this.targetEntitySelector = new Predicate<EntityItem>() {
+        this.targetEntitySelector = targetSelector == null ? new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
                 return item != null && !item.getItem().isEmpty() && item.getItem().getItem() == Item.getItemFromBlock(Blocks.TNT);
             }
-        };
+        } : targetSelector;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class DeathwormAITargetItems<T extends EntityItem> extends EntityAITarget
     public void updateTask() {
         super.updateTask();
 
-        if (this.target.getRNG().nextFloat() < targetChance/100f) {
+        if (this.target.getRNG().nextFloat() < targetChance / 100f) {
             if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
                 this.resetTask();
             }

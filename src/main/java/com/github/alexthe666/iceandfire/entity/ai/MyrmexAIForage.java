@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.MinecraftForge;
@@ -89,7 +90,8 @@ public class MyrmexAIForage extends EntityAIBase {
             if (EntityMyrmexBase.isEdibleBlock(block)) {
                 double distance = this.getDistance(this.targetBlock);
                 if (distance <= 6) {
-                    List<ItemStack> drops = block.getBlock().getDrops(this.myrmex.world, this.targetBlock, block, 0); // use the old method until it gets removed, for backward compatibility
+                    NonNullList<ItemStack> drops = NonNullList.create();
+                    block.getBlock().getDrops(drops, this.myrmex.world, this.targetBlock, block, 0); // use the old method until it gets removed, for backward compatibility
                     if (!drops.isEmpty()) {
                         this.myrmex.world.destroyBlock(this.targetBlock, false);
                         ItemStack heldStack = drops.get(0).copy();

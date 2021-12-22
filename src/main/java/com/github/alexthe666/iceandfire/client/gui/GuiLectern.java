@@ -42,11 +42,11 @@ public class GuiLectern extends GuiContainer {
     public float oOpen;
     private ItemStack last = ItemStack.EMPTY;
 
-    public GuiLectern(InventoryPlayer playerInv, IInventory furnaceInv) {
-        super(new ContainerLectern(playerInv, furnaceInv));
+    public GuiLectern(InventoryPlayer playerInv, IInventory lecternInv) {
+        super(new ContainerLectern(playerInv, lecternInv));
         this.playerInventory = playerInv;
         this.container = (ContainerLectern) this.inventorySlots;
-        this.nameable = furnaceInv;
+        this.nameable = lecternInv;
     }
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {

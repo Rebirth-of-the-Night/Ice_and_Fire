@@ -202,7 +202,7 @@ public class EntityPixie extends EntityTameable {
 
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new PixieAIFollowOwner(this, 1.0D, 2.0F, 4.0F));
+        this.tasks.addTask(1, new PixieAIFollowOwner(this, 0.4D, 2.0F, 4.0F));
         this.tasks.addTask(1, new PixieAIPickupItem(this, false));
 
         this.tasks.addTask(2, aiTempt = new PixieAISteal(this, 1.0D));

@@ -68,6 +68,7 @@ public class TileEntityLectern extends TileEntity implements ITickable, ISidedIn
         return this.stacks.get(index);
     }
 
+    @SuppressWarnings("unused")
     private boolean canAddPage() {
         if (this.stacks.get(0).isEmpty()) {
             return false;
@@ -82,7 +83,7 @@ public class TileEntityLectern extends TileEntity implements ITickable, ISidedIn
             }
 
             if (itemstack.getItem() == IafItemRegistry.bestiary) {
-                List list = EnumBestiaryPages.possiblePages(itemstack);
+                List<EnumBestiaryPages> list = EnumBestiaryPages.possiblePages(itemstack);
                 if (list == null || list.isEmpty()) {
                     return false;
                 }
@@ -94,10 +95,10 @@ public class TileEntityLectern extends TileEntity implements ITickable, ISidedIn
         }
     }
 
-    private ArrayList<EnumBestiaryPages> getPossiblePages() {
-        List list = EnumBestiaryPages.possiblePages(this.stacks.get(0));
+    private List<EnumBestiaryPages> getPossiblePages() {
+        List<EnumBestiaryPages> list = EnumBestiaryPages.possiblePages(this.stacks.get(0));
         if (list != null && !list.isEmpty()) {
-            return (ArrayList<EnumBestiaryPages>) list;
+            return list;
         }
         return EMPTY_LIST;
     }
@@ -154,11 +155,9 @@ public class TileEntityLectern extends TileEntity implements ITickable, ISidedIn
             List<EnumBestiaryPages> possibleList = getPossiblePages();
             localRand.setSeed(this.world.getWorldTime());
             Collections.shuffle(possibleList, localRand);
-            boolean flag = false;
             if (possibleList.size() > 0) {
                 selectedPages[0] = possibleList.get(0);
             } else {
-                flag = true;
                 selectedPages[0] = null;
             }
             if (possibleList.size() > 1) {

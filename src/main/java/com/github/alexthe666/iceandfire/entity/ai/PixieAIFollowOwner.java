@@ -70,7 +70,6 @@ public class PixieAIFollowOwner extends EntityAIBase {
         return iblockstate.getMaterial() == Material.AIR || !iblockstate.isFullCube();
     }
 
-    @SuppressWarnings("deprecation")
     public void updateTask() {
         this.tameable.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float) this.tameable.getVerticalFaceSpeed());
 
@@ -78,7 +77,7 @@ public class PixieAIFollowOwner extends EntityAIBase {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
 
-                this.tameable.getMoveHelper().setMoveTo(this.owner.posX, this.owner.posY + this.owner.getEyeHeight(), this.owner.posZ, 0.25D);
+                this.tameable.getMoveHelper().setMoveTo(this.owner.posX, this.owner.posY + this.owner.getEyeHeight(), this.owner.posZ, this.followSpeed);
                 this.tameable.slowSpeed = true;
                 if (!this.tameable.getLeashed()) {
                     if (this.tameable.getDistanceSq(this.owner) >= 50.0D) {

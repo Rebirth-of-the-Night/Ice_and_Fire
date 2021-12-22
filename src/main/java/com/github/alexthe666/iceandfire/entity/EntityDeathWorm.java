@@ -97,7 +97,7 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(3, new DeathwormAITargetItems(this, false, false));
-        this.targetTasks.addTask(5, new DeathWormAITarget(this, EntityLivingBase.class, false, new Predicate<EntityLivingBase>() {
+        this.targetTasks.addTask(5, new DeathWormAITarget<EntityLivingBase>(this, EntityLivingBase.class, false, new Predicate<EntityLivingBase>() {
             @Override
             public boolean apply(@Nullable EntityLivingBase input) {
                 if (EntityDeathWorm.this.isTamed()) {
@@ -201,8 +201,6 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
                     this.dropLoot(flag, i, cause);
                 }
 
-                captureDrops = false;
-
                 if (!net.minecraftforge.common.ForgeHooks.onLivingDrops(this, cause, capturedDrops, i, recentlyHit > 0)) {
                     for (EntityItem item : capturedDrops) {
                         world.spawnEntity(item);
@@ -216,17 +214,6 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     }
 
     public void fall(float distance, float damageMultiplier) {
-    }
-
-    
-    private EntityItem dropItemAt(ItemStack stack, double x, double y, double z) {
-        EntityItem entityitem = new EntityItem(this.world, x, y, z, stack);
-        entityitem.setDefaultPickupDelay();
-        if (captureDrops)
-            this.capturedDrops.add(entityitem);
-        else
-            this.world.spawnEntity(entityitem);
-        return entityitem;
     }
 
     @Nullable
@@ -395,7 +382,7 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
 
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
-        if (player.getHeldItem(hand).interactWithEntity(player, this, hand)) {
+        if (itemstack.interactWithEntity(player, this, hand)) {
             return true;
         }
         if (this.getWormAge() > 4 && !player.isRiding() && player.getHeldItemMainhand().getItem() == Items.FISHING_ROD && player.getHeldItemOffhand().getItem() == Items.FISHING_ROD && !this.world.isRemote) {
@@ -853,7 +840,6 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
             }
         }
         if (this.isServerWorld()) {
-            float f5;
             if (this.isInSandStrict()) {
                 this.moveRelative(strafe, vertical, forward, 0.1F);
                 f4 = 0.8F;

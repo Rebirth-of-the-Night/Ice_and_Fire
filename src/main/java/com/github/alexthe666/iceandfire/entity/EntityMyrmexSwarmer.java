@@ -61,7 +61,7 @@ public class EntityMyrmexSwarmer extends EntityMyrmexRoyal {
 
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new MyrmexAIFollowSummoner(this, 1.0D, 10.0F, 5.0F));
+        this.tasks.addTask(1, new MyrmexAIFollowSummoner(this, 0.25D, 10.0F, 5.0F));
         this.tasks.addTask(2, new AIFlyAtTarget());
         this.tasks.addTask(3, new AIFlyRandom());
         this.tasks.addTask(4, new EntityAIAttackMeleeNoCooldown(this, 1.0D, true));
@@ -149,7 +149,7 @@ public class EntityMyrmexSwarmer extends EntityMyrmexRoyal {
 
     @Nullable
     public UUID getSummonerUUID() {
-        return (UUID) ((Optional) this.dataManager.get(SUMMONER_ID)).orNull();
+        return this.dataManager.get(SUMMONER_ID).orNull();
     }
 
     public int getTicksAlive() {

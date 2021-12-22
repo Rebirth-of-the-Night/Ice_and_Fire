@@ -87,7 +87,6 @@ public class TileEntityPodium extends TileEntity implements ITickable, ISidedInv
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-        boolean flag = !stack.isEmpty() && stack.isItemEqual(this.stacks.get(index)) && ItemStack.areItemStackTagsEqual(stack, this.stacks.get(index));
         this.stacks.set(index, stack);
 
         if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit()) {

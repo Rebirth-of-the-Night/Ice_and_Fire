@@ -3,20 +3,18 @@ package com.github.alexthe666.iceandfire.entity.ai;
 import com.github.alexthe666.iceandfire.entity.DragonUtils;
 import com.github.alexthe666.iceandfire.entity.EntityStymphalianBird;
 import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
+
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 
 public class StymphalianBirdAIAirTarget extends EntityAIBase {
     private final EntityStymphalianBird bird;
-    private final World theWorld;
 
     public StymphalianBirdAIAirTarget(EntityStymphalianBird bird) {
         this.bird = bird;
-        this.theWorld = bird.world;
     }
 
     public static BlockPos getNearbyAirTarget(EntityStymphalianBird bird) {
