@@ -1,6 +1,6 @@
 package com.github.alexthe666.iceandfire.world.village;
 
-import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
+import com.github.alexthe666.iceandfire.IceAndFire;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -14,10 +14,7 @@ import net.minecraft.world.gen.structure.StructureVillagePieces;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Random;
-
-import static com.github.alexthe666.iceandfire.IceAndFire.CONFIG;
 
 public class MapGenPixieVillage extends WorldGenerator {
     private final int minTownSeparation;
@@ -27,7 +24,7 @@ public class MapGenPixieVillage extends WorldGenerator {
     public MapGenPixieVillage() {
         this.distance = 9;
         this.minTownSeparation = 4;
-        this.size = CONFIG.pixieVillageSize;
+        this.size = IceAndFire.CONFIG.pixieVillageSize;
     }
 
     public MapGenPixieVillage(Map<String, String> map) {
@@ -44,9 +41,7 @@ public class MapGenPixieVillage extends WorldGenerator {
     @Override
     public boolean generate(World world, Random rand, BlockPos position) {
         this.distance = 9;
-        boolean canSpawn =
-                canSpawnStructureAtChunk(world, position.getX() >> 4, position.getZ() >> 4) &&
-                    canSpawnStructureAtCoords(world, position);
+        boolean canSpawn = canSpawnStructureAtCoords(world, position.getX() >> 4, position.getZ() >> 4);
         int new_size = 32;
         getStructureStart(world, position.getX() >> 4, position.getZ() >> 4, rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
         return canSpawn;
@@ -56,16 +51,8 @@ public class MapGenPixieVillage extends WorldGenerator {
         return "PixieVillage";
     }
 
-    protected boolean canSpawnStructureAtCoords(World world, BlockPos position) {
-        return IceAndFireCoreUtils.blackOrWhitelistCheck(
-                CONFIG.pixieVillageBiomeBlacklist,
-                CONFIG.pixieVillageBiomeBlacklistIsWhitelist,
-                Objects.requireNonNull(world.getBiome(position).getRegistryName(),
-                        "Attempted to spawn pixie village in unregistered biome")
-        );
-    }
-
-    protected boolean canSpawnStructureAtChunk(World world, int chunkX, int chunkZ) {int i = chunkX;
+    protected boolean canSpawnStructureAtCoords(World world, int chunkX, int chunkZ) {
+        int i = chunkX;
         int j = chunkZ;
         if (chunkX < 0) {
             chunkX -= this.distance - 1;
