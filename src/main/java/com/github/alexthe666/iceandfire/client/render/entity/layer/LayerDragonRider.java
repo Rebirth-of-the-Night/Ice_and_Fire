@@ -2,8 +2,10 @@ package com.github.alexthe666.iceandfire.client.render.entity.layer;
 
 import com.github.alexthe666.iceandfire.ClientProxy;
 import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
+import com.github.alexthe666.iceandfire.entity.DragonType;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityDreadQueen;
+
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -53,6 +55,7 @@ public class LayerDragonRider implements LayerRenderer<EntityDragonBase> {
                 if (prey) {
                     if (animationTicks == 0 || animationTicks >= 15 || dragon.isFlying()) {
                         translateToHead();
+                        offsetPerDragonType(dragon.dragonType);
                         Render render = Minecraft.getMinecraft().getRenderManager().getEntityRenderObject(passenger);
                         ModelBase modelBase = null;
                         if (render instanceof RenderLiving) {
@@ -87,7 +90,13 @@ public class LayerDragonRider implements LayerRenderer<EntityDragonBase> {
         GlStateManager.popMatrix();
     }
 
-    protected void translateToBody() {
+    private void offsetPerDragonType(DragonType dragonType){
+        if(dragonType == DragonType.LIGHTNING) {
+        	GlStateManager.translate(0.1F, -0.2F, -0.1F);
+        }
+    }
+
+	protected void translateToBody() {
         postRender(((IceAndFireTabulaModel) this.render.getMainModel()).getCube("BodyUpper"), 0.0625F);
         postRender(((IceAndFireTabulaModel) this.render.getMainModel()).getCube("Neck1"), 0.0625F);
     }

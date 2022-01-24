@@ -60,7 +60,7 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
             }
         }
         if (this.world.isRemote || (shootingEntity == null || !shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
-            super.onUpdate();
+        	super.onUpdate();
 
             if (this.isFireballFiery()) {
                 this.setFire(1);
@@ -134,7 +134,7 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
                         return;
                     }
                     if (shootingEntity != null && shootingEntity instanceof EntityDragonBase && !movingObject.entityHit.isEntityEqual(shootingEntity)) {
-                        movingObject.entityHit.attackEntityFrom(IceAndFire.dragonFire, 10.0F);
+                        movingObject.entityHit.attackEntityFrom(IceAndFire.dragonIce, 10.0F);
                         if (movingObject.entityHit instanceof EntityLivingBase) {
                             FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(movingObject.entityHit, FrozenEntityProperties.class);
                             if (frozenProps != null) {

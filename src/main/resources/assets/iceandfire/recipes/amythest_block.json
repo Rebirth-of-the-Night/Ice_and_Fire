@@ -1,0 +1,46 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemAmythest"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemAmythest"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemAmythest"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemAmythest"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemAmythest"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemAmythest"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemAmythest"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemAmythest"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "gemAmythest"
+    }
+  ],
+  "result": {
+    "item": "iceandfire:amythest_block",
+    "data": 0,
+    "count": 1
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SSS",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "item": "iceandfire:dragonscales_copper",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "iceandfire:armor_copper_helmet",
+    "data": 0
+  }
+}

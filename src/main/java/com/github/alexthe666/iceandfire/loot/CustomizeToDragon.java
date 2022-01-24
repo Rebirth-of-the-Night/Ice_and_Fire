@@ -43,18 +43,18 @@ public class CustomizeToDragon extends LootFunction {
             }
             if (stack.getItem() instanceof ItemDragonFlesh) {
                 stack.setCount(1 + random.nextInt(1 + (dragon.getAgeInDays() / 25)));
-                return new ItemStack(dragon.dragonType == DragonType.FIRE ? IafItemRegistry.fire_dragon_flesh : IafItemRegistry.ice_dragon_flesh, stack.getCount(), stack.getMetadata());
+                return new ItemStack(dragon.dragonType == DragonType.FIRE ? IafItemRegistry.fire_dragon_flesh : dragon.dragonType == DragonType.LIGHTNING ? IafItemRegistry.lightning_dragon_flesh : IafItemRegistry.ice_dragon_flesh, stack.getCount(), stack.getMetadata());
             }
             if (stack.getItem() instanceof ItemDragonSkull) {
-                ItemStack stack1 = new ItemStack(dragon.dragonType == DragonType.FIRE ? IafItemRegistry.dragon_skull : IafItemRegistry.dragon_skull, stack.getCount(), stack.getMetadata());
+                ItemStack stack1 = new ItemStack(dragon.dragonType == DragonType.FIRE ? IafItemRegistry.dragon_skull : dragon.dragonType == DragonType.LIGHTNING ? IafItemRegistry.dragon_skull : IafItemRegistry.dragon_skull, stack.getCount(), stack.getMetadata());
                 stack1.setTagCompound(stack.getTagCompound());
                 return stack1;
             }
-            if (stack.getItem() == IafItemRegistry.fire_dragon_blood || stack.getItem() == IafItemRegistry.ice_dragon_blood) {
-                return new ItemStack(dragon.dragonType == DragonType.FIRE ? IafItemRegistry.fire_dragon_blood : IafItemRegistry.ice_dragon_blood, stack.getCount(), stack.getMetadata());
+            if (stack.getItem() == IafItemRegistry.fire_dragon_blood || stack.getItem() == IafItemRegistry.ice_dragon_blood || stack.getItem() == IafItemRegistry.lightning_dragon_blood) {
+                return new ItemStack(dragon.dragonType == DragonType.FIRE ? IafItemRegistry.fire_dragon_blood : dragon.dragonType == DragonType.LIGHTNING ? IafItemRegistry.lightning_dragon_blood : IafItemRegistry.ice_dragon_blood, stack.getCount(), stack.getMetadata());
             }
-            if (stack.getItem() == IafItemRegistry.fire_dragon_heart || stack.getItem() == IafItemRegistry.ice_dragon_heart) {
-                return new ItemStack(dragon.dragonType == DragonType.FIRE ? IafItemRegistry.fire_dragon_heart : IafItemRegistry.ice_dragon_heart, stack.getCount(), stack.getMetadata());
+            if (stack.getItem() == IafItemRegistry.fire_dragon_heart || stack.getItem() == IafItemRegistry.ice_dragon_heart || stack.getItem() == IafItemRegistry.lightning_dragon_heart) {
+                return new ItemStack(dragon.dragonType == DragonType.FIRE ? IafItemRegistry.fire_dragon_heart : dragon.dragonType == DragonType.LIGHTNING ? IafItemRegistry.lightning_dragon_heart : IafItemRegistry.ice_dragon_heart, stack.getCount(), stack.getMetadata());
             }
         }
         return stack;

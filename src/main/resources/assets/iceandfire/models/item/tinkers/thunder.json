@@ -1,0 +1,32 @@
+{
+    "textures": {
+        "arrow": "iceandfire:tinkers/arrow/mod_thunder",
+        "battleaxe": "iceandfire:tinkers/battleaxe/mod_thunder",
+        "battlesign": "iceandfire:tinkers/battlesign/mod_thunder",
+        "bolt": "iceandfire:tinkers/bolt/mod_thunder",
+        "broadsword": "iceandfire:tinkers/broadsword/mod_thunder",
+        "cleaver": "iceandfire:tinkers/cleaver/mod_thunder",
+        "crossbow": "iceandfire:tinkers/crossbow/mod_thunder",
+        "excavator": "iceandfire:tinkers/excavator/mod_thunder",
+        "frypan": "iceandfire:tinkers/frypan/mod_thunder",
+        "hammer": "iceandfire:tinkers/hammer/mod_thunder",
+        "hatchet": "iceandfire:tinkers/hatchet/mod_thunder",
+        "kama": "iceandfire:tinkers/kama/mod_thunder",
+        "longbow": "iceandfire:tinkers/longbow/mod_thunder",
+        "longbow1": "iceandfire:tinkers/longbow/mod_thunder",
+        "longbow2": "iceandfire:tinkers/longbow/mod_thunder_2",
+        "longbow3": "iceandfire:tinkers/longbow/mod_thunder_3",
+        "longsword": "iceandfire:tinkers/longsword/mod_thunder",
+        "lumberaxe": "iceandfire:tinkers/lumberaxe/mod_thunder",
+        "mattock": "iceandfire:tinkers/mattock/mod_thunder",
+        "pickaxe": "iceandfire:tinkers/pickaxe/mod_thunder",
+        "rapier": "iceandfire:tinkers/rapier/mod_thunder",
+        "scythe": "iceandfire:tinkers/scythe/mod_thunder",
+        "shortbow": "iceandfire:tinkers/shortbow/mod_thunder",
+        "shortbow1": "iceandfire:tinkers/shortbow/mod_thunder",
+        "shortbow2": "iceandfire:tinkers/shortbow/mod_thunder_2",
+        "shortbow3": "iceandfire:tinkers/shortbow/mod_thunder_3",
+        "shovel": "iceandfire:tinkers/shovel/mod_thunder",
+        "shuriken": "iceandfire:tinkers/shuriken/mod_thunder"
+    }
+}

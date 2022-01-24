@@ -694,7 +694,7 @@ iceandfire.ice_dragon_forge=Ice Dragon Forge
 item.iceandfire.custom_banner.jei_desc=Has a unique banner pattern!
 item.iceandfire.fire_dragon_blood.jei_desc=Obtained by interacting with a dragon corpse while holding an empty bottle.
 item.iceandfire.ice_dragon_blood.jei_desc=Obtained by interacting with a dragon corpse while holding an empty bottle.
-item.iceandfire.dragonegg.jei_desc=Place in an open flame if a fire dragon or underwater if ice dragon and wait a long time. The dragon will bond with the closest player.
+item.iceandfire.dragonegg.jei_desc=Place in an open flame if a fire dragon, place in underwater if ice dragon and wait a long time, or put it under the rain if its a lightning dragon. The dragon will bond with the closest player.
 item.iceandfire.dragon_skull.jei_desc=Can be placed on the ground or on walls as a trophy.
 item.iceandfire.hippogryph_skull.jei_desc=Can be placed on the ground or on walls as a trophy.
 item.iceandfire.cyclops_skull.jei_desc=Can be placed on the ground or on walls as a trophy.
@@ -1031,3 +1031,121 @@ item.banner.dread.brown=Brown Dread Skull
 item.banner.dread.green=Green Dread Skull
 item.banner.dread.red=Red Dread Skull
 item.banner.dread.black=Black Dread Skull
+
+item.iceandfire.dragonsteel_lightning_sword.name=Lightning Dragonsteel Sword
+item.iceandfire.dragonbone_sword_lightning.name=Lightning Dragon Bone Sword
+item.iceandfire.dragonsteel_lightning_shovel.name=Lightning Dragonsteel Shovel
+item.iceandfire.dragonsteel_lightning_pickaxe.name=Lightning Dragonsteel Pickaxe
+item.iceandfire.dragonsteel_lightning_axe.name=Lightning Dragonsteel Axe
+item.iceandfire.dragonsteel_lightning_hoe.name=Lightning Dragonsteel Hoe
+item.iceandfire.dragonsteel_lightning_helmet.name=Lightning Dragonsteel Helmet
+item.iceandfire.dragonsteel_lightning_chestplate.name=Lightning Dragonsteel Chestplate
+item.iceandfire.dragonsteel_lightning_leggings.name=Lightning Dragonsteel Leggings
+item.iceandfire.dragonsteel_lightning_boots.name=Lightning Dragonsteel Boots
+
+item.iceandfire.dragonsteel_lightning_ingot.name=Lightning Dragonsteel Ingot
+item.iceandfire.lightning_dragon_blood.name=Lightning Dragonsteel Blood
+item.iceandfire.lightning_dragon_heart.name=Lightning Dragonsteel Heart
+
+item.iceandfire.lightning_dragon_flesh.name=Lightning Dragon Flesh
+item.iceandfire.lightning_stew.name=Lightning Lily Mixture
+item.iceandfire.summoning_crystal_lightning.name=Lightning Dragon Summoning Crystal
+item.iceandfire.dragonarmor_dragonsteel_lightning.name=Lightning Dragonsteel Dragon Armor
+
+tile.iceandfire.crackledGrass.name=Crackled Grass
+tile.iceandfire.crackledDirt.name=Crackled Dirt
+tile.iceandfire.crackledStone.name=Crackled Stone
+tile.iceandfire.crackledCobblestone.name=Crackled Cobblestone
+tile.iceandfire.crackledGravel.name=Crackled Gravel
+tile.iceandfire.crackledGrassPath.name=Crackled Grass Path
+
+item.iceandfire.copperIngot.name=Copper Ingot
+item.iceandfire.copperNugget.name=Copper Nugget
+item.iceandfire.copper_sword.name=Copper Sword
+item.iceandfire.copper_shovel.name=Copper Shovel
+item.iceandfire.copper_pickaxe.name=Copper Pickaxe
+item.iceandfire.copper_axe.name=Copper Axe
+item.iceandfire.copper_hoe.name=Copper Hoe
+item.iceandfire.copper_helmet.name=Copper Helmet
+item.iceandfire.copper_chestplate.name=Copper Chestplate
+item.iceandfire.copper_leggings.name=Copper Leggings
+item.iceandfire.copper_boots.name=Copper Boots
+item.iceandfire.dragonarmor_copper.name=Copper Dragon Armor
+
+tile.iceandfire.copperpile.name=Pile of Copper
+tile.iceandfire.copperOre.name=Copper Ore
+tile.iceandfire.copperBlock.name=Block of Copper
+
+item.iceandfire.amythest_gem.name=Amethyst
+tile.iceandfire.amythestOre.name=Amethyst Ore
+tile.iceandfire.amythestBlock.name=Block of Amethyst
+
+tile.iceandfire.lightning_lily.name=Lightning Lily
+tile.iceandfire.dragonsteel_lightning_block.name=Block of Lightning Dragonsteel
+
+entity.lightningdragon.name=Lightning Dragon
+entity.dragonlightning.name=Dragon Lightning
+entity.dragonlightningcharge.name=Dragon Lightning Charge
+
+item.iceandfire.lightning_dragon_blood.jei_desc=Obtained by interacting with a dragon corpse while holding an empty bottle.
+item.iceandfire.lightning_stew.jei_desc=Used to breed two male and female dragons. The female will create a nest with an egg afterwards.
+
+iceandfire.lightning_dragon_forge=Lightning Dragon Forge
+tile.iceandfire.dragonforge_lightning_brick.name=Dragonforge Lightning Brick
+tile.iceandfire.dragonforge_lightning_core.name=Dragonforge Lightning Core
+tile.iceandfire.dragonforge_lightning_input.name=Dragonforge Lightning Aperture
+
+dragon_sword_lightning.hurt1=+4 damage against Fire Dragons and Ice Dragons
+dragon_sword_lightning.hurt2=Strikes targets with lightning
+
+dragon.electric=Electric Blue
+dragon.amythest=Amethyst
+dragon.copper=Copper
+dragon.black=Black
+
+death.attack.dragon_lightning.player_0=was struck with lightning by a dragon
+death.attack.dragon_lightning.player_1=was energized by a dragon
+death.attack.dragon_lightning.player_2=was shocked by a dragon
+
+dragon.lightning=Lightning
+
+item.banner.lightning.white=White Lightning Dragon
+item.banner.lightning.orange=Orange Lightning Dragon
+item.banner.lightning.magenta=Magenta Lightning Dragon
+item.banner.lightning.lightBlue=Light Blue Lightning Dragon
+item.banner.lightning.yellow=Yellow Lightning Dragon
+item.banner.lightning.lime=Lime Lightning Dragon
+item.banner.lightning.pink=Pink Lightning Dragon
+item.banner.lightning.gray=Gray Lightning Dragon
+item.banner.lightning.silver=Silver Lightning Dragon
+item.banner.lightning.cyan=Cyan Lightning Dragon
+item.banner.lightning.purple=Purple Lightning Dragon
+item.banner.lightning.blue=Blue Lightning Dragon
+item.banner.lightning.brown=Brown Lightning Dragon
+item.banner.lightning.green=Green Lightning Dragon
+item.banner.lightning.red=Red Lightning Dragon
+item.banner.lightning.black=Black Lightning Dragon
+
+item.banner.lightning_head.white=White Lightning Dragon Head 
+item.banner.lightning_head.orange=Orange Lightning Dragon Head 
+item.banner.lightning_head.magenta=Magenta Lightning Dragon Head 
+item.banner.lightning_head.lightBlue=Light Blue Lightning Dragon Head
+item.banner.lightning_head.yellow=Yellow Lightning Dragon Head 
+item.banner.lightning_head.lime=Lime Lightning Dragon Head 
+item.banner.lightning_head.pink=Pink Lightning Dragon Head 
+item.banner.lightning_head.gray=Gray Lightning Dragon Head 
+item.banner.lightning_head.silver=Silver Lightning Dragon Head 
+item.banner.lightning_head.cyan=Cyan Lightning Dragon Head 
+item.banner.lightning_head.purple=Purple Lightning Dragon Head 
+item.banner.lightning_head.blue=Blue Lightning Dragon Head 
+item.banner.lightning_head.brown=Brown Lightning Dragon Head 
+item.banner.lightning_head.green=Green Lightning Dragon Head 
+item.banner.lightning_head.red=Red Lightning Dragon Head 
+item.banner.lightning_head.black=Black Lightning Dragon Head 
+
+material.dragonsteel_lightning.name=Lightning Dragonsteel
+modifier.thunder2.name=Thunder II
+modifier.thunder2.desc=Zzzzap!§r\nStrikes targets with a lightning bolt with added knockbacks.
+modifier.thunder.name=Thunder
+modifier.thunder.desc=Zzzzap!§r\nStrikes targets with a lightning bolt.
+fluid.tconstruct.dragonsteel_lightning.name=Molten Lightning Dragonsteel

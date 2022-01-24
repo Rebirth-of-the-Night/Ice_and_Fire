@@ -19,7 +19,11 @@ public enum EnumDragonArmor {
     armor_blue(12, EnumDragonEgg.BLUE),
     armor_white(13, EnumDragonEgg.WHITE),
     armor_sapphire(14, EnumDragonEgg.SAPPHIRE),
-    armor_silver(15, EnumDragonEgg.SILVER);
+    armor_silver(15, EnumDragonEgg.SILVER),
+    armor_electric(12, EnumDragonEgg.ELECTRIC),
+    armor_amythest(13, EnumDragonEgg.AMYTHEST),
+    armor_copper(14, EnumDragonEgg.COPPER),
+    armor_black(15, EnumDragonEgg.BLACK);
 
     public ArmorMaterial material;
     public int armorId;
@@ -41,7 +45,7 @@ public enum EnumDragonArmor {
 
     public static void initArmors() {
         for (int i = 0; i < EnumDragonArmor.values().length; i++) {
-            EnumDragonArmor.values()[i].armorMaterial = EnumHelper.addArmorMaterial("DragonScales" + (i + 1), "iceandfire:armor_dragon_scales" + (i + 1), 36, new int[]{5, 7, 9, 5}, 15, SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 2);
+            EnumDragonArmor.values()[i].armorMaterial = EnumHelper.addArmorMaterial("DragonScales" + (i + 1), "iceandfire:armor_dragon_scales" + (i + 1), 36, new int[]{5, 7, 9, 5}, 15, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 2);
             EnumDragonArmor.values()[i].helmet = new ItemScaleArmor(EnumDragonArmor.values()[i].eggType, EnumDragonArmor.values()[i], EnumDragonArmor.values()[i].armorMaterial, 0, EntityEquipmentSlot.HEAD).setTranslationKey("iceandfire.dragonHelmet");
             EnumDragonArmor.values()[i].chestplate = new ItemScaleArmor(EnumDragonArmor.values()[i].eggType, EnumDragonArmor.values()[i], EnumDragonArmor.values()[i].armorMaterial, 1, EntityEquipmentSlot.CHEST).setTranslationKey("iceandfire.dragonChestplate");
             EnumDragonArmor.values()[i].leggings = new ItemScaleArmor(EnumDragonArmor.values()[i].eggType, EnumDragonArmor.values()[i], EnumDragonArmor.values()[i].armorMaterial, 2, EntityEquipmentSlot.LEGS).setTranslationKey("iceandfire.dragonLeggings");
@@ -75,6 +79,14 @@ public enum EnumDragonArmor {
                 return IafItemRegistry.dragonscales_sapphire;
             case armor_silver:
                 return IafItemRegistry.dragonscales_silver;
+            case armor_electric:
+                return IafItemRegistry.dragonscales_electric;
+            case armor_amythest:
+                return IafItemRegistry.dragonscales_amythest;
+            case armor_copper:
+                return IafItemRegistry.dragonscales_copper;
+            case armor_black:
+                return IafItemRegistry.dragonscales_black;
             default:
                 return IafItemRegistry.dragonscales_red;
         }

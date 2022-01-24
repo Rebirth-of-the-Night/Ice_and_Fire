@@ -1,0 +1,18 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "SSS",
+    "S S",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "item": "iceandfire:dragonscales_amythest",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "iceandfire:armor_amythest_leggings",
+    "data": 0
+  }
+}

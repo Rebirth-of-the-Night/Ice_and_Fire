@@ -68,12 +68,18 @@ public class ItemSummoningCrystal extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
         boolean flag = false;
-        boolean ice = stack.getItem() == IafItemRegistry.summoning_crystal_ice;
+        String desc = "entity.firedragon.name";
+        if(stack.getItem() == IafItemRegistry.summoning_crystal_ice){
+            desc = "entity.icedragon.name";
+        }
+        if(stack.getItem() == IafItemRegistry.summoning_crystal_lightning){
+            desc = "entity.lightningdragon.name";
+        }
         if (stack.getTagCompound() != null) {
             for (String tagInfo : stack.getTagCompound().getKeySet()) {
                 if (tagInfo.contains("Dragon")) {
                     NBTTagCompound draginTag = stack.getTagCompound().getCompoundTag(tagInfo);
-                    String dragonName = I18n.format(ice ?  "entity.icedragon.name" : "entity.firedragon.name");
+                    String dragonName = I18n.format(desc);
                     if (!draginTag.getString("CustomName").isEmpty()) {
                         dragonName = draginTag.getString("CustomName");
                     }
@@ -85,9 +91,7 @@ public class ItemSummoningCrystal extends Item {
         if(!flag){
             tooltip.add(I18n.format("item.iceandfire.summoning_crystal.desc_0"));
             tooltip.add(I18n.format("item.iceandfire.summoning_crystal.desc_1"));
-
         }
-
     }
 
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {

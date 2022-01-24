@@ -1,8 +1,10 @@
 package com.github.alexthe666.iceandfire.compat.tinkers;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import slimeknights.tconstruct.library.modifiers.IToolMod;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
 
@@ -27,11 +29,10 @@ public class TraitBurn extends ModifierTrait {
 
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
-        target.attackEntityFrom(IceAndFire.dragonFire, level * 2F);
+    	target.attackEntityFrom(IceAndFire.dragonFire, level * 2F);
         target.setFire(level == 1 ? 10 : 15);
-        if (level >= 2) {
+        if (level >= 2 && IceAndFire.CONFIG.dragonsteelKnockback) {
             target.knockBack(target, 1F, player.posX - target.posX, player.posZ - target.posZ);
         }
     }
-
 }

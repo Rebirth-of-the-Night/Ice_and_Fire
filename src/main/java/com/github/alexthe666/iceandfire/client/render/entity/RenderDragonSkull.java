@@ -23,12 +23,14 @@ public class RenderDragonSkull extends Render<EntityDragonSkull> {
     public float[][] growth_stages;
     private IceAndFireTabulaModel fireDragonModel;
     private IceAndFireTabulaModel iceDragonModel;
+    private IceAndFireTabulaModel lightningDragonModel;
 
-    public RenderDragonSkull(RenderManager renderManager, ModelBase fireDragonModel, ModelBase iceDragonModel) {
+    public RenderDragonSkull(RenderManager renderManager, ModelBase fireDragonModel, ModelBase iceDragonModel, ModelBase lightningDragonModel) {
         super(renderManager);
         growth_stages = new float[][]{growth_stage_1, growth_stage_2, growth_stage_3, growth_stage_4, growth_stage_5};
         this.fireDragonModel = (IceAndFireTabulaModel) fireDragonModel;
         this.iceDragonModel = (IceAndFireTabulaModel) iceDragonModel;
+        this.lightningDragonModel = (IceAndFireTabulaModel) lightningDragonModel;
     }
 
     private static void setRotationAngles(ModelRenderer cube, float rotX, float rotY, float rotZ) {
@@ -64,6 +66,11 @@ public class RenderDragonSkull extends Render<EntityDragonSkull> {
             setRotationAngles(iceDragonModel.getCube("Head"), entity.isOnWall() ? (float) Math.toRadians(50F) : 0F, 0, 0);
             iceDragonModel.getCube("Head").render(0.0625F);
         }
+        if (entity.getType() == 2) {
+            lightningDragonModel.resetToDefaultPose();
+            setRotationAngles(lightningDragonModel.getCube("Head"), entity.isOnWall() ? (float) Math.toRadians(50F) : 0F, 0, 0);
+            lightningDragonModel.getCube("Head").render(0.0625F);
+        }
         if (this.renderOutlines) {
             GlStateManager.disableOutlineMode();
             GlStateManager.disableColorMaterial();
@@ -75,6 +82,9 @@ public class RenderDragonSkull extends Render<EntityDragonSkull> {
     protected ResourceLocation getEntityTexture(EntityDragonSkull entity) {
         if (entity.getType() == 1) {
             return EnumDragonTextures.getIceDragonSkullTextures(entity);
+        }
+        if (entity.getType() == 2) {
+            return EnumDragonTextures.getLightningDragonSkullTextures(entity);
         }
         return EnumDragonTextures.getFireDragonSkullTextures(entity);
     }

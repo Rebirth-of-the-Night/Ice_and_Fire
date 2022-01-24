@@ -186,6 +186,26 @@ public class EntityFireDragon extends EntityDragonBase {
             this.setBreathingFire(true);
         }
     }
+    
+    @Override
+    public void tryScorchTarget() {
+        EntityLivingBase entity = this.getAttackTarget();
+        if (entity != null) {
+            float distX = (float) (entity.posX - this.posX);
+            float distZ = (float) (entity.posZ - this.posZ);
+            if (this.isBreathingFire()) {
+                if (this.isActuallyBreathingFire()) {
+                    rotationYaw = renderYawOffset;
+                    if (this.ticksExisted % 5 == 0) {
+                        this.playSound(IafSoundRegistry.FIREDRAGON_BREATH, 4, 1);
+                    }
+                    stimulateFire(this.posX + distX * this.fireTicks / 40, entity.posY, this.posZ + distZ * this.fireTicks / 40, 1);
+                }
+            } else {
+                this.setBreathingFire(true);
+            }
+        }
+    }
 
     public void riderShootFire(Entity controller) {
         if (this.getRNG().nextInt(5) == 0 && !this.isChild()) {

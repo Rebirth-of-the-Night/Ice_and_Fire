@@ -1,0 +1,33 @@
+{
+  "modifier": "thunder",
+  "text": [
+    {
+      "text": "A coating of Lightning Dragon's blood imbues the tool with the power to strike foes with lightning."
+    },
+    {
+      "text": "\n"
+    },
+    {
+      "text": "Cannot be applied to dragonsteel tools. Incompatible with Inferno and Blizzard"
+    },
+    {
+      "text": "\n"
+    }
+  ],
+  "effects": [
+    "Strikes targets with lightning",
+    "Single Level Only"
+  ],
+  "demoTool": [
+    "tconstruct:broadsword",
+    "tconstruct:cleaver",
+    "tconstruct:hammer",
+    "tconstruct:arrow",
+    "tconstruct:longsword",
+    "tconstruct:shortbow",
+    "tconstruct:frypan",
+    "tconstruct:crossbow",
+    "tconstruct:scythe",
+    "tconstruct:shuriken"
+  ]
+}

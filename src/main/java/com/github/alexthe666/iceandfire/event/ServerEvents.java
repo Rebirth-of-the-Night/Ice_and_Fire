@@ -11,7 +11,9 @@ import com.github.alexthe666.iceandfire.item.*;
 import com.github.alexthe666.iceandfire.message.MessagePlayerHitMultipart;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenFireDragonCave;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenIceDragonCave;
+import com.github.alexthe666.iceandfire.world.gen.WorldGenLightningDragonCave;
 import com.google.common.base.Predicate;
+
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.block.*;
 import net.minecraft.block.state.BlockFaceShape;
@@ -59,6 +61,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import javax.annotation.Nullable;
+
 import java.util.*;
 
 public class ServerEvents {
@@ -279,7 +282,7 @@ public class ServerEvents {
             }
             event.setAmount(event.getAmount() * multi);
         }
-        if (event.getSource() == IceAndFire.dragonFire || event.getSource() == IceAndFire.dragonIce) {
+        if (event.getSource() == IceAndFire.dragonFire || event.getSource() == IceAndFire.dragonIce || event.getSource() == IceAndFire.dragonLightning) {
             float multi = 1;
             if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof ItemScaleArmor) {
                 multi -= 0.1;
@@ -835,7 +838,9 @@ public class ServerEvents {
         if ((event.getName().equals(WorldGenFireDragonCave.FIREDRAGON_CHEST)
                 || event.getName().equals(WorldGenFireDragonCave.FIREDRAGON_MALE_CHEST)
                 || event.getName().equals(WorldGenIceDragonCave.ICEDRAGON_CHEST)
-                || event.getName().equals(WorldGenIceDragonCave.ICEDRAGON_MALE_CHEST))) {
+                || event.getName().equals(WorldGenIceDragonCave.ICEDRAGON_MALE_CHEST)
+                || event.getName().equals(WorldGenLightningDragonCave.LIGHTNINGDRAGON_CHEST)
+                || event.getName().equals(WorldGenLightningDragonCave.LIGHTNINGDRAGON_MALE_CHEST))) {
             LootCondition chance = new RandomChance(0.01f);
             LootEntryItem silver = new LootEntryItem(IafItemRegistry.weezer_blue_album, 1, 20, new LootFunction[0], new LootCondition[0], "iceandfire:weezer");
             LootPool pool = new LootPool(new LootEntry[]{silver}, new LootCondition[]{chance}, new RandomValueRange(1, 1), new RandomValueRange(1, 1), "weezer");

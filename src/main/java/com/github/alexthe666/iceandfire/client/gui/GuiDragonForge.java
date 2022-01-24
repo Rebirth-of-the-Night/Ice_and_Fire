@@ -1,7 +1,9 @@
 package com.github.alexthe666.iceandfire.client.gui;
 
+import com.github.alexthe666.iceandfire.entity.DragonType;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforge;
 import com.github.alexthe666.iceandfire.inventory.ContainerDragonForge;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -15,23 +17,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiDragonForge extends GuiContainer {
     private static final ResourceLocation TEXTURE_FIRE = new ResourceLocation("iceandfire:textures/gui/dragonforge_fire.png");
     private static final ResourceLocation TEXTURE_ICE = new ResourceLocation("iceandfire:textures/gui/dragonforge_ice.png");
+    private static final ResourceLocation TEXTURE_LIGHTNING = new ResourceLocation("iceandfire:textures/gui/dragonforge_lightning.png");
     private final InventoryPlayer playerInventory;
     private IInventory tileFurnace;
-    private boolean ice;
+    private int dragonType;
 
     public GuiDragonForge(InventoryPlayer playerInv, IInventory furnaceInv) {
         super(new ContainerDragonForge(playerInv, furnaceInv));
         this.playerInventory = playerInv;
         this.tileFurnace = furnaceInv;
         if (tileFurnace instanceof TileEntityDragonforge) {
-            this.ice = !((TileEntityDragonforge) tileFurnace).isFire;
+            this.dragonType = ((TileEntityDragonforge) tileFurnace).dragonType;
         }
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         if (tileFurnace != null) {
-            String s = I18n.format(ice ? "tile.iceandfire.dragonforge_ice_core.name" : "tile.iceandfire.dragonforge_fire_core.name");
+            String s = I18n.format("tile.iceandfire.dragonforge_" + DragonType.getNameFromInt(dragonType) + "_core.name");
             this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
         }
         this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 96 + 2, 4210752);
@@ -40,10 +43,12 @@ public class GuiDragonForge extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        if (ice) {
-            this.mc.getTextureManager().bindTexture(TEXTURE_ICE);
-        } else {
+        if (dragonType == 0) {
             this.mc.getTextureManager().bindTexture(TEXTURE_FIRE);
+        } else if (dragonType == 1) {
+            this.mc.getTextureManager().bindTexture(TEXTURE_ICE);
+        } else if (dragonType == 2) {
+            this.mc.getTextureManager().bindTexture(TEXTURE_LIGHTNING);
         }
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;

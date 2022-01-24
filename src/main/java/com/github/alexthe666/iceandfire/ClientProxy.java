@@ -7,6 +7,7 @@ import com.github.alexthe666.iceandfire.client.gui.bestiary.GuiBestiary;
 import com.github.alexthe666.iceandfire.client.model.*;
 import com.github.alexthe666.iceandfire.client.model.animator.FireDragonTabulaModelAnimator;
 import com.github.alexthe666.iceandfire.client.model.animator.IceDragonTabulaModelAnimator;
+import com.github.alexthe666.iceandfire.client.model.animator.LightningDragonTabulaModelAnimator;
 import com.github.alexthe666.iceandfire.client.model.animator.SeaSerpentTabulaModelAnimator;
 import com.github.alexthe666.iceandfire.client.model.util.EnumDragonAnimations;
 import com.github.alexthe666.iceandfire.client.model.util.EnumSeaSerpentAnimations;
@@ -28,6 +29,7 @@ import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.entity.tile.*;
 import com.github.alexthe666.iceandfire.enums.*;
 import com.github.alexthe666.iceandfire.item.ICustomRendered;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -54,6 +56,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -71,6 +74,8 @@ public class ClientProxy extends CommonProxy {
     private static final ModelFireDragonArmor FIRE_DRAGON_SCALE_ARMOR_MODEL_LEGS = new ModelFireDragonArmor(0.2F, true);
     private static final ModelIceDragonArmor ICE_DRAGON_SCALE_ARMOR_MODEL = new ModelIceDragonArmor(0.5F, false);
     private static final ModelIceDragonArmor ICE_DRAGON_SCALE_ARMOR_MODEL_LEGS = new ModelIceDragonArmor(0.2F, true);
+    private static final ModelLightningDragonArmor LIGHTNING_DRAGON_SCALE_ARMOR_MODEL = new ModelLightningDragonArmor(0.5F, false);
+    private static final ModelLightningDragonArmor LIGHTNING_DRAGON_SCALE_ARMOR_MODEL_LEGS = new ModelLightningDragonArmor(0.2F, true);
     private static final ModelDeathWormArmor DEATHWORM_ARMOR_MODEL = new ModelDeathWormArmor(0.5F);
     private static final ModelDeathWormArmor DEATHWORM_ARMOR_MODEL_LEGS = new ModelDeathWormArmor(0.2F);
     private static final ModelTrollArmor TROLL_ARMOR_MODEL = new ModelTrollArmor(0.75F);
@@ -81,8 +86,13 @@ public class ClientProxy extends CommonProxy {
     private static final ModelDragonsteelFireArmor DRAGONSTEEL_FIRE_ARMOR_MODEL_LEGS = new ModelDragonsteelFireArmor(0.2F);
     private static final ModelDragonsteelIceArmor DRAGONSTEEL_ICE_ARMOR_MODEL = new ModelDragonsteelIceArmor(0.4F);
     private static final ModelDragonsteelIceArmor DRAGONSTEEL_ICE_ARMOR_MODEL_LEGS = new ModelDragonsteelIceArmor(0.2F);
+    private static final ModelDragonsteelLightningArmor DRAGONSTEEL_LIGHTNING_ARMOR_MODEL = new ModelDragonsteelLightningArmor(0.4F);
+    private static final ModelDragonsteelLightningArmor DRAGONSTEEL_LIGHTNING_ARMOR_MODEL_LEGS = new ModelDragonsteelLightningArmor(0.2F);
     private static final ModelSilverArmor SILVER_ARMOR_MODEL = new ModelSilverArmor(0.5F);
     private static final ModelSilverArmor SILVER_ARMOR_MODEL_LEGS = new ModelSilverArmor(0.2F);
+    private static final ModelCopperArmor COPPER_ARMOR_MODEL = new ModelCopperArmor(0.5F);
+    private static final ModelCopperArmor COPPER_ARMOR_MODEL_LEGS = new ModelCopperArmor(0.2F);
+    
     @SideOnly(Side.CLIENT)
     private static final IceAndFireTEISR TEISR = new IceAndFireTEISR();
     public static List<UUID> currentDragonRiders = new ArrayList<UUID>();
@@ -110,6 +120,7 @@ public class ClientProxy extends CommonProxy {
         ModelBakery.registerItemVariants(IafItemRegistry.dragon_skull, new ResourceLocation("iceandfire:dragon_skull_fire"), new ResourceLocation("iceandfire:dragon_skull_ice"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_skull, 0, new ModelResourceLocation("iceandfire:dragon_skull_fire", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_skull, 1, new ModelResourceLocation("iceandfire:dragon_skull_ice", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_skull, 2, new ModelResourceLocation("iceandfire:dragon_skull_lightning", "inventory"));
         ModelBakery.registerItemVariants(IafItemRegistry.dragon_armor_iron, new ResourceLocation("iceandfire:dragonarmor_iron_head"), new ResourceLocation("iceandfire:dragonarmor_iron_neck"), new ResourceLocation("iceandfire:dragonarmor_iron_body"), new ResourceLocation("iceandfire:dragonarmor_iron_tail"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_iron, 0, new ModelResourceLocation("iceandfire:dragonarmor_iron_head", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_iron, 1, new ModelResourceLocation("iceandfire:dragonarmor_iron_neck", "inventory"));
@@ -125,11 +136,16 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_diamond, 1, new ModelResourceLocation("iceandfire:dragonarmor_diamond_neck", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_diamond, 2, new ModelResourceLocation("iceandfire:dragonarmor_diamond_body", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_diamond, 3, new ModelResourceLocation("iceandfire:dragonarmor_diamond_tail", "inventory"));
-        ModelBakery.registerItemVariants(IafItemRegistry.dragon_armor_silver, new ResourceLocation("iceandfire:dragonarmor_diamond_head"), new ResourceLocation("iceandfire:dragonarmor_diamond_neck"), new ResourceLocation("iceandfire:dragonarmor_diamond_body"), new ResourceLocation("iceandfire:dragonarmor_diamond_tail"));
+        ModelBakery.registerItemVariants(IafItemRegistry.dragon_armor_silver, new ResourceLocation("iceandfire:dragonarmor_silver_head"), new ResourceLocation("iceandfire:dragonarmor_silver_neck"), new ResourceLocation("iceandfire:dragonarmor_silver_body"), new ResourceLocation("iceandfire:dragonarmor_silver_tail"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_silver, 0, new ModelResourceLocation("iceandfire:dragonarmor_silver_head", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_silver, 1, new ModelResourceLocation("iceandfire:dragonarmor_silver_neck", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_silver, 2, new ModelResourceLocation("iceandfire:dragonarmor_silver_body", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_silver, 3, new ModelResourceLocation("iceandfire:dragonarmor_silver_tail", "inventory"));
+        ModelBakery.registerItemVariants(IafItemRegistry.dragon_armor_copper, new ResourceLocation("iceandfire:dragonarmor_copper_head"), new ResourceLocation("iceandfire:dragonarmor_copper_neck"), new ResourceLocation("iceandfire:dragonarmor_copper_body"), new ResourceLocation("iceandfire:dragonarmor_copper_tail"));
+        ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_copper, 0, new ModelResourceLocation("iceandfire:dragonarmor_copper_head", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_copper, 1, new ModelResourceLocation("iceandfire:dragonarmor_copper_neck", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_copper, 2, new ModelResourceLocation("iceandfire:dragonarmor_copper_body", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_copper, 3, new ModelResourceLocation("iceandfire:dragonarmor_copper_tail", "inventory"));
         ModelBakery.registerItemVariants(IafItemRegistry.dragon_armor_dragonsteel_fire, new ResourceLocation("iceandfire:dragonarmor_dragonsteel_fire_head"), new ResourceLocation("iceandfire:dragonarmor_dragonsteel_fire_neck"), new ResourceLocation("iceandfire:dragonarmor_dragonsteel_fire_body"), new ResourceLocation("iceandfire:dragonarmor_dragonsteel_fire_tail"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_dragonsteel_fire, 0, new ModelResourceLocation("iceandfire:dragonarmor_dragonsteel_fire_head", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_dragonsteel_fire, 1, new ModelResourceLocation("iceandfire:dragonarmor_dragonsteel_fire_neck", "inventory"));
@@ -140,6 +156,11 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_dragonsteel_ice, 1, new ModelResourceLocation("iceandfire:dragonarmor_dragonsteel_ice_neck", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_dragonsteel_ice, 2, new ModelResourceLocation("iceandfire:dragonarmor_dragonsteel_ice_body", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_dragonsteel_ice, 3, new ModelResourceLocation("iceandfire:dragonarmor_dragonsteel_ice_tail", "inventory"));
+        ModelBakery.registerItemVariants(IafItemRegistry.dragon_armor_dragonsteel_lightning, new ResourceLocation("iceandfire:dragonarmor_dragonsteel_lightning_head"), new ResourceLocation("iceandfire:dragonarmor_dragonsteel_lightning_neck"), new ResourceLocation("iceandfire:dragonarmor_dragonsteel_lightning_body"), new ResourceLocation("iceandfire:dragonarmor_dragonsteel_lightning_tail"));
+        ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_dragonsteel_lightning, 0, new ModelResourceLocation("iceandfire:dragonarmor_dragonsteel_lightning_head", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_dragonsteel_lightning, 1, new ModelResourceLocation("iceandfire:dragonarmor_dragonsteel_lightning_neck", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_dragonsteel_lightning, 2, new ModelResourceLocation("iceandfire:dragonarmor_dragonsteel_lightning_body", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(IafItemRegistry.dragon_armor_dragonsteel_lightning, 3, new ModelResourceLocation("iceandfire:dragonarmor_dragonsteel_lightning_tail", "inventory"));
         for (int i = 0; i < EnumHippogryphTypes.values().length; i++) {
             ModelLoader.setCustomModelResourceLocation(IafItemRegistry.hippogryph_egg, i, new ModelResourceLocation("iceandfire:hippogryph_egg", "inventory"));
         }
@@ -165,6 +186,7 @@ public class ClientProxy extends CommonProxy {
         ModelBakery.registerItemVariants(IafItemRegistry.deathworm_egg, new ResourceLocation("iceandfire:deathworm_egg"), new ResourceLocation("iceandfire:deathworm_egg_giant"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.deathworm_egg, 0, new ModelResourceLocation("iceandfire:deathworm_egg", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.deathworm_egg, 1, new ModelResourceLocation("iceandfire:deathworm_egg_giant", "inventory"));
+        
         for (EnumDragonArmor armor : EnumDragonArmor.values()) {
             renderDragonArmors(armor);
         }
@@ -226,6 +248,12 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.setCustomStateMapper(IafBlockRegistry.frozenCobblestone, (new StateMap.Builder()).ignore(BlockReturningState.REVERTS).build());
         ModelLoader.setCustomStateMapper(IafBlockRegistry.frozenGravel, (new StateMap.Builder()).ignore(BlockFallingReturningState.REVERTS).build());
         ModelLoader.setCustomStateMapper(IafBlockRegistry.frozenGrassPath, (new StateMap.Builder()).ignore(BlockCharedPath.REVERTS).build());
+        ModelLoader.setCustomStateMapper(IafBlockRegistry.crackledDirt, (new StateMap.Builder()).ignore(BlockReturningState.REVERTS).build());
+        ModelLoader.setCustomStateMapper(IafBlockRegistry.crackledGrass, (new StateMap.Builder()).ignore(BlockReturningState.REVERTS).build());
+        ModelLoader.setCustomStateMapper(IafBlockRegistry.crackledStone, (new StateMap.Builder()).ignore(BlockReturningState.REVERTS).build());
+        ModelLoader.setCustomStateMapper(IafBlockRegistry.crackledCobblestone, (new StateMap.Builder()).ignore(BlockReturningState.REVERTS).build());
+        ModelLoader.setCustomStateMapper(IafBlockRegistry.crackledGravel, (new StateMap.Builder()).ignore(BlockFallingReturningState.REVERTS).build());
+        ModelLoader.setCustomStateMapper(IafBlockRegistry.crackledGrassPath, (new StateMap.Builder()).ignore(BlockCharedPath.REVERTS).build());
         ModelLoader.setCustomStateMapper(IafBlockRegistry.dread_stone, (new StateMap.Builder()).ignore(BlockDreadBase.PLAYER_PLACED).build());
         ModelLoader.setCustomStateMapper(IafBlockRegistry.dread_stone_bricks, (new StateMap.Builder()).ignore(BlockDreadBase.PLAYER_PLACED).build());
         ModelLoader.setCustomStateMapper(IafBlockRegistry.dread_stone_bricks_chiseled, (new StateMap.Builder()).ignore(BlockDreadBase.PLAYER_PLACED).build());
@@ -331,22 +359,26 @@ public class ClientProxy extends CommonProxy {
         EnumSeaSerpentAnimations.initializeSerpentModels();
         ModelBase firedragon_model = null;
         ModelBase icedragon_model = null;
+        ModelBase lightningdragon_model = null;
         ModelBase seaserpent_model = null;
 
         try {
             firedragon_model = new IceAndFireTabulaModel(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/dragonFireGround"), new FireDragonTabulaModelAnimator());
             icedragon_model = new IceAndFireTabulaModel(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/icedragon/dragonIceGround"), new IceDragonTabulaModelAnimator());
+            lightningdragon_model = new IceAndFireTabulaModel(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/lightningdragon/dragonLightningGround"), new LightningDragonTabulaModelAnimator());
             seaserpent_model = new IceAndFireTabulaModel(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/seaserpent/seaserpent"), new SeaSerpentTabulaModelAnimator());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        RenderingRegistry.registerEntityRenderingHandler(EntityFireDragon.class, new RenderDragonBase(Minecraft.getMinecraft().getRenderManager(), firedragon_model, true));
-        RenderingRegistry.registerEntityRenderingHandler(EntityIceDragon.class, new RenderDragonBase(Minecraft.getMinecraft().getRenderManager(), icedragon_model, false));
+        RenderingRegistry.registerEntityRenderingHandler(EntityFireDragon.class, new RenderDragonBase(Minecraft.getMinecraft().getRenderManager(), firedragon_model, 0));
+        RenderingRegistry.registerEntityRenderingHandler(EntityIceDragon.class, new RenderDragonBase(Minecraft.getMinecraft().getRenderManager(), icedragon_model, 1));
+        RenderingRegistry.registerEntityRenderingHandler(EntityLightningDragon.class, new RenderLightningDragon(Minecraft.getMinecraft().getRenderManager(), lightningdragon_model, 2));
         RenderingRegistry.registerEntityRenderingHandler(EntityDragonEgg.class, new RenderDragonEgg(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityDragonArrow.class, new RenderDragonArrow(Minecraft.getMinecraft().getRenderManager()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityDragonSkull.class, new RenderDragonSkull(Minecraft.getMinecraft().getRenderManager(), firedragon_model, icedragon_model));
+        RenderingRegistry.registerEntityRenderingHandler(EntityDragonSkull.class, new RenderDragonSkull(Minecraft.getMinecraft().getRenderManager(), firedragon_model, icedragon_model, lightningdragon_model));
         RenderingRegistry.registerEntityRenderingHandler(EntityDragonFireCharge.class, new RenderDragonFireCharge(Minecraft.getMinecraft().getRenderManager(), true));
         RenderingRegistry.registerEntityRenderingHandler(EntityDragonIceCharge.class, new RenderDragonFireCharge(Minecraft.getMinecraft().getRenderManager(), false));
+        RenderingRegistry.registerEntityRenderingHandler(EntityDragonLightningCharge.class, new RenderDragonLightningCharge(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntitySnowVillager.class, new RenderSnowVillager(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityHippogryphEgg.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(), IafItemRegistry.hippogryph_egg, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityHippogryph.class, new RenderHippogryph(Minecraft.getMinecraft().getRenderManager()));
@@ -499,6 +531,10 @@ public class ClientProxy extends CommonProxy {
                 return ICE_DRAGON_SCALE_ARMOR_MODEL;
             case 3:
                 return ICE_DRAGON_SCALE_ARMOR_MODEL_LEGS;
+            case 16:
+            	return LIGHTNING_DRAGON_SCALE_ARMOR_MODEL;
+            case 17:
+            	return LIGHTNING_DRAGON_SCALE_ARMOR_MODEL_LEGS;
             case 4:
                 return DEATHWORM_ARMOR_MODEL;
             case 5:
@@ -519,10 +555,18 @@ public class ClientProxy extends CommonProxy {
                 return DRAGONSTEEL_ICE_ARMOR_MODEL;
             case 13:
                 return DRAGONSTEEL_ICE_ARMOR_MODEL_LEGS;
+            case 18:
+            	return DRAGONSTEEL_LIGHTNING_ARMOR_MODEL;
+            case 19:
+            	return DRAGONSTEEL_LIGHTNING_ARMOR_MODEL_LEGS;
             case 14:
                 return SILVER_ARMOR_MODEL;
             case 15:
                 return SILVER_ARMOR_MODEL_LEGS;
+            case 20:
+                return COPPER_ARMOR_MODEL;
+            case 21:
+                return COPPER_ARMOR_MODEL_LEGS;
         }
         return null;
     }
