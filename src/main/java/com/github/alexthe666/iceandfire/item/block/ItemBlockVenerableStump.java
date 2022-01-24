@@ -59,4 +59,9 @@ public class ItemBlockVenerableStump extends ItemBlock {
             world.notifyNeighborsOfStateChange(partPos, block, true); // TODO maybe false like doors?
         }
     }
+
+    @Override
+    public int getItemBurnTime(ItemStack stack) {
+        return 300 * 9; // 300 is one log burn time
+    }
 }
