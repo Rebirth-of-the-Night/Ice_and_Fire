@@ -65,16 +65,16 @@ public class CommonProxy {
         professionRegistry.register(villagerRegistry.fisherman);
         professionRegistry.register(villagerRegistry.craftsman);
         professionRegistry.register(villagerRegistry.shaman);
-        professionRegistry.register(villagerRegistry.desertMyrmexWorker);
-        professionRegistry.register(villagerRegistry.jungleMyrmexWorker);
-        professionRegistry.register(villagerRegistry.desertMyrmexSoldier);
-        professionRegistry.register(villagerRegistry.jungleMyrmexSoldier);
-        professionRegistry.register(villagerRegistry.desertMyrmexSentinel);
-        professionRegistry.register(villagerRegistry.jungleMyrmexSentinel);
-        professionRegistry.register(villagerRegistry.desertMyrmexRoyal);
-        professionRegistry.register(villagerRegistry.jungleMyrmexRoyal);
-        professionRegistry.register(villagerRegistry.desertMyrmexQueen);
-        professionRegistry.register(villagerRegistry.jungleMyrmexQueen);
+        // professionRegistry.register(villagerRegistry.desertMyrmexWorker);
+        // professionRegistry.register(villagerRegistry.jungleMyrmexWorker);
+        // professionRegistry.register(villagerRegistry.desertMyrmexSoldier);
+        // professionRegistry.register(villagerRegistry.jungleMyrmexSoldier);
+        // professionRegistry.register(villagerRegistry.desertMyrmexSentinel);
+        // professionRegistry.register(villagerRegistry.jungleMyrmexSentinel);
+        // professionRegistry.register(villagerRegistry.desertMyrmexRoyal);
+        // professionRegistry.register(villagerRegistry.jungleMyrmexRoyal);
+        // professionRegistry.register(villagerRegistry.desertMyrmexQueen);
+        // professionRegistry.register(villagerRegistry.jungleMyrmexQueen);
     }
 
     @SubscribeEvent
