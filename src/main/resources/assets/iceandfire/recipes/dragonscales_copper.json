@@ -1,0 +1,14 @@
+{
+  "type": "forge:ore_shapeless",
+  "ingredients": [
+    {
+      "item": "iceandfire:dragonscale_copper",
+      "data": 0
+    }
+  ],
+  "result": {
+    "item": "iceandfire:dragonscales_copper",
+    "data": 0,
+    "count": 9
+  }
+}

@@ -7,12 +7,12 @@
   ],
   "key": {
     "S": {
-      "item": "iceandfire:dragonscales_electric",
+      "item": "iceandfire:dragonscales_amythest",
       "data": 0
     }
   },
   "result": {
-    "item": "iceandfire:dragonscale_electric",
+    "item": "iceandfire:dragonscale_amythest",
     "data": 0
   }
 }

@@ -527,9 +527,9 @@ public class EntityLightningDragon extends EntityDragonBase {
         float minXZ = dragonPitch > 20 ? (dragonPitch - 20) * 0.009F : 0;
         float xzMod = (0.58F - hoverProg * 0.45F + flyProg * 0.2F + absPitch * 0.3F - sitProg)* flightXz * getRenderSize();
         float xzModSine = xzMod * (Math.max(0.25F, (float)Math.cos(Math.toRadians(dragonPitch))) - minXZ);
-        float headPosX = (float) (this.posX + (xzModSine - 2.5F) * Math.cos((renderYawOffset + 90) * Math.PI / 180));
-        float headPosY = (float) (this.posY + (-0.7F + (sitProg * 5F) + hoverProg + deadProg + epicRoarProg + sleepProg + flyProg + pitchY) * getRenderSize() * 0.3F);
-        float headPosZ = (float) (this.posZ + (xzModSine - 2.5F) * Math.sin((renderYawOffset + 90) * Math.PI / 180));
+        float headPosX = (float) (this.posX + (xzModSine) * Math.cos((renderYawOffset + 90) * Math.PI / 180));
+        float headPosY = (float) (this.posY + (0.7F + (sitProg * 5F) + hoverProg + deadProg + epicRoarProg + sleepProg + flyProg + pitchY) * getRenderSize() * 0.3F);
+        float headPosZ = (float) (this.posZ + (xzModSine) * Math.sin((renderYawOffset + 90) * Math.PI / 180));
         return new Vec3d(headPosX, headPosY, headPosZ);
     }
     

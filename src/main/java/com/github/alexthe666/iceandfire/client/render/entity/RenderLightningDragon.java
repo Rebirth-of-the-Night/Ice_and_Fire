@@ -46,7 +46,9 @@ public class RenderLightningDragon extends RenderDragonBase {
     public void doRender(EntityDragonBase dragon, double x, double y, double z, float entityYaw, float partialTicks) {
         super.doRender(dragon, x, y, z, entityYaw, partialTicks);
         EntityLightningDragon lightningDragon = (EntityLightningDragon)dragon;
+        
         GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, z);
         if (lightningDragon.hasLightningTarget()) {
             double dist = Minecraft.getMinecraft().player.getDistance(lightningDragon);
             if(dist <= Math.max(256, Minecraft.getMinecraft().gameSettings.renderDistanceChunks * 16F)) {
@@ -54,7 +56,7 @@ public class RenderLightningDragon extends RenderDragonBase {
                 Vec3d vec3d = new Vec3d(lightningDragon.getLightningTargetX(), lightningDragon.getLightningTargetY(), lightningDragon.getLightningTargetZ());
                 float energyScale = 0.4F * lightningDragon.getRenderSize();
                 LightningBoltData bolt = new LightningBoltData(LightningBoltData.BoltRenderInfo.ELECTRICITY, headPos, vec3d, 15).size(0.05F * getBoundedScale(energyScale, 0.5F, 2)).lifespan(4).spawn(LightningBoltData.SpawnFunction.NO_DELAY);
-                lightningRender.onUpdate(null, bolt, partialTicks);
+                lightningRender.onUpdate(lightningDragon, bolt, partialTicks);
                 GlStateManager.translate(-lightningDragon.posX, -lightningDragon.posY, -lightningDragon.posZ);
                 lightningRender.doRender(partialTicks);
             }

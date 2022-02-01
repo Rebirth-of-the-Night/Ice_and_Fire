@@ -196,19 +196,21 @@ public class WorldGenEvents implements IWorldGenerator {
                     world.spawnEntity(icedragon);
                 }
             }
-            if (BiomeDictionary.hasType(world.getBiome(height), Type.JUNGLE) || BiomeDictionary.hasType(world.getBiome(height), Type.MESA) || BiomeDictionary.hasType(world.getBiome(height), Type.SAVANNA) && random.nextInt(IceAndFire.CONFIG.generateDragonSkeletonChance + 1) == 0) {
-                EntityLightningDragon lightningdragon = new EntityLightningDragon(world);
-                lightningdragon.setPosition(x, height.getY() + 1, z);
-                int dragonage = 10 + random.nextInt(100);
-                lightningdragon.setGender(random.nextBoolean());
-                lightningdragon.growDragon(dragonage);
-                lightningdragon.modelDeadProgress = 20;
-                lightningdragon.setModelDead(true);
-                lightningdragon.setDeathStage((dragonage / 5) / 2);
-                lightningdragon.rotationYaw = random.nextInt(360);
-                if (!world.isRemote) {
-                    world.spawnEntity(lightningdragon);
-                }
+            if (BiomeDictionary.hasType(world.getBiome(height), Type.JUNGLE) || BiomeDictionary.hasType(world.getBiome(height), Type.MESA) || BiomeDictionary.hasType(world.getBiome(height), Type.SAVANNA)) {
+            	if(random.nextInt(IceAndFire.CONFIG.generateDragonSkeletonChance + 1) == 0) {
+                    EntityLightningDragon lightningdragon = new EntityLightningDragon(world);
+                    lightningdragon.setPosition(x, height.getY() + 1, z);
+                    int dragonage = 10 + random.nextInt(100);
+                    lightningdragon.setGender(random.nextBoolean());
+                    lightningdragon.growDragon(dragonage);
+                    lightningdragon.modelDeadProgress = 20;
+                    lightningdragon.setModelDead(true);
+                    lightningdragon.setDeathStage((dragonage / 5) / 2);
+                    lightningdragon.rotationYaw = random.nextInt(360);
+                    if (!world.isRemote) {
+                        world.spawnEntity(lightningdragon);
+                    }
+            	}
             }
         }
         if (IceAndFire.CONFIG.spawnHippocampus && BiomeDictionary.hasType(world.getBiome(height), Type.OCEAN) && random.nextInt(IceAndFire.CONFIG.hippocampusSpawnChance + 1) == 0) {
