@@ -545,4 +545,14 @@ public class EntityLightningDragon extends EntityDragonBase {
     protected ItemStack getSkull() {
         return new ItemStack(IafItemRegistry.dragon_skull, 1, 2);
     }
+    
+	@Override
+	protected Item getHeartItem() {
+		return IafItemRegistry.lightning_dragon_heart;
+	}
+
+	@Override
+	protected Item getBloodItem() {
+		return IafItemRegistry.lightning_dragon_blood;
+	}
 }

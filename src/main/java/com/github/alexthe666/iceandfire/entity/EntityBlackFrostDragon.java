@@ -214,7 +214,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     }
 
     public Item getVariantEgg(int variant) {
-        return IafItemRegistry.dragonegg_blue;
+        return null;
     }
 
     public boolean isBreedingItem(@Nullable ItemStack stack) {

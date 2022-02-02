@@ -17,6 +17,8 @@ public class DreadAIMountDragon extends EntityAIBase {
     }
 
     public boolean shouldExecute() {
+    	if(horse.isDead)
+    		return false;
         if (this.knight.isRiding()) {
             return false;
         } else {

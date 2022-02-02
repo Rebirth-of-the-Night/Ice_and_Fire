@@ -44,10 +44,6 @@ public class EntityIceDragon extends EntityDragonBase {
     public static final ResourceLocation MALE_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/ice_dragon_male"));
     public static final ResourceLocation SKELETON_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/ice_dragon_skeleton"));
     private static final DataParameter<Boolean> SWIMMING = EntityDataManager.createKey(EntityIceDragon.class, DataSerializers.BOOLEAN);
-    public boolean isSwimming;
-    public float swimProgress;
-    public int ticksSwiming;
-    public int swimCycle;
 
     public EntityIceDragon(World worldIn) {
         super(worldIn, DragonType.ICE, 1, 1 + IceAndFire.CONFIG.dragonAttackDamage, IceAndFire.CONFIG.dragonHealth * 0.04, IceAndFire.CONFIG.dragonHealth, 0.15F, 0.4F);
@@ -566,4 +562,14 @@ public class EntityIceDragon extends EntityDragonBase {
     public Item getSummoningCrystal() {
         return IafItemRegistry.summoning_crystal_ice;
     }
+
+	@Override
+	protected Item getHeartItem() {
+		return IafItemRegistry.ice_dragon_heart;
+	}
+
+	@Override
+	protected Item getBloodItem() {
+		return IafItemRegistry.ice_dragon_blood;
+	}
 }

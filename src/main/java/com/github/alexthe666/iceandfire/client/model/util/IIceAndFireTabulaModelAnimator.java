@@ -5,6 +5,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
+ * Code directly taken from 1.16 IaF, I own no rights over it.
+ * 
  * @author gegy1000
  * @since 1.0.0
  */

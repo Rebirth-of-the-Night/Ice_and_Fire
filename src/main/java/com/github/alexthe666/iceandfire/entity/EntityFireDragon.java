@@ -440,4 +440,14 @@ public class EntityFireDragon extends EntityDragonBase {
     protected ItemStack getSkull() {
         return new ItemStack(IafItemRegistry.dragon_skull);
     }
+
+	@Override
+	protected Item getHeartItem() {
+		return IafItemRegistry.fire_dragon_heart;
+	}
+
+	@Override
+	protected Item getBloodItem() {
+		return IafItemRegistry.fire_dragon_blood;
+	}
 }
