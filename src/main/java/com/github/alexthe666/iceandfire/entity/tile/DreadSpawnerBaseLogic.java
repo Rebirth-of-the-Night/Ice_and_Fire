@@ -1,23 +1,28 @@
 package com.github.alexthe666.iceandfire.entity.tile;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.google.common.collect.Lists;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.MobSpawnerBaseLogic;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
+import net.minecraft.util.WeightedRandom;
+import net.minecraft.util.WeightedSpawnerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public abstract class DreadSpawnerBaseLogic extends MobSpawnerBaseLogic {
 
@@ -51,7 +56,7 @@ public abstract class DreadSpawnerBaseLogic extends MobSpawnerBaseLogic {
      */
     private boolean isActivated() {
         BlockPos blockpos = this.getSpawnerPosition();
-        return this.getSpawnerWorld().isAnyPlayerWithinRangeAt((double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.5D, (double) blockpos.getZ() + 0.5D, (double) this.activatingRangeFromPlayer);
+        return this.getSpawnerWorld().isAnyPlayerWithinRangeAt((double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.5D, (double) blockpos.getZ() + 0.5D, this.activatingRangeFromPlayer);
     }
 
     public void updateSpawner() {
@@ -61,9 +66,9 @@ public abstract class DreadSpawnerBaseLogic extends MobSpawnerBaseLogic {
             BlockPos blockpos = this.getSpawnerPosition();
 
             if (this.getSpawnerWorld().isRemote) {
-                double d3 = (double) ((float) blockpos.getX() + this.getSpawnerWorld().rand.nextFloat());
-                double d4 = (double) ((float) blockpos.getY() + this.getSpawnerWorld().rand.nextFloat());
-                double d5 = (double) ((float) blockpos.getZ() + this.getSpawnerWorld().rand.nextFloat());
+                double d3 = (float) blockpos.getX() + this.getSpawnerWorld().rand.nextFloat();
+                double d4 = (float) blockpos.getY() + this.getSpawnerWorld().rand.nextFloat();
+                double d5 = (float) blockpos.getZ() + this.getSpawnerWorld().rand.nextFloat();
                 this.getSpawnerWorld().spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d3, d4, d5, 0.0D, 0.0D, 0.0D);
                 IceAndFire.PROXY.spawnParticle("dread_torch", d3, d4, d5, 0.0D, 0.0D, 0.0D);
                 if (this.spawnDelay > 0) {
@@ -98,7 +103,7 @@ public abstract class DreadSpawnerBaseLogic extends MobSpawnerBaseLogic {
                         return;
                     }
 
-                    int k = world.getEntitiesWithinAABB(entity.getClass(), (new AxisAlignedBB((double) blockpos.getX(), (double) blockpos.getY(), (double) blockpos.getZ(), (double) (blockpos.getX() + 1), (double) (blockpos.getY() + 1), (double) (blockpos.getZ() + 1))).grow((double) this.spawnRange)).size();
+                    int k = world.getEntitiesWithinAABB(entity.getClass(), (new AxisAlignedBB(blockpos.getX(), blockpos.getY(), blockpos.getZ(), blockpos.getX() + 1, blockpos.getY() + 1, blockpos.getZ() + 1)).grow(this.spawnRange)).size();
 
                     if (k >= this.maxNearbyEntities) {
                         this.resetTimer();

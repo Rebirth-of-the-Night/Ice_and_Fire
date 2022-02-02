@@ -4,18 +4,16 @@ import com.github.alexthe666.iceandfire.entity.tile.TileEntityLectern;
 import net.minecraft.client.model.ModelBook;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-public class RenderLectern extends TileEntitySpecialRenderer {
+public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> {
 
     private static final ResourceLocation ENCHANTMENT_TABLE_BOOK_TEXTURE = new ResourceLocation("iceandfire:textures/models/lectern_book.png");
-    private ModelBook book = new ModelBook();
+    private final ModelBook book = new ModelBook();
 
     @Override
-    public void render(TileEntity entity, double x, double y, double z, float f, int yee, float alpha) {
-        TileEntityLectern lectern = (TileEntityLectern) entity;
+    public void render(TileEntityLectern lectern, double x, double y, double z, float f, int yee, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x + 0.5F, (float) y + 1.07F, (float) z + 0.5F);
         GlStateManager.scale(0.8F, 0.8F, 0.8F);

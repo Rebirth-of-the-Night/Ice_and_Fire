@@ -41,7 +41,7 @@ public class ModelTroll extends ModelDragonBase {
     public AdvancedModelRenderer leftarm2;
     public AdvancedModelRenderer rightleg2;
     public AdvancedModelRenderer leftleg2;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelTroll() {
         this.textureWidth = 256;

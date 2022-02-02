@@ -1,0 +1,19 @@
+{
+	"credit": "Made with Blockbench by Foreck",
+	"texture_size": [48, 48],
+	"textures": {
+		"1": "iceandfire:blocks/redwood_mossy_bot_centered",
+		"2": "iceandfire:blocks/redwood_mossy_top_centered",
+		"particle": "iceandfire:blocks/redwood_mossy_bot_centered"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 14, 16],
+			"faces": {
+				"up": {"uv": [4.33333, 4.33333, 9.66667, 9.66667], "texture": "#2"},
+				"down": {"uv": [5.33333, 5.33333, 10.66667, 10.66667], "texture": "#1"}
+			}
+		}
+	]
+}

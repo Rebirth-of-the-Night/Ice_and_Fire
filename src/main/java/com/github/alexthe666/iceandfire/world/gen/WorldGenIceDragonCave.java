@@ -49,7 +49,7 @@ public class WorldGenIceDragonCave extends WorldGenerator {
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
-        List<SphereInfo> sphereList = new ArrayList<SphereInfo>();
+        List<SphereInfo> sphereList = new ArrayList<>();
         isMale = rand.nextBoolean();
         int dragonAge = 75 + rand.nextInt(50);
         int radius = (int) (dragonAge * 0.2F) + rand.nextInt(8);

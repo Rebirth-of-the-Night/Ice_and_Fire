@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
+import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
 import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
 
@@ -39,23 +40,31 @@ public class ItemAlchemySword extends ItemSword {
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
         if (this == IafItemRegistry.dragonbone_sword_fire) {
-            target.setFire(5);
             if (target instanceof EntityIceDragon) {
                 target.attackEntityFrom(DamageSource.IN_FIRE, 13.5F);
             }
-        	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
+			
+			if (!(target instanceof EntityCow)) {
+	            target.setFire(5);
+            }
+			
+			if(IceAndFire.CONFIG.dragonsteelKnockback) {  
         		target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         	}
         }
         if (this == IafItemRegistry.dragonbone_sword_ice) {
-        	FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
-        		frozenProps.setFrozenFor(200);
-        		target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 2));
-        		target.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 100, 2));
-            if (target instanceof EntityFireDragon) {
+			if (target instanceof EntityFireDragon) {
                 target.attackEntityFrom(DamageSource.DROWN, 13.5F);
             }
-        	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
+			
+            if (!(target instanceof EntityHippogryph)) {
+	            FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
+	            frozenProps.setFrozenFor(200);
+	            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 2));
+	            target.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 100, 2));
+            }
+			
+			if(IceAndFire.CONFIG.dragonsteelKnockback) {  
         		target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         	}
         }

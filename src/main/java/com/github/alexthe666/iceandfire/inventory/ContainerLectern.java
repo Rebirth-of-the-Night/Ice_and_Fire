@@ -17,19 +17,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerLectern extends SyncedFieldContainer {
-    private final IInventory tileFurnace;
+    private final IInventory tileLectern;
     private int[] possiblePagesInt = new int[3];
 
-    public ContainerLectern(InventoryPlayer playerInv, IInventory furnaceInventory) {
-        super(furnaceInventory);
-        this.tileFurnace = furnaceInventory;
-        this.addSlotToContainer(new Slot(furnaceInventory, 0, 15, 47){
+    public ContainerLectern(InventoryPlayer playerInv, IInventory lecternInv) {
+        super(lecternInv);
+        this.tileLectern = lecternInv;
+        this.addSlotToContainer(new Slot(lecternInv, 0, 15, 47){
             @Override
             public boolean isItemValid(ItemStack stack) {
                 return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() instanceof ItemBestiary;
             }
         });
-        this.addSlotToContainer(new Slot(furnaceInventory, 1, 35, 47){
+        this.addSlotToContainer(new Slot(lecternInv, 1, 35, 47){
             @Override
             public boolean isItemValid(ItemStack stack) {
                 return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() == IafItemRegistry.manuscript;
@@ -48,7 +48,7 @@ public class ContainerLectern extends SyncedFieldContainer {
     @Override
     public void addListener(IContainerListener listener) {
         super.addListener(listener);
-        listener.sendAllWindowProperties(this, this.tileFurnace);
+        listener.sendAllWindowProperties(this, this.tileLectern);
     }
 
     @Override
@@ -59,18 +59,18 @@ public class ContainerLectern extends SyncedFieldContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int id, int data) {
-        this.tileFurnace.setField(id, data);
+        this.tileLectern.setField(id, data);
     }
 
     public void onUpdate() {
-        possiblePagesInt[0] = this.tileFurnace.getField(0);
-        possiblePagesInt[1] = this.tileFurnace.getField(1);
-        possiblePagesInt[2] = this.tileFurnace.getField(2);
+        possiblePagesInt[0] = this.tileLectern.getField(0);
+        possiblePagesInt[1] = this.tileLectern.getField(1);
+        possiblePagesInt[2] = this.tileLectern.getField(2);
     }
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return this.tileFurnace.isUsableByPlayer(playerIn);
+        return this.tileLectern.isUsableByPlayer(playerIn);
     }
 
     @Override
@@ -80,8 +80,8 @@ public class ContainerLectern extends SyncedFieldContainer {
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
-            if (index < this.tileFurnace.getSizeInventory()) {
-                if (!this.mergeItemStack(itemstack1, this.tileFurnace.getSizeInventory(), this.inventorySlots.size(), true)) {
+            if (index < this.tileLectern.getSizeInventory()) {
+                if (!this.mergeItemStack(itemstack1, this.tileLectern.getSizeInventory(), this.inventorySlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             } else if (this.getSlot(0).isItemValid(itemstack1) && !this.getSlot(0).getHasStack()) {
@@ -93,7 +93,7 @@ public class ContainerLectern extends SyncedFieldContainer {
                 if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (this.tileFurnace.getSizeInventory() <= 5 || !this.mergeItemStack(itemstack1, 5, this.tileFurnace.getSizeInventory(), false)) {
+            } else if (this.tileLectern.getSizeInventory() <= 5 || !this.mergeItemStack(itemstack1, 5, this.tileLectern.getSizeInventory(), false)) {
                 return ItemStack.EMPTY;
             }
             if (itemstack1.isEmpty()) {
@@ -106,16 +106,16 @@ public class ContainerLectern extends SyncedFieldContainer {
     }
 
     public int getManuscriptAmount() {
-        ItemStack itemstack = this.tileFurnace.getStackInSlot(1);
+        ItemStack itemstack = this.tileLectern.getStackInSlot(1);
         return itemstack.isEmpty() || itemstack.getItem() != IafItemRegistry.manuscript ? 0 : itemstack.getCount();
     }
 
     public EnumBestiaryPages[] getPossiblePages() {
-        possiblePagesInt[0] = this.tileFurnace.getField(0);
-        possiblePagesInt[1] = this.tileFurnace.getField(1);
-        possiblePagesInt[2] = this.tileFurnace.getField(2);
+        possiblePagesInt[0] = this.tileLectern.getField(0);
+        possiblePagesInt[1] = this.tileLectern.getField(1);
+        possiblePagesInt[2] = this.tileLectern.getField(2);
         EnumBestiaryPages[] pages = new EnumBestiaryPages[3];
-        if (this.tileFurnace.getStackInSlot(0).getItem() == IafItemRegistry.bestiary) {
+        if (this.tileLectern.getStackInSlot(0).getItem() == IafItemRegistry.bestiary) {
             if (possiblePagesInt[0] < 0) {
                 pages[0] = null;
             } else {
@@ -136,11 +136,11 @@ public class ContainerLectern extends SyncedFieldContainer {
     }
 
     public boolean enchantItem(EntityPlayer playerIn, int id) {
-        possiblePagesInt[0] = this.tileFurnace.getField(0);
-        possiblePagesInt[1] = this.tileFurnace.getField(1);
-        possiblePagesInt[2] = this.tileFurnace.getField(2);
-        ItemStack itemstack = this.tileFurnace.getStackInSlot(0);
-        ItemStack itemstack1 = this.tileFurnace.getStackInSlot(1);
+        possiblePagesInt[0] = this.tileLectern.getField(0);
+        possiblePagesInt[1] = this.tileLectern.getField(1);
+        possiblePagesInt[2] = this.tileLectern.getField(2);
+        ItemStack itemstack = this.tileLectern.getStackInSlot(0);
+        ItemStack itemstack1 = this.tileLectern.getStackInSlot(1);
         int i = 3;
         boolean didEnchant = false;
         if ((itemstack1.isEmpty() || itemstack1.getCount() < i) && !playerIn.capabilities.isCreativeMode) {
@@ -150,20 +150,20 @@ public class ContainerLectern extends SyncedFieldContainer {
             if (page != null) {
                 if (itemstack.getItem() == IafItemRegistry.bestiary) {
                     didEnchant = EnumBestiaryPages.addPage(page, itemstack);
-                    this.tileFurnace.setInventorySlotContents(0, itemstack);
-                    if (this.tileFurnace instanceof TileEntityLectern) {
-                        ((TileEntityLectern) this.tileFurnace).randomizePages();
+                    this.tileLectern.setInventorySlotContents(0, itemstack);
+                    if (this.tileLectern instanceof TileEntityLectern) {
+                        ((TileEntityLectern) this.tileLectern).randomizePages();
                     }
                 }
                 if (!playerIn.capabilities.isCreativeMode && didEnchant) {
                     itemstack1.shrink(i);
                     if (itemstack1.isEmpty()) {
-                        this.tileFurnace.setInventorySlotContents(1, ItemStack.EMPTY);
+                        this.tileLectern.setInventorySlotContents(1, ItemStack.EMPTY);
                     }
                 }
-                this.tileFurnace.markDirty();
+                this.tileLectern.markDirty();
                 //this.xpSeed = playerIn.getXPSeed();
-                this.onCraftMatrixChanged(this.tileFurnace);
+                this.onCraftMatrixChanged(this.tileLectern);
                 playerIn.world.playSound(null, playerIn.getPosition(), IafSoundRegistry.BESTIARY_PAGE, SoundCategory.BLOCKS, 1.0F, playerIn.world.rand.nextFloat() * 0.1F + 0.9F);
             }
             onUpdate();

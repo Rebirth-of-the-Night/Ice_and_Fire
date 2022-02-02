@@ -10,10 +10,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -46,13 +44,7 @@ public class RenderModCapes {
             NetworkPlayerInfo info = ((AbstractClientPlayer)event.getEntityPlayer()).getPlayerInfo();
             if (info != null) {
                 Map<Type, ResourceLocation> textureMap = null;
-                try {
-                    textureMap = (Map<Type, ResourceLocation>) ReflectionHelper.findField(NetworkPlayerInfo.class, new String[]{"playerTextures", "field_187107_a"}).get(info);
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
+                textureMap = info.playerTextures;
                 if (textureMap != null) {
                     if (hasBetaCape(event.getEntityPlayer().getUniqueID())) {
                         textureMap.put(Type.CAPE, betaTex);
@@ -72,8 +64,8 @@ public class RenderModCapes {
         if(event.getEntityPlayer().getUniqueID().equals(ServerEvents.ALEX_UUID)){
             GL11.glPushMatrix();
             float f2 = ((float) event.getEntityPlayer().ticksExisted - 1 +  event.getPartialRenderTick());
-            float f3 = MathHelper.sin(f2 / 10.0F) * 0.1F + 0.1F;
-            GL11.glTranslatef((float) 0, (float) 1.3F * event.getEntityPlayer().height, (float) 0);
+            // float f3 = MathHelper.sin(f2 / 10.0F) * 0.1F + 0.1F;
+            GL11.glTranslatef((float) 0, 1.3F * event.getEntityPlayer().height, (float) 0);
             float f4 = (f2 / 20.0F) * (180F / (float) Math.PI);
             GlStateManager.rotate(f4, 0.0F, 1.0F, 0.0F);
             GL11.glPushMatrix();

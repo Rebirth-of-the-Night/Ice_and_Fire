@@ -60,12 +60,12 @@ public class EntityMobSkull extends EntityAnimal implements IBlacklistedFromStat
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.getDataManager().register(SKULL_DIRECTION, Float.valueOf(0F));
-        this.getDataManager().register(SKULL_ENUM, Integer.valueOf(0));
+        this.getDataManager().register(SKULL_DIRECTION, 0F);
+        this.getDataManager().register(SKULL_ENUM, 0);
     }
 
     public float getYaw() {
-        return this.getDataManager().get(SKULL_DIRECTION).floatValue();
+        return this.getDataManager().get(SKULL_DIRECTION);
     }
 
     public void setYaw(float var1) {
@@ -73,7 +73,7 @@ public class EntityMobSkull extends EntityAnimal implements IBlacklistedFromStat
     }
 
     private int getEnumOrdinal() {
-        return this.getDataManager().get(SKULL_ENUM).intValue();
+        return this.getDataManager().get(SKULL_ENUM);
     }
 
     private void setEnumOrdinal(int var1) {

@@ -30,9 +30,8 @@ public class LayerGorgonEyes implements LayerRenderer<EntityGorgon> {
                 GlStateManager.disableLighting();
                 GlStateManager.depthMask(!gorgon.isInvisible());
                 int i = 61680;
-                int j = 61680;
-                int k = 0;
-                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 61680.0F, 0.0F);
+                int j = 0;
+                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, i, j);
                 GlStateManager.enableLighting();
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 this.render.getMainModel().render(gorgon, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);

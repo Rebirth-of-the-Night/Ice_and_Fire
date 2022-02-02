@@ -1,18 +1,18 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.client.model.ModelDreadKnight;
-import com.github.alexthe666.iceandfire.client.model.ModelDreadLich;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerGenericGlowing;
 import com.github.alexthe666.iceandfire.entity.EntityDreadKnight;
-import com.github.alexthe666.iceandfire.entity.EntityDreadLich;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nullable;
 
 public class RenderDreadKnight extends RenderLiving<EntityDreadKnight> {
     public static final ResourceLocation TEXTURE_EYES = new ResourceLocation("iceandfire:textures/models/dread/dread_knight_eyes.png");
@@ -22,7 +22,7 @@ public class RenderDreadKnight extends RenderLiving<EntityDreadKnight> {
 
     public RenderDreadKnight(RenderManager renderManager) {
         super(renderManager, new ModelDreadKnight(0.0F, false), 0.6F);
-        this.addLayer(new LayerGenericGlowing(this, TEXTURE_EYES));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURE_EYES));
         this.addLayer(new LayerHeldItem(this) {
             protected void translateToHand(EnumHandSide p_191361_1_) {
                 ((ModelDreadKnight) this.livingEntityRenderer.getMainModel()).postRenderArm(0.0625F, p_191361_1_);

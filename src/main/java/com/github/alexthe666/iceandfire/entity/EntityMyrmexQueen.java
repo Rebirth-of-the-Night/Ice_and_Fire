@@ -64,7 +64,7 @@ public class EntityMyrmexQueen extends EntityMyrmexBase {
 
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(HASMADEHOME, Boolean.valueOf(true));
+        this.dataManager.register(HASMADEHOME, Boolean.TRUE);
     }
 
     public void setCustomNameTag(String name) {
@@ -92,7 +92,7 @@ public class EntityMyrmexQueen extends EntityMyrmexBase {
     }
 
     public boolean hasMadeHome() {
-        return this.dataManager.get(HASMADEHOME).booleanValue();
+        return this.dataManager.get(HASMADEHOME);
     }
 
     public void setMadeHome(boolean madeHome) {
@@ -142,8 +142,8 @@ public class EntityMyrmexQueen extends EntityMyrmexBase {
         if (!world.isRemote && eggTicks > IceAndFire.CONFIG.myrmexPregnantTicks && this.getHive() == null || !world.isRemote && this.getHive() != null && this.getHive().repopulate() && eggTicks > IceAndFire.CONFIG.myrmexPregnantTicks) {
             float radius = -5.25F;
             float angle = (0.01745329251F * this.renderYawOffset);
-            double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-            double extraZ = (double) (radius * MathHelper.cos(angle));
+            double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+            double extraZ = radius * MathHelper.cos(angle);
             BlockPos eggPos = new BlockPos(this.posX + extraX, this.posY + 0.75F, this.posZ + extraZ);
             if (world.isAirBlock(eggPos)) {
                 this.setAnimation(ANIMATION_EGG);
@@ -295,9 +295,9 @@ public class EntityMyrmexQueen extends EntityMyrmexBase {
                 double motionZ = getRNG().nextGaussian() * 0.07D;
                 float radius = size * rand.nextFloat();
                 float angle = (0.01745329251F * this.renderYawOffset) * 3.14F * rand.nextFloat();
-                double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
+                double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
                 double extraY = 0.8F;
-                double extraZ = (double) (radius * MathHelper.cos(angle));
+                double extraZ = radius * MathHelper.cos(angle);
 
                 IBlockState iblockstate = this.world.getBlockState(new BlockPos(MathHelper.floor(this.posX + extraX), MathHelper.floor(this.posY + extraY) - 1, MathHelper.floor(this.posZ + extraZ)));
                 if (iblockstate.getMaterial() != Material.AIR) {

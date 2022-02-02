@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class ItemMobSkull extends Item implements ICustomRendered {
 
-    private EnumSkullType skull;
+    private final EnumSkullType skull;
 
     public ItemMobSkull(EnumSkullType skull) {
         this.maxStackSize = 1;

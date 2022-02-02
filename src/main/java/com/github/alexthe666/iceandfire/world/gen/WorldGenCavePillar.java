@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class WorldGenCavePillar {
-    private boolean ice;
+    private final boolean ice;
 
     public WorldGenCavePillar(boolean ice) {
         this.ice = ice;

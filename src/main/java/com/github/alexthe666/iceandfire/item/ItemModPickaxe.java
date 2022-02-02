@@ -8,14 +8,17 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityDeathWorm;
 import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
+import com.github.alexthe666.iceandfire.util.IsImmune;
 
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,20 +26,25 @@ import net.minecraft.item.ItemPickaxe;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemModPickaxe extends ItemPickaxe {
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
-    public ItemModPickaxe(ToolMaterial toolmaterial, String gameName, String name) {
-        super(toolmaterial);
-        this.setTranslationKey(name);
-        this.setCreativeTab(IceAndFire.TAB_ITEMS);
-        this.setRegistryName(IceAndFire.MODID, gameName);
-    }
+public class ItemModPickaxe extends ItemPickaxe {
+	
+	public ItemModPickaxe(ToolMaterial toolmaterial, String gameName, String name) {
+		super(toolmaterial);
+		this.setTranslationKey(name);
+		this.setCreativeTab(IceAndFire.TAB_ITEMS);
+		this.setRegistryName(IceAndFire.MODID, gameName);
+	}
 
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
         ItemStack mat = this.toolMaterial.getRepairItemStack();
@@ -79,13 +87,15 @@ public class ItemModPickaxe extends ItemPickaxe {
         	}
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_ice_tools) {
-        	FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
-        		frozenProps.setFrozenFor(300);
-        		target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 2));
-        		if(IceAndFire.CONFIG.dragonsteelKnockback) {  
-        			target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
-        		}
-            }
+			if (!IsImmune.toDragonIce(target)) {
+				FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
+				frozenProps.setFrozenFor(300);
+				target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 2));
+			}
+			if(IceAndFire.CONFIG.dragonsteelKnockback) {  
+        		target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
+        	}
+        }
         if (toolMaterial == IafItemRegistry.dragonsteel_lightning_tools) {
             boolean flag = true;
             if(attacker instanceof EntityPlayer) {
@@ -105,8 +115,8 @@ public class ItemModPickaxe extends ItemPickaxe {
             	}
         	}
         return super.hitEntity(stack, target, attacker);
-    }
-
+	}
+	
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {

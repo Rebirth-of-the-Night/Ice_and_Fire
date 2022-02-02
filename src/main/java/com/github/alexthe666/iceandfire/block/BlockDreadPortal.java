@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -34,7 +35,7 @@ public class BlockDreadPortal extends BlockContainer implements IDreadBlock {
         this.setTranslationKey("iceandfire.dread_portal");
         this.setRegistryName(IceAndFire.MODID, "dread_portal");
         this.setTickRandomly(true);
-        GameRegistry.registerTileEntity(TileEntityDreadPortal.class, "dread_portal");
+        GameRegistry.registerTileEntity(TileEntityDreadPortal.class, new ResourceLocation(IceAndFire.MODID, "dread_portal"));
     }
 
     @SideOnly(Side.CLIENT)
@@ -126,13 +127,13 @@ public class BlockDreadPortal extends BlockContainer implements IDreadBlock {
         if (tileentity instanceof TileEntityDreadPortal) {
             int i = 3;
             for (int j = 0; j < i; ++j) {
-                double d0 = (double) ((float) pos.getX() + rand.nextFloat());
-                double d1 = (double) ((float) pos.getY() + rand.nextFloat());
-                double d2 = (double) ((float) pos.getZ() + rand.nextFloat());
+                double d0 = (float) pos.getX() + rand.nextFloat();
+                double d1 = (float) pos.getY() + rand.nextFloat();
+                double d2 = (float) pos.getZ() + rand.nextFloat();
                 double d3 = ((double) rand.nextFloat() - 0.5D) * 0.25D;
                 double d4 = ((double) rand.nextFloat()) * -0.25D;
                 double d5 = ((double) rand.nextFloat() - 0.5D) * 0.25D;
-                int k = rand.nextInt(2) * 2 - 1;
+                // int k = rand.nextInt(2) * 2 - 1;
                 IceAndFire.PROXY.spawnParticle("dread_portal", d0, d1, d2, d3, d4, d5);
                 //worldIn.spawnParticle(EnumParticleTypes.END_ROD, d0, d1, d2, d3, d4, d5);
             }

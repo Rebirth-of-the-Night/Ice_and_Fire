@@ -131,7 +131,7 @@ public class EntityPixie extends EntityTameable {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.getDataManager().register(COLOR, Integer.valueOf(0));
+        this.getDataManager().register(COLOR, 0);
     }
 
     protected void collideWithEntity(Entity entityIn) {
@@ -202,7 +202,7 @@ public class EntityPixie extends EntityTameable {
 
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new PixieAIFollowOwner(this, 1.0D, 2.0F, 4.0F));
+        this.tasks.addTask(1, new PixieAIFollowOwner(this, 0.4D, 2.0F, 4.0F));
         this.tasks.addTask(1, new PixieAIPickupItem(this, false));
 
         this.tasks.addTask(2, aiTempt = new PixieAISteal(this, 1.0D));
@@ -276,7 +276,7 @@ public class EntityPixie extends EntityTameable {
     }
 
     public int getColor() {
-        return this.getDataManager().get(COLOR).intValue();
+        return this.getDataManager().get(COLOR);
     }
 
     public void setColor(int color) {
@@ -352,7 +352,7 @@ public class EntityPixie extends EntityTameable {
                 double d1 = this.posY - EntityPixie.this.posY;
                 double d2 = this.posZ - EntityPixie.this.posZ;
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                d3 = (double) MathHelper.sqrt(d3);
+                d3 = MathHelper.sqrt(d3);
 
                 if (d3 < EntityPixie.this.getEntityBoundingBox().getAverageEdgeLength()) {
                     this.action = EntityMoveHelper.Action.WAIT;

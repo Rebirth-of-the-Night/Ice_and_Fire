@@ -25,12 +25,12 @@ public class BlockMyrmexConnectedResin extends Block {
 
     public BlockMyrmexConnectedResin(boolean jungle, boolean glass) {
         super(Material.ROCK);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(UP, Boolean.valueOf(false))
-                .withProperty(DOWN, Boolean.valueOf(false))
-                .withProperty(NORTH, Boolean.valueOf(false))
-                .withProperty(EAST, Boolean.valueOf(false))
-                .withProperty(SOUTH, Boolean.valueOf(false))
-                .withProperty(WEST, Boolean.valueOf(false))
+        this.setDefaultState(this.blockState.getBaseState().withProperty(UP, Boolean.FALSE)
+                .withProperty(DOWN, Boolean.FALSE)
+                .withProperty(NORTH, Boolean.FALSE)
+                .withProperty(EAST, Boolean.FALSE)
+                .withProperty(SOUTH, Boolean.FALSE)
+                .withProperty(WEST, Boolean.FALSE)
         );
         if (glass) {
             this.setHardness(1.5F);
@@ -76,6 +76,7 @@ public class BlockMyrmexConnectedResin extends Block {
 
 
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
         Block block = iblockstate.getBlock();
@@ -84,7 +85,7 @@ public class BlockMyrmexConnectedResin extends Block {
             return false;
         }
 
-        return block != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+        return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
     @Override

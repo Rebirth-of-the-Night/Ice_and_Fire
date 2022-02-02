@@ -2,24 +2,21 @@ package com.github.alexthe666.iceandfire.client.render.entity.layer;
 
 import com.github.alexthe666.iceandfire.client.model.ModelHydraBody;
 import com.github.alexthe666.iceandfire.client.model.ModelHydraHead;
-import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
 import com.github.alexthe666.iceandfire.client.render.entity.RenderHydra;
 import com.github.alexthe666.iceandfire.entity.EntityGorgon;
 import com.github.alexthe666.iceandfire.entity.EntityHydra;
-import com.github.alexthe666.iceandfire.entity.EntityTroll;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class LayerHydraHead implements LayerRenderer {
+public class LayerHydraHead implements LayerRenderer<EntityHydra> {
     private final RenderHydra renderer;
-    private ModelHydraHead[] modelArr;
+    private final ModelHydraHead[] modelArr;
     public static final ResourceLocation TEXTURE_STONE = new ResourceLocation("iceandfire:textures/models/hydra/stone.png");
     private static final float[][] TRANSLATE = new float[][]{
             {0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F, 0F},// 1 total heads
@@ -43,6 +40,7 @@ public class LayerHydraHead implements LayerRenderer {
             {45F, 30F, 20F, 5F, -5F, -20F, -30F, -45F, 0F},
             {50F, 37F, 25F, 15F, 0, -15F, -25F, -37F, -50F},
     };
+
     public LayerHydraHead(RenderHydra renderer) {
         this.renderer = renderer;
         modelArr = new ModelHydraHead[EntityHydra.HEADS];
@@ -51,6 +49,7 @@ public class LayerHydraHead implements LayerRenderer {
         }
     }
 
+    @Override
     public void doRenderLayer(EntityHydra entity, float f, float f1, float i, float f2, float f3, float f4, float f5) {
         int heads = entity.getHeadCount();
         boolean stone = EntityGorgon.isStoneMob(entity);
@@ -80,11 +79,11 @@ public class LayerHydraHead implements LayerRenderer {
     protected ResourceLocation getEntityTexture(EntityHydra gorgon) {
         switch (gorgon.getVariant()) {
             default:
-                return RenderHydra.TEXUTURE_0;
+                return RenderHydra.TEXTURE_0;
             case 1:
-                return RenderHydra.TEXUTURE_1;
+                return RenderHydra.TEXTURE_1;
             case 2:
-                return RenderHydra.TEXUTURE_2;
+                return RenderHydra.TEXTURE_2;
         }
     }
 
@@ -117,10 +116,5 @@ public class LayerHydraHead implements LayerRenderer {
     @Override
     public boolean shouldCombineTextures() {
         return true;
-    }
-
-    @Override
-    public void doRenderLayer(EntityLivingBase entity, float f, float f1, float f2, float f3, float f4, float f5, float f6) {
-        this.doRenderLayer((EntityHydra) entity, f, f1, f2, f3, f4, f5, f6);
     }
 }

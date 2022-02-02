@@ -41,6 +41,7 @@ public class EntityHippogryphEgg extends EntityEgg {
     }
 
     protected void onImpact(RayTraceResult result) {
+        if (result == null) return;
         if (result.entityHit != null) {
             result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0.0F);
         }

@@ -1,16 +1,17 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
+import java.util.Comparator;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexSoldier;
 import com.google.common.base.Predicate;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.util.math.AxisAlignedBB;
-
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class MyrmexAIFindGaurdingEntity<T extends EntityMyrmexBase> extends EntityAITarget {
     protected final DragonAITargetItems.Sorter theNearestAttackableTargetSorter;
@@ -40,7 +41,7 @@ public class MyrmexAIFindGaurdingEntity<T extends EntityMyrmexBase> extends Enti
         if (list.isEmpty()) {
             return false;
         } else {
-            Collections.sort(list, this.theNearestAttackableTargetSorter);
+            list.sort(this.theNearestAttackableTargetSorter);
             this.myrmex.guardingEntity = list.get(0);
             return true;
         }
@@ -65,7 +66,7 @@ public class MyrmexAIFindGaurdingEntity<T extends EntityMyrmexBase> extends Enti
         public int compare(Entity p_compare_1_, Entity p_compare_2_) {
             double d0 = this.theEntity.getDistanceSq(p_compare_1_);
             double d1 = this.theEntity.getDistanceSq(p_compare_2_);
-            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+            return Double.compare(d0, d1);
         }
     }
 }

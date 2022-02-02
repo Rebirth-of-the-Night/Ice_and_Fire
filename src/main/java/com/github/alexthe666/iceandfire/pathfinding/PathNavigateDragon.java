@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class PathNavigateDragon extends PathNavigateGround {
     public BlockPos targetPosition;
-    private EntityDragonBase dragon;
+    private final EntityDragonBase dragon;
 
     public PathNavigateDragon(EntityDragonBase entitylivingIn, World worldIn) {
         super(entitylivingIn, worldIn);

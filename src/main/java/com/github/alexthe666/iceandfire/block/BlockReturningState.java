@@ -16,7 +16,7 @@ import java.util.Random;
 public class BlockReturningState extends Block {
     public static final PropertyBool REVERTS = PropertyBool.create("revert");
     public Item itemBlock;
-    private IBlockState returnState;
+    private final IBlockState returnState;
 
     public BlockReturningState(Material materialIn, String gameName, String name, String toolUsed, int toolStrength, float hardness, float resistance, SoundType sound, IBlockState returnToState) {
         super(materialIn);
@@ -28,7 +28,7 @@ public class BlockReturningState extends Block {
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
         setRegistryName(IceAndFire.MODID, gameName);
         this.returnState = returnToState;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.FALSE));
         this.setTickRandomly(true);
     }
 
@@ -46,7 +46,7 @@ public class BlockReturningState extends Block {
         }
         setRegistryName(IceAndFire.MODID, gameName);
         this.returnState = returnToState;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.FALSE));
         this.setTickRandomly(true);
     }
 
@@ -59,7 +59,7 @@ public class BlockReturningState extends Block {
         this.setCreativeTab(IceAndFire.TAB_ITEMS);
         setRegistryName(IceAndFire.MODID, gameName);
         this.returnState = returnToState;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.FALSE));
         this.setTickRandomly(true);
     }
 

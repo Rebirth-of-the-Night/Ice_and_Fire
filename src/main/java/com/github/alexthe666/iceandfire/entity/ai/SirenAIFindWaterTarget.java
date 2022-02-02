@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SirenAIFindWaterTarget extends EntityAIBase {
-    private EntitySiren mob;
+    private final EntitySiren mob;
 
     public SirenAIFindWaterTarget(EntitySiren mob) {
         this.mob = mob;
@@ -72,7 +72,7 @@ public class SirenAIFindWaterTarget extends EntityAIBase {
             }
         } else {
             BlockPos blockpos1 = new BlockPos(this.mob.getAttackTarget());
-            return new Vec3d((double) blockpos1.getX(), (double) blockpos1.getY(), (double) blockpos1.getZ());
+            return new Vec3d(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ());
         }
         return null;
     }

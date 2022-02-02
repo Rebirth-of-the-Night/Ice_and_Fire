@@ -65,7 +65,7 @@ public class ItemMyrmexStaff extends Item {
             IceAndFire.PROXY.openMyrmexStaffGui(itemStackIn);
         }
         playerIn.swingArm(hand);
-        return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+        return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
     }
 
     @Override

@@ -1,27 +1,29 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
 import com.github.alexthe666.iceandfire.entity.EntityHydraArrow;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderHydraArrow extends Render {
+public class RenderHydraArrow extends Render<EntityHydraArrow> {
     private static final ResourceLocation TEXTURES = new ResourceLocation("iceandfire:textures/models/misc/hydra_arrow.png");
 
     public RenderHydraArrow(RenderManager render) {
         super(render);
     }
 
+    @Override
     public void doRender(EntityHydraArrow entity, double x, double y, double z, float yaw, float partialTicks) {
         this.bindEntityTexture(entity);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -83,17 +85,8 @@ public class RenderHydraArrow extends Render {
         super.doRender(entity, x, y, z, yaw, partialTicks);
     }
 
+    @Override
     protected ResourceLocation getEntityTexture(EntityHydraArrow arrow) {
         return TEXTURES;
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
-        return this.getEntityTexture((EntityHydraArrow) entity);
-    }
-
-    @Override
-    public void doRender(Entity entity, double x, double y, double z, float f, float partialTicks) {
-        this.doRender((EntityHydraArrow) entity, x, y, z, f, partialTicks);
     }
 }

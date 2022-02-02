@@ -1,26 +1,21 @@
 package com.github.alexthe666.iceandfire.compat.tinkers;
 
-import com.github.alexthe666.iceandfire.IceAndFire;
+import java.util.List;
+
 import com.google.common.collect.Lists;
+
 import slimeknights.mantle.client.book.BookTransformer;
 import slimeknights.mantle.client.book.data.BookData;
 import slimeknights.mantle.client.book.data.PageData;
 import slimeknights.mantle.client.book.data.SectionData;
 import slimeknights.mantle.client.book.data.content.PageContent;
-import slimeknights.mantle.client.book.data.element.ImageData;
-import slimeknights.mantle.client.gui.book.element.ElementImage;
-import slimeknights.mantle.client.gui.book.element.ElementItem;
-import slimeknights.mantle.client.gui.book.element.SizedBookElement;
 import slimeknights.tconstruct.library.TinkerRegistry;
-import slimeknights.tconstruct.library.book.content.*;
+import slimeknights.tconstruct.library.book.content.ContentListing;
+import slimeknights.tconstruct.library.book.content.ContentMaterial;
+import slimeknights.tconstruct.library.book.content.ContentModifier;
+import slimeknights.tconstruct.library.book.content.ContentPageIconList;
 import slimeknights.tconstruct.library.materials.Material;
-import slimeknights.tconstruct.library.materials.MaterialTypes;
 import slimeknights.tconstruct.library.modifiers.IModifier;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.github.alexthe666.iceandfire.compat.tinkers.TinkersCompat.MATERIAL_WEEZER;
 
 public class IceAndFireBookTranformer extends BookTransformer {
 

@@ -25,8 +25,8 @@ import java.util.Map;
 @SideOnly(Side.CLIENT)
 public class RenderDragonBase extends RenderLiving<EntityDragonBase> {
 
-    private Map<String, ResourceLocation> LAYERED_TEXTURE_CACHE = Maps.newHashMap();
-    private int dragonType;
+    private final Map<String, ResourceLocation> LAYERED_TEXTURE_CACHE = Maps.newHashMap();
+    private final int dragonType;
 
     public RenderDragonBase(RenderManager renderManager, ModelBase model, int dragonType) {
         super(renderManager, model, 0.15F);
@@ -54,7 +54,7 @@ public class RenderDragonBase extends RenderLiving<EntityDragonBase> {
         ResourceLocation resourcelocation = LAYERED_TEXTURE_CACHE.get(baseTexture);
         if (resourcelocation == null) {
             resourcelocation = new ResourceLocation("iceandfire:" + "dragonTexture_" + baseTexture);
-            List<String> tex = new ArrayList<String>();
+            List<String> tex = new ArrayList<>();
             tex.add(EnumDragonTextures.getTextureFromDragon(entity).toString());
             if (entity.isMale() && !entity.isSkeletal()) {
                 if (dragonType == 0) {

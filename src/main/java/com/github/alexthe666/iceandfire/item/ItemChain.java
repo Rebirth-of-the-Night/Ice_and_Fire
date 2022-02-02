@@ -4,6 +4,7 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.ChainEntityProperties;
 import com.github.alexthe666.iceandfire.entity.EntityChainTie;
+import com.github.alexthe666.iceandfire.util.IsImmune;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWall;
@@ -70,6 +71,8 @@ public class ItemChain extends Item {
     }
 
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
+    	if (IsImmune.toChains(target)) return false;
+    	
         ChainEntityProperties chainProperties = EntityPropertiesHandler.INSTANCE.getProperties(target, ChainEntityProperties.class);
         if (chainProperties != null) {
             if (chainProperties.isConnectedToEntity(target, playerIn) || chainProperties.wasJustDisconnected) {

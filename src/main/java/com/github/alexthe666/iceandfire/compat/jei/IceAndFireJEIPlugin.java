@@ -2,10 +2,8 @@ package com.github.alexthe666.iceandfire.compat.jei;
 
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.compat.jei.firedragonforge.FireDragonForgeCatagory;
-import com.github.alexthe666.iceandfire.compat.jei.firedragonforge.FireDragonForgeRecipeHandler;
 import com.github.alexthe666.iceandfire.compat.jei.firedragonforge.FireDragonForgeRecipeWrapper;
 import com.github.alexthe666.iceandfire.compat.jei.icedragonforge.IceDragonForgeCatagory;
-import com.github.alexthe666.iceandfire.compat.jei.icedragonforge.IceDragonForgeRecipeHandler;
 import com.github.alexthe666.iceandfire.compat.jei.icedragonforge.IceDragonForgeRecipeWrapper;
 import com.github.alexthe666.iceandfire.compat.jei.lightningdragonforge.LightningDragonForgeCatagory;
 import com.github.alexthe666.iceandfire.compat.jei.lightningdragonforge.LightningDragonForgeRecipeHandler;
@@ -34,26 +32,23 @@ public class IceAndFireJEIPlugin implements IModPlugin {
         registry.addIngredientInfo(stack, ItemStack.class, stack.getTranslationKey() + ".jei_desc");
     }
 
-    @SuppressWarnings("deprecation")
     public void register(IModRegistry registry) {
         registry.addRecipes(IafRecipeRegistry.FIRE_FORGE_RECIPES, FIRE_DRAGON_FORGE_ID);
-        registry.addRecipeHandlers(new FireDragonForgeRecipeHandler());
         registry.handleRecipes(DragonForgeRecipe.class, new FireDragonForgeFactory(), FIRE_DRAGON_FORGE_ID);
-        registry.addRecipeCategoryCraftingItem(new ItemStack(IafBlockRegistry.dragonforge_fire_core_disabled), FIRE_DRAGON_FORGE_ID);
-        registry.addRecipeCategoryCraftingItem(new ItemStack(IafBlockRegistry.dragonforge_fire_core), FIRE_DRAGON_FORGE_ID);
+        registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_fire_core_disabled), FIRE_DRAGON_FORGE_ID);
+        registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_fire_core), FIRE_DRAGON_FORGE_ID);
 
         registry.addRecipes(IafRecipeRegistry.ICE_FORGE_RECIPES, ICE_DRAGON_FORGE_ID);
-        registry.addRecipeHandlers(new IceDragonForgeRecipeHandler());
         registry.handleRecipes(DragonForgeRecipe.class, new IceDragonForgeFactory(), ICE_DRAGON_FORGE_ID);
-        registry.addRecipeCategoryCraftingItem(new ItemStack(IafBlockRegistry.dragonforge_ice_core_disabled), ICE_DRAGON_FORGE_ID);
-        registry.addRecipeCategoryCraftingItem(new ItemStack(IafBlockRegistry.dragonforge_ice_core), ICE_DRAGON_FORGE_ID);
+        registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_ice_core_disabled), ICE_DRAGON_FORGE_ID);
+        registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_ice_core), ICE_DRAGON_FORGE_ID);
         
         registry.addRecipes(IafRecipeRegistry.LIGHTNING_FORGE_RECIPES, LIGHTNING_DRAGON_FORGE_ID);
         registry.addRecipeHandlers(new LightningDragonForgeRecipeHandler());
         registry.handleRecipes(DragonForgeRecipe.class, new LightningDragonForgeFactory(), LIGHTNING_DRAGON_FORGE_ID);
-        registry.addRecipeCategoryCraftingItem(new ItemStack(IafBlockRegistry.dragonforge_lightning_core_disabled), LIGHTNING_DRAGON_FORGE_ID);
-        registry.addRecipeCategoryCraftingItem(new ItemStack(IafBlockRegistry.dragonforge_lightning_core), LIGHTNING_DRAGON_FORGE_ID);
-        
+        registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_lightning_core_disabled), LIGHTNING_DRAGON_FORGE_ID);
+        registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_lightning_core), LIGHTNING_DRAGON_FORGE_ID);
+		
         addDescription(registry, new ItemStack(IafItemRegistry.fire_dragon_blood));
         addDescription(registry, new ItemStack(IafItemRegistry.ice_dragon_blood));
         addDescription(registry, new ItemStack(IafItemRegistry.lightning_dragon_blood));

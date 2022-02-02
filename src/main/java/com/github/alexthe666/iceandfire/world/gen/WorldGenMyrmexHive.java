@@ -29,7 +29,7 @@ public class WorldGenMyrmexHive extends WorldGenerator {
     private boolean hasFoodRoom;
     private boolean hasNursery;
     private boolean small;
-    private boolean jungle;
+    private final boolean jungle;
     private BlockPos centerOfHive;
 
     public WorldGenMyrmexHive(boolean small, boolean jungle) {
@@ -497,7 +497,7 @@ public class WorldGenMyrmexHive extends WorldGenerator {
         }
 
         public static RoomType random(Random rand) {
-            List<RoomType> list = new ArrayList<RoomType>();
+            List<RoomType> list = new ArrayList<>();
             for (RoomType type : RoomType.values()) {
                 if (type.random) {
                     list.add(type);

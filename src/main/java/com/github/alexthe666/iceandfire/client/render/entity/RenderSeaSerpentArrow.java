@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,13 +14,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderSeaSerpentArrow extends Render {
+public class RenderSeaSerpentArrow extends Render<EntitySeaSerpentArrow> {
     private static final ResourceLocation arrowTextures = new ResourceLocation("iceandfire:textures/models/misc/sea_serpent_arrow.png");
 
     public RenderSeaSerpentArrow(RenderManager render) {
         super(render);
     }
 
+    @Override
     public void doRender(EntitySeaSerpentArrow entity, double x, double y, double z, float yaw, float partialTicks) {
         this.bindEntityTexture(entity);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -83,17 +83,8 @@ public class RenderSeaSerpentArrow extends Render {
         super.doRender(entity, x, y, z, yaw, partialTicks);
     }
 
+    @Override
     protected ResourceLocation getEntityTexture(EntitySeaSerpentArrow arrow) {
         return arrowTextures;
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
-        return this.getEntityTexture((EntitySeaSerpentArrow) entity);
-    }
-
-    @Override
-    public void doRender(Entity entity, double x, double y, double z, float f, float partialTicks) {
-        this.doRender((EntitySeaSerpentArrow) entity, x, y, z, f, partialTicks);
     }
 }

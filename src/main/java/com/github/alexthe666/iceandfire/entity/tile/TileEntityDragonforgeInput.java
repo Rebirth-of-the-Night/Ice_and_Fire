@@ -12,6 +12,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -36,12 +38,7 @@ public class TileEntityDragonforgeInput extends TileEntity implements ITickable 
             ticksSinceDragonFire--;
         }
         if ((ticksSinceDragonFire == 0 || core == null) && this.isActive()) {
-            TileEntity tileentity = world.getTileEntity(pos);
-            world.setBlockState(pos, getDeactivatedState());
-            if (tileentity != null) {
-                tileentity.validate();
-                world.setTileEntity(pos, tileentity);
-            }
+            setActive();
         }
         lureDragons();
     }
@@ -129,15 +126,14 @@ public class TileEntityDragonforgeInput extends TileEntity implements ITickable 
     }
 
     @Override
-    public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability, @Nullable net.minecraft.util.EnumFacing facing) {
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
         return getConnectedTileEntity() != null && getConnectedTileEntity().hasCapability(capability, facing);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    @javax.annotation.Nullable
-    public <T> T getCapability(net.minecraftforge.common.capabilities.Capability<T> capability, @javax.annotation.Nullable net.minecraft.util.EnumFacing facing) {
-        if (getConnectedTileEntity() != null && capability == net.minecraftforge.items.CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+    @Nullable
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        if (getConnectedTileEntity() != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return getConnectedTileEntity().getCapability(capability, facing);
         }
         return super.getCapability(capability, facing);

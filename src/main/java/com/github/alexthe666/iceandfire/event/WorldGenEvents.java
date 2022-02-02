@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.event;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
+import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
 import com.github.alexthe666.iceandfire.world.gen.*;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
 import com.github.alexthe666.iceandfire.world.village.MapGenPixieVillage;
@@ -35,7 +36,10 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
+
+import static com.github.alexthe666.iceandfire.IceAndFire.CONFIG;
 
 public class WorldGenEvents implements IWorldGenerator {
 
@@ -134,8 +138,13 @@ public class WorldGenEvents implements IWorldGenerator {
             }
         }
         if (IceAndFire.CONFIG.spawnPixies && isFarEnoughFromSpawn(world, height) && !isDimensionBlacklisted(world.provider.getDimension(), false) && (lastPixieVillage == null || lastPixieVillage.distanceSq(height) >= spawnCheck)) {
-            boolean isSpookyForest = BiomeDictionary.hasType(world.getBiome(height), Type.FOREST) && (BiomeDictionary.hasType(world.getBiome(height), Type.SPOOKY) || BiomeDictionary.hasType(world.getBiome(height), Type.MAGICAL));
-            if (isSpookyForest && random.nextInt(IceAndFire.CONFIG.spawnPixiesChance + 1) == 0) {
+            boolean canSpawnInBiome = IceAndFireCoreUtils.blackOrWhitelistCheck(
+                    CONFIG.pixieVillageBiomeBlacklist,
+                    CONFIG.pixieVillageBiomeBlacklistIsWhitelist,
+                    Objects.requireNonNull(world.getBiome(height).getRegistryName(),
+                            "Attempted to spawn pixie village in unregistered biome")
+            );
+            if (canSpawnInBiome && random.nextInt(IceAndFire.CONFIG.spawnPixiesChance + 1) == 0) {
                 PIXIE_VILLAGE.generate(world, random, height);
                 lastPixieVillage = height;
             }
@@ -401,7 +410,7 @@ public class WorldGenEvents implements IWorldGenerator {
         int[] blacklistedArray = dragons ? IceAndFire.CONFIG.dragonBlacklistedDimensions : IceAndFire.CONFIG.structureBlacklistedDimensions;
         int[] whitelistedArray = dragons ? IceAndFire.CONFIG.dragonWhitelistedDimensions : IceAndFire.CONFIG.structureWhitelistedDimensions;
         int[] array = useBlackOrWhiteLists ? blacklistedArray : whitelistedArray;
-        List<Integer> dimList = new ArrayList<Integer>();
+        List<Integer> dimList = new ArrayList<>();
         for (int dimension : array) {
             dimList.add(dimension);
         }

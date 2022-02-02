@@ -3,15 +3,14 @@ package com.github.alexthe666.iceandfire.entity.ai;
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexWorker;
 import com.github.alexthe666.iceandfire.entity.MyrmexHive;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenMyrmexHive;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.pathfinding.Path;
 import net.minecraft.util.math.BlockPos;
 
 public class MyrmexAIStoreBabies extends EntityAIBase {
     private final EntityMyrmexWorker myrmex;
     private final double movementSpeed;
-    private Path path;
     private BlockPos nextRoom = BlockPos.ORIGIN;
 
     public MyrmexAIStoreBabies(EntityMyrmexWorker entityIn, double movementSpeedIn) {

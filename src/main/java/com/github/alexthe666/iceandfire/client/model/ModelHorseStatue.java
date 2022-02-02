@@ -343,7 +343,7 @@ public class ModelHorseStatue extends ModelBase {
         float f5 = abstracthorse.getGrassEatingAmount(partialTickTime);
         float f6 = abstracthorse.getRearingAmount(partialTickTime);
         float f7 = 1.0F - f6;
-        float f8 = abstracthorse.getMouthOpennessAngle(partialTickTime);
+        // float f8 = abstracthorse.getMouthOpennessAngle(partialTickTime);
         boolean flag = abstracthorse.tailCounter != 0;
         boolean flag1 = abstracthorse.isHorseSaddled();
         boolean flag2 = abstracthorse.isBeingRidden();

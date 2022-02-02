@@ -9,18 +9,17 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
-import org.lwjgl.Sys;
 
 import java.nio.FloatBuffer;
 import java.util.Random;
 
 public class RenderDreadPortal extends TileEntitySpecialRenderer<TileEntityDreadPortal> {
-    private static final ResourceLocation END_SKY_TEXTURE = new ResourceLocation("iceandfire:textures/environment/dread_portal_background.png");
-    private static final ResourceLocation END_PORTAL_TEXTURE = new ResourceLocation("iceandfire:textures/environment/dread_portal.png");
-    private static final Random RANDOM = new Random(31100L);
-    private static final FloatBuffer MODELVIEW = GLAllocation.createDirectFloatBuffer(16);
-    private static final FloatBuffer PROJECTION = GLAllocation.createDirectFloatBuffer(16);
-    private final FloatBuffer buffer = GLAllocation.createDirectFloatBuffer(16);
+	private static final ResourceLocation END_SKY_TEXTURE = new ResourceLocation("iceandfire:textures/environment/dread_portal_background.png");
+	private static final ResourceLocation END_PORTAL_TEXTURE = new ResourceLocation("iceandfire:textures/environment/dread_portal.png");
+	private static final Random RANDOM = new Random(31100L);
+	private static final FloatBuffer MODELVIEW = GLAllocation.createDirectFloatBuffer(16);
+	private static final FloatBuffer PROJECTION = GLAllocation.createDirectFloatBuffer(16);
+	private final FloatBuffer buffer = GLAllocation.createDirectFloatBuffer(16);
 
     public void render(TileEntityDreadPortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         GlStateManager.disableLighting();
@@ -152,39 +151,39 @@ public class RenderDreadPortal extends TileEntitySpecialRenderer<TileEntityDread
         }
     }
 
-    protected int getPasses(double p_191286_1_) {
-        int i;
-        if (p_191286_1_ > 36864.0D) {
-            i = 1;
-        } else if (p_191286_1_ > 25600.0D) {
-            i = 3;
-        } else if (p_191286_1_ > 16384.0D) {
-            i = 5;
-        } else if (p_191286_1_ > 9216.0D) {
-            i = 7;
-        } else if (p_191286_1_ > 4096.0D) {
-            i = 9;
-        } else if (p_191286_1_ > 1024.0D) {
-            i = 11;
-        } else if (p_191286_1_ > 576.0D) {
-            i = 13;
-        } else if (p_191286_1_ > 256.0D) {
-            i = 14;
-        } else {
-            i = 15;
-        }
+	protected int getPasses(double p_191286_1_) {
+		int i;
+		if (p_191286_1_ > 36864.0D) {
+			i = 1;
+		} else if (p_191286_1_ > 25600.0D) {
+			i = 3;
+		} else if (p_191286_1_ > 16384.0D) {
+			i = 5;
+		} else if (p_191286_1_ > 9216.0D) {
+			i = 7;
+		} else if (p_191286_1_ > 4096.0D) {
+			i = 9;
+		} else if (p_191286_1_ > 1024.0D) {
+			i = 11;
+		} else if (p_191286_1_ > 576.0D) {
+			i = 13;
+		} else if (p_191286_1_ > 256.0D) {
+			i = 14;
+		} else {
+			i = 15;
+		}
 
-        return i;
-    }
+		return i;
+	}
 
-    protected float getOffset() {
-        return 1.0F;
-    }
+	protected float getOffset() {
+		return 1.0F;
+	}
 
-    private FloatBuffer getBuffer(float p_147525_1_, float p_147525_2_, float p_147525_3_, float p_147525_4_) {
-        this.buffer.clear();
-        this.buffer.put(p_147525_1_).put(p_147525_2_).put(p_147525_3_).put(p_147525_4_);
-        this.buffer.flip();
-        return this.buffer;
-    }
+	private FloatBuffer getBuffer(float p_147525_1_, float p_147525_2_, float p_147525_3_, float p_147525_4_) {
+		this.buffer.clear();
+		this.buffer.put(p_147525_1_).put(p_147525_2_).put(p_147525_3_).put(p_147525_4_);
+		this.buffer.flip();
+		return this.buffer;
+	}
 }

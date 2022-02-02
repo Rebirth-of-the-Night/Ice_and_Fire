@@ -41,7 +41,8 @@ public class LegSolver {
         private final float range;
         private float height;
         private float prevHeight;
-        private boolean isWing;
+        @SuppressWarnings("unused")
+        private final boolean isWing;
 
         public Leg(float forward, float side, float range, boolean isWing) {
             this.forward = forward;

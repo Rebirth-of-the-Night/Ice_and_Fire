@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class DragonAITarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
-    private EntityDragonBase dragon;
+    private final EntityDragonBase dragon;
 
     public DragonAITarget(EntityDragonBase entityIn, Class<T> classTarget, boolean checkSight, Predicate<? super T> targetSelector) {
         super(entityIn, classTarget, 0, checkSight, false, targetSelector);

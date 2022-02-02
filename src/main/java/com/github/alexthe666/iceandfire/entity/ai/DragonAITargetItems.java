@@ -1,20 +1,21 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
+import java.util.Comparator;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.api.FoodUtils;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
 import com.google.common.base.Predicate;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
-
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
     protected final DragonAITargetItems.Sorter theNearestAttackableTargetSorter;
@@ -25,12 +26,10 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
 
     public DragonAITargetItems(EntityCreature creature, boolean checkSight) {
         this(creature, checkSight, false);
-        this.setMutexBits(1);
     }
 
     public DragonAITargetItems(EntityCreature creature, boolean checkSight, boolean onlyNearby) {
         this(creature, 20, checkSight, onlyNearby, null);
-        isIce = creature instanceof EntityIceDragon;
     }
 
     public DragonAITargetItems(EntityCreature creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector) {
@@ -56,7 +55,7 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
             return false;
         }
 
-        if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(10) != 0) {
+        if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0) {
             return false;
         } else {
 
@@ -65,7 +64,7 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
             if (list.isEmpty()) {
                 return false;
             } else {
-                Collections.sort(list, this.theNearestAttackableTargetSorter);
+                list.sort(this.theNearestAttackableTargetSorter);
                 this.targetEntity = list.get(0);
                 return true;
             }
@@ -120,7 +119,7 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
         public int compare(Entity p_compare_1_, Entity p_compare_2_) {
             double d0 = this.theEntity.getDistanceSq(p_compare_1_);
             double d1 = this.theEntity.getDistanceSq(p_compare_2_);
-            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+            return Double.compare(d0, d1);
         }
     }
 }

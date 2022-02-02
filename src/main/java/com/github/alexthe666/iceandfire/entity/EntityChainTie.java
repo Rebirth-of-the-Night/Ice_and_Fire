@@ -33,7 +33,7 @@ public class EntityChainTie extends EntityHanging {
 
     public EntityChainTie(World worldIn, BlockPos hangingPositionIn) {
         super(worldIn, hangingPositionIn);
-        this.setPosition((double) hangingPositionIn.getX() + 0.5D, (double) hangingPositionIn.getY(), (double) hangingPositionIn.getZ() + 0.5D);
+        this.setPosition((double) hangingPositionIn.getX() + 0.5D, hangingPositionIn.getY(), (double) hangingPositionIn.getZ() + 0.5D);
         this.setSize(0.8F, 0.9F);
         this.forceSpawn = true;
     }

@@ -63,14 +63,12 @@ public class DreadWorldData extends WorldSavedData {
                 this.markDirty();
             }
         }
-        Iterator<BlockPos> iterator2 = this.activeOverworldPortalLocations.iterator();
-        while (iterator2.hasNext()) {
-            BlockPos portalPos = iterator2.next();
-            if (portalPos.equals(pos)) {
-                iterator.remove();
-                this.markDirty();
-            }
-        }
+	    for (BlockPos portalPos : this.activeOverworldPortalLocations) {
+		    if (portalPos.equals(pos)) {
+			    iterator.remove();
+			    this.markDirty();
+		    }
+	    }
     }
 
     public void addPortalLocation(BlockPos pos){

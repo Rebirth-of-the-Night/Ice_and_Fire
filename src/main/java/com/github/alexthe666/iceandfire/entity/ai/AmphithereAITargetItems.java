@@ -1,23 +1,21 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
-import com.github.alexthe666.iceandfire.entity.EntityAmphithere;
+import java.util.Comparator;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.entity.EntityAmphithere;
 import com.google.common.base.Predicate;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.math.AxisAlignedBB;
-
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class AmphithereAITargetItems<T extends EntityItem> extends EntityAITarget {
     protected final DragonAITargetItems.Sorter theNearestAttackableTargetSorter;
@@ -30,19 +28,20 @@ public class AmphithereAITargetItems<T extends EntityItem> extends EntityAITarge
     }
 
     public AmphithereAITargetItems(EntityCreature creature, boolean checkSight, boolean onlyNearby) {
-        this(creature, 20, checkSight, onlyNearby, null);
+        this(creature, 100, checkSight, onlyNearby, null);
     }
 
+    @SuppressWarnings("unchecked")
     public AmphithereAITargetItems(EntityCreature creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector) {
         super(creature, checkSight, onlyNearby);
         this.targetChance = chance;
         this.theNearestAttackableTargetSorter = new DragonAITargetItems.Sorter(creature);
-        this.targetEntitySelector = new Predicate<EntityItem>() {
+        this.targetEntitySelector = targetSelector == null ? new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
-                return item instanceof EntityItem && !item.getItem().isEmpty() && item.getItem().getItem() == Items.DYE && item.getItem().getItemDamage() == EnumDyeColor.BROWN.getDyeDamage();
+                return item != null && !item.getItem().isEmpty() && item.getItem().getItem() == Items.DYE && item.getItem().getItemDamage() == EnumDyeColor.BROWN.getDyeDamage();
             }
-        };
+        } : (Predicate<EntityItem>) targetSelector;
     }
 
     @Override
@@ -55,7 +54,7 @@ public class AmphithereAITargetItems<T extends EntityItem> extends EntityAITarge
         if (list.isEmpty()) {
             return false;
         } else {
-            Collections.sort(list, this.theNearestAttackableTargetSorter);
+            list.sort(this.theNearestAttackableTargetSorter);
             this.targetEntity = list.get(0);
             return true;
         }
@@ -74,15 +73,18 @@ public class AmphithereAITargetItems<T extends EntityItem> extends EntityAITarge
     @Override
     public void updateTask() {
         super.updateTask();
-        if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
-            this.resetTask();
-        }
-        if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {
-            EntityAmphithere hippo = (EntityAmphithere) this.taskOwner;
-            this.targetEntity.getItem().shrink(1);
-            this.taskOwner.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
-            hippo.heal(5);
-            resetTask();
+
+        if (this.target.getRNG().nextFloat() < targetChance / 100f) {
+            if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
+                this.resetTask();
+            }
+            if (this.targetEntity != null && !this.targetEntity.isDead && this.taskOwner.getDistanceSq(this.targetEntity) < 1) {
+                EntityAmphithere hippo = (EntityAmphithere) this.taskOwner;
+                this.targetEntity.getItem().shrink(1);
+                this.taskOwner.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
+                hippo.heal(5);
+                resetTask();
+            }
         }
     }
 
@@ -101,7 +103,7 @@ public class AmphithereAITargetItems<T extends EntityItem> extends EntityAITarge
         public int compare(Entity p_compare_1_, Entity p_compare_2_) {
             double d0 = this.theEntity.getDistanceSq(p_compare_1_);
             double d1 = this.theEntity.getDistanceSq(p_compare_2_);
-            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
+            return Double.compare(d0, d1);
         }
     }
 }

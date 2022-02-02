@@ -19,10 +19,11 @@ import net.minecraft.util.math.BlockPos;
 public class GuiMyrmexAddRoom extends GuiScreen {
     private static final ResourceLocation JUNGLE_TEXTURE = new ResourceLocation("iceandfire:textures/gui/myrmex_staff_jungle.png");
     private static final ResourceLocation DESERT_TEXTURE = new ResourceLocation("iceandfire:textures/gui/myrmex_staff_desert.png");
-    private ItemStack staff;
-    private boolean jungle;
-    private BlockPos interactPos;
-    private EnumFacing facing;
+    @SuppressWarnings("unused")
+    private final ItemStack staff;
+    private final boolean jungle;
+    private final BlockPos interactPos;
+    private final EnumFacing facing;
 
     public GuiMyrmexAddRoom(ItemStack staff, BlockPos interactPos, EnumFacing facing) {
         this.staff = staff;

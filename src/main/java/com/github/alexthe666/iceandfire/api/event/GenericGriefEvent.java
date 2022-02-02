@@ -22,9 +22,9 @@ import net.minecraftforge.fml.common.eventhandler.Cancelable;
  **/
 @Cancelable
 public class GenericGriefEvent extends LivingEvent {
-    private double targetX;
-    private double targetY;
-    private double targetZ;
+    private final double targetX;
+    private final double targetY;
+    private final double targetZ;
 
     public GenericGriefEvent(EntityLiving griefer, double targetX, double targetY, double targetZ){
         super(griefer);

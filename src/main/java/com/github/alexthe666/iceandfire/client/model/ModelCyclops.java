@@ -36,7 +36,7 @@ public class ModelCyclops extends ModelDragonBase {
     public AdvancedModelRenderer LoinBack;
     public AdvancedModelRenderer rightleg2;
     public AdvancedModelRenderer leftleg2;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelCyclops() {
         this.textureWidth = 128;

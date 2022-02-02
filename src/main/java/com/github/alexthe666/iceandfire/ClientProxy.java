@@ -95,15 +95,15 @@ public class ClientProxy extends CommonProxy {
     
     @SideOnly(Side.CLIENT)
     private static final IceAndFireTEISR TEISR = new IceAndFireTEISR();
-    public static List<UUID> currentDragonRiders = new ArrayList<UUID>();
+    public static List<UUID> currentDragonRiders = new ArrayList<>();
     private static MyrmexHive referedClientHive = null;
     private IceAndFireParticleSpawner particleSpawner;
     private FontRenderer bestiaryFontRenderer;
     private int previousViewType = 0;
     private int thirdPersonViewDragon = 0;
-    private IRenderHandler dreadlandsWeatherRenderer = new RenderDreadlandsWeather();
-    private IRenderHandler dreadlandsSkyRenderer = new RenderDreadlandsSky();
-    private IRenderHandler dreadlandsAuroraRender = new RenderDreadlandsAurora();
+    private final IRenderHandler dreadlandsWeatherRenderer = new RenderDreadlandsWeather();
+    private final IRenderHandler dreadlandsSkyRenderer = new RenderDreadlandsSky();
+    private final IRenderHandler dreadlandsAuroraRender = new RenderDreadlandsAurora();
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -363,10 +363,10 @@ public class ClientProxy extends CommonProxy {
         ModelBase seaserpent_model = null;
 
         try {
-            firedragon_model = new IceAndFireTabulaModel(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/dragonFireGround"), new FireDragonTabulaModelAnimator());
-            icedragon_model = new IceAndFireTabulaModel(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/icedragon/dragonIceGround"), new IceDragonTabulaModelAnimator());
-            lightningdragon_model = new IceAndFireTabulaModel(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/lightningdragon/dragonLightningGround"), new LightningDragonTabulaModelAnimator());
-            seaserpent_model = new IceAndFireTabulaModel(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/seaserpent/seaserpent"), new SeaSerpentTabulaModelAnimator());
+            firedragon_model = new IceAndFireTabulaModel<EntityFireDragon>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/dragonFireGround"), new FireDragonTabulaModelAnimator());
+            icedragon_model = new IceAndFireTabulaModel<EntityIceDragon>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/icedragon/dragonIceGround"), new IceDragonTabulaModelAnimator());
+            lightningdragon_model = new IceAndFireTabulaModel<EntityLightningDragon>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/lightningdragon/dragonLightningGround"), new LightningDragonTabulaModelAnimator());
+            seaserpent_model = new IceAndFireTabulaModel<EntitySeaSerpent>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/seaserpent/seaserpent"), new SeaSerpentTabulaModelAnimator());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -380,7 +380,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityDragonIceCharge.class, new RenderDragonFireCharge(Minecraft.getMinecraft().getRenderManager(), false));
         RenderingRegistry.registerEntityRenderingHandler(EntityDragonLightningCharge.class, new RenderDragonLightningCharge(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntitySnowVillager.class, new RenderSnowVillager(Minecraft.getMinecraft().getRenderManager()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityHippogryphEgg.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(), IafItemRegistry.hippogryph_egg, Minecraft.getMinecraft().getRenderItem()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityHippogryphEgg.class, new RenderSnowball<EntityHippogryphEgg>(Minecraft.getMinecraft().getRenderManager(), IafItemRegistry.hippogryph_egg, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityHippogryph.class, new RenderHippogryph(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityStoneStatue.class, new RenderStoneStatue(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityGorgon.class, new RenderGorgon(Minecraft.getMinecraft().getRenderManager()));
@@ -389,9 +389,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntitySiren.class, new RenderSiren(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityHippocampus.class, new RenderHippocampus(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityDeathWorm.class, new RenderDeathWorm(Minecraft.getMinecraft().getRenderManager()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityDeathWormEgg.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(), IafItemRegistry.deathworm_egg, Minecraft.getMinecraft().getRenderItem()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityDeathWormEgg.class, new RenderSnowball<EntityDeathWormEgg>(Minecraft.getMinecraft().getRenderManager(), IafItemRegistry.deathworm_egg, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityCockatrice.class, new RenderCockatrice(Minecraft.getMinecraft().getRenderManager()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityCockatriceEgg.class, new RenderSnowball(Minecraft.getMinecraft().getRenderManager(), IafItemRegistry.rotten_egg, Minecraft.getMinecraft().getRenderItem()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityCockatriceEgg.class, new RenderSnowball<EntityCockatriceEgg>(Minecraft.getMinecraft().getRenderManager(), IafItemRegistry.rotten_egg, Minecraft.getMinecraft().getRenderItem()));
         RenderingRegistry.registerEntityRenderingHandler(EntityStymphalianBird.class, new RenderStymphalianBird(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityStymphalianFeather.class, new RenderStymphalianFeather(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityStymphalianArrow.class, new RenderStymphalianArrow(Minecraft.getMinecraft().getRenderManager()));

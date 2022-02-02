@@ -71,9 +71,9 @@ public class EntityHydraBreath extends EntityFireball implements IDragonProjecti
             this.motionX += this.accelerationX;
             this.motionY += this.accelerationY;
             this.motionZ += this.accelerationZ;
-            this.motionX *= (double)f;
-            this.motionY *= (double)f;
-            this.motionZ *= (double)f;
+            this.motionX *= f;
+            this.motionY *= f;
+            this.motionZ *= f;
             this.posX += this.motionX;
             this.posY += this.motionY;
             this.posZ += this.motionZ;
@@ -100,6 +100,7 @@ public class EntityHydraBreath extends EntityFireball implements IDragonProjecti
 
     @Override
     protected void onImpact(RayTraceResult result) {
+        if (result == null) return;
         if (result.entityHit != null && !result.entityHit.isEntityEqual(this.shootingEntity) && !(result.entityHit instanceof EntityHydraHead) && !(result.entityHit instanceof EntityHydraBreath)) {
             result.entityHit.attackEntityFrom(DamageSource.causeMobDamage(this.shootingEntity), 1F);
             if(result.entityHit instanceof EntityLivingBase){

@@ -34,7 +34,9 @@ public class ModelDreadKnight extends ModelDragonBase {
     public ModelBiped.ArmPose leftArmPose;
     public ModelBiped.ArmPose rightArmPose;
     public boolean isSneak;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
+
+    @SuppressWarnings("unused")
     private boolean armor = false;
 
     public ModelDreadKnight(float modelSize, boolean armorArms) {
@@ -125,7 +127,6 @@ public class ModelDreadKnight extends ModelDragonBase {
         super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
         this.resetToDefaultPose();
         animate((IAnimatedEntity) entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
-        ItemStack itemstack = ((EntityLivingBase) entityIn).getHeldItemMainhand();
         EntityDreadKnight thrall = (EntityDreadKnight) entityIn;
         this.faceTarget(netHeadYaw, headPitch, 1.0F, head);
         float f = 1.0F;
@@ -197,10 +198,10 @@ public class ModelDreadKnight extends ModelDragonBase {
         this.armLeft.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
         this.armRight.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
         this.armLeft.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-        float speed_walk = 0.6F;
-        float speed_idle = 0.05F;
-        float degree_walk = 1F;
-        float degree_idle = 0.5F;
+        // float speed_walk = 0.6F;
+        // float speed_idle = 0.05F;
+        // float degree_walk = 1F;
+        // float degree_idle = 0.5F;
         if (thrall.getAnimation() == EntityDreadKnight.ANIMATION_SPAWN) {
             //this.walk(armRight, 1.5F, 0.4F, false, 2, -0.3F, thrall.ticksExisted, 1);
             //this.walk(armLeft, 1.5F,  0.4F, true, 2, 0.3F, thrall.ticksExisted, 1);

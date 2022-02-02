@@ -280,7 +280,7 @@ public class EntityFireDragon extends EntityDragonBase {
                     if (!world.isRemote) {
                         world.spawnEntity(entitylargefireball);
                     }
-                    if (entity.isDead || entity == null) {
+                    if (entity.isDead) {
                         this.setBreathingFire(false);
                     }
                     this.randomizeAttacks();
@@ -293,7 +293,7 @@ public class EntityFireDragon extends EntityDragonBase {
                             this.playSound(IafSoundRegistry.FIREDRAGON_BREATH, 4, 1);
                         }
                         stimulateFire(entity.posX, entity.posY, entity.posZ, 1);
-                        if (entity.isDead || entity == null) {
+                        if (entity.isDead) {
                             this.setBreathingFire(false);
                             this.randomizeAttacks();
                         }
@@ -440,4 +440,22 @@ public class EntityFireDragon extends EntityDragonBase {
         return new ItemStack(IafItemRegistry.dragon_skull);
     }
 
+    public void tryScorchTarget() {
+        EntityLivingBase entity = this.getAttackTarget();
+        if (entity != null) {
+            float distX = (float) (entity.posX - this.posX);
+            float distZ = (float) (entity.posZ - this.posZ);
+            if (this.isBreathingFire()) {
+                if (this.isActuallyBreathingFire()) {
+                    rotationYaw = renderYawOffset;
+                    if (this.ticksExisted % 5 == 0) {
+                        this.playSound(IafSoundRegistry.FIREDRAGON_BREATH, 4, 1);
+                    }
+                    stimulateFire(this.posX + distX * this.fireTicks / 40, entity.posY, this.posZ + distZ * this.fireTicks / 40, 1);
+                }
+            } else {
+                this.setBreathingFire(true);
+            }
+        }
+    }
 }

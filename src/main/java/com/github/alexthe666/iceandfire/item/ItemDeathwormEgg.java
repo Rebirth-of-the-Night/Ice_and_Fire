@@ -50,6 +50,6 @@ public class ItemDeathwormEgg extends Item implements ICustomRendered {
         }
 
         playerIn.addStat(StatList.getObjectUseStats(this));
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
     }
 }

@@ -42,11 +42,11 @@ public class GuiLectern extends GuiContainer {
     public float oOpen;
     private ItemStack last = ItemStack.EMPTY;
 
-    public GuiLectern(InventoryPlayer playerInv, IInventory furnaceInv) {
-        super(new ContainerLectern(playerInv, furnaceInv));
+    public GuiLectern(InventoryPlayer playerInv, IInventory lecternInv) {
+        super(new ContainerLectern(playerInv, lecternInv));
         this.playerInventory = playerInv;
         this.container = (ContainerLectern) this.inventorySlots;
-        this.nameable = furnaceInv;
+        this.nameable = lecternInv;
     }
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
@@ -94,9 +94,9 @@ public class GuiLectern extends GuiContainer {
         GlStateManager.loadIdentity();
         RenderHelper.enableStandardItemLighting();
         GlStateManager.translate(0.0F, 3.3F, -16.0F);
-        GlStateManager.scale(1.0F, 1.0F, 1.0F);
+        GlStateManager.scale(f, f, f);
         float f1 = 5.0F;
-        GlStateManager.scale(5.0F, 5.0F, 5.0F);
+        GlStateManager.scale(f1, f1, f1);
         GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(ENCHANTMENT_TABLE_BOOK_TEXTURE);
         GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);
@@ -106,8 +106,8 @@ public class GuiLectern extends GuiContainer {
         GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
         float f3 = this.oFlip + (this.flip - this.oFlip) * partialTicks + 0.25F;
         float f4 = this.oFlip + (this.flip - this.oFlip) * partialTicks + 0.75F;
-        f3 = (f3 - (float) MathHelper.fastFloor((double) f3)) * 1.6F - 0.3F;
-        f4 = (f4 - (float) MathHelper.fastFloor((double) f4)) * 1.6F - 0.3F;
+        f3 = (f3 - (float) MathHelper.fastFloor(f3)) * 1.6F - 0.3F;
+        f4 = (f4 - (float) MathHelper.fastFloor(f4)) * 1.6F - 0.3F;
 
         if (f3 < 0.0F) {
             f3 = 0.0F;
@@ -137,11 +137,11 @@ public class GuiLectern extends GuiContainer {
         RenderHelper.disableStandardItemLighting();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         //EnchantmentNameParts.getInstance().reseedRandomGenerator((long) this.container.xpSeed);
-        int k = this.container.getManuscriptAmount();
+        // int k = this.container.getManuscriptAmount();
 
         for (int l = 0; l < 3; ++l) {
             int i1 = i + 60;
-            int j1 = i1 + 20;
+            // int j1 = i1 + 20;
             this.zLevel = 0.0F;
             this.mc.getTextureManager().bindTexture(ENCHANTMENT_TABLE_GUI_TEXTURE);
             int k1 = this.container.getPossiblePages()[l] == null ? -1 : this.container.getPossiblePages()[l].ordinal();//enchantment level
@@ -150,7 +150,7 @@ public class GuiLectern extends GuiContainer {
             if (k1 == -1) {
                 this.drawTexturedModalRect(i1, j + 14 + 19 * l, 0, 185, 108, 19);
             } else {
-                int l1 = 86;
+                // int l1 = 86;
                 String s1 = I18n.format("bestiary." + this.container.getPossiblePages()[l].toString().toLowerCase());//EnchantmentNameParts.getInstance().generateNewRandomName(this.fontRenderer, l1);
                 FontRenderer fontrenderer = this.mc.fontRenderer;
                 float textScale = 1.0F;
@@ -246,7 +246,7 @@ public class GuiLectern extends GuiContainer {
         this.open = MathHelper.clamp(this.open, 0.0F, 1.0F);
         float f1 = (this.flipT - this.flip) * 0.4F;
         float f = 0.2F;
-        f1 = MathHelper.clamp(f1, -0.2F, 0.2F);
+        f1 = MathHelper.clamp(f1, -f, f);
         this.flipA += (f1 - this.flipA) * 0.9F;
         this.flip += this.flipA;
     }

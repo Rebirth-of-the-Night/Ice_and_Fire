@@ -22,10 +22,10 @@ public class ParticleDragonSnowflake extends ParticleFlame {
 
     private static final ResourceLocation SNOWFLAKE = new ResourceLocation("iceandfire:textures/particles/snowflake_0.png");
     private static final ResourceLocation SNOWFLAKE_BIG = new ResourceLocation("iceandfire:textures/particles/snowflake_1.png");
-    private double initialX;
-    private double initialY;
-    private double initialZ;
-    private boolean big;
+    private final double initialX;
+    private final double initialY;
+    private final double initialZ;
+    private final boolean big;
 
     @SideOnly(Side.CLIENT)
     public ParticleDragonSnowflake(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn) {
@@ -55,14 +55,14 @@ public class ParticleDragonSnowflake extends ParticleFlame {
         float f3 = (float) (this.posX - interpPosX);
         float f4 = (float) (this.posY - interpPosY);
         float f5 = (float) (this.posZ - interpPosZ);
-        float distX = (float) (this.initialX - this.posX);
-        float distZ = (float) (this.initialZ - this.posZ);
-        float ageOrDist = Math.max(particleAge, Math.max(distX * 10, distZ * 10));
+        // float distX = (float) (this.initialX - this.posX);
+        // float distZ = (float) (this.initialZ - this.posZ);
+        // float ageOrDist = Math.max(particleAge, Math.max(distX * 10, distZ * 10));
         float width = particleScale * 0.09F;
         int i = this.getBrightnessForRender(partialTicks);
         int j = i >> 16 & 65535;
         int k = i & 65535;
-        Vec3d[] avec3d = new Vec3d[]{new Vec3d((double) (-rotationX * width - rotationXY * width), (double) (-rotationZ * width), (double) (-rotationYZ * width - rotationXZ * width)), new Vec3d((double) (-rotationX * width + rotationXY * width), (double) (rotationZ * width), (double) (-rotationYZ * width + rotationXZ * width)), new Vec3d((double) (rotationX * width + rotationXY * width), (double) (rotationZ * width), (double) (rotationYZ * width + rotationXZ * width)), new Vec3d((double) (rotationX * width - rotationXY * width), (double) (-rotationZ * width), (double) (rotationYZ * width - rotationXZ * width))};
+        Vec3d[] avec3d = new Vec3d[]{new Vec3d(-rotationX * width - rotationXY * width, -rotationZ * width, -rotationYZ * width - rotationXZ * width), new Vec3d(-rotationX * width + rotationXY * width, rotationZ * width, -rotationYZ * width + rotationXZ * width), new Vec3d(rotationX * width + rotationXY * width, rotationZ * width, rotationYZ * width + rotationXZ * width), new Vec3d(rotationX * width - rotationXY * width, -rotationZ * width, rotationYZ * width - rotationXZ * width)};
         GlStateManager.enableBlend();
         GlStateManager.enableNormalize();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -72,10 +72,10 @@ public class ParticleDragonSnowflake extends ParticleFlame {
         float f10 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.x;
         float f11 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.y;
         float f12 = MathHelper.sin(f8 * 0.5F) * (float) cameraViewDir.z;
-        Vec3d vec3d = new Vec3d((double) f10, (double) f11, (double) f12);
+        Vec3d vec3d = new Vec3d(f10, f11, f12);
 
         for (int l = 0; l < 4; ++l) {
-            avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double) (f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale((double) (2.0F * f9)));
+            avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double) (f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale(2.0F * f9));
         }
         if (big) {
             Minecraft.getMinecraft().getTextureManager().bindTexture(SNOWFLAKE_BIG);
@@ -83,10 +83,10 @@ public class ParticleDragonSnowflake extends ParticleFlame {
             Minecraft.getMinecraft().getTextureManager().bindTexture(SNOWFLAKE);
         }
         GlStateManager.disableLighting();
-        double currentMinU = 0.25D * particleTextureIndexX;
-        double currentMaxU = currentMinU + 0.25D;
-        double currentMinV = 0.25D * particleTextureIndexY;
-        double currentMaxV = currentMinV + 0.25D;
+        // double currentMinU = 0.25D * particleTextureIndexX;
+        // double currentMaxU = currentMinU + 0.25D;
+        // double currentMinV = 0.25D * particleTextureIndexY;
+        // double currentMaxV = currentMinV + 0.25D;
         float alpha = 1;
         GL11.glPushMatrix();
         buffer.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);

@@ -59,8 +59,8 @@ public class DragonUtils {
             }
         }
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (dragon.getRNG().nextFloat() * neg);
-        double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-        double extraZ = (double) (radius * MathHelper.cos(angle));
+        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+        double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = new BlockPos(dragon.posX + extraX, 0, dragon.posZ + extraZ);
         BlockPos ground = dragon.world.getHeight(radialPos);
         int distFromGround = (int) dragon.posY - ground.getY();
@@ -76,8 +76,8 @@ public class DragonUtils {
         float radius = 0.75F * (0.7F * dragon.getRenderSize() / 3) * -7 - dragon.getRNG().nextInt(dragon.getDragonStage() * 6);
         float neg = dragon.getRNG().nextBoolean() ? 1 : -1;
         float angle = (0.01745329251F * dragon.renderYawOffset) + 3.15F + (dragon.getRNG().nextFloat() * neg);
-        double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-        double extraZ = (double) (radius * MathHelper.cos(angle));
+        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+        double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = new BlockPos(dragon.posX + extraX, 0, dragon.posZ + extraZ);
         BlockPos ground = dragon.world.getHeight(radialPos);
         int distFromGround = (int) dragon.posY - ground.getY();
@@ -137,8 +137,8 @@ public class DragonUtils {
         float radius = 0.75F * (0.7F * 8) * -3 - hippo.getRNG().nextInt(48);
         float neg = hippo.getRNG().nextBoolean() ? 1 : -1;
         float angle = (0.01745329251F * hippo.renderYawOffset) + 3.15F + (hippo.getRNG().nextFloat() * neg);
-        double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-        double extraZ = (double) (radius * MathHelper.cos(angle));
+        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+        double extraZ = radius * MathHelper.cos(angle);
         if (hippo.hasHomePosition && hippo.homePos != null) {
             BlockPos dragonPos = new BlockPos(hippo);
             BlockPos ground = hippo.world.getHeight(dragonPos);
@@ -166,8 +166,8 @@ public class DragonUtils {
         float neg = bird.getRNG().nextBoolean() ? 1 : -1;
         float renderYawOffset = bird.flock != null && !bird.flock.isLeader(bird) ? getStymphalianFlockDirection(bird) : bird.renderYawOffset;
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (bird.getRNG().nextFloat() * neg);
-        double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-        double extraZ = (double) (radius * MathHelper.cos(angle));
+        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+        double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = getStymphalianFearPos(bird, new BlockPos(bird.posX + extraX, 0, bird.posZ + extraZ));
         BlockPos ground = bird.world.getHeight(radialPos);
         int distFromGround = (int) bird.posY - ground.getY();
@@ -197,7 +197,7 @@ public class DragonUtils {
             double d0 = leader.posX - bird.posX;
             double d2 = leader.posZ - bird.posZ;
             double d1 = leader.posY + (double) leader.getEyeHeight() - (bird.posY + (double) bird.getEyeHeight());
-            double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
+            double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
             float f = (float) (MathHelper.atan2(d2, d0) * (180D / Math.PI)) - 90.0F;
             float degrees = MathHelper.wrapDegrees(f - bird.rotationYaw);
 
@@ -211,8 +211,8 @@ public class DragonUtils {
         float radius = 10 + cockatrice.getRNG().nextInt(10);
         float neg = cockatrice.getRNG().nextBoolean() ? 1 : -1;
         float angle = (0.01745329251F * target.rotationYawHead);
-        double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-        double extraZ = (double) (radius * MathHelper.cos(angle));
+        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+        double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = new BlockPos(target.posX + extraX, 0, target.posZ + extraZ);
         BlockPos ground = target.world.getHeight(radialPos);
         if (!cockatrice.isTargetBlocked(new Vec3d(ground)) && cockatrice.getDistanceSqToCenter(ground) > 30) {
@@ -225,8 +225,8 @@ public class DragonUtils {
         float radius = 10 * serpent.getSeaSerpentScale() + serpent.getRNG().nextInt(10);
         float neg = serpent.getRNG().nextBoolean() ? 1 : -1;
         float angle = (0.01745329251F * target.rotationYawHead);
-        double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-        double extraZ = (double) (radius * MathHelper.cos(angle));
+        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+        double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = new BlockPos(target.posX + extraX, 0, target.posZ + extraZ);
         BlockPos ground = target.world.getHeight(radialPos);
         if (serpent.getDistanceSqToCenter(ground) > 30) {

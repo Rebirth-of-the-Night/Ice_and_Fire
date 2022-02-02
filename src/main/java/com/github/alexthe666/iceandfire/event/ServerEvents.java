@@ -2,6 +2,8 @@ package com.github.alexthe666.iceandfire.event;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockBurntTorch;
+import com.github.alexthe666.iceandfire.block.BlockVenerableStump;
+import com.github.alexthe666.iceandfire.block.BlockVenerableStump.StumpPart;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
@@ -36,12 +38,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
@@ -56,12 +57,13 @@ import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import javax.annotation.Nullable;
-
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 
 public class ServerEvents {
@@ -72,16 +74,14 @@ public class ServerEvents {
             return entity != null && entity instanceof IVillagerFear;
         }
     };
-    private Random rand = new Random();
+    private final Random rand = new Random();
 
     private static void signalChickenAlarm(EntityLivingBase chicken, EntityLivingBase attacker) {
         float d0 = IceAndFire.CONFIG.cockatriceChickenSearchLength;
         List<Entity> list = chicken.world.getEntitiesWithinAABB(EntityCockatrice.class, (new AxisAlignedBB(chicken.posX, chicken.posY, chicken.posZ, chicken.posX + 1.0D, chicken.posY + 1.0D, chicken.posZ + 1.0D)).grow(d0, 10.0D, d0));
-        Collections.sort(list, new EntityAINearestAttackableTarget.Sorter(attacker));
+        list.sort(new EntityAINearestAttackableTarget.Sorter(attacker));
         if (!list.isEmpty()) {
-            Iterator<Entity> itr = list.iterator();
-            while (itr.hasNext()) {
-                Entity entity = itr.next();
+            for (Entity entity : list) {
                 if (entity instanceof EntityCockatrice && !(attacker instanceof EntityCockatrice)) {
                     EntityCockatrice cockatrice = (EntityCockatrice) entity;
                     if (!DragonUtils.hasSameOwner(cockatrice, attacker)) {
@@ -102,11 +102,9 @@ public class ServerEvents {
     private static void signalAmphithereAlarm(EntityLivingBase villager, EntityLivingBase attacker) {
         float d0 = IceAndFire.CONFIG.amphithereVillagerSearchLength;
         List<Entity> list = villager.world.getEntitiesWithinAABB(EntityAmphithere.class, (new AxisAlignedBB(villager.posX - 1.0D, villager.posY - 1.0D, villager.posZ - 1.0D, villager.posX + 1.0D, villager.posY + 1.0D, villager.posZ + 1.0D)).grow(d0, d0, d0));
-        Collections.sort(list, new EntityAINearestAttackableTarget.Sorter(attacker));
+        list.sort(new EntityAINearestAttackableTarget.Sorter(attacker));
         if (!list.isEmpty()) {
-            Iterator<Entity> itr = list.iterator();
-            while (itr.hasNext()) {
-                Entity entity = itr.next();
+            for (Entity entity : list) {
                 if (entity instanceof EntityAmphithere && !(attacker instanceof EntityAmphithere)) {
                     EntityAmphithere amphithere = (EntityAmphithere) entity;
                     if (!DragonUtils.hasSameOwner(amphithere, attacker)) {
@@ -363,11 +361,9 @@ public class ServerEvents {
         if (event.getTarget() != null && isAnimaniaSheep(event.getTarget())) {
             float dist = IceAndFire.CONFIG.cyclopesSheepSearchLength;
             List<Entity> list = event.getTarget().world.getEntitiesWithinAABBExcludingEntity(event.getEntityPlayer(), event.getEntityPlayer().getEntityBoundingBox().expand(dist, dist, dist));
-            Collections.sort(list, new EntityAINearestAttackableTarget.Sorter(event.getEntityPlayer()));
+            list.sort(new EntityAINearestAttackableTarget.Sorter(event.getEntityPlayer()));
             if (!list.isEmpty()) {
-                Iterator<Entity> itr = list.iterator();
-                while (itr.hasNext()) {
-                    Entity entity = itr.next();
+                for (Entity entity : list) {
                     if (entity instanceof EntityCyclops) {
                         EntityCyclops cyclops = (EntityCyclops) entity;
                         if (!cyclops.isBlinded() && !event.getEntityPlayer().capabilities.isCreativeMode) {
@@ -568,9 +564,9 @@ public class ServerEvents {
             if (frozenProps.isFrozen && !(event.getEntityLiving() instanceof EntityPlayer && ((EntityPlayer) event.getEntityLiving()).isCreative())) {
                 event.getEntityLiving().motionX *= 0.25;
                 event.getEntityLiving().motionZ *= 0.25;
-                if (!(event.getEntityLiving() instanceof EntityDragon) && !event.getEntityLiving().onGround) {
-                    event.getEntityLiving().motionY -= 0.2D;
-                }
+//                if (!(event.getEntityLiving() instanceof EntityDragon) && !event.getEntityLiving().onGround) {
+//                    event.getEntityLiving().motionY -= 0.2D;
+//                }
             }
             if (prevFrozen != frozenProps.isFrozen) {
                 if (frozenProps.isFrozen) {
@@ -705,7 +701,7 @@ public class ServerEvents {
                     properties.specialWeaponDmg++;
                     next.attackEntityFrom(DamageSource.WITHER, 2);
                 }
-                if (next == null || !next.isEntityAlive()) {
+                if (!next.isEntityAlive()) {
                     itr.remove();
                 }
             }
@@ -773,9 +769,7 @@ public class ServerEvents {
             float dist = IceAndFire.CONFIG.dragonGoldSearchLength;
             List<Entity> list = event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getEntityPlayer(), event.getEntityPlayer().getEntityBoundingBox().expand(dist, dist, dist));
             if (!list.isEmpty()) {
-                Iterator<Entity> itr = list.iterator();
-                while (itr.hasNext()) {
-                    Entity entity = itr.next();
+                for (Entity entity : list) {
                     if (entity instanceof EntityDragonBase) {
                         EntityDragonBase dragon = (EntityDragonBase) entity;
                         if (!dragon.isTamed() && !dragon.isModelDead() && !dragon.isOwner(event.getEntityPlayer()) && !event.getEntityPlayer().capabilities.isCreativeMode) {
@@ -798,9 +792,7 @@ public class ServerEvents {
             float dist = IceAndFire.CONFIG.dragonGoldSearchLength;
             List<Entity> list = event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getPlayer(), event.getPlayer().getEntityBoundingBox().expand(dist, dist, dist));
             if (!list.isEmpty()) {
-                Iterator<Entity> itr = list.iterator();
-                while (itr.hasNext()) {
-                    Entity entity = itr.next();
+                for (Entity entity : list) {
                     if (entity instanceof EntityDragonBase) {
                         EntityDragonBase dragon = (EntityDragonBase) entity;
                         if (!dragon.isTamed() && !dragon.isModelDead() && !dragon.isOwner(event.getPlayer()) && !event.getPlayer().capabilities.isCreativeMode) {
@@ -851,9 +843,8 @@ public class ServerEvents {
     @SubscribeEvent
     public void onPlayerLeaveEvent(PlayerEvent.PlayerLoggedOutEvent event) {
         if (event.player != null && !event.player.getPassengers().isEmpty()) {
-            Iterator<Entity> itr = event.player.getPassengers().iterator();
-            while (itr.hasNext()) {
-                (itr.next()).dismountRidingEntity();
+            for (Entity entity : event.player.getPassengers()) {
+                entity.dismountRidingEntity();
             }
         }
     }
@@ -890,5 +881,100 @@ public class ServerEvents {
         } catch (Exception e) {
             IceAndFire.logger.warn("Tried to add unique behaviors to vanilla mobs and encountered an error");
         }
+    }
+
+    @SubscribeEvent
+    void onWorldLoad(WorldEvent.Load event) {
+        World world = event.getWorld();
+        if (world.isRemote)
+            return;
+        world.addEventListener(new IWorldEventListener() {
+            @Override
+            @ParametersAreNonnullByDefault
+            public void notifyBlockUpdate(World worldIn, BlockPos pos, IBlockState oldState, IBlockState newState, int flags) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void notifyLightSet(BlockPos pos) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void markBlockRangeForRenderUpdate(int x1, int y1, int z1, int x2, int y2, int z2) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void playSoundToAllNearExcept(@Nullable EntityPlayer player, SoundEvent soundIn, SoundCategory category, double x, double y, double z, float volume, float pitch) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void playRecord(SoundEvent soundIn, BlockPos pos) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void spawnParticle(int particleID, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void spawnParticle(int id, boolean ignoreRange, boolean minimiseParticleLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int... parameters) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void onEntityAdded(Entity entityIn) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void onEntityRemoved(Entity entityIn) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void broadcastSound(int soundID, BlockPos pos, int data) {
+
+            }
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void playEvent(EntityPlayer player, int type, BlockPos blockPosIn, int data) {
+
+            }
+
+            private final Set<BlockPos> breakingStumpCenters = new HashSet<>();
+
+            @Override
+            @ParametersAreNonnullByDefault
+            public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) {
+                IBlockState state = world.getBlockState(pos);
+                if (state.getBlock() != IafBlockRegistry.venerableStump)
+                    return;
+                StumpPart originalPart = state.getValue(BlockVenerableStump.PART);
+                BlockPos centerPos = pos.subtract(originalPart.getFromCenter());
+                if (breakingStumpCenters.contains(centerPos))
+                    return;
+                breakingStumpCenters.add(centerPos);
+                Random random = new Random(breakerId);
+                for (StumpPart part : StumpPart.values()) {
+                    if (part == originalPart) continue;
+                    world.sendBlockBreakProgress(random.nextInt(), centerPos.add(part.getFromCenter()), progress - 1);
+                }
+                breakingStumpCenters.remove(centerPos);
+            }
+        });
     }
 }

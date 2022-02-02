@@ -3,16 +3,15 @@ package com.github.alexthe666.iceandfire.entity.ai;
 import com.github.alexthe666.iceandfire.entity.DragonUtils;
 import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
+
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.Random;
-
 public class HippogryphAIAirTarget extends EntityAIBase {
-    private EntityHippogryph hippogryph;
+    private final EntityHippogryph hippogryph;
 
     public HippogryphAIAirTarget(EntityHippogryph dragon) {
         this.hippogryph = dragon;
@@ -77,8 +76,6 @@ public class HippogryphAIAirTarget extends EntityAIBase {
     }
 
     public BlockPos getNearbyAirTarget() {
-        Random random = this.hippogryph.getRNG();
-
         if (hippogryph.getAttackTarget() == null) {
             for (int i = 0; i < 10; i++) {
                 BlockPos pos = DragonUtils.getBlockInViewHippogryph(hippogryph);

@@ -1,23 +1,13 @@
-package com.github.alexthe666.iceandfire.client.render.tile;
+package com.github.alexthe666.iceandfire.client.render.item;
 
 import com.github.alexthe666.iceandfire.client.model.ModelTrollWeapon;
 import com.github.alexthe666.iceandfire.enums.EnumTroll;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
-public class RenderTrollWeapon extends TileEntitySpecialRenderer {
+public class RenderTrollWeapon {
     private static final ModelBase MODEL = new ModelTrollWeapon();
-
-    public RenderTrollWeapon() {
-    }
-
-    @Override
-    public void render(TileEntity entity, double x, double y, double z, float f, int f1, float alpha) {
-        renderItem(EnumTroll.Weapon.AXE, x, y, z, f, f1, alpha);
-    }
 
     public void renderItem(EnumTroll.Weapon weapon, double x, double y, double z, float f, int f1, float alpha) {
         GL11.glPushMatrix();

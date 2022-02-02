@@ -21,13 +21,13 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
-version = "1.9.1"
+version = "1.9.1-1.1.1"
 group= "iceandfire"
 archivesBaseName = "iceandfire"
 sourceCompatibility = targetCompatibility = "1.8"
 
 minecraft {
-    version = "1.12.2-14.23.5.2768"
+    version = "1.12.2-14.23.5.2847"
     runDir = "run"
     mappings = "stable_39"
     makeObfSourceJar = true

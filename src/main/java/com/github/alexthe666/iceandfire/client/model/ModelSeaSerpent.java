@@ -43,7 +43,7 @@ public class ModelSeaSerpent extends ModelDragonBase {
     public AdvancedModelRenderer Teeth2;
     public AdvancedModelRenderer Teeth2Bottom;
     public AdvancedModelRenderer Teeth1Bottom;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelSeaSerpent() {
         this.textureWidth = 256;
@@ -247,8 +247,8 @@ public class ModelSeaSerpent extends ModelDragonBase {
     @Override
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
         AdvancedModelRenderer[] TAIL = new AdvancedModelRenderer[]{Tail1, Tail2, Tail3, Tail4, Tail5, Tail6};
-        AdvancedModelRenderer[] TAIL_END = new AdvancedModelRenderer[]{Tail5, Tail6};
-        AdvancedModelRenderer[] ENTIRE_BODY = new AdvancedModelRenderer[]{Neck3, Neck2, Neck3, BodyUpper, BodyLower, Tail1, Tail2, Tail3, Tail4, Tail5, Tail6};
+        // AdvancedModelRenderer[] TAIL_END = new AdvancedModelRenderer[]{Tail5, Tail6};
+        // AdvancedModelRenderer[] ENTIRE_BODY = new AdvancedModelRenderer[]{Neck3, Neck2, Neck3, BodyUpper, BodyLower, Tail1, Tail2, Tail3, Tail4, Tail5, Tail6};
         AdvancedModelRenderer[] NECK = new AdvancedModelRenderer[]{Neck1, Neck2, Neck3, Head};
         EntitySeaSerpent serpent = (EntitySeaSerpent) entity;
 

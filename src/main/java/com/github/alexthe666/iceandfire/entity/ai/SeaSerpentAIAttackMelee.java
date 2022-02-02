@@ -34,7 +34,7 @@ public class SeaSerpentAIAttackMelee extends EntityAIBase {
     private double targetY;
     private double targetZ;
     private int failedPathFindingPenalty = 0;
-    private boolean canPenalize = false;
+    private final boolean canPenalize = false;
 
     public SeaSerpentAIAttackMelee(EntitySeaSerpent amphithere, double speedIn, boolean useLongMemory) {
         this.attacker = amphithere;
@@ -172,6 +172,6 @@ public class SeaSerpentAIAttackMelee extends EntityAIBase {
     }
 
     protected double getAttackReachSqr(EntityLivingBase attackTarget) {
-        return (double) (this.attacker.width * 2.0F * this.attacker.width * 2.0F + attackTarget.width);
+        return this.attacker.width * 2.0F * this.attacker.width * 2.0F + attackTarget.width;
     }
 }

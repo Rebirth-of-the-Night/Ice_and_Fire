@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class WorldGenRoostPile {
-    private Block block;
+    private final Block block;
 
     public WorldGenRoostPile(Block block) {
         this.block = block;

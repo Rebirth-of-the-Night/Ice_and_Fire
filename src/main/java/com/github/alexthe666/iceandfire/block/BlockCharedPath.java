@@ -40,7 +40,7 @@ public class BlockCharedPath extends BlockGrassPath {
         }
         this.setLightOpacity(0);
         setRegistryName(IceAndFire.MODID, getNameFromType(dragonType));
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.FALSE));
         this.setTickRandomly(true);
     }
     
@@ -77,6 +77,7 @@ public class BlockCharedPath extends BlockGrassPath {
     }
 
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         switch (side) {
             case UP:
@@ -106,18 +107,7 @@ public class BlockCharedPath extends BlockGrassPath {
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-
-        if (worldIn.getBlockState(pos.up()).getMaterial().isSolid()) {
-            if (worldIn.getBlockState(pos.up()).getMaterial().isSolid()) {
-                if (dragonType == 0) {
-                	worldIn.setBlockState(pos, IafBlockRegistry.charedDirt.getDefaultState());
-                } else if (dragonType == 1) {
-                	worldIn.setBlockState(pos, IafBlockRegistry.frozenDirt.getDefaultState());
-                } else {
-                	worldIn.setBlockState(pos, IafBlockRegistry.crackledDirt.getDefaultState());
-                } 
-            }
-        }
+        this.updateBlockState(worldIn, pos);
     }
 
     private void updateBlockState(World worldIn, BlockPos pos) {

@@ -56,7 +56,7 @@ public enum EnumTroll {
     }
 
     public static EnumTroll getBiomeType(Biome biome) {
-        List<EnumTroll> types = new ArrayList<EnumTroll>();
+        List<EnumTroll> types = new ArrayList<>();
         for (EnumTroll type : values()) {
             if (BiomeDictionary.hasType(biome, type.spawnBiome)) {
                 types.add(type);

@@ -7,15 +7,20 @@ import javax.annotation.Nullable;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityDeathWorm;
+import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
+import com.github.alexthe666.iceandfire.util.IsImmune;
 
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -79,19 +84,23 @@ public class ItemModSword extends ItemSword {
             target.addPotionEffect(new PotionEffect(MobEffects.POISON, 200, 2));
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_fire_tools) {
-        	target.setFire(15);
+            if (!IsImmune.toDragonFire(target)) {
+		        target.setFire(15);
+	        }
         	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
         		target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         	}
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_ice_tools) {
-        	FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
-        		frozenProps.setFrozenFor(300);
-        		target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 2));
-        		if(IceAndFire.CONFIG.dragonsteelKnockback) {  
-        			target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
-        		}
-            }
+            if (!IsImmune.toDragonIce(target)) {
+        		FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
+	            frozenProps.setFrozenFor(300);
+	            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 2));
+	        }
+        	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
+        		target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
+        	}
+        }
         if (toolMaterial == IafItemRegistry.dragonsteel_lightning_tools) {
             boolean flag = true;
             if(attacker instanceof EntityPlayer) {

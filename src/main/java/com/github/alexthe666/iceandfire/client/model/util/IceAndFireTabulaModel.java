@@ -21,16 +21,16 @@ import java.util.Map;
  * @since 1.0.0
  */
 @SideOnly(Side.CLIENT)
-public class IceAndFireTabulaModel extends AdvancedModelBase {
+public class IceAndFireTabulaModel<T extends Entity> extends AdvancedModelBase {
     public ModelAnimator llibAnimator;
     protected Map<String, AdvancedModelRenderer> cubes = new HashMap<>();
     protected List<AdvancedModelRenderer> rootBoxes = new ArrayList<>();
-    protected IIceAndFireTabulaModelAnimator tabulaAnimator;
+    protected IIceAndFireTabulaModelAnimator<T> tabulaAnimator;
     protected Map<String, AdvancedModelRenderer> identifierMap = new HashMap<>();
     protected double[] scale;
     protected boolean init = false;
 
-    public IceAndFireTabulaModel(TabulaModelContainer container, IIceAndFireTabulaModelAnimator tabulaAnimator) {
+    public IceAndFireTabulaModel(TabulaModelContainer container, IIceAndFireTabulaModelAnimator<T> tabulaAnimator) {
         this.textureWidth = container.getTextureWidth();
         this.textureHeight = container.getTextureHeight();
         this.tabulaAnimator = tabulaAnimator;
@@ -96,13 +96,14 @@ public class IceAndFireTabulaModel extends AdvancedModelBase {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale, Entity entity) {
         if (this.tabulaAnimator != null) {
             if(!init){
                 tabulaAnimator.init(this);
                 init = true;
             }
-            this.tabulaAnimator.setRotationAngles(this, entity, limbSwing, limbSwingAmount, ageInTicks, rotationYaw, rotationPitch, scale);
+            this.tabulaAnimator.setRotationAngles(this, (T) entity, limbSwing, limbSwingAmount, ageInTicks, rotationYaw, rotationPitch, scale);
         }
     }
 

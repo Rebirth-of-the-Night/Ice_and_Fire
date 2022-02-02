@@ -9,6 +9,7 @@ import com.github.alexthe666.iceandfire.world.gen.WorldGenDreadwoodTree;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
@@ -45,7 +46,7 @@ public class BiomeDreadLands extends Biome {
             ++k1;
         }
 
-        if (net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, pos, net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.TREE))
+        if (net.minecraftforge.event.terraingen.TerrainGen.decorate(worldIn, rand, new ChunkPos(pos), net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate.EventType.TREE))
             if (rand.nextFloat() < 0.1F) {
                 for (int j2 = 0; j2 < k1; ++j2) {
                     int k6 = rand.nextInt(16) + 8;

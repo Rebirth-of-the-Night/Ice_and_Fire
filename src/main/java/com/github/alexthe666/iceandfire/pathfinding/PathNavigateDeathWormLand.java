@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class PathNavigateDeathWormLand extends PathNavigate {
     private boolean shouldAvoidSun;
-    private EntityDeathWorm worm;
+    private final EntityDeathWorm worm;
 
     public PathNavigateDeathWormLand(EntityDeathWorm worm, World worldIn) {
         super(worm, worldIn);
@@ -36,7 +36,7 @@ public class PathNavigateDeathWormLand extends PathNavigate {
     }
 
     protected Vec3d getEntityPosition() {
-        return new Vec3d(this.entity.posX, (double) this.getPathablePosY(), this.entity.posZ);
+        return new Vec3d(this.entity.posX, this.getPathablePosY(), this.entity.posZ);
     }
 
     /**

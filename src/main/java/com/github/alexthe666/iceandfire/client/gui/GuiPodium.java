@@ -13,8 +13,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiPodium extends GuiContainer {
 
-    private IInventory playerInventory;
-    private IInventory podiumInventory;
+    private final IInventory playerInventory;
+    private final IInventory podiumInventory;
 
     public GuiPodium(InventoryPlayer playerInv, IInventory podiumInv) {
         super(new ContainerPodium(playerInv, podiumInv, Minecraft.getMinecraft().player));

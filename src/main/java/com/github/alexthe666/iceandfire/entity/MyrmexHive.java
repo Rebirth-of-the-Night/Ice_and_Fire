@@ -191,7 +191,7 @@ public class MyrmexHive {
 
     public int getPlayerReputation(UUID playerName) {
         Integer integer = this.playerReputation.get(playerName);
-        return integer == null ? 0 : integer.intValue();
+        return integer == null ? 0 : integer;
     }
 
     private UUID findUUID(String name) {
@@ -237,7 +237,7 @@ public class MyrmexHive {
             }
         }
 
-        this.playerReputation.put(playerName, Integer.valueOf(j));
+        this.playerReputation.put(playerName, j);
         return j;
     }
 
@@ -317,10 +317,10 @@ public class MyrmexHive {
             NBTTagCompound nbttagcompound1 = nbttaglist1.getCompoundTagAt(j);
 
             if (nbttagcompound1.hasKey("UUID")) {
-                this.playerReputation.put(UUID.fromString(nbttagcompound1.getString("UUID")), Integer.valueOf(nbttagcompound1.getInteger("S")));
+                this.playerReputation.put(UUID.fromString(nbttagcompound1.getString("UUID")), nbttagcompound1.getInteger("S"));
             } else {
                 //World is never set here, so this will always be offline UUIDs, sadly there is no way to convert this.
-                this.playerReputation.put(findUUID(nbttagcompound1.getString("Name")), Integer.valueOf(nbttagcompound1.getInteger("S")));
+                this.playerReputation.put(findUUID(nbttagcompound1.getString("Name")), nbttagcompound1.getInteger("S"));
             }
         }
     }
@@ -422,7 +422,7 @@ public class MyrmexHive {
             try {
                 {
                     nbttagcompound1.setString("UUID", s.toString());
-                    nbttagcompound1.setInteger("S", this.playerReputation.get(s).intValue());
+                    nbttagcompound1.setInteger("S", this.playerReputation.get(s));
                     nbttaglist1.appendTag(nbttagcompound1);
                 }
             } catch (RuntimeException var9) {

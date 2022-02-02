@@ -1,8 +1,13 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.client.model.ModelDreadThrall;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerGenericGlowing;
 import com.github.alexthe666.iceandfire.entity.EntityDreadThrall;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
@@ -11,9 +16,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-
-import javax.annotation.Nullable;
 
 public class RenderDreadThrall extends RenderLiving<EntityDreadThrall> {
     public static final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/dread/dread_thrall.png");
@@ -30,7 +32,7 @@ public class RenderDreadThrall extends RenderLiving<EntityDreadThrall> {
 
     public RenderDreadThrall(RenderManager renderManager) {
         super(renderManager, new ModelDreadThrall(0.0F, false), 0.6F);
-        this.addLayer(new LayerGenericGlowing(this, TEXTURE_EYES));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURE_EYES));
         this.addLayer(new LayerHeldItem(this) {
             protected void translateToHand(EnumHandSide p_191361_1_) {
                 ((ModelDreadThrall) this.livingEntityRenderer.getMainModel()).postRenderArm(0.0625F, p_191361_1_);
@@ -42,8 +44,8 @@ public class RenderDreadThrall extends RenderLiving<EntityDreadThrall> {
             }
         });
         this.addLayer(new LayerArmorBase<ModelDreadThrall>(this) {
-            ModelDreadThrall modelHead = new ModelDreadThrall(1.0F, true);
-            ModelDreadThrall modelBoots = new ModelDreadThrall(1.0F, true);
+            final ModelDreadThrall modelHead = new ModelDreadThrall(1.0F, true);
+            final ModelDreadThrall modelBoots = new ModelDreadThrall(1.0F, true);
 
             protected void initArmor() {
                 this.modelLeggings = new ModelDreadThrall(0.5F, true);
@@ -60,6 +62,8 @@ public class RenderDreadThrall extends RenderLiving<EntityDreadThrall> {
                         return modelLeggings;
                     case FEET:
                         return modelBoots;
+                    default:
+                        break;
                 }
                 return modelArmor;
             }
@@ -85,6 +89,8 @@ public class RenderDreadThrall extends RenderLiving<EntityDreadThrall> {
                     case FEET:
                         model.bipedRightLeg.invisible = false;
                         model.bipedLeftLeg.invisible = false;
+                    default:
+                        break;
                 }
             }
 

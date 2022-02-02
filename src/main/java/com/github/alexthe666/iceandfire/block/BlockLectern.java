@@ -19,6 +19,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -42,10 +43,9 @@ public class BlockLectern extends BlockContainer {
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
         this.setTranslationKey("iceandfire.lectern");
         this.setRegistryName(IceAndFire.MODID, "lectern");
-        GameRegistry.registerTileEntity(TileEntityLectern.class, "lectern");
+        GameRegistry.registerTileEntity(TileEntityLectern.class, new ResourceLocation(IceAndFire.MODID, "lectern"));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return new AxisAlignedBB(0.125F, 0, 0.125F, 0.875F, 1.4375F, 0.875F);
@@ -62,13 +62,11 @@ public class BlockLectern extends BlockContainer {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState blockstate) {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState blockstate) {
         return false;
     }
@@ -76,7 +74,6 @@ public class BlockLectern extends BlockContainer {
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
         IBlockState iblockstate = worldIn.getBlockState(pos.down());
-        Block block = iblockstate.getBlock();
         return iblockstate.isSideSolid(worldIn, pos, EnumFacing.UP);
     }
 
@@ -104,7 +101,6 @@ public class BlockLectern extends BlockContainer {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
     }

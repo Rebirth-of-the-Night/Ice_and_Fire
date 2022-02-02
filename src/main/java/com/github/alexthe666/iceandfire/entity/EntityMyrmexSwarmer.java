@@ -23,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.UUID;
 
 public class EntityMyrmexSwarmer extends EntityMyrmexRoyal {
@@ -60,7 +61,7 @@ public class EntityMyrmexSwarmer extends EntityMyrmexRoyal {
 
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new MyrmexAIFollowSummoner(this, 1.0D, 10.0F, 5.0F));
+        this.tasks.addTask(1, new MyrmexAIFollowSummoner(this, 0.25D, 10.0F, 5.0F));
         this.tasks.addTask(2, new AIFlyAtTarget());
         this.tasks.addTask(3, new AIFlyRandom());
         this.tasks.addTask(4, new EntityAIAttackMeleeNoCooldown(this, 1.0D, true));
@@ -108,7 +109,8 @@ public class EntityMyrmexSwarmer extends EntityMyrmexRoyal {
             UUID ownerID = ((EntityTameable) entityIn).getOwnerId();
             return ownerID != null && ownerID.equals(this.getSummonerUUID());
         }
-        return entityIn.getUniqueID().equals(this.getSummonerUUID()) || entityIn instanceof EntityMyrmexSwarmer && ((EntityMyrmexSwarmer) entityIn).getSummonerUUID() != null && ((EntityMyrmexSwarmer) entityIn).getSummonerUUID().equals(this.getSummonerUUID());
+        return entityIn.getUniqueID().equals(this.getSummonerUUID()) || entityIn instanceof EntityMyrmexSwarmer && ((EntityMyrmexSwarmer) entityIn).getSummonerUUID() != null && Objects
+		        .equals(((EntityMyrmexSwarmer) entityIn).getSummonerUUID(), this.getSummonerUUID());
     }
 
     public void setSummonerID(@Nullable UUID uuid) {
@@ -147,11 +149,11 @@ public class EntityMyrmexSwarmer extends EntityMyrmexRoyal {
 
     @Nullable
     public UUID getSummonerUUID() {
-        return (UUID) ((Optional) this.dataManager.get(SUMMONER_ID)).orNull();
+        return this.dataManager.get(SUMMONER_ID).orNull();
     }
 
     public int getTicksAlive() {
-        return this.dataManager.get(TICKS_ALIVE).intValue();
+        return this.dataManager.get(TICKS_ALIVE);
     }
 
     public void setTicksAlive(int ticks) {

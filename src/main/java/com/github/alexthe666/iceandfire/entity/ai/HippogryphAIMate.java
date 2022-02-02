@@ -1,35 +1,29 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
+import java.util.List;
+import java.util.Random;
+
 import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import com.github.alexthe666.iceandfire.item.ItemHippogryphEgg;
+
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 
-import java.util.List;
-import java.util.Random;
-
 public class HippogryphAIMate extends EntityAIBase {
     private final EntityHippogryph hippo;
-    private final Class<? extends EntityAnimal> mateClass;
     World world;
     int spawnBabyDelay;
     double moveSpeed;
     private EntityHippogryph targetMate;
 
-    public HippogryphAIMate(EntityHippogryph animal, double speedIn) {
-        this(animal, speedIn, animal.getClass());
-    }
-
-    public HippogryphAIMate(EntityHippogryph hippogryph, double speed, Class<? extends EntityAnimal> mate) {
+    public HippogryphAIMate(EntityHippogryph hippogryph, double speed) {
         this.hippo = hippogryph;
         this.world = hippogryph.world;
-        this.mateClass = mate;
         this.moveSpeed = speed;
         this.setMutexBits(3);
     }

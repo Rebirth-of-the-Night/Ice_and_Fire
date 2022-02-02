@@ -7,6 +7,7 @@ import com.github.alexthe666.iceandfire.entity.ai.*;
 import com.github.alexthe666.iceandfire.message.MessageDragonControl;
 import com.github.alexthe666.iceandfire.message.MessageHippogryphArmor;
 import com.github.alexthe666.iceandfire.pathfinding.PathNavigateAmphibious;
+import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
 import net.ilexiconn.llibrary.client.model.tools.ChainBuffer;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
@@ -47,6 +48,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 public class EntityHippocampus extends EntityTameable implements ISyncMount, IAnimatedEntity, IDropArmor {
 
@@ -57,6 +59,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
     private static final DataParameter<Boolean> CHESTED = EntityDataManager.createKey(EntityHippocampus.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Byte> CONTROL_STATE = EntityDataManager.createKey(EntityHippocampus.class, DataSerializers.BYTE);
     public static Animation ANIMATION_SPEAK;
+    private final Set<Item> temptItems;
     public float onLandProgress;
     @SideOnly(Side.CLIENT)
     public ChainBuffer tail_buffer;
@@ -77,8 +80,9 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
         this.setSize(1.95F, 0.95F);
         this.switchNavigator(true);
         this.tasks.addTask(0, new HippocampusAIRide(this));
-        this.tasks.addTask(0, new AquaticAITempt(this, 1.0D, Item.getItemFromBlock(Blocks.SPONGE), false));
-        this.tasks.addTask(0, new AquaticAITempt(this, 1.0D, Items.PRISMARINE_CRYSTALS, false));
+//        this.tasks.addTask(0, new AquaticAITempt(this, 1.0D, Item.getItemFromBlock(Blocks.SPONGE), false));
+        temptItems = IceAndFireCoreUtils.all(IceAndFire.CONFIG.hippocampusTameItem);
+        this.tasks.addTask(0, new AquaticAITempt(this, 1.0D, false, temptItems));
         this.tasks.addTask(1, new AquaticAIFindWaterTarget(this, 10, true));
         this.tasks.addTask(2, new AquaticAIGetInWater(this, 1.0D));
         this.tasks.addTask(3, new HippocampusAIWander(this, 1));
@@ -120,11 +124,11 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(VARIANT, Integer.valueOf(0));
-        this.dataManager.register(ARMOR, Integer.valueOf(0));
-        this.dataManager.register(SADDLE, Boolean.valueOf(false));
-        this.dataManager.register(CHESTED, Boolean.valueOf(false));
-        this.dataManager.register(CONTROL_STATE, Byte.valueOf((byte) 0));
+        this.dataManager.register(VARIANT, 0);
+        this.dataManager.register(ARMOR, 0);
+        this.dataManager.register(SADDLE, Boolean.FALSE);
+        this.dataManager.register(CHESTED, Boolean.FALSE);
+        this.dataManager.register(CONTROL_STATE, (byte) 0);
     }
 
     private void initHippocampusInv() {
@@ -143,8 +147,10 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
             if (world.isRemote) {
                 ItemStack saddle = animalchest.getStackInSlot(0);
                 ItemStack chest = animalchest.getStackInSlot(1);
-                IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 0, saddle != null && saddle.getItem() == Items.SADDLE && !saddle.isEmpty() ? 1 : 0));
-                IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 1, chest != null && chest.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !chest.isEmpty() ? 1 : 0));
+                IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 0, saddle.getItem() == Items.SADDLE && !saddle
+		                .isEmpty() ? 1 : 0));
+                IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 1, chest.getItem() == Item
+		                .getItemFromBlock(Blocks.CHEST) && !chest.isEmpty() ? 1 : 0));
                 IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 2, this.getIntFromArmor(animalchest.getStackInSlot(2))));
             }
         }
@@ -198,7 +204,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
 
 
     private void setStateField(int i, boolean newState) {
-        byte prevState = dataManager.get(CONTROL_STATE).byteValue();
+        byte prevState = dataManager.get(CONTROL_STATE);
         if (newState) {
             dataManager.set(CONTROL_STATE, (byte) (prevState | (1 << i)));
         } else {
@@ -207,7 +213,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
     }
 
     public byte getControlState() {
-        return dataManager.get(CONTROL_STATE).byteValue();
+        return dataManager.get(CONTROL_STATE);
     }
 
     public void setControlState(byte state) {
@@ -302,15 +308,15 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
     }
 
     public boolean up() {
-        return (Byte.valueOf(dataManager.get(CONTROL_STATE).byteValue()) & 1) == 1;
+        return (dataManager.get(CONTROL_STATE) & 1) == 1;
     }
 
     public boolean down() {
-        return (Byte.valueOf(dataManager.get(CONTROL_STATE).byteValue()) >> 1 & 1) == 1;
+        return (dataManager.get(CONTROL_STATE) >> 1 & 1) == 1;
     }
 
     public boolean dismount() {
-        return (Byte.valueOf(dataManager.get(CONTROL_STATE).byteValue()) >> 2 & 1) == 1;
+        return (dataManager.get(CONTROL_STATE) >> 2 & 1) == 1;
     }
 
 
@@ -375,8 +381,10 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
                 ItemStack saddle = hippocampusInventory.getStackInSlot(0);
                 ItemStack chest = hippocampusInventory.getStackInSlot(1);
                 if (world.isRemote) {
-                    IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 0, saddle != null && saddle.getItem() == Items.SADDLE && !saddle.isEmpty() ? 1 : 0));
-                    IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 1, chest != null && chest.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !chest.isEmpty() ? 1 : 0));
+                    IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 0, saddle.getItem() == Items.SADDLE && !saddle
+		                    .isEmpty() ? 1 : 0));
+                    IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 1, chest.getItem() == Item
+		                    .getItemFromBlock(Blocks.CHEST) && !chest.isEmpty() ? 1 : 0));
                     IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageHippogryphArmor(this.getEntityId(), 2, this.getIntFromArmor(hippocampusInventory.getStackInSlot(2))));
                 }
             }
@@ -385,7 +393,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
 
 
     public boolean isSaddled() {
-        return this.dataManager.get(SADDLE).booleanValue();
+        return this.dataManager.get(SADDLE);
     }
 
     public void setSaddled(boolean saddle) {
@@ -393,7 +401,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
     }
 
     public boolean isChested() {
-        return this.dataManager.get(CHESTED).booleanValue();
+        return this.dataManager.get(CHESTED);
     }
 
     public void setChested(boolean chested) {
@@ -403,7 +411,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
 
     public boolean isSitting() {
         if (world.isRemote) {
-            boolean isSitting = (this.dataManager.get(TAMED).byteValue() & 1) != 0;
+            boolean isSitting = (this.dataManager.get(TAMED) & 1) != 0;
             this.isSitting = isSitting;
             return isSitting;
         }
@@ -414,16 +422,16 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
         if (!world.isRemote) {
             this.isSitting = sitting;
         }
-        byte b0 = this.dataManager.get(TAMED).byteValue();
+        byte b0 = this.dataManager.get(TAMED);
         if (sitting) {
-            this.dataManager.set(TAMED, Byte.valueOf((byte) (b0 | 1)));
+            this.dataManager.set(TAMED, (byte) (b0 | 1));
         } else {
-            this.dataManager.set(TAMED, Byte.valueOf((byte) (b0 & -2)));
+            this.dataManager.set(TAMED, (byte) (b0 & -2));
         }
     }
 
     public int getArmor() {
-        return this.dataManager.get(ARMOR).intValue();
+        return this.dataManager.get(ARMOR);
     }
 
     public void setArmor(int armorType) {
@@ -443,7 +451,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
     }
 
     public int getVariant() {
-        return this.dataManager.get(VARIANT).intValue();
+        return this.dataManager.get(VARIANT);
     }
 
     public void setVariant(int variant) {
@@ -527,12 +535,12 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
                     f4 += (0.54600006F - f4) * d0 / 3.0F;
                 }
                 this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
-                this.motionX *= (double) f4;
+                this.motionX *= f4;
                 this.motionX *= 0.900000011920929D;
                 this.motionY *= 0.900000011920929D;
-                this.motionY *= (double) f4;
+                this.motionY *= f4;
                 this.motionZ *= 0.900000011920929D;
-                this.motionZ *= (double) f4;
+                this.motionZ *= f4;
             } else {
                 super.travel(strafe, vertical, forward);
             }
@@ -551,7 +559,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
     }
 
     public boolean isBreedingItem(ItemStack stack) {
-        return stack.getItem() == Items.PRISMARINE_CRYSTALS;
+        return temptItems.contains(stack.getItem());
     }
 
     public void playLivingSound() {
@@ -570,7 +578,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
 
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
-        if (itemstack != null && itemstack.getItem() == Items.PRISMARINE_CRYSTALS && this.getGrowingAge() == 0 && !isInLove()) {
+        if (temptItems.contains(itemstack.getItem()) && this.getGrowingAge() == 0 && !isInLove()) {
             this.setSitting(false);
             this.setInLove(player);
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
@@ -579,7 +587,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
             }
             return true;
         }
-        if (itemstack != null && itemstack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && itemstack.getMetadata() == 0) {
+        if (itemstack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && itemstack.getMetadata() == 0) {
             if (!world.isRemote) {
                 this.heal(5);
                 this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
@@ -599,7 +607,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
             return true;
 
         }
-        if (isOwner(player) && itemstack != null && itemstack.getItem() == Items.PRISMARINE_CRYSTALS && this.getGrowingAge() == 0 && !isInLove()) {
+        if (isOwner(player) && temptItems.contains(itemstack.getItem()) && this.getGrowingAge() == 0 && !isInLove()) {
             this.setSitting(false);
             this.setInLove(player);
             this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
@@ -608,7 +616,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
             }
             return true;
         }
-        if (isOwner(player) && itemstack != null && itemstack.getItem() == Items.STICK) {
+        if (isOwner(player) && itemstack.getItem() == Items.STICK) {
             this.setSitting(!this.isSitting());
             return true;
         }
@@ -747,7 +755,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
     }
 
     class SwimmingMoveHelper extends EntityMoveHelper {
-        private EntityHippocampus hippo = EntityHippocampus.this;
+        private final EntityHippocampus hippo = EntityHippocampus.this;
 
         public SwimmingMoveHelper() {
             super(EntityHippocampus.this);
@@ -775,7 +783,7 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
                 double distanceY = this.posY - this.hippo.posY;
                 double distanceZ = this.posZ - this.hippo.posZ;
                 double distance = Math.abs(distanceX * distanceX + distanceZ * distanceZ);
-                double distanceWithY = (double) MathHelper.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
+                double distanceWithY = MathHelper.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
                 distanceY = distanceY / distanceWithY;
                 float angle = (float) (Math.atan2(distanceZ, distanceX) * 180.0D / Math.PI) - 90.0F;
                 this.hippo.rotationYaw = this.limitAngle(this.hippo.rotationYaw, angle, 30.0F);
@@ -783,8 +791,8 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
                 this.hippo.motionY += (double) this.hippo.getAIMoveSpeed() * distanceY * 0.1D;
                 if (distance < (double) Math.max(1.0F, this.entity.width)) {
                     float f = this.hippo.rotationYaw * 0.017453292F;
-                    this.hippo.motionX -= (double) (MathHelper.sin(f) * 0.35F);
-                    this.hippo.motionZ += (double) (MathHelper.cos(f) * 0.35F);
+                    this.hippo.motionX -= MathHelper.sin(f) * 0.35F;
+                    this.hippo.motionZ += MathHelper.cos(f) * 0.35F;
                 }
             } else if (this.action == EntityMoveHelper.Action.JUMPING) {
                 this.entity.setAIMoveSpeed((float) (this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()));

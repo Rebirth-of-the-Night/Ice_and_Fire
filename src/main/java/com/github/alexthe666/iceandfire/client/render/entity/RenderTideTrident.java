@@ -29,7 +29,7 @@ public class RenderTideTrident extends Render<EntityTideTrident> {
         GlStateManager.rotate(entity.prevRotationPitch + (entity.prevRotationPitch - entity.rotationPitch) * partialTicks + 90.0F, 0.0F, 0.0F, 1.0F);
         this.modelTideTrident.render(entity, 0, 0, 0, 0, 0, 0.0625F);
         GlStateManager.popMatrix();
-        this.func_203085_b(entity, x, y, z, entityYaw, partialTicks);
+        this.render(entity, x, y, z, entityYaw, partialTicks);
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
         GlStateManager.enableLighting();
         GlStateManager.enableCull();
@@ -39,7 +39,7 @@ public class RenderTideTrident extends Render<EntityTideTrident> {
         return TEXTURE;
     }
 
-    protected void func_203085_b(EntityTideTrident p_203085_1_, double p_203085_2_, double p_203085_4_, double p_203085_6_, float p_203085_8_, float p_203085_9_) {
+    protected void render(EntityTideTrident p_203085_1_, double p_203085_2_, double p_203085_4_, double p_203085_6_, float p_203085_8_, float p_203085_9_) {
         /*Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuffer();
         double d0 = (double)(MathHelper.clampedLerp(p_203085_9_ * 0.5F, entity.rotationYaw, entity.prevRotationYaw) * ((float)Math.PI / 180F));

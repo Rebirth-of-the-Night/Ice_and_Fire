@@ -204,13 +204,13 @@ public abstract class EntityMyrmexBase extends EntityAnimal implements IAnimated
     }
 
     protected void jump() {
-        this.motionY = (double) this.getJumpUpwardsMotion();
+        this.motionY = this.getJumpUpwardsMotion();
         if (this.isPotionActive(MobEffects.JUMP_BOOST)) {
-            this.motionY += (double) ((float) (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
+            this.motionY += (float) (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
         }
         float f = this.rotationYaw * 0.017453292F;
-        this.motionX -= (double) (MathHelper.sin(f) * 0.2F);
-        this.motionZ += (double) (MathHelper.cos(f) * 0.2F);
+        this.motionX -= MathHelper.sin(f) * 0.2F;
+        this.motionZ += MathHelper.cos(f) * 0.2F;
         this.isAirBorne = true;
         net.minecraftforge.common.ForgeHooks.onLivingJump(this);
     }
@@ -231,9 +231,9 @@ public abstract class EntityMyrmexBase extends EntityAnimal implements IAnimated
 
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(CLIMBING, Byte.valueOf((byte) 0));
-        this.dataManager.register(GROWTH_STAGE, Integer.valueOf(2));
-        this.dataManager.register(VARIANT, Boolean.valueOf(false));
+        this.dataManager.register(CLIMBING, (byte) 0);
+        this.dataManager.register(GROWTH_STAGE, 2);
+        this.dataManager.register(VARIANT, Boolean.FALSE);
     }
 
     public void onUpdate() {
@@ -440,7 +440,7 @@ public abstract class EntityMyrmexBase extends EntityAnimal implements IAnimated
     }
 
     public int getGrowthStage() {
-        return this.dataManager.get(GROWTH_STAGE).intValue();
+        return this.dataManager.get(GROWTH_STAGE);
     }
 
     public void setGrowthStage(int stage) {
@@ -448,7 +448,7 @@ public abstract class EntityMyrmexBase extends EntityAnimal implements IAnimated
     }
 
     public boolean isJungle() {
-        return this.dataManager.get(VARIANT).booleanValue();
+        return this.dataManager.get(VARIANT);
     }
 
     public void setJungleVariant(boolean isJungle) {
@@ -460,11 +460,11 @@ public abstract class EntityMyrmexBase extends EntityAnimal implements IAnimated
     }
 
     public boolean isBesideClimbableBlock() {
-        return (this.dataManager.get(CLIMBING).byteValue() & 1) != 0;
+        return (this.dataManager.get(CLIMBING) & 1) != 0;
     }
 
     public void setBesideClimbableBlock(boolean climbing) {
-        byte b0 = this.dataManager.get(CLIMBING).byteValue();
+        byte b0 = this.dataManager.get(CLIMBING);
 
         if (climbing) {
             b0 = (byte) (b0 | 1);
@@ -472,7 +472,7 @@ public abstract class EntityMyrmexBase extends EntityAnimal implements IAnimated
             b0 = (byte) (b0 & -2);
         }
 
-        this.dataManager.set(CLIMBING, Byte.valueOf(b0));
+        this.dataManager.set(CLIMBING, b0);
     }
 
     public boolean isOnLadder() {

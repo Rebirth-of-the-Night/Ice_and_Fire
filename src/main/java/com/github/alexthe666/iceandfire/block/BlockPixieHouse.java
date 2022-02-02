@@ -20,6 +20,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -41,17 +42,15 @@ public class BlockPixieHouse extends BlockContainer implements ICustomRendered {
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
         this.setTranslationKey("iceandfire.pixie_house");
         this.setRegistryName(IceAndFire.MODID, "pixie_house");
-        GameRegistry.registerTileEntity(TileEntityPixieHouse.class, "pixie_house");
+        GameRegistry.registerTileEntity(TileEntityPixieHouse.class, new ResourceLocation(IceAndFire.MODID, "pixie_house"));
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState blockstate) {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState blockstate) {
         return false;
     }
@@ -76,7 +75,6 @@ public class BlockPixieHouse extends BlockContainer implements ICustomRendered {
         return 0;
     }
 
-    @SuppressWarnings("deprecation")
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
     }
@@ -106,7 +104,6 @@ public class BlockPixieHouse extends BlockContainer implements ICustomRendered {
         return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, placer.getHorizontalFacing().getOpposite());
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));

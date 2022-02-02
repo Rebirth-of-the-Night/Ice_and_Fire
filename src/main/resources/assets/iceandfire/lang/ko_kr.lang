@@ -1,6 +1,6 @@
 itemGroup.iceandfire_items=얼음과 불 모드 아이템
 itemGroup.iceandfire_blocks=얼음과 불 모드 블럭
-iceandfire.empty=Ram
+iceandfire.empty=텅 빈
 
 tile.iceandfire.lectern.name=독서대
 tile.iceandfire.podium.name=단상
@@ -487,7 +487,7 @@ myrmex.caste_sentinel.name=보초병
 amphithere.command.new_home=이 엠피데어의 홈포인트를 옮깁니다. %d, %d, %d.
 amphithere.command.0=이 엠피데어는 방황하고 있습니다.
 amphithere.command.1=이 엠피데어는 앉아있습니다.
-amphithere.command.2=이 엠피데어는 당신을 따라오고 있습니다. 
+amphithere.command.2=이 엠피데어는 당신을 따라오고 있습니다.
 item.iceandfire.summoning_crystal_ice.name=아이스 드래곤 소환석
 item.iceandfire.summoning_crystal_fire.name=파이어 드래곤 소환석
 item.iceandfire.summoning_crystal.desc_0=마우스 오른쪽 클릭으로 드래곤 결속

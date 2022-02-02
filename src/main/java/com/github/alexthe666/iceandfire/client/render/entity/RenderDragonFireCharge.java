@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderDragonFireCharge extends Render<EntityFireball> {
+public class RenderDragonFireCharge extends Render<Entity> {
 
     public boolean isFire;
 

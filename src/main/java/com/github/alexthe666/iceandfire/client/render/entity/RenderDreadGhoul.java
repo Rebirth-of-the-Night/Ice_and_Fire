@@ -1,19 +1,15 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
 import com.github.alexthe666.iceandfire.client.model.ModelDreadGhoul;
-import com.github.alexthe666.iceandfire.client.model.ModelPixie;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerGenericGlowing;
-import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerPixieGlow;
-import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerPixieItem;
 import com.github.alexthe666.iceandfire.entity.EntityDreadGhoul;
-import com.github.alexthe666.iceandfire.entity.EntityPixie;
+
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class RenderDreadGhoul extends RenderLiving<EntityDreadGhoul> {
@@ -32,7 +28,7 @@ public class RenderDreadGhoul extends RenderLiving<EntityDreadGhoul> {
 
     public RenderDreadGhoul(RenderManager renderManager) {
         super(renderManager, new ModelDreadGhoul(), 0.5F);
-        this.addLayer(new LayerGenericGlowing(this, TEXTURE_EYES));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURE_EYES));
     }
 
     @Override

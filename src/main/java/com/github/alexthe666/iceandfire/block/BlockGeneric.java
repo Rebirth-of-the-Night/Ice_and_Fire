@@ -61,12 +61,10 @@ public class BlockGeneric extends Block {
         return this == IafBlockRegistry.dragon_ice ? BlockRenderLayer.TRANSLUCENT : super.getRenderLayer();
     }
 
-    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState state) {
         return this != IafBlockRegistry.dragon_ice;
     }
 
-    @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState state) {
         return this != IafBlockRegistry.dragon_ice;
     }

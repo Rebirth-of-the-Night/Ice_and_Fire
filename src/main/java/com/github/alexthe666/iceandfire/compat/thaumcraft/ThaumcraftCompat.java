@@ -1,14 +1,14 @@
 package com.github.alexthe666.iceandfire.compat.thaumcraft;
 
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
-import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.enums.EnumHippogryphTypes;
 import com.github.alexthe666.iceandfire.enums.EnumSeaSerpent;
 import com.github.alexthe666.iceandfire.enums.EnumSkullType;
 import com.github.alexthe666.iceandfire.enums.EnumTroll;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
@@ -19,8 +19,6 @@ public class ThaumcraftCompat {
 
     static final Aspect MYTHICAL = new Aspect("mythus", 0XD9D5AB, new Aspect[]{Aspect.BEAST, Aspect.MAGIC}, new ResourceLocation("iceandfire:textures/thaumcraft/mythical.png"), 1);
     static final Aspect DRAGON = getOrCreateAspect("draco", 0XA2271F, new Aspect[]{ThaumcraftCompat.MYTHICAL, Aspect.DESIRE}, new ResourceLocation("iceandfire", "textures/thaumcraft/dragon.png"), 1);
-    private static final ThaumcraftCompat INSTANCE = new ThaumcraftCompat();
-    private static boolean registered = false;
 
     static Aspect getOrCreateAspect(String tag, int color, Aspect[] components, ResourceLocation image, int blend) {
         Aspect a = Aspect.getAspect(tag);
@@ -28,16 +26,7 @@ public class ThaumcraftCompat {
         return new Aspect(tag, color, components, image, blend);
     }
 
-    @Deprecated
-    public static void register() {
-        if (!registered) {
-            registered = true;
-            MinecraftForge.EVENT_BUS.register(INSTANCE);
-        } else {
-            throw new RuntimeException("You can only call ThaumcraftCompat.register() once");
-        }
-    }
-
+    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public void aspectRegistrationEvent(AspectRegistryEvent evt) {
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.bestiary), new AspectList().add(ThaumcraftCompat.DRAGON, 2).add(ThaumcraftCompat.MYTHICAL, 5).add(Aspect.BEAST, 6).add(Aspect.MAGIC, 2).add(Aspect.MIND, 4).add(Aspect.WATER, 2).add(Aspect.AIR, 1));

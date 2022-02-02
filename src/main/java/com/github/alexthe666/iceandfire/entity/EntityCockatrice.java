@@ -5,6 +5,7 @@ import com.github.alexthe666.iceandfire.api.FoodUtils;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.entity.ai.*;
 import com.github.alexthe666.iceandfire.event.ServerEvents;
+import com.github.alexthe666.iceandfire.util.IsImmune;
 import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
@@ -139,7 +140,7 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
     }
 
     private boolean canUseStareOn(Entity entity) {
-        return (!(entity instanceof IBlacklistedFromStatues) || ((IBlacklistedFromStatues) entity).canBeTurnedToStone()) && !ServerEvents.isAnimaniaFerret(entity);
+        return !IsImmune.toStone(entity) && (entity instanceof IBlacklistedFromStatues && ((IBlacklistedFromStatues) entity).canBeTurnedToStone()) && !ServerEvents.isAnimaniaFerret(entity);
     }
 
     private void switchAI(boolean melee) {
@@ -196,20 +197,20 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(HEN, Boolean.valueOf(false));
-        this.dataManager.register(STARING, Boolean.valueOf(false));
-        this.dataManager.register(TARGET_ENTITY, Integer.valueOf(0));
-        this.dataManager.register(TAMING_PLAYER, Integer.valueOf(0));
-        this.dataManager.register(TAMING_LEVEL, Integer.valueOf(0));
-        this.dataManager.register(COMMAND, Integer.valueOf(0));
+        this.dataManager.register(HEN, Boolean.FALSE);
+        this.dataManager.register(STARING, Boolean.FALSE);
+        this.dataManager.register(TARGET_ENTITY, 0);
+        this.dataManager.register(TAMING_PLAYER, 0);
+        this.dataManager.register(TAMING_LEVEL, 0);
+        this.dataManager.register(COMMAND, 0);
     }
 
     public boolean hasTargetedEntity() {
-        return this.dataManager.get(TARGET_ENTITY).intValue() != 0;
+        return this.dataManager.get(TARGET_ENTITY) != 0;
     }
 
     public boolean hasTamingPlayer() {
-        return this.dataManager.get(TAMING_PLAYER).intValue() != 0;
+        return this.dataManager.get(TAMING_PLAYER) != 0;
     }
 
     @Nullable
@@ -220,7 +221,7 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
             if (this.targetedEntity != null) {
                 return this.targetedEntity;
             } else {
-                Entity entity = this.world.getEntityByID(this.dataManager.get(TAMING_PLAYER).intValue());
+                Entity entity = this.world.getEntityByID(this.dataManager.get(TAMING_PLAYER));
                 if (entity instanceof EntityLivingBase) {
                     this.targetedEntity = (EntityLivingBase) entity;
                     return this.targetedEntity;
@@ -229,12 +230,12 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
                 }
             }
         } else {
-            return this.world.getEntityByID(this.dataManager.get(TAMING_PLAYER).intValue());
+            return this.world.getEntityByID(this.dataManager.get(TAMING_PLAYER));
         }
     }
 
     public void setTamingPlayer(int entityId) {
-        this.dataManager.set(TAMING_PLAYER, Integer.valueOf(entityId));
+        this.dataManager.set(TAMING_PLAYER, entityId);
     }
 
     @Nullable
@@ -249,7 +250,7 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
             if (this.targetedEntity != null) {
                 return this.targetedEntity;
             } else {
-                Entity entity = this.world.getEntityByID(this.dataManager.get(TARGET_ENTITY).intValue());
+                Entity entity = this.world.getEntityByID(this.dataManager.get(TARGET_ENTITY));
                 if (entity instanceof EntityLivingBase) {
                     this.targetedEntity = (EntityLivingBase) entity;
                     return this.targetedEntity;
@@ -263,7 +264,7 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
     }
 
     public void setTargetedEntity(int entityId) {
-        this.dataManager.set(TARGET_ENTITY, Integer.valueOf(entityId));
+        this.dataManager.set(TARGET_ENTITY, entityId);
     }
 
     public void notifyDataManagerChange(DataParameter<?> key) {
@@ -280,7 +281,7 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
         tag.setBoolean("Hen", this.isHen());
         tag.setBoolean("Staring", this.isStaring());
         tag.setInteger("TamingLevel", this.getTamingLevel());
-        tag.setInteger("TamingPlayer", this.dataManager.get(TAMING_PLAYER).intValue());
+        tag.setInteger("TamingPlayer", this.dataManager.get(TAMING_PLAYER));
         tag.setInteger("Command", this.getCommand());
         tag.setBoolean("HasHomePosition", this.hasHomePosition);
         if (homePos != null && this.hasHomePosition) {
@@ -306,7 +307,7 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
 
     public boolean isSitting() {
         if (world.isRemote) {
-            boolean isSitting = (this.dataManager.get(TAMED).byteValue() & 1) != 0;
+            boolean isSitting = (this.dataManager.get(TAMED) & 1) != 0;
             this.isSitting = isSitting;
             return isSitting;
         }
@@ -332,43 +333,39 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
     }
 
     public boolean isHen() {
-        return this.dataManager.get(HEN).booleanValue();
+        return this.dataManager.get(HEN);
     }
 
     public void setHen(boolean hen) {
-        this.dataManager.set(HEN, Boolean.valueOf(hen));
+        this.dataManager.set(HEN, hen);
     }
 
     public int getTamingLevel() {
-        return Integer.valueOf(this.dataManager.get(TAMING_LEVEL).intValue());
+        return this.dataManager.get(TAMING_LEVEL);
     }
 
     public void setTamingLevel(int level) {
-        this.dataManager.set(TAMING_LEVEL, Integer.valueOf(level));
+        this.dataManager.set(TAMING_LEVEL, level);
     }
 
     public int getCommand() {
-        return Integer.valueOf(this.dataManager.get(COMMAND).intValue());
+        return this.dataManager.get(COMMAND);
     }
 
     public void setCommand(int command) {
-        this.dataManager.set(COMMAND, Integer.valueOf(command));
-        if (command == 1) {
-            this.setSitting(true);
-        } else {
-            this.setSitting(false);
-        }
+        this.dataManager.set(COMMAND, command);
+	    this.setSitting(command == 1);
     }
 
     public boolean isStaring() {
         if (world.isRemote) {
-            return this.isStaring = Boolean.valueOf(this.dataManager.get(STARING).booleanValue());
+            return this.isStaring = this.dataManager.get(STARING);
         }
         return isStaring;
     }
 
     public void setStaring(boolean staring) {
-        this.dataManager.set(STARING, Boolean.valueOf(staring));
+        this.dataManager.set(STARING, staring);
         if (!world.isRemote) {
             this.isStaring = staring;
         }
@@ -561,7 +558,7 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
                 if (entitylivingbase != null) {
                     this.getLookHelper().setLookPositionWithEntity(entitylivingbase, 90.0F, 90.0F);
                     this.getLookHelper().onUpdateLook();
-                    double d5 = (double) this.getAttackAnimationScale(0.0F);
+                    double d5 = this.getAttackAnimationScale(0.0F);
                     double d0 = entitylivingbase.posX - this.posX;
                     double d1 = entitylivingbase.posY + (double) (entitylivingbase.height * 0.5F) - (this.posY + (double) this.getEyeHeight());
                     double d2 = entitylivingbase.posZ - this.posZ;

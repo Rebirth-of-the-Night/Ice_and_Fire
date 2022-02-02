@@ -1,13 +1,10 @@
 package com.github.alexthe666.iceandfire.client.model;
 
 import com.github.alexthe666.iceandfire.entity.EntityDreadGhoul;
-import com.github.alexthe666.iceandfire.entity.EntityDreadThrall;
-import com.github.alexthe666.iceandfire.entity.EntityGorgon;
 import net.ilexiconn.llibrary.client.model.ModelAnimator;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
 
 public class ModelDreadGhoul extends ModelDragonBase {
 
@@ -20,7 +17,7 @@ public class ModelDreadGhoul extends ModelDragonBase {
     public AdvancedModelRenderer head2;
     public AdvancedModelRenderer clawsRight;
     public AdvancedModelRenderer clawsLeft;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelDreadGhoul() {
         this.textureWidth = 128;
@@ -130,10 +127,10 @@ public class ModelDreadGhoul extends ModelDragonBase {
         float degree_idle = 0.5F;
         if (thrall.getAnimation() == EntityDreadGhoul.ANIMATION_SPAWN) {
             if (thrall.getAnimationTick() < 30) {
-                this.swing(armRight, 0.5F, 0.5F, false, 2, -0.7F, thrall.ticksExisted, 1);
-                this.swing(armLeft, 0.5F, 0.5F, true, 2, -0.7F, thrall.ticksExisted, 1);
-                this.flap(armRight, 0.5F, 0.5F, true, 1, 0, thrall.ticksExisted, 1);
-                this.flap(armLeft, 0.5F, 0.5F, true, 1, 0, thrall.ticksExisted, 1);
+                this.swing(armRight, 0.5F, degree_idle, false, 2, -0.7F, thrall.ticksExisted, 1);
+                this.swing(armLeft, 0.5F, degree_idle, true, 2, -0.7F, thrall.ticksExisted, 1);
+                this.flap(armRight, 0.5F, degree_idle, true, 1, 0, thrall.ticksExisted, 1);
+                this.flap(armLeft, 0.5F, degree_idle, true, 1, 0, thrall.ticksExisted, 1);
             }
         }
         this.flap(armLeft, speed_idle, 0.15F, false, 2, -0.1F, thrall.ticksExisted, 1);

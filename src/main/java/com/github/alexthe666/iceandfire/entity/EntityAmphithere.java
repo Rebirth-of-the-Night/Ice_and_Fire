@@ -129,8 +129,8 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
             radius = 30;
         }
         float angle = (0.01745329251F * possibleOrbitRadius);
-        double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-        double extraZ = (double) (radius * MathHelper.cos(angle));
+        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+        double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = new BlockPos(orbit.getX() + extraX, orbit.getY(), orbit.getZ() + extraZ);
         //world.setBlockState(radialPos.down(4), Blocks.QUARTZ_BLOCK.getDefaultState());
         // world.setBlockState(orbit.down(4), Blocks.GOLD_BLOCK.getDefaultState());
@@ -288,8 +288,8 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
         float scaled_ground = this.groundProgress * 0.1F;
         float radius = (this.isTamed() ? 0.5F : 0.3F) - scaled_ground * 0.5F + pitch_forward;
         float angle = (0.01745329251F * this.renderYawOffset);
-        double extraX = (double) (radius * MathHelper.sin((float) (Math.PI + angle)));
-        double extraZ = (double) (radius * MathHelper.cos(angle));
+        double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+        double extraZ = radius * MathHelper.cos(angle);
         passenger.setPosition(this.posX + extraX, this.posY + 0.7F - scaled_ground * 0.14F + pitch_forward, this.posZ + extraZ);
 
     }
@@ -470,16 +470,12 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
     }
 
     public int getCommand() {
-        return Integer.valueOf(this.dataManager.get(COMMAND).intValue());
+        return this.dataManager.get(COMMAND);
     }
 
     public void setCommand(int command) {
-        this.dataManager.set(COMMAND, Integer.valueOf(command));
-        if (command == 1) {
-            this.setSitting(true);
-        } else {
-            this.setSitting(false);
-        }
+        this.dataManager.set(COMMAND, command);
+	    this.setSitting(command == 1);
     }
 
     public void flapWings() {
@@ -488,7 +484,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
 
     public boolean isSitting() {
         if (world.isRemote) {
-            boolean isSitting = (this.dataManager.get(TAMED).byteValue() & 1) != 0;
+            boolean isSitting = (this.dataManager.get(TAMED) & 1) != 0;
             this.isSitting = isSitting;
             return isSitting;
         }
@@ -499,11 +495,11 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
         if (!world.isRemote) {
             this.isSitting = sitting;
         }
-        byte b0 = this.dataManager.get(TAMED).byteValue();
+        byte b0 = this.dataManager.get(TAMED);
         if (sitting) {
-            this.dataManager.set(TAMED, Byte.valueOf((byte) (b0 | 1)));
+            this.dataManager.set(TAMED, (byte) (b0 | 1));
         } else {
-            this.dataManager.set(TAMED, Byte.valueOf((byte) (b0 & -2)));
+            this.dataManager.set(TAMED, (byte) (b0 & -2));
         }
     }
 
@@ -543,11 +539,11 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(VARIANT, Integer.valueOf(0));
+        this.dataManager.register(VARIANT, 0);
         this.dataManager.register(FLYING, false);
-        this.dataManager.register(FLAP_TICKS, Integer.valueOf(0));
-        this.dataManager.register(CONTROL_STATE, Byte.valueOf((byte) 0));
-        this.dataManager.register(COMMAND, Integer.valueOf(0));
+        this.dataManager.register(FLAP_TICKS, 0);
+        this.dataManager.register(CONTROL_STATE, (byte) 0);
+        this.dataManager.register(COMMAND, 0);
     }
 
     @Override
@@ -595,7 +591,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
         if (this.getAnimation() == ANIMATION_BITE && this.getAttackTarget() != null && this.getAnimationTick() == 7) {
             double dist = this.getDistanceSq(this.getAttackTarget());
             if (dist < 10) {
-                this.getAttackTarget().knockBack(this, 0.6F, (double)MathHelper.sin(this.rotationYaw * 0.017453292F), (double)(-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+                this.getAttackTarget().knockBack(this, 0.6F, MathHelper.sin(this.rotationYaw * 0.017453292F), -MathHelper.cos(this.rotationYaw * 0.017453292F));
                 this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), ((int) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()));
             }
         }
@@ -741,7 +737,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
 
     public boolean isFlying() {
         if (world.isRemote) {
-            return this.isFlying = this.dataManager.get(FLYING).booleanValue();
+            return this.isFlying = this.dataManager.get(FLYING);
         }
         return isFlying;
     }
@@ -754,27 +750,27 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
     }
 
     public int getVariant() {
-        return Integer.valueOf(this.dataManager.get(VARIANT).intValue());
+        return this.dataManager.get(VARIANT);
     }
 
     public void setVariant(int variant) {
-        this.dataManager.set(VARIANT, Integer.valueOf(variant));
+        this.dataManager.set(VARIANT, variant);
     }
 
     public boolean up() {
-        return (dataManager.get(CONTROL_STATE).byteValue() & 1) == 1;
+        return (dataManager.get(CONTROL_STATE) & 1) == 1;
     }
 
     public boolean down() {
-        return (dataManager.get(CONTROL_STATE).byteValue() >> 1 & 1) == 1;
+        return (dataManager.get(CONTROL_STATE) >> 1 & 1) == 1;
     }
 
     public boolean attack() {
-        return (dataManager.get(CONTROL_STATE).byteValue() >> 2 & 1) == 1;
+        return (dataManager.get(CONTROL_STATE) >> 2 & 1) == 1;
     }
 
     public boolean dismount() {
-        return (dataManager.get(CONTROL_STATE).byteValue() >> 3 & 1) == 1;
+        return (dataManager.get(CONTROL_STATE) >> 3 & 1) == 1;
     }
 
     public void up(boolean up) {
@@ -794,7 +790,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
     }
 
     private void setStateField(int i, boolean newState) {
-        byte prevState = dataManager.get(CONTROL_STATE).byteValue();
+        byte prevState = dataManager.get(CONTROL_STATE);
         if (newState) {
             dataManager.set(CONTROL_STATE, (byte) (prevState | (1 << i)));
         } else {
@@ -803,11 +799,11 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
     }
 
     public byte getControlState() {
-        return dataManager.get(CONTROL_STATE).byteValue();
+        return dataManager.get(CONTROL_STATE);
     }
 
     public void setControlState(byte state) {
-        dataManager.set(CONTROL_STATE, Byte.valueOf(state));
+        dataManager.set(CONTROL_STATE, state);
     }
 
     @Nullable
@@ -959,8 +955,8 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
     }
 
     @Override
-    public double getFlightSpeedModifier() {
-        return 0.555D;
+    public float getFlightSpeedModifier() {
+        return 0.555F;
     }
 
     @Override
@@ -1116,7 +1112,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
                 double d1 = this.posY - EntityAmphithere.this.posY;
                 double d2 = this.posZ - EntityAmphithere.this.posZ;
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                d3 = (double) MathHelper.sqrt(d3);
+                d3 = MathHelper.sqrt(d3);
                 if (d3 < 6 && EntityAmphithere.this.getAttackTarget() == null) {
                     if (!EntityAmphithere.this.changedFlightBehavior && EntityAmphithere.this.flightBehavior == FlightBehavior.WANDER && EntityAmphithere.this.rand.nextInt(30) == 0) {
                         EntityAmphithere.this.flightBehavior = FlightBehavior.CIRCLE;

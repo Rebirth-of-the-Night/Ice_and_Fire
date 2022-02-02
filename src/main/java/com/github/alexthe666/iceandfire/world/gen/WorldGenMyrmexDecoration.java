@@ -65,18 +65,18 @@ public class WorldGenMyrmexDecoration {
 
     public static void generateLeaves(World worldIn, BlockPos blockpos, BlockPos origin, int radius, Random rand) {
         if (worldIn.getBlockState(blockpos.down()).isSideSolid(worldIn, blockpos.down(), EnumFacing.UP)) {
-            IBlockState leaf = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.DECAYABLE, Boolean.valueOf(false));
+            IBlockState leaf = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.DECAYABLE, Boolean.FALSE);
             for (BiomeDictionary.Type type : BiomeDictionary.getTypes(worldIn.getBiome(blockpos))) {
                 if (type == BiomeDictionary.Type.SANDY || type == BiomeDictionary.Type.SAVANNA || type == BiomeDictionary.Type.WASTELAND) {
-                    leaf = Blocks.LEAVES2.getDefaultState().withProperty(BlockNewLeaf.VARIANT, BlockPlanks.EnumType.ACACIA).withProperty(BlockLeaves.DECAYABLE, Boolean.valueOf(false));
+                    leaf = Blocks.LEAVES2.getDefaultState().withProperty(BlockNewLeaf.VARIANT, BlockPlanks.EnumType.ACACIA).withProperty(BlockLeaves.DECAYABLE, Boolean.FALSE);
                     break;
                 }
                 if (type == BiomeDictionary.Type.JUNGLE) {
-                    leaf = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.DECAYABLE, Boolean.valueOf(false));
+                    leaf = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.DECAYABLE, Boolean.FALSE);
                     break;
                 }
                 if (type == BiomeDictionary.Type.CONIFEROUS) {
-                    leaf = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE).withProperty(BlockLeaves.DECAYABLE, Boolean.valueOf(false));
+                    leaf = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE).withProperty(BlockLeaves.DECAYABLE, Boolean.FALSE);
                     break;
                 }
             }

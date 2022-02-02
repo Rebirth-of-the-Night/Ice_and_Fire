@@ -70,7 +70,7 @@ public class ModelHippogryph extends ModelDragonBase {
     public AdvancedModelRenderer StirrupR;
     public AdvancedModelRenderer StirrupIronL;
     public AdvancedModelRenderer StirrupIronR;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelHippogryph() {
         this.textureWidth = 256;

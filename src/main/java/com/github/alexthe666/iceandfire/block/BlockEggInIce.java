@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -38,7 +39,7 @@ public class BlockEggInIce extends BlockContainer {
         this.setLightOpacity(3);
         this.setSoundType(SoundType.GLASS);
         this.setTranslationKey("iceandfire.egginice");
-        GameRegistry.registerTileEntity(TileEntityEggInIce.class, "eggInIce");
+        GameRegistry.registerTileEntity(TileEntityEggInIce.class, new ResourceLocation(IceAndFire.MODID, "eggInIce"));
         setRegistryName(IceAndFire.MODID, "egginice");
     }
 
@@ -77,7 +78,7 @@ public class BlockEggInIce extends BlockContainer {
             return false;
         }
 
-        return block != this && super.shouldSideBeRendered(iblockstate, worldIn, pos, side);
+        return super.shouldSideBeRendered(iblockstate, worldIn, pos, side);
     }
 
     @Override
@@ -92,7 +93,7 @@ public class BlockEggInIce extends BlockContainer {
         player.addExhaustion(0.025F);
 
         if (this.canSilkHarvest(worldIn, pos, state, player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0) {
-            java.util.List<ItemStack> items = new java.util.ArrayList<ItemStack>();
+            java.util.List<ItemStack> items = new java.util.ArrayList<>();
             ItemStack itemstack = new ItemStack(Blocks.ICE, 1);
 
             if (!itemstack.isEmpty()) {
@@ -130,13 +131,11 @@ public class BlockEggInIce extends BlockContainer {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState blockstate) {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState blockstate) {
         return false;
     }

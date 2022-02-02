@@ -9,7 +9,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class DragonAITargetNonTamed<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
-    private EntityDragonBase dragon;
+    private final EntityDragonBase dragon;
 
     public DragonAITargetNonTamed(EntityDragonBase entityIn, Class<T> classTarget, boolean checkSight, Predicate<? super T> targetSelector) {
         super(entityIn, classTarget, 0, checkSight, false, targetSelector);

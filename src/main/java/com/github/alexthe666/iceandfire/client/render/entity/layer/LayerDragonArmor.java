@@ -7,9 +7,6 @@ import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.enums.EnumDragonTextures;
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
@@ -19,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 public class LayerDragonArmor implements LayerRenderer<EntityDragonBase> {
-    private static EntityEquipmentSlot[] ARMOR_SLOTS = {EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET};
-    private final RenderLiving render;
+    private static final EntityEquipmentSlot[] ARMOR_SLOTS = {EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET};
+    private final RenderDragonBase render;
     private static final Map<String, ResourceLocation> LAYERED_ARMOR_CACHE = Maps.newHashMap();
 
     public LayerDragonArmor(RenderLiving renderIn, int dragonType) {
@@ -37,7 +34,7 @@ public class LayerDragonArmor implements LayerRenderer<EntityDragonBase> {
             ResourceLocation resourcelocation = LAYERED_ARMOR_CACHE.get(armorTexture);
             if(resourcelocation == null){
                 resourcelocation = new ResourceLocation("iceandfire" + "dragonArmor_" + armorTexture);
-                List<String> tex = new ArrayList<String>();
+                List<String> tex = new ArrayList<>();
                 for (EntityEquipmentSlot slot : ARMOR_SLOTS) {
                     if (dragon.dragonType == DragonType.FIRE) {
                         tex.add(EnumDragonTextures.Armor.getArmorForDragon(dragon, slot).FIRETEXTURE.toString());

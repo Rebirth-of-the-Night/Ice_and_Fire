@@ -1,21 +1,20 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.entity.EntitySeaSerpent;
-import com.github.alexthe666.iceandfire.entity.EntitySiren;
+
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.util.Random;
-
 public class SeaSerpentAIGetInWater extends EntityAIBase {
 
-    private EntitySeaSerpent serpent;
+    private final EntitySeaSerpent serpent;
     private final double movementSpeed;
     private final World world;
     private double shelterX;
@@ -75,7 +74,7 @@ public class SeaSerpentAIGetInWater extends EntityAIBase {
                 blockpos1 = blockpos1.down();
             }
             if (this.world.getBlockState(blockpos1).getMaterial() == Material.WATER) {
-                return new Vec3d((double) blockpos1.getX(), (double) blockpos1.getY(), (double) blockpos1.getZ());
+                return new Vec3d(blockpos1.getX(), blockpos1.getY(), blockpos1.getZ());
             }
         }
 

@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemDragonsteelArmor extends ItemArmor implements IProtectAgainstDragonItem {
 
-    private ArmorMaterial material;
+    private final ArmorMaterial material;
 
     public ItemDragonsteelArmor(ArmorMaterial material, int renderIndex, EntityEquipmentSlot slot, String gameName, String name) {
         super(material, renderIndex, slot);

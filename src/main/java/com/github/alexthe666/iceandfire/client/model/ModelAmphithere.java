@@ -52,7 +52,7 @@ public class ModelAmphithere extends ModelDragonBase {
     public AdvancedModelRenderer FingerR2;
     public AdvancedModelRenderer FingerR3;
     public AdvancedModelRenderer FingerR4;
-    private ModelAnimator animator;
+    private final ModelAnimator animator;
 
     public ModelAmphithere() {
         this.textureWidth = 256;

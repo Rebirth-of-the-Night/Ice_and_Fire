@@ -34,8 +34,8 @@ public class ItemAmphithereMacuahuitl extends ItemSword {
         targetEntity.playSound(IafSoundRegistry.AMPHITHERE_GUST, 1, 1);
         targetEntity.playSound(SoundEvents.ITEM_SHIELD_BLOCK, 1, 1);
         targetEntity.isAirBorne = true;
-        double xRatio = (double) -MathHelper.sin(attacker.rotationYaw * 0.017453292F);
-        double zRatio = (double) (MathHelper.cos(attacker.rotationYaw * 0.017453292F));
+        double xRatio = -MathHelper.sin(attacker.rotationYaw * 0.017453292F);
+        double zRatio = MathHelper.cos(attacker.rotationYaw * 0.017453292F);
         float strength = -0.6F;
         float f = MathHelper.sqrt(xRatio * xRatio + zRatio * zRatio);
         targetEntity.motionX /= 2.0D;

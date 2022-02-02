@@ -11,12 +11,15 @@ import javax.annotation.Nullable;
 public class CockatriceAIAggroLook extends EntityAINearestAttackableTarget<EntityPlayer> {
     private final EntityCockatrice cockatrice;
     private EntityPlayer player;
+
+    @SuppressWarnings("unused")
     private int aggroTime;
+    @SuppressWarnings("unused")
     private int teleportTime;
 
-    public CockatriceAIAggroLook(EntityCockatrice p_i45842_1_) {
-        super(p_i45842_1_, EntityPlayer.class, false);
-        this.cockatrice = p_i45842_1_;
+    public CockatriceAIAggroLook(EntityCockatrice creature) {
+        super(creature, EntityPlayer.class, false);
+        this.cockatrice = creature;
     }
 
     /**

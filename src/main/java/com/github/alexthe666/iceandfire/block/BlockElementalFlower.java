@@ -11,12 +11,12 @@ import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
-import thaumcraft.api.crafting.IInfusionStabiliser;
+import thaumcraft.api.crafting.IInfusionStabiliserExt;
 
 import java.util.Random;
 
-@Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliser", modid = "thaumcraft")
-public class BlockElementalFlower extends BlockBush implements IInfusionStabiliser {
+@Optional.Interface(iface = "thaumcraft.api.crafting.IInfusionStabiliserExt", modid = "thaumcraft")
+public class BlockElementalFlower extends BlockBush implements IInfusionStabiliserExt {
     public Item itemBlock;
 
     public BlockElementalFlower(String name) {
@@ -69,5 +69,11 @@ public class BlockElementalFlower extends BlockBush implements IInfusionStabilis
     @Optional.Method(modid = "thaumcraft")
     public boolean canStabaliseInfusion(World world, BlockPos pos) {
         return true;
+    }
+
+    @Override
+    @Optional.Method(modid = "thaumcraft")
+    public float getStabilizationAmount(World arg0, BlockPos arg1) {
+        return 0.1f;
     }
 }

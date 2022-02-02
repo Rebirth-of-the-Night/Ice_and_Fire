@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class DeathWormAITarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
-    private EntityDeathWorm deathworm;
+    private final EntityDeathWorm deathworm;
 
     public DeathWormAITarget(EntityDeathWorm entityIn, Class<T> classTarget, boolean checkSight, Predicate<? super T> targetSelector) {
         super(entityIn, classTarget, 20, checkSight, false, targetSelector);

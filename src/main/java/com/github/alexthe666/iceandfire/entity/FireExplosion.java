@@ -41,7 +41,7 @@ public class FireExplosion extends Explosion {
     private final List<BlockPos> affectedBlockPositions;
     private final Map<EntityPlayer, Vec3d> playerKnockbackMap;
     private final Vec3d position;
-    private boolean mobGreifing;
+    private final boolean mobGreifing;
 
     public FireExplosion(World world, Entity entity, double x, double y, double z, float size, boolean smoke) {
         super(world, entity, x, y, z, size, true, smoke);
@@ -133,7 +133,7 @@ public class FireExplosion extends Explosion {
                         d5 = d5 / d13;
                         d7 = d7 / d13;
                         d9 = d9 / d13;
-                        if (exploder != null && exploder instanceof EntityDragonBase) {
+                        if (exploder instanceof EntityDragonBase) {
                             if (entity instanceof EntityDragonBase && ((EntityDragonBase) entity).isOwner(((EntityDragonBase) exploder).getOwner())) {
                                 return;
                             }
@@ -148,7 +148,7 @@ public class FireExplosion extends Explosion {
                                 //	((EntityPlayer) entity).addStat(ModAchievements.dragonSlayer, 1);
                             }
                         }
-                        if (entity.isDead && this.exploder != null && this.exploder instanceof EntityDragonBase) {
+                        if (entity.isDead && this.exploder instanceof EntityDragonBase) {
                             ((EntityDragonBase) this.exploder).usingGroundAttack = true;
                         }
                     }
@@ -254,7 +254,8 @@ public class FireExplosion extends Explosion {
         return this.exploder == null ? null : (this.exploder instanceof EntityTNTPrimed ? ((EntityTNTPrimed) this.exploder).getTntPlacedBy() : (this.exploder instanceof EntityLivingBase ? (EntityLivingBase) this.exploder : null));
     }
 
-    public void func_180342_d() {
+    @Override
+    public void clearAffectedBlockPositions() {
         this.affectedBlockPositions.clear();
     }
 

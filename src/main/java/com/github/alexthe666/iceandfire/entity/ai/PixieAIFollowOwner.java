@@ -70,7 +70,6 @@ public class PixieAIFollowOwner extends EntityAIBase {
         return iblockstate.getMaterial() == Material.AIR || !iblockstate.isFullCube();
     }
 
-    @SuppressWarnings("deprecation")
     public void updateTask() {
         this.tameable.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float) this.tameable.getVerticalFaceSpeed());
 
@@ -78,7 +77,7 @@ public class PixieAIFollowOwner extends EntityAIBase {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
 
-                this.tameable.getMoveHelper().setMoveTo(this.owner.posX, this.owner.posY + this.owner.getEyeHeight(), this.owner.posZ, 0.25D);
+                this.tameable.getMoveHelper().setMoveTo(this.owner.posX, this.owner.posY + this.owner.getEyeHeight(), this.owner.posZ, this.followSpeed);
                 this.tameable.slowSpeed = true;
                 if (!this.tameable.getLeashed()) {
                     if (this.tameable.getDistanceSq(this.owner) >= 50.0D) {
@@ -89,7 +88,7 @@ public class PixieAIFollowOwner extends EntityAIBase {
                         for (int l = 0; l <= 4; ++l) {
                             for (int i1 = 0; i1 <= 4; ++i1) {
                                 if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.isEmptyBlock(new BlockPos(i + l, k, j + i1)) && this.isEmptyBlock(new BlockPos(i + l, k + 1, j + i1))) {
-                                    this.tameable.setLocationAndAngles((double) ((float) (i + l) + 0.5F), (double) k + 1.5, (double) ((float) (j + i1) + 0.5F), this.tameable.rotationYaw, this.tameable.rotationPitch);
+                                    this.tameable.setLocationAndAngles((float) (i + l) + 0.5F, (double) k + 1.5, (float) (j + i1) + 0.5F, this.tameable.rotationYaw, this.tameable.rotationPitch);
                                     this.tameable.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
                                     return;
                                 }

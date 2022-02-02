@@ -143,13 +143,13 @@ public class BlockBreakExplosion extends Explosion {
             Block block = this.worldObj.getBlockState(blockpos).getBlock();
 
             if (spawnParticles && !worldObj.isAirBlock(blockpos)) {
-                double d0 = (double) ((float) blockpos.getX() + this.worldObj.rand.nextFloat());
-                double d1 = (double) ((float) blockpos.getY() + this.worldObj.rand.nextFloat());
-                double d2 = (double) ((float) blockpos.getZ() + this.worldObj.rand.nextFloat());
+                double d0 = (float) blockpos.getX() + this.worldObj.rand.nextFloat();
+                double d1 = (float) blockpos.getY() + this.worldObj.rand.nextFloat();
+                double d2 = (float) blockpos.getZ() + this.worldObj.rand.nextFloat();
                 double d3 = d0 - this.explosionX;
                 double d4 = d1 - this.explosionY;
                 double d5 = d2 - this.explosionZ;
-                double d6 = (double) MathHelper.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
+                double d6 = MathHelper.sqrt(d3 * d3 + d4 * d4 + d5 * d5);
                 d3 = d3 / d6;
                 d4 = d4 / d6;
                 d5 = d5 / d6;
@@ -180,7 +180,8 @@ public class BlockBreakExplosion extends Explosion {
         return exploder;
     }
 
-    public void func_180342_d() {
+    @Override
+    public void clearAffectedBlockPositions() {
         this.affectedBlockPositions.clear();
     }
 

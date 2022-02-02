@@ -1,9 +1,6 @@
 package com.github.alexthe666.iceandfire.world;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
-import com.github.alexthe666.iceandfire.entity.MyrmexHive;
-import com.google.common.collect.Lists;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
@@ -54,6 +51,10 @@ public class DragonPosWorldData extends WorldSavedData {
 
     public BlockPos getDragonPos(UUID uuid) {
         return lastDragonPositions.get(uuid);
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     public void debug() {

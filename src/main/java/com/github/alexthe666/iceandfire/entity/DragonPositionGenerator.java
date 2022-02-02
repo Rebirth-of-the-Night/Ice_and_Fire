@@ -24,8 +24,8 @@ public class DragonPositionGenerator {
         boolean flag;
 
         if (mob.hasHome()) {
-            double d0 = mob.getHomePosition().distanceSq((double) MathHelper.floor(mob.posX), (double) MathHelper.floor(mob.posY), (double) MathHelper.floor(mob.posZ)) + 4.0D;
-            double d1 = (double) (mob.getMaximumHomeDistance() + (float) xz);
+            double d0 = mob.getHomePosition().distanceSq(MathHelper.floor(mob.posX), MathHelper.floor(mob.posY), MathHelper.floor(mob.posZ)) + 4.0D;
+            double d1 = mob.getMaximumHomeDistance() + (float) xz;
             flag = d0 < d1 * d1;
         } else {
             flag = false;

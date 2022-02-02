@@ -124,12 +124,12 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(VARIANT, Integer.valueOf(0));
-        this.dataManager.register(WEAPON, Integer.valueOf(0));
+        this.dataManager.register(VARIANT, 0);
+        this.dataManager.register(WEAPON, 0);
     }
 
     private int getVariant() {
-        return this.dataManager.get(VARIANT).intValue();
+        return this.dataManager.get(VARIANT);
     }
 
     private void setVariant(int variant) {
@@ -145,7 +145,7 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
     }
 
     private int getWeapon() {
-        return this.dataManager.get(WEAPON).intValue();
+        return this.dataManager.get(WEAPON);
     }
 
     private void setWeapon(int variant) {

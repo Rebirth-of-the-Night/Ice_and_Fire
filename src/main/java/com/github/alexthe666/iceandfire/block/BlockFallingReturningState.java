@@ -29,7 +29,7 @@ public class BlockFallingReturningState extends BlockFalling {
         this.setSoundType(sound);
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
         setRegistryName(IceAndFire.MODID, gameName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.FALSE));
         this.setTickRandomly(true);
     }
 
@@ -46,7 +46,7 @@ public class BlockFallingReturningState extends BlockFalling {
         if (slippery) {
             this.slipperiness = 0.98F;
         }
-        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.valueOf(false)));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.FALSE));
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {

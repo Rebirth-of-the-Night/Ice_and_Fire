@@ -52,7 +52,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     protected void initEntityAI() {
         this.tasks.addTask(0, new DreadAIDragonFindQueen(this));
         this.tasks.addTask(1, this.aiSit = new EntityAISit(this));
-        this.tasks.addTask(2, new DragonAIEscort(this, 1.0D));
+        this.tasks.addTask(2, new DragonAIEscort(this, 1.35D));
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.5D, false));
         this.tasks.addTask(4, new AquaticAITempt(this, 1.0D, IafItemRegistry.frost_stew, false));
         this.tasks.addTask(6, new DragonAIWander(this, 1.0D));
@@ -269,7 +269,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         return false;
     }
 
-    protected int getFlightChancePerTick(){
-        return 15;
+    protected float getFlightChancePerTick(){
+        return 1/15F;
     }
 }

@@ -10,8 +10,8 @@ import net.minecraft.item.ItemBanner;
 import net.minecraft.item.ItemStack;
 
 public class ContainerDragon extends Container {
-    private IInventory dragonInventory;
-    private EntityDragonBase dragon;
+    private final IInventory dragonInventory;
+    private final EntityDragonBase dragon;
 
     public ContainerDragon(final EntityDragonBase dragon, EntityPlayer player) {
 

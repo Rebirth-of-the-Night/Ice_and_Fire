@@ -106,9 +106,11 @@ public class DreadLichAIStrife extends EntityAIBase {
                 this.entity.getLookHelper().setLookPositionWithEntity(entitylivingbase, 30.0F, 30.0F);
             }
 
+            --this.attackTime;
+
             if (!flag && this.seeTime < -60) {
                 this.entity.resetActiveHand();
-            } else if (flag) {
+            } else if (flag && this.attackTime < 0) {
                 this.entity.resetActiveHand();
                 ((IRangedAttackMob) this.entity).attackEntityWithRangedAttack(entitylivingbase, 0);
                 this.attackTime = this.attackCooldown;

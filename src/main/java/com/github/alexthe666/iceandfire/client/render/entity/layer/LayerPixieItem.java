@@ -33,7 +33,7 @@ public class LayerPixieItem implements LayerRenderer<EntityPixie> {
                 GlStateManager.translate(0.0F, 0.625F, 0.0F);
                 GlStateManager.rotate(-20.0F, -1.0F, 0.0F, 0.0F);
                 float f = 0.5F;
-                GlStateManager.scale(0.5F, 0.5F, 0.5F);
+                GlStateManager.scale(f, f, f);
             }
 
             GlStateManager.translate(-0.0625F, 0.53125F, 0.21875F);

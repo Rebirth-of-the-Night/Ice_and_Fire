@@ -76,8 +76,8 @@ public class AquaticAITempt extends EntityAIBase {
                 this.targetZ = this.temptingPlayer.posZ;
             }
 
-            this.pitch = (double) this.temptingPlayer.rotationPitch;
-            this.yaw = (double) this.temptingPlayer.rotationYaw;
+            this.pitch = this.temptingPlayer.rotationPitch;
+            this.yaw = this.temptingPlayer.rotationYaw;
         }
 
         return this.shouldExecute();

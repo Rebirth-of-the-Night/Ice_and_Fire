@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.compat.tinkers;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.util.IsImmune;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -10,7 +11,7 @@ import slimeknights.tconstruct.library.modifiers.ModifierTrait;
 
 public class TraitBurn extends ModifierTrait {
 
-    private int level;
+    private final int level;
 
     public TraitBurn(int level) {
         super("flame" + (level == 1 ? "" : level), 0XB53007, 1, 1);
@@ -29,8 +30,10 @@ public class TraitBurn extends ModifierTrait {
 
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
-    	target.attackEntityFrom(IceAndFire.dragonFire, level * 2F);
-        target.setFire(level == 1 ? 10 : 15);
+        if (!IsImmune.toDragonFire(target)) {
+		    target.attackEntityFrom(IceAndFire.dragonFire, level * 2F);
+		    target.setFire(level == 1 ? 10 : 15);
+	    }
         if (level >= 2 && IceAndFire.CONFIG.dragonsteelKnockback) {
             target.knockBack(target, 1F, player.posX - target.posX, player.posZ - target.posZ);
         }

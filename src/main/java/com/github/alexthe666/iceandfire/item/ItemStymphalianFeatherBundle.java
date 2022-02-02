@@ -45,7 +45,7 @@ public class ItemStymphalianFeatherBundle extends Item {
         if (!player.isCreative()) {
             itemStackIn.shrink(1);
         }
-        return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
+        return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
 import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
+import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityDragonSkull;
 import com.github.alexthe666.iceandfire.enums.EnumDragonTextures;
 import net.minecraft.client.model.ModelBase;
@@ -21,16 +22,17 @@ public class RenderDragonSkull extends Render<EntityDragonSkull> {
     public static final float[] growth_stage_4 = new float[]{12.5F, 20F};
     public static final float[] growth_stage_5 = new float[]{20F, 30F};
     public float[][] growth_stages;
-    private IceAndFireTabulaModel fireDragonModel;
-    private IceAndFireTabulaModel iceDragonModel;
-    private IceAndFireTabulaModel lightningDragonModel;
+    private final IceAndFireTabulaModel<? extends EntityDragonBase> fireDragonModel;
+    private final IceAndFireTabulaModel<? extends EntityDragonBase> iceDragonModel;
+    private final IceAndFireTabulaModel<? extends EntityDragonBase> lightningDragonModel;
 
+    @SuppressWarnings("unchecked")
     public RenderDragonSkull(RenderManager renderManager, ModelBase fireDragonModel, ModelBase iceDragonModel, ModelBase lightningDragonModel) {
         super(renderManager);
         growth_stages = new float[][]{growth_stage_1, growth_stage_2, growth_stage_3, growth_stage_4, growth_stage_5};
-        this.fireDragonModel = (IceAndFireTabulaModel) fireDragonModel;
-        this.iceDragonModel = (IceAndFireTabulaModel) iceDragonModel;
-        this.lightningDragonModel = (IceAndFireTabulaModel) lightningDragonModel;
+        this.fireDragonModel = (IceAndFireTabulaModel<? extends EntityDragonBase>) fireDragonModel;
+        this.iceDragonModel = (IceAndFireTabulaModel<? extends EntityDragonBase>) iceDragonModel;
+        this.lightningDragonModel = (IceAndFireTabulaModel<? extends EntityDragonBase>) lightningDragonModel;
     }
 
     private static void setRotationAngles(ModelRenderer cube, float rotX, float rotY, float rotZ) {
@@ -44,7 +46,7 @@ public class RenderDragonSkull extends Render<EntityDragonSkull> {
         GlStateManager.disableCull();
         GlStateManager.translate((float) x, (float) y, (float) z);
         GlStateManager.rotate(entity.getYaw(), 0, -1, 0);
-        float f = 0.0625F;
+        // float f = 0.0625F;
         GlStateManager.enableRescaleNormal();
         GlStateManager.scale(1.0F, -1.0F, 1.0F);
         GlStateManager.enableAlpha();

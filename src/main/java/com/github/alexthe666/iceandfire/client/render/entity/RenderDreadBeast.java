@@ -4,7 +4,6 @@ import com.github.alexthe666.iceandfire.client.model.ModelDreadBeast;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerGenericGlowing;
 import com.github.alexthe666.iceandfire.entity.EntityDreadBeast;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -17,7 +16,7 @@ public class RenderDreadBeast extends RenderLiving<EntityDreadBeast> {
 
     public RenderDreadBeast(RenderManager renderManager) {
         super(renderManager, new ModelDreadBeast(), 0.5F);
-        this.addLayer(new LayerGenericGlowing(this, TEXTURE_EYES));
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURE_EYES));
     }
 
     @Override

@@ -1,27 +1,29 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
 import com.github.alexthe666.iceandfire.entity.EntityDragonArrow;
+
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderDragonArrow extends Render {
+public class RenderDragonArrow extends Render<EntityDragonArrow> {
     private static final ResourceLocation arrowTextures = new ResourceLocation("iceandfire:textures/models/misc/dragonbone_arrow.png");
 
     public RenderDragonArrow(RenderManager render) {
         super(render);
     }
 
+    @Override
     public void doRender(EntityDragonArrow entity, double x, double y, double z, float yaw, float partialTicks) {
         this.bindEntityTexture(entity);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -83,17 +85,8 @@ public class RenderDragonArrow extends Render {
         super.doRender(entity, x, y, z, yaw, partialTicks);
     }
 
+    @Override
     protected ResourceLocation getEntityTexture(EntityDragonArrow arrow) {
         return arrowTextures;
-    }
-
-    @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
-        return this.getEntityTexture((EntityDragonArrow) entity);
-    }
-
-    @Override
-    public void doRender(Entity entity, double x, double y, double z, float f, float partialTicks) {
-        this.doRender((EntityDragonArrow) entity, x, y, z, f, partialTicks);
     }
 }

@@ -13,9 +13,11 @@ import java.util.Comparator;
 
 public class AquaticAIFindWaterTarget extends EntityAIBase {
     protected AquaticAIFindWaterTarget.Sorter fleePosSorter;
-    private EntityCreature mob;
-    private int range;
-    private boolean avoidAttacker;
+    private final EntityCreature mob;
+    private final int range;
+
+    @SuppressWarnings("unused")
+    private final boolean avoidAttacker;
 
     public AquaticAIFindWaterTarget(EntityCreature mob, int range, boolean avoidAttacker) {
         this.mob = mob;
@@ -31,7 +33,7 @@ public class AquaticAIFindWaterTarget extends EntityAIBase {
             return false;
         }
         Path path = this.mob.getNavigator().getPath();
-        if (this.mob.getRNG().nextFloat() < 0.15F || path != null && path.getFinalPathPoint() != null && this.mob.getDistanceSq((double) path.getFinalPathPoint().x, (double) path.getFinalPathPoint().y, (double) path.getFinalPathPoint().z) < 3) {
+        if (this.mob.getRNG().nextFloat() < 0.15F || path != null && path.getFinalPathPoint() != null && this.mob.getDistanceSq(path.getFinalPathPoint().x, path.getFinalPathPoint().y, path.getFinalPathPoint().z) < 3) {
             if (path != null && path.getFinalPathPoint() != null || !this.mob.getNavigator().noPath() && !isDirectPathBetweenPoints(this.mob, this.mob.getPositionVector(), new Vec3d(path.getFinalPathPoint().x, path.getFinalPathPoint().y, path.getFinalPathPoint().z))) {
                 this.mob.getNavigator().clearPath();
             }
@@ -55,7 +57,7 @@ public class AquaticAIFindWaterTarget extends EntityAIBase {
         BlockPos blockpos = new BlockPos(this.mob.posX, this.mob.getEntityBoundingBox().minY, mob.posZ);
         if (this.mob.getAttackTarget() == null || this.mob.getAttackTarget().isDead) {
             for (int i = 0; i < 10; ++i) {
-                BlockPos blockpos1 = blockpos.add(mob.getRNG().nextInt(20) - 10, mob.getRNG().nextInt(6) - 3, mob.getRNG().nextInt(20) - 10);
+                BlockPos blockpos1 = blockpos.add(mob.getRNG().nextInt(this.range*2) - this.range, mob.getRNG().nextInt(6) - 3, mob.getRNG().nextInt(this.range*2) - this.range);
                 if (mob.world.getBlockState(blockpos1).getMaterial() == Material.WATER) {
                     return blockpos1;
                 }
@@ -83,7 +85,7 @@ public class AquaticAIFindWaterTarget extends EntityAIBase {
             this.pos = AquaticAIFindWaterTarget.this.mob.getPosition();
             double d0 = this.pos.distanceSq(p_compare_1_);
             double d1 = this.pos.distanceSq(p_compare_2_);
-            return d0 < d1 ? 1 : (d0 > d1 ? -1 : 0);
+            return Double.compare(d1, d0);
         }
     }
 }

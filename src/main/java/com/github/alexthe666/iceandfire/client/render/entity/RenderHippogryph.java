@@ -5,7 +5,6 @@ import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,7 +35,7 @@ public class RenderHippogryph extends RenderLiving<EntityHippogryph> {
     }
 
     @SideOnly(Side.CLIENT)
-    private class LayerHippogriffSaddle implements LayerRenderer {
+    private class LayerHippogriffSaddle implements LayerRenderer<EntityHippogryph> {
         private final RenderHippogryph renderer;
         private final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/hippogryph/saddle.png");
 
@@ -44,6 +43,7 @@ public class RenderHippogryph extends RenderLiving<EntityHippogryph> {
             this.renderer = renderer;
         }
 
+        @Override
         public void doRenderLayer(EntityHippogryph entity, float f, float f1, float i, float f2, float f3, float f4, float f5) {
             if (entity.isSaddled()) {
                 this.renderer.bindTexture(TEXTURE);
@@ -55,15 +55,10 @@ public class RenderHippogryph extends RenderLiving<EntityHippogryph> {
         public boolean shouldCombineTextures() {
             return false;
         }
-
-        @Override
-        public void doRenderLayer(EntityLivingBase entity, float f, float f1, float f2, float f3, float f4, float f5, float f6) {
-            this.doRenderLayer((EntityHippogryph) entity, f, f1, f2, f3, f4, f5, f6);
-        }
     }
 
     @SideOnly(Side.CLIENT)
-    private class LayerHippogriffBridle implements LayerRenderer {
+    private class LayerHippogriffBridle implements LayerRenderer<EntityHippogryph> {
         private final RenderHippogryph renderer;
         private final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/hippogryph/bridle.png");
 
@@ -71,6 +66,7 @@ public class RenderHippogryph extends RenderLiving<EntityHippogryph> {
             this.renderer = renderer;
         }
 
+        @Override
         public void doRenderLayer(EntityHippogryph entity, float f, float f1, float i, float f2, float f3, float f4, float f5) {
             if (entity.isSaddled() && entity.getControllingPassenger() != null) {
                 this.renderer.bindTexture(TEXTURE);
@@ -82,15 +78,10 @@ public class RenderHippogryph extends RenderLiving<EntityHippogryph> {
         public boolean shouldCombineTextures() {
             return false;
         }
-
-        @Override
-        public void doRenderLayer(EntityLivingBase entity, float f, float f1, float f2, float f3, float f4, float f5, float f6) {
-            this.doRenderLayer((EntityHippogryph) entity, f, f1, f2, f3, f4, f5, f6);
-        }
     }
 
     @SideOnly(Side.CLIENT)
-    private class LayerHippogriffChest implements LayerRenderer {
+    private class LayerHippogriffChest implements LayerRenderer<EntityHippogryph> {
         private final RenderHippogryph renderer;
         private final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/hippogryph/chest.png");
 
@@ -98,6 +89,7 @@ public class RenderHippogryph extends RenderLiving<EntityHippogryph> {
             this.renderer = renderer;
         }
 
+        @Override
         public void doRenderLayer(EntityHippogryph entity, float f, float f1, float i, float f2, float f3, float f4, float f5) {
             if (entity.isChested()) {
                 this.renderer.bindTexture(TEXTURE);
@@ -109,15 +101,10 @@ public class RenderHippogryph extends RenderLiving<EntityHippogryph> {
         public boolean shouldCombineTextures() {
             return false;
         }
-
-        @Override
-        public void doRenderLayer(EntityLivingBase entity, float f, float f1, float f2, float f3, float f4, float f5, float f6) {
-            this.doRenderLayer((EntityHippogryph) entity, f, f1, f2, f3, f4, f5, f6);
-        }
     }
 
     @SideOnly(Side.CLIENT)
-    private class LayerHippogriffArmor implements LayerRenderer {
+    private class LayerHippogriffArmor implements LayerRenderer<EntityHippogryph> {
         private final RenderHippogryph renderer;
         private final ResourceLocation TEXTURE_DIAMOND = new ResourceLocation("iceandfire:textures/models/hippogryph/armor_diamond.png");
         private final ResourceLocation TEXTURE_GOLD = new ResourceLocation("iceandfire:textures/models/hippogryph/armor_gold.png");
@@ -127,6 +114,7 @@ public class RenderHippogryph extends RenderLiving<EntityHippogryph> {
             this.renderer = renderer;
         }
 
+        @Override
         public void doRenderLayer(EntityHippogryph entity, float f, float f1, float i, float f2, float f3, float f4, float f5) {
             if (entity.getArmor() != 0) {
                 switch (entity.getArmor()) {
@@ -147,11 +135,6 @@ public class RenderHippogryph extends RenderLiving<EntityHippogryph> {
         @Override
         public boolean shouldCombineTextures() {
             return false;
-        }
-
-        @Override
-        public void doRenderLayer(EntityLivingBase entity, float f, float f1, float f2, float f3, float f4, float f5, float f6) {
-            this.doRenderLayer((EntityHippogryph) entity, f, f1, f2, f3, f4, f5, f6);
         }
     }
 }

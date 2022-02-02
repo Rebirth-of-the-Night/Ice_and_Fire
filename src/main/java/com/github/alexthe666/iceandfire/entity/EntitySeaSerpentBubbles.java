@@ -27,7 +27,7 @@ public class EntitySeaSerpentBubbles extends EntityFireball implements IDragonPr
     public EntitySeaSerpentBubbles(World worldIn, EntitySeaSerpent shooter, double accelX, double accelY, double accelZ) {
         super(worldIn, shooter, accelX, accelY, accelZ);
         this.setSize(0.5F, 0.5F);
-        double d0 = (double) MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
+        double d0 = MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
         this.accelerationX = accelX / d0 * 0.1D;
         this.accelerationY = accelY / d0 * 0.1D;
         this.accelerationZ = accelZ / d0 * 0.1D;
@@ -74,9 +74,9 @@ public class EntitySeaSerpentBubbles extends EntityFireball implements IDragonPr
             this.motionX += this.accelerationX;
             this.motionY += this.accelerationY;
             this.motionZ += this.accelerationZ;
-            this.motionX *= (double) f;
-            this.motionY *= (double) f;
-            this.motionZ *= (double) f;
+            this.motionX *= f;
+            this.motionY *= f;
+            this.motionZ *= f;
             this.setPosition(this.posX, this.posY, this.posZ);
         } else {
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1F, this.rand.nextFloat());
@@ -90,7 +90,7 @@ public class EntitySeaSerpentBubbles extends EntityFireball implements IDragonPr
             double d2 = target.posX - posX;
             double d3 = target.posY - posY;
             double d4 = target.posZ - posZ;
-            double d0 = (double) MathHelper.sqrt(d2 * d2 + d3 * d3 + d4 * d4);
+            double d0 = MathHelper.sqrt(d2 * d2 + d3 * d3 + d4 * d4);
             this.accelerationX = d2 / d0 * 0.1D;
             this.accelerationY = d3 / d0 * 0.1D;
             this.accelerationZ = d4 / d0 * 0.1D;
@@ -112,6 +112,7 @@ public class EntitySeaSerpentBubbles extends EntityFireball implements IDragonPr
 
     @Override
     protected void onImpact(RayTraceResult result) {
+        if (result == null) return;
         if (result.entityHit != null && !result.entityHit.isEntityEqual(this.shootingEntity)) {
             result.entityHit.attackEntityFrom(DamageSource.causeMobDamage(this.shootingEntity), 1F);
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1F, this.rand.nextFloat());

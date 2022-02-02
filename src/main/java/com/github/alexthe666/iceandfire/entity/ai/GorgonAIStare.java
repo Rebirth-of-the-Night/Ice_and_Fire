@@ -4,27 +4,20 @@ import com.github.alexthe666.iceandfire.entity.EntityGorgon;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 
-public class GorgonAIStareAttack extends EntityAIBase {
+public class GorgonAIStare extends EntityAIBase {
     private final EntityGorgon entity;
     private final double moveSpeedAmp;
     private final float maxAttackDistance;
-    private int attackCooldown;
-    private int attackTime = -1;
     private int seeTime;
     private boolean strafingClockwise;
     private boolean strafingBackwards;
     private int strafingTime = -1;
 
-    public GorgonAIStareAttack(EntityGorgon gorgon, double speedAmplifier, int delay, float maxDistance) {
+    public GorgonAIStare(EntityGorgon gorgon, double speedAmplifier, float maxDistance) {
         this.entity = gorgon;
         this.moveSpeedAmp = speedAmplifier;
-        this.attackCooldown = delay;
         this.maxAttackDistance = maxDistance * maxDistance;
         this.setMutexBits(3);
-    }
-
-    public void setAttackCooldown(int cooldown) {
-        this.attackCooldown = cooldown;
     }
 
     public boolean shouldExecute() {
@@ -38,7 +31,6 @@ public class GorgonAIStareAttack extends EntityAIBase {
     public void resetTask() {
         super.resetTask();
         this.seeTime = 0;
-        this.attackTime = -1;
         this.entity.resetActiveHand();
     }
 
