@@ -102,10 +102,10 @@ public class ItemModShovel extends ItemSpade {
                     flag = false;
                 }
             }
-            if(!attacker.world.isRemote && flag && !target.isDead) {
-            EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
-            if(IceAndFire.CONFIG.saferBoltStrike) {
-                lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ);
+            if(!attacker.world.isRemote && flag && !target.isDead && !IsImmune.toDragonLightning(target)) {
+            	EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
+            	if(IceAndFire.CONFIG.saferBoltStrike) {
+            		lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ);
                 }
             	target.world.addWeatherEffect(lightningBolt);
             }

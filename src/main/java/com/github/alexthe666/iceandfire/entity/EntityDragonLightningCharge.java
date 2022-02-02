@@ -1,6 +1,8 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.util.IsImmune;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityTameable;
@@ -24,7 +26,7 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
 
     public EntityDragonLightningCharge(World worldIn, double posX, double posY, double posZ, double accelX, double accelY, double accelZ) {
         super(worldIn, posX, posY, posZ, accelX, accelY, accelZ);
-        double d0 = (double) MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
+        double d0 = MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
         this.accelerationX = accelX / d0 * 0.07D;
         this.accelerationY = accelY / d0 * 0.07D;
         this.accelerationZ = accelZ / d0 * 0.07D;
@@ -32,7 +34,7 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
 
     public EntityDragonLightningCharge(World worldIn, EntityDragonBase shooter, double accelX, double accelY, double accelZ) {
         super(worldIn, shooter, accelX, accelY, accelZ);
-        double d0 = (double) MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
+        double d0 = MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
         this.accelerationX = accelX / d0 * 0.07D;
         this.accelerationY = accelY / d0 * 0.07D;
         this.accelerationZ = accelZ / d0 * 0.07D;
@@ -49,13 +51,13 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
 
     public void onUpdate() {
         this.extinguish();
-        if (this.world.isRemote || (this.shootingEntity == null || !this.shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
-        	super.onUpdate();
+        if (this.world.isRemote || (shootingEntity == null || !shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
+            super.onUpdate();
             
             this.extinguish();
 
             ++this.ticksInAir;
-            RayTraceResult raytraceresult = ProjectileHelper.forwardsRaycast(this, false, this.ticksInAir >= 25, this.shootingEntity);
+            RayTraceResult raytraceresult = ProjectileHelper.forwardsRaycast(this, false, this.ticksInAir >= 25, shootingEntity);
 
             if (raytraceresult != null) {
                 this.onImpact(raytraceresult);
@@ -79,9 +81,9 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
             this.motionX += this.accelerationX;
             this.motionY += this.accelerationY;
             this.motionZ += this.accelerationZ;
-            this.motionX *= (double) f;
-            this.motionY *= (double) f;
-            this.motionZ *= (double) f;
+            this.motionX *= f;
+            this.motionY *= f;
+            this.motionZ *= f;
             this.setPosition(this.posX, this.posY, this.posZ);
         } else {
         	this.setDead();
@@ -90,48 +92,52 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
 
     @Override
     protected void onImpact(RayTraceResult movingObject) {
+	    if (movingObject == null) return;
+	    
         boolean flag = this.world.getGameRules().getBoolean("mobGriefing");
 
         if (!this.world.isRemote) {
-            if (movingObject.entityHit != null && movingObject.entityHit instanceof IDragonProjectile) {
+	        Entity entityHit = movingObject.entityHit;
+	        if (entityHit instanceof IDragonProjectile) {
                 return;
             }
             EntityLivingBase shootingEntity = this.shootingEntity;
             if(shootingEntity instanceof EntityDragonBase) {
-                if (movingObject.entityHit != null && shootingEntity != null && shootingEntity instanceof EntityDragonBase && movingObject.entityHit != null) {
+                if (entityHit != null && shootingEntity != null) {
                     EntityDragonBase dragon = (EntityDragonBase) shootingEntity;
-                    if (dragon.isOnSameTeam(movingObject.entityHit) || dragon.isEntityEqual(movingObject.entityHit) || dragon.isPart(movingObject.entityHit)) {
+                    if (dragon.isOnSameTeam(entityHit) || dragon.isEntityEqual(entityHit) || dragon.isPart(entityHit)) {
                         return;
                     }
                 }
-                if (movingObject.entityHit == null || !(movingObject.entityHit instanceof IDragonProjectile) && movingObject.entityHit != shootingEntity && shootingEntity instanceof EntityDragonBase) {
+                if (entityHit == null || entityHit != shootingEntity) {
                     EntityDragonBase dragon = (EntityDragonBase) shootingEntity;
-                    if (shootingEntity != null && (movingObject.entityHit == shootingEntity || (movingObject.entityHit instanceof EntityTameable && ((EntityDragonBase) shootingEntity).isOwner(((EntityDragonBase) shootingEntity).getOwner())))) {
+                    if (entityHit instanceof EntityTameable && ((EntityDragonBase) shootingEntity).isOwner(((EntityDragonBase) shootingEntity)
+		                    .getOwner())) {
                         return;
                     }
-                    if (shootingEntity != null && IceAndFire.CONFIG.dragonGriefing != 2) {
+                    if (IceAndFire.CONFIG.dragonGriefing != 2) {
                         IafDragonDestructionManager.destroyAreaLightningCharge(world, new BlockPos(posX, posY, posZ), dragon);
                     }
-                    if (dragon != null) {
-                        dragon.randomizeAttacks();
-                    }
+	                dragon.randomizeAttacks();
                     this.setDead();
                 }
-                if (movingObject.entityHit != null && !(movingObject.entityHit instanceof IDragonProjectile) && !movingObject.entityHit.isEntityEqual(shootingEntity)) {
-                    if (shootingEntity != null && (movingObject.entityHit.isEntityEqual(shootingEntity) || (shootingEntity instanceof EntityDragonBase & movingObject.entityHit instanceof EntityTameable && ((EntityDragonBase) shootingEntity).getOwner() == ((EntityTameable) movingObject.entityHit).getOwner()))) {
+                if (entityHit != null && !entityHit.isEntityEqual(shootingEntity)) {
+                    if (entityHit.isEntityEqual(shootingEntity) || entityHit instanceof EntityTameable && ((EntityDragonBase) shootingEntity)
+		                    .getOwner() == ((EntityTameable) entityHit).getOwner()) {
                         return;
                     }
-                    if (shootingEntity != null && shootingEntity instanceof EntityDragonBase) {
-                        movingObject.entityHit.attackEntityFrom(IceAndFire.dragonLightning, 10.0F);
-                        if (movingObject.entityHit instanceof EntityLivingBase && ((EntityLivingBase) movingObject.entityHit).getHealth() == 0) {
-                            ((EntityDragonBase) shootingEntity).randomizeAttacks();
-                        }
-                    }
-                    this.applyEnchantments(shootingEntity, movingObject.entityHit);
-                    if (shootingEntity instanceof EntityDragonBase) {
-                        IafDragonDestructionManager.destroyAreaLightningCharge(world, new BlockPos(posX, posY, posZ), ((EntityDragonBase) shootingEntity));
-                    }
-                    this.setDead();
+	                entityHit.attackEntityFrom(IceAndFire.dragonLightning, 10.0F);
+	                if (entityHit instanceof EntityLivingBase && ((EntityLivingBase) entityHit).getHealth() == 0) {
+	                    ((EntityDragonBase) shootingEntity).randomizeAttacks();
+	                }
+	                if (entityHit instanceof EntityLivingBase && !IsImmune.toDragonLightning(entityHit)) {
+                        double x = shootingEntity.posX - entityHit.posX;
+                        double z = shootingEntity.posZ - entityHit.posZ;
+		                ((EntityLivingBase)entityHit).knockBack(((EntityLivingBase)entityHit), 0.3F, x, z);
+	                }
+	                this.applyEnchantments(shootingEntity, entityHit);
+	                IafDragonDestructionManager.destroyAreaLightningCharge(world, new BlockPos(posX, posY, posZ), ((EntityDragonBase) shootingEntity));
+	                this.setDead();
                 }
             }
         }
@@ -141,7 +147,7 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
         float f = -MathHelper.sin(pitch * 0.017453292F) * MathHelper.cos(yaw * 0.017453292F);
         float f1 = -MathHelper.sin(yaw * 0.017453292F);
         float f2 = MathHelper.cos(pitch * 0.017453292F) * MathHelper.cos(yaw * 0.017453292F);
-        this.setThrowableHeading(fireball, (double) f, (double) f1, (double) f2, b, c);
+        this.setThrowableHeading(fireball, f, f1, f2, b, c);
         fireball.motionX += entity.motionX;
         fireball.motionZ += entity.motionZ;
 
@@ -166,7 +172,7 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
         fireball.motionZ = z;
         float f1 = MathHelper.sqrt(x * x + z * z);
         fireball.rotationYaw = (float) (MathHelper.atan2(x, z) * (180D / Math.PI));
-        fireball.rotationPitch = (float) (MathHelper.atan2(y, (double) f1) * (180D / Math.PI));
+        fireball.rotationPitch = (float) (MathHelper.atan2(y, f1) * (180D / Math.PI));
         fireball.prevRotationYaw = fireball.rotationYaw;
         fireball.prevRotationPitch = fireball.rotationPitch;
     }

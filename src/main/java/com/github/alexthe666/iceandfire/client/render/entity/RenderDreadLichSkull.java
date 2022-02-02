@@ -56,7 +56,6 @@ public class RenderDreadLichSkull extends Render<EntityDreadLichSkull> {
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 
-    @SuppressWarnings("unused")
     private float interpolateValue(float start, float end, float pct) {
         return start + (end - start) * pct;
     }

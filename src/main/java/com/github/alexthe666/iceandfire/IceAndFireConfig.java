@@ -60,6 +60,7 @@ public class IceAndFireConfig {
 
     public String[] dragonIceImmuneEntities = new String[0];
     public String[] dragonFireImmuneEntities = new String[0];
+    public String[] dragonLightningImmuneEntities = new String[0];
     public String[] stoneImmuneEntities = new String[0];
     public String[] chainImmuneEntities = new String[0];
     public boolean spawnHippogryphs = true;
@@ -227,6 +228,7 @@ public class IceAndFireConfig {
         this.dragonFlightChance = config.getFloat("Dragon Flight Chance Per Tick", "all", 0.000666F, 0F, 1F, "Every tick a RNG decides whether this dragon should start flying or not, based on this chance");
 	    this.dragonIceImmuneEntities = config.getStringList("Entities immune to dragon ice", "all", new String[0], "Entities listed here will not be affected by dragon ice freezing");
 	    this.dragonFireImmuneEntities = config.getStringList("Entities immune to dragon fire", "all", new String[0], "Entities listed here will not be affected by dragon fire burning");
+	    this.dragonLightningImmuneEntities = config.getStringList("Entities immune to dragon lightning", "all", new String[0], "Entities listed here will not be affected by dragon lightning electrocuting");
 	    this.stoneImmuneEntities = config.getStringList("Entities immune to being turned to stone", "all", new String[0], "Entities listed here will never be turned to stone");
 	    this.chainImmuneEntities = config.getStringList("Entities immune to being tied to a chain", "all", new String[0], "Entities listed here can't be tied to chains");
 	    this.dragonBreakBlockCooldown = config.getInt("Dragon Block Break Cooldown", "all", 5, 0, 10000, "Every interval of this number in ticks, dragon allowed to break blocks.");

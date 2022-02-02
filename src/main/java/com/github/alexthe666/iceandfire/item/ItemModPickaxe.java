@@ -11,7 +11,6 @@ import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
 import com.github.alexthe666.iceandfire.util.IsImmune;
 
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -30,9 +29,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -103,10 +105,10 @@ public class ItemModPickaxe extends ItemPickaxe {
                     flag = false;
                 }
             }
-            if(!attacker.world.isRemote && flag && !target.isDead) {
-            EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
-            if(IceAndFire.CONFIG.saferBoltStrike) {
-                lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ);
+            if(!attacker.world.isRemote && flag && !target.isDead && !IsImmune.toDragonLightning(target)) {
+            	EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
+            	if(IceAndFire.CONFIG.saferBoltStrike) {
+            		lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ);
                 }
             	target.world.addWeatherEffect(lightningBolt);
             }

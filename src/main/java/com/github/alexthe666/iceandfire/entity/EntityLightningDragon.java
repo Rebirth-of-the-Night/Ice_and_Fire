@@ -48,7 +48,6 @@ public class EntityLightningDragon extends EntityDragonBase {
     private static final DataParameter<Float> LIGHTNING_TARGET_X = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> LIGHTNING_TARGET_Y = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> LIGHTNING_TARGET_Z = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.FLOAT);
-    public static Animation ANIMATION_FIRECHARGE;
     
     public EntityLightningDragon(World worldIn) {
         super(worldIn, DragonType.LIGHTNING, 1, 1 + IceAndFire.CONFIG.dragonAttackDamage, IceAndFire.CONFIG.dragonHealth * 0.04, IceAndFire.CONFIG.dragonHealth, 0.15F, 0.4F);
@@ -193,6 +192,8 @@ public class EntityLightningDragon extends EntityDragonBase {
                 case WING_BLAST:
                     this.setAnimation(ANIMATION_WINGBLAST);
                     break;
+			default:
+				break;
             }
         }
         return false;

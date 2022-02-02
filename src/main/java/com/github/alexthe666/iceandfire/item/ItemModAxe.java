@@ -39,13 +39,17 @@ import net.minecraftforge.oredict.OreDictionary;
 public class ItemModAxe extends ItemAxe {
 
     public ItemModAxe(ToolMaterial toolmaterial, String gameName, String name) {
-        super(toolmaterial, toolMaterial == IafItemRegistry.dragonsteel_fire_tools || toolMaterial == IafItemRegistry.dragonsteel_ice_tools || toolMaterial == IafItemRegistry.dragonsteel_lightning_tools ? toolmaterial.getAttackDamage() + 8 : toolmaterial.getAttackDamage() + 5, -3.0F);
+        super(toolmaterial, getDragonMaterial(toolmaterial) ? toolmaterial.getAttackDamage() + 8 : toolmaterial.getAttackDamage() + 5, -3.0F);
         this.toolMaterial = toolmaterial;
         this.setTranslationKey(name);
         this.setCreativeTab(IceAndFire.TAB_ITEMS);
         this.setRegistryName(IceAndFire.MODID, gameName);
     }
     
+    private static boolean getDragonMaterial(ToolMaterial toolMaterial) {
+    	return toolMaterial == IafItemRegistry.dragonsteel_fire_tools || toolMaterial == IafItemRegistry.dragonsteel_ice_tools || toolMaterial == IafItemRegistry.dragonsteel_lightning_tools;
+    }
+     
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
         ItemStack mat = this.toolMaterial.getRepairItemStack();
         if (this.toolMaterial == IafItemRegistry.silverTools) {
@@ -84,7 +88,6 @@ public class ItemModAxe extends ItemAxe {
 	        if (!IsImmune.toDragonFire(target)) {
 		        target.setFire(15);
 	        }
-			
         	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
         		target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         	}
@@ -95,7 +98,6 @@ public class ItemModAxe extends ItemAxe {
 		        frozenProps.setFrozenFor(300);
 		        target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 2));
 	        }
-			
         	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
         		target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         	}
@@ -107,14 +109,15 @@ public class ItemModAxe extends ItemAxe {
                     flag = false;
                 }
             }
-            if(!attacker.world.isRemote && flag && !target.isDead) {
-            EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
-            if(IceAndFire.CONFIG.saferBoltStrike) {
-                lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ);
-                }
+            if(!attacker.world.isRemote && flag && !target.isDead && !IsImmune.toDragonLightning(target)) {
+            	EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
+            	if(IceAndFire.CONFIG.saferBoltStrike) {
+            		lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ);
+            	}
             	target.world.addWeatherEffect(lightningBolt);
             }
-        	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
+        	
+            if(IceAndFire.CONFIG.dragonsteelKnockback) {  
                 target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
             	}
         	}

@@ -22,32 +22,29 @@ public class WorldGenCaveReplace extends WorldGenerator {
 
     public boolean generate(World worldIn, Random rand, BlockPos position) {
         while (true) {
-            label50:
-            {
-                Block block = worldIn.getBlockState(position.down()).getBlock();
-                if (position.getY() <= 3) {
-                    return false;
-                }
-
-                int i1 = this.startRadius;
-
-                for (int i = 0; i1 >= 0 && i < 3; ++i) {
-                    int j = i1 + rand.nextInt(2);
-                    int k = i1 + rand.nextInt(2);
-                    int l = i1 + rand.nextInt(2);
-                    float f = (float) (j + k + l) * 0.333F + 0.5F;
-
-                    for (BlockPos blockpos : BlockPos.getAllInBox(position.add(-j, -k, -l), position.add(j, k, l))) {
-                        if (blockpos.distanceSq(position) <= (double) (f * f) && (worldIn.getBlockState(blockpos).getBlock() == toReplace)) {
-                            worldIn.setBlockState(blockpos, this.block.getDefaultState());
-                        }
-                    }
-
-                    position = position.add(-(i1 + 1) + rand.nextInt(2 + i1 * 2), 0 - rand.nextInt(2), -(i1 + 1) + rand.nextInt(2 + i1 * 2));
-                }
-
-                return true;
+            Block block = worldIn.getBlockState(position.down()).getBlock();
+            if (position.getY() <= 3) {
+                return false;
             }
+
+            int i1 = this.startRadius;
+
+            for (int i = 0; i1 >= 0 && i < 3; ++i) {
+                int j = i1 + rand.nextInt(2);
+                int k = i1 + rand.nextInt(2);
+                int l = i1 + rand.nextInt(2);
+                float f = (float) (j + k + l) * 0.333F + 0.5F;
+
+                for (BlockPos blockpos : BlockPos.getAllInBox(position.add(-j, -k, -l), position.add(j, k, l))) {
+                    if (blockpos.distanceSq(position) <= (double) (f * f) && (worldIn.getBlockState(blockpos).getBlock() == toReplace)) {
+                        worldIn.setBlockState(blockpos, this.block.getDefaultState());
+                    }
+                }
+
+                position = position.add(-(i1 + 1) + rand.nextInt(2 + i1 * 2), 0 - rand.nextInt(2), -(i1 + 1) + rand.nextInt(2 + i1 * 2));
+            }
+
+            return true;
         }
     }
 }

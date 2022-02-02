@@ -9,7 +9,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-@SuppressWarnings("unused")
 public class LayerChainedEntity implements LayerRenderer<EntityLivingBase> {
     private final Render<? extends Entity> render;
 

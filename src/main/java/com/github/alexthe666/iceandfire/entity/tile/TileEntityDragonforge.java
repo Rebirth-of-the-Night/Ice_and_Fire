@@ -241,26 +241,23 @@ public class TileEntityDragonforge extends TileEntity implements ITickable, ISid
     private ItemStack getCurrentResult() {
         DragonForgeRecipe forgeRecipe = null;
         if (dragonType == 0) {
-            forgeRecipe = IafRecipeRegistry.getFireForgeRecipe(0);
+            forgeRecipe =  IafRecipeRegistry.getFireForgeRecipe(this.forgeItemStacks.get(0));
         } else if (dragonType == 1) {
-            forgeRecipe = IafRecipeRegistry.getIceForgeRecipe(0);
+            forgeRecipe =  IafRecipeRegistry.getIceForgeRecipe(this.forgeItemStacks.get(0));
         } else if (dragonType == 2){
-            forgeRecipe = IafRecipeRegistry.getLightningForgeRecipe(0);
+            forgeRecipe =  IafRecipeRegistry.getLightningForgeRecipe(this.forgeItemStacks.get(0));
         } else {
-            forgeRecipe = IafRecipeRegistry.getFireForgeRecipe(0);
+            forgeRecipe =  IafRecipeRegistry.getFireForgeRecipe(this.forgeItemStacks.get(0));
         }
         ItemStack itemstack = ItemStack.EMPTY;
         if (forgeRecipe != null && this.forgeItemStacks.get(1).isItemEqual(forgeRecipe.getBlood())) {
             itemstack = forgeRecipe.getOutput();
         }
-
-        Block defaultOutput = IafBlockRegistry.ash;
-        if (this.dragonType == 1) {
-            defaultOutput = IafBlockRegistry.dragon_ice;
         if (itemstack == ItemStack.EMPTY) {
 		    Block defaultOutput = IafBlockRegistry.ash;
             if (this.dragonType == 1) {
                 defaultOutput = IafBlockRegistry.dragon_ice;
+            }
         }
         return itemstack;
     }

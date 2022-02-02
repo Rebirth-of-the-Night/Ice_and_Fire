@@ -6,7 +6,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IRenderHandler;
 
 // TODO
-@SuppressWarnings("unused")
 public class RenderDreadlandsAurora extends IRenderHandler {
     private static final ResourceLocation AURORA_TEXTURES = new ResourceLocation("iceandfire:textures/environment/dread_aurora.png");
 

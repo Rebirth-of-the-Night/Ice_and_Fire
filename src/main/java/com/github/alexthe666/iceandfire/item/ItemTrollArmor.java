@@ -45,6 +45,8 @@ public class ItemTrollArmor extends ItemArmor {
                 return "leggings";
             case FEET:
                 return "boots";
+		default:
+			break;
         }
         return "";
     }

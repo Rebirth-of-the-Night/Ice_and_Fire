@@ -12,9 +12,7 @@ public class CockatriceAIAggroLook extends EntityAINearestAttackableTarget<Entit
     private final EntityCockatrice cockatrice;
     private EntityPlayer player;
 
-    @SuppressWarnings("unused")
     private int aggroTime;
-    @SuppressWarnings("unused")
     private int teleportTime;
 
     public CockatriceAIAggroLook(EntityCockatrice creature) {

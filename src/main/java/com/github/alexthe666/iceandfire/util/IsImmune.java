@@ -8,7 +8,6 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import java.util.Arrays;
 import java.util.Objects;
 
-@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class IsImmune {
 	public static boolean toDragonIce(Entity entity) {
 		return Arrays
@@ -25,6 +24,18 @@ public class IsImmune {
 	public static boolean toDragonFire(Entity entity) {
 		return Arrays
 				.stream(IceAndFire.CONFIG.dragonFireImmuneEntities)
+				.map(resourceName ->
+						Objects.requireNonNull(ForgeRegistries.ENTITIES.getValue(new ResourceLocation(resourceName)), "Couldn't find registry entry for " + resourceName)
+								.getEntityClass()
+				)
+				.anyMatch(cls ->
+						cls.isInstance(entity)
+				);
+	}
+	
+	public static boolean toDragonLightning(Entity entity) {
+		return Arrays
+				.stream(IceAndFire.CONFIG.dragonLightningImmuneEntities)
 				.map(resourceName ->
 						Objects.requireNonNull(ForgeRegistries.ENTITIES.getValue(new ResourceLocation(resourceName)), "Couldn't find registry entry for " + resourceName)
 								.getEntityClass()

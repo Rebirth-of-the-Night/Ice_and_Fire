@@ -35,7 +35,6 @@ public class ModelDreadLich extends ModelDragonBase {
     public ModelBiped.ArmPose rightArmPose;
     public boolean isSneak;
     private final ModelAnimator animator;
-    @SuppressWarnings("unused")
     private boolean armor = false;
     
     public ModelDreadLich(float modelSize, boolean armorArms) {

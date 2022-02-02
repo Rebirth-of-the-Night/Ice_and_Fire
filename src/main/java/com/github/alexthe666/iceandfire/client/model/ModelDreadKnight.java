@@ -36,7 +36,6 @@ public class ModelDreadKnight extends ModelDragonBase {
     public boolean isSneak;
     private final ModelAnimator animator;
 
-    @SuppressWarnings("unused")
     private boolean armor = false;
 
     public ModelDreadKnight(float modelSize, boolean armorArms) {

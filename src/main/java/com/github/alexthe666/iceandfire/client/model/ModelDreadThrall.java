@@ -29,7 +29,6 @@ public class ModelDreadThrall extends AdvancedModelBase {
     public ModelBiped.ArmPose rightArmPose;
     public boolean isSneak;
     private final ModelAnimator animator;
-    @SuppressWarnings("unused")
     private boolean armor = false;
 
     public ModelDreadThrall(float modelSize, boolean armorArms) {
@@ -245,7 +244,6 @@ public class ModelDreadThrall extends AdvancedModelBase {
         animator.rotate(model, (float) Math.toRadians(x), (float) Math.toRadians(y), (float) Math.toRadians(z));
     }
 
-    @SuppressWarnings("unused")
     private void rotateMinus(ModelAnimator animator, AdvancedModelRenderer model, float x, float y, float z) {
         animator.rotate(model, (float) Math.toRadians(x) - model.defaultRotationX, (float) Math.toRadians(y) - model.defaultRotationY, (float) Math.toRadians(z) - model.defaultRotationZ);
     }

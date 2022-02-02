@@ -23,7 +23,6 @@ import java.util.Random;
 
 public abstract class BlockGenericSlab extends BlockSlab {
 
-	@SuppressWarnings("unused")
 	private final Block baseBlock;
 
 	public BlockGenericSlab(String name, float hardness, float resistance, SoundType soundType, Material material, Block baseBlock) {

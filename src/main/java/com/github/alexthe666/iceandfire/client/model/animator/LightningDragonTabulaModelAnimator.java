@@ -1,5 +1,8 @@
 package com.github.alexthe666.iceandfire.client.model.animator;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.github.alexthe666.iceandfire.client.model.util.EnumDragonAnimations;
 import com.github.alexthe666.iceandfire.client.model.util.IIceAndFireTabulaModelAnimator;
 import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
@@ -17,8 +20,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator implements IIceAndFireTabulaModelAnimator<EntityLightningDragon> {
 
-    private IceAndFireTabulaModel[] walkPoses = {EnumDragonAnimations.WALK1.lightningdragon_model, EnumDragonAnimations.WALK2.lightningdragon_model, EnumDragonAnimations.WALK3.lightningdragon_model, EnumDragonAnimations.WALK4.lightningdragon_model};
-    private IceAndFireTabulaModel[] flyPoses = {EnumDragonAnimations.FLIGHT1.lightningdragon_model, EnumDragonAnimations.FLIGHT2.lightningdragon_model, EnumDragonAnimations.FLIGHT3.lightningdragon_model, EnumDragonAnimations.FLIGHT4.lightningdragon_model, EnumDragonAnimations.FLIGHT5.lightningdragon_model, EnumDragonAnimations.FLIGHT6.lightningdragon_model};
+    private final List<IceAndFireTabulaModel<? extends EntityDragonBase>> walkPoses = Arrays.asList(
+            EnumDragonAnimations.WALK1.lightningdragon_model,
+            EnumDragonAnimations.WALK2.lightningdragon_model,
+            EnumDragonAnimations.WALK3.lightningdragon_model,
+            EnumDragonAnimations.WALK4.lightningdragon_model );
+    private final List<IceAndFireTabulaModel<? extends EntityDragonBase>> flyPoses = Arrays.asList(
+            EnumDragonAnimations.FLIGHT1.lightningdragon_model,
+            EnumDragonAnimations.FLIGHT2.lightningdragon_model,
+            EnumDragonAnimations.FLIGHT3.lightningdragon_model,
+            EnumDragonAnimations.FLIGHT4.lightningdragon_model,
+            EnumDragonAnimations.FLIGHT5.lightningdragon_model,
+            EnumDragonAnimations.FLIGHT6.lightningdragon_model );
     AdvancedModelRenderer[] neckParts;
     AdvancedModelRenderer[] tailParts;
     AdvancedModelRenderer[] tailPartsWBody;
@@ -43,7 +56,7 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
     }
 
     @Override
-    public void setRotationAngles(IceAndFireTabulaModel model, EntityLightningDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
+    public void setRotationAngles(IceAndFireTabulaModel<EntityLightningDragon> model, EntityLightningDragon entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
         model.resetToDefaultPose();
         animate(model, entity, limbSwing, limbSwingAmount, ageInTicks, rotationYaw, rotationPitch, scale);
         boolean walking = !entity.isHovering() && !entity.isFlying() && entity.hoverProgress <= 0 && entity.flyProgress <= 0;
@@ -53,8 +66,8 @@ public class LightningDragonTabulaModelAnimator extends IceAndFireTabulaModelAni
         if (prevIndex < 0) {
             prevIndex = walking ? 3 : 5;
         }
-        IceAndFireTabulaModel currentPosition = walking ? walkPoses[currentIndex] : flyPoses[currentIndex];
-        IceAndFireTabulaModel prevPosition = walking ? walkPoses[prevIndex] : flyPoses[prevIndex];
+        IceAndFireTabulaModel<? extends EntityDragonBase> currentPosition = walking ? walkPoses.get(currentIndex) : flyPoses.get(currentIndex);
+        IceAndFireTabulaModel<? extends EntityDragonBase> prevPosition = walking ? walkPoses.get(prevIndex) : flyPoses.get(prevIndex);
         float delta = ((walking ? entity.walkCycle : entity.flightCycle) / 10.0F) % 1.0F;
         float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
         float deltaTicks = delta + (LLibrary.PROXY.getPartialTicks() / 10.0F);

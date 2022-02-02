@@ -44,7 +44,6 @@ public class EntityIceDragon extends EntityDragonBase {
     public static final ResourceLocation MALE_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/ice_dragon_male"));
     public static final ResourceLocation SKELETON_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/ice_dragon_skeleton"));
     private static final DataParameter<Boolean> SWIMMING = EntityDataManager.createKey(EntityIceDragon.class, DataSerializers.BOOLEAN);
-    public static Animation ANIMATION_FIRECHARGE;
     public boolean isSwimming;
     public float swimProgress;
     public int ticksSwiming;
@@ -163,6 +162,8 @@ public class EntityIceDragon extends EntityDragonBase {
                 case WING_BLAST:
                     this.setAnimation(ANIMATION_WINGBLAST);
                     break;
+			default:
+				break;
             }
         }
         return false;
@@ -564,24 +565,5 @@ public class EntityIceDragon extends EntityDragonBase {
     @Override
     public Item getSummoningCrystal() {
         return IafItemRegistry.summoning_crystal_ice;
-    }
-
-    public void tryScorchTarget() {
-        EntityLivingBase entity = this.getAttackTarget();
-        if (entity != null) {
-            float distX = (float) (entity.posX - this.posX);
-            float distZ = (float) (entity.posZ - this.posZ);
-            if (this.isBreathingFire()) {
-                if (this.isActuallyBreathingFire()) {
-                    rotationYaw = renderYawOffset;
-                    if (this.ticksExisted % 5 == 0) {
-                        this.playSound(IafSoundRegistry.ICEDRAGON_BREATH, 4, 1);
-                    }
-                    stimulateFire(this.posX + distX * this.fireTicks / 40, entity.posY, this.posZ + distZ * this.fireTicks / 40, 1);
-                }
-            } else {
-                this.setBreathingFire(true);
-            }
-        }
     }
 }

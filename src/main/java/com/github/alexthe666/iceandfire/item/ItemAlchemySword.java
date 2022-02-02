@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.client.StatCollector;
+import com.github.alexthe666.iceandfire.entity.EntityCyclops;
 import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
 import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
@@ -17,6 +18,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
@@ -69,24 +71,27 @@ public class ItemAlchemySword extends ItemSword {
         	}
         }
         if (this == IafItemRegistry.dragonbone_sword_lightning) {
+            if (target instanceof EntityFireDragon || target instanceof EntityIceDragon) {
+                target.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 9.5F);
+            }
+            
             boolean flag = true;
             if(attacker instanceof EntityPlayer) {
                 if(((EntityPlayer)attacker).swingProgress > 0.2) {
                     flag = false;
                 }
-            }
-            if(!attacker.world.isRemote && flag && !target.isDead) {
-            EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
-            if(IceAndFire.CONFIG.saferBoltStrike) {
-                lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ);
-                }
+            } 
+            
+            if(!attacker.world.isRemote && flag && !target.isDead && !(target instanceof EntityCyclops)) {
+            	EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
+            	if(IceAndFire.CONFIG.saferBoltStrike) {
+            		lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ);
+            	}
             	target.world.addWeatherEffect(lightningBolt);
-            }
-            if (target instanceof EntityFireDragon || target instanceof EntityIceDragon) {
-                target.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 9.5F);
-            }
-        	if(IceAndFire.CONFIG.dragonsteelKnockback) {
-                target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
+            } 
+            
+            if(IceAndFire.CONFIG.dragonsteelKnockback) {
+            	target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
             	}
         	}
         return super.hitEntity(stack, target, attacker);

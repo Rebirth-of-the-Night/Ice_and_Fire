@@ -19,7 +19,6 @@ import net.minecraft.util.math.BlockPos;
 public class GuiMyrmexAddRoom extends GuiScreen {
     private static final ResourceLocation JUNGLE_TEXTURE = new ResourceLocation("iceandfire:textures/gui/myrmex_staff_jungle.png");
     private static final ResourceLocation DESERT_TEXTURE = new ResourceLocation("iceandfire:textures/gui/myrmex_staff_desert.png");
-    @SuppressWarnings("unused")
     private final ItemStack staff;
     private final boolean jungle;
     private final BlockPos interactPos;

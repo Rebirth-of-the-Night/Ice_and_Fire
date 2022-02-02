@@ -20,7 +20,7 @@ public class LayerDragonArmor implements LayerRenderer<EntityDragonBase> {
     private final RenderDragonBase render;
     private static final Map<String, ResourceLocation> LAYERED_ARMOR_CACHE = Maps.newHashMap();
 
-    public LayerDragonArmor(RenderLiving renderIn, int dragonType) {
+    public LayerDragonArmor(RenderDragonBase renderIn, int dragonType) {
         this.render = renderIn;
     }
 

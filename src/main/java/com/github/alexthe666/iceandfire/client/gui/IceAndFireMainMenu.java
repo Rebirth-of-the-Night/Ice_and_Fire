@@ -284,7 +284,6 @@ public class IceAndFireMainMenu extends GuiMainMenu {
         int x;
         int y;
         float alpha;
-        @SuppressWarnings("unused")
         float scale;
 
         public Picture(int image, int x, int y, float alpha, float scale) {
@@ -300,7 +299,6 @@ public class IceAndFireMainMenu extends GuiMainMenu {
         String text;
         int x;
         int y;
-        @SuppressWarnings("unused")
         int color;
         float alpha;
 

@@ -45,7 +45,7 @@ public class IafDragonFlightManager {
         EntityLivingBase attackTarget = dragon.getAttackTarget();
         if (attackTarget != null && !attackTarget.isDead) {
             if (dragon instanceof EntityIceDragon && dragon.isInWater()) {
-                if (attackTarget == null) {
+                if (dragon.getAttackTarget() == null) {
                     dragon.airAttack = IafDragonAttacks.Air.SCORCH_STREAM;
                 } else {
                     dragon.airAttack = IafDragonAttacks.Air.TACKLE;

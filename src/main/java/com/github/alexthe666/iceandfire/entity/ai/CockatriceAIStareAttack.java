@@ -13,7 +13,6 @@ public class CockatriceAIStareAttack extends EntityAIBase {
     private final double moveSpeedAmp;
     private final float maxAttackDistance;
 
-    @SuppressWarnings("unused")
     private int attackCooldown;
     private int seeTime;
     private BlockPos target = null;

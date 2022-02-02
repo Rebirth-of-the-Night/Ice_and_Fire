@@ -6,7 +6,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import static com.github.alexthe666.iceandfire.IceAndFire.MODID;
 
-@SuppressWarnings("WeakerAccess")
 @GameRegistry.ObjectHolder(MODID)
 public final class IafSoundRegistry {
 

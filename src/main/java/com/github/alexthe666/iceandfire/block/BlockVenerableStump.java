@@ -147,7 +147,6 @@ public class BlockVenerableStump extends Block {
         }
     }
 
-    @SuppressWarnings("PointlessArithmeticExpression")
     public enum StumpPart implements IStringSerializable {
         // --
         NORTH_WEST(

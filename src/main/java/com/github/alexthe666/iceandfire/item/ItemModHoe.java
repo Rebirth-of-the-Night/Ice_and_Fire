@@ -92,8 +92,8 @@ public class ItemModHoe extends ItemHoe {
 		        frozenProps.setFrozenFor(300);
 		        target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 300, 2));
 	        }
-        	if(IceAndFire.CONFIG.dragonsteelKnockback) {  
-        			target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
+        	if(IceAndFire.CONFIG.dragonsteelKnockback) {  	
+        		target.knockBack(target, 1F, attacker.posX - target.posX, attacker.posZ - target.posZ);
         	}
         }
         if (toolMaterial == IafItemRegistry.dragonsteel_lightning_tools) {
@@ -103,10 +103,10 @@ public class ItemModHoe extends ItemHoe {
                     flag = false;
                 }
             }
-            if(!attacker.world.isRemote && flag && !target.isDead) {
-            EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
-            if(IceAndFire.CONFIG.saferBoltStrike) {
-                lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ);
+            if(!attacker.world.isRemote && flag && !target.isDead && !IsImmune.toDragonLightning(target)) {
+            	EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
+            	if(IceAndFire.CONFIG.saferBoltStrike) {
+            		lightningBolt.move(MoverType.SELF, target.posX - attacker.posX, target.posY, target.posZ - attacker.posZ);
                 }
             	target.world.addWeatherEffect(lightningBolt);
             }

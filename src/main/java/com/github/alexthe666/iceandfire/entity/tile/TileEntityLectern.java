@@ -68,7 +68,6 @@ public class TileEntityLectern extends TileEntity implements ITickable, ISidedIn
         return this.stacks.get(index);
     }
 
-    @SuppressWarnings("unused")
     private boolean canAddPage() {
         if (this.stacks.get(0).isEmpty()) {
             return false;
