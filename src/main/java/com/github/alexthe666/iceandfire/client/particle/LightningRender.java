@@ -120,7 +120,7 @@ public class LightningRender {
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
             for (int i = bounds.getLeft(); i < bounds.getRight(); i++) {
-                buffer.begin(5, DefaultVertexFormats.POSITION_COLOR);
+                buffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
                 renderQuads.get(i).getVecs().forEach(v -> buffer.pos((float) v.x, (float) v.y, (float) v.z).color(bolt.getColor().getX(), bolt.getColor().getY(), bolt.getColor().getZ(), bolt.getColor().getW()).endVertex());
                 tessellator.draw();
             }

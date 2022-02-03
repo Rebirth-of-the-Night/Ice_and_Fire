@@ -4,6 +4,7 @@ import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.entity.ai.*;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,6 +23,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+
 import java.util.UUID;
 
 public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob {
@@ -210,12 +212,20 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     }
 
     public Item getVariantScale(int variant) {
-        return IafItemRegistry.dragonscales_blue;
+        return null;
     }
 
     public Item getVariantEgg(int variant) {
         return null;
     }
+
+	protected Item getHeartItem() {
+		return null;
+	}
+
+	protected Item getBloodItem() {
+		return null;
+	}
 
     public boolean isBreedingItem(@Nullable ItemStack stack) {
         return false;

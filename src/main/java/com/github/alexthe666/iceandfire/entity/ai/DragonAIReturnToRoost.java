@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.entity.ai;
 import java.util.EnumSet;
 
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
+import com.github.alexthe666.iceandfire.util.IAFMath;
 
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.Path;
@@ -22,13 +23,13 @@ public class DragonAIReturnToRoost extends EntityAIBase {
 
 	@Override
 	public boolean shouldExecute() {
-		return this.dragon.canMove() && this.dragon.lookingForRoostAIFlag && (dragon.getAttackTarget() == null || !dragon.getAttackTarget().isEntityAlive()) && dragon.getHomePosition() != null && dragon.getDistanceSquared(this.copyCentered(dragon.getHomePosition())) > dragon.width * dragon.width;
+		return this.dragon.canMove() && this.dragon.lookingForRoostAIFlag && (dragon.getAttackTarget() == null || !dragon.getAttackTarget().isEntityAlive()) && dragon.getHomePosition() != null && dragon.getDistanceSquared(IAFMath.copyCentered(dragon.getHomePosition())) > dragon.width * dragon.width;
 	}
 	
     @Override
     public void updateTask() {
         if (this.dragon.getHomePosition() != null) {
-            double dist = Math.sqrt(dragon.getDistanceSquared(this.copyCentered(dragon.getHomePosition())));
+            double dist = Math.sqrt(dragon.getDistanceSquared(IAFMath.copyCentered(dragon.getHomePosition())));
             double xDist = Math.abs(dragon.posX - dragon.getHomePosition().getX() - 0.5F);
             double zDist = Math.abs(dragon.posZ - dragon.getHomePosition().getZ() - 0.5F);
             double xzDist = Math.sqrt(xDist * xDist + zDist * zDist);
@@ -44,7 +45,7 @@ public class DragonAIReturnToRoost extends EntityAIBase {
                     if(this.dragon.onGround){
                         this.dragon.setFlying(false);
                         this.dragon.setHovering(false);
-                        this.dragon.flightManager.setTarget(this.copyCenteredWithVerticalOffset(this.dragon.getHomePosition(), yAddition));
+                        this.dragon.flightManager.setTarget(IAFMath.copyCenteredWithVerticalOffset(this.dragon.getHomePosition(), yAddition));
                         this.dragon.getNavigator().tryMoveToXYZ(this.dragon.getHomePosition().getX(), this.dragon.getHomePosition().getY(), this.dragon.getHomePosition().getZ(), 1.0F);
                         return;
                     }
@@ -53,27 +54,11 @@ public class DragonAIReturnToRoost extends EntityAIBase {
                     this.dragon.setHovering(true);
                 }
                 if(this.dragon.isFlying()){
-                    this.dragon.flightManager.setTarget(this.copyCenteredWithVerticalOffset(this.dragon.getHomePosition(), yAddition));
+                    this.dragon.flightManager.setTarget(IAFMath.copyCenteredWithVerticalOffset(this.dragon.getHomePosition(), yAddition));
                     this.dragon.getNavigator().tryMoveToXYZ(this.dragon.getHomePosition().getX(), yAddition + this.dragon.getHomePosition().getY(), this.dragon.getHomePosition().getZ(), 1F);
                 }
                 this.dragon.flyTicks = 0;
             }
         }
-    }  
-	   
-	/**
-	 * Copies the coordinates of an Int vector and centers them.
-	 * Code copied from 1.16 Forge, I own no rights to this code.
-	 */
-	private static Vec3d copyCentered(Vec3i toCopy) {      
-		return new Vec3d((double)toCopy.getX() + 0.5D, (double)toCopy.getY() + 0.5D, (double)toCopy.getZ() + 0.5D);
-	}
-	  
-	/**
-	 * Copies the coordinates of an int vector and centers them horizontally and applies a vertical offset.
-	 * Code copied from 1.16 Forge, I own no rights to this code.
-	 */
-	public static Vec3d copyCenteredWithVerticalOffset(Vec3i toCopy, double verticalOffset) {
-		return new Vec3d((double)toCopy.getX() + 0.5D, (double)toCopy.getY() + verticalOffset, (double)toCopy.getZ() + 0.5D);
-	}
+    }
 }

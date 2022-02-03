@@ -95,7 +95,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.VARINT);
     private static final DataParameter<Float> DRAGON_PITCH = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.FLOAT);
     private static final DataParameter<Boolean> CRYSTAL_BOUND = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<String> CUSTOM_POSE = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.STRING);
     public static Animation ANIMATION_FIRECHARGE;
     public static Animation ANIMATION_EAT;
     public static Animation ANIMATION_SPEAK;
@@ -513,7 +512,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         this.dataManager.register(COMMAND, 0);
         this.dataManager.register(DRAGON_PITCH, (float) 0);
         this.dataManager.register(CRYSTAL_BOUND, Boolean.FALSE);
-		this.dataManager.register(CUSTOM_POSE, "");
     }
 
     public boolean up() {
@@ -616,7 +614,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         compound.setFloat("DeadProg", this.modelDeadProgress);
         compound.setBoolean("Tackle", this.isTackling());
         compound.setBoolean("HasHomePosition", this.hasHomePosition);
-		compound.setString("CustomPose", this.getCustomPose());
         if (homePos != null && this.hasHomePosition) {
             compound.setInteger("HomeAreaX", homePos.getX());
             compound.setInteger("HomeAreaY", homePos.getY());
@@ -656,7 +653,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         this.setDeathStage(compound.getInteger("DeathStage"));
         this.setModelDead(compound.getBoolean("ModelDead"));
         this.modelDeadProgress = compound.getFloat("DeadProg");
-		this.setCustomPose(compound.getString("CustomPose"));
         if (!compound.getString("CustomName").isEmpty()) {
             this.setCustomNameTag(compound.getString("CustomName"));
         }
@@ -880,15 +876,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             this.dataManager.set(TAMED, (byte) (b0 & -2));
         }
     }
-    
-    public String getCustomPose() {
-		return this.dataManager.get(CUSTOM_POSE);
-	}
-
-    public void setCustomPose(String customPose) {
-        this.dataManager.set(CUSTOM_POSE, customPose);
-        modelDeadProgress = 20F;
-	}
 
     public void riderShootFire(Entity controller) {
     }
