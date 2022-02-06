@@ -272,7 +272,7 @@ public class EntityLightningDragon extends EntityDragonBase {
                 this.setAnimation(ANIMATION_FIRECHARGE);
             } else if (this.getAnimationTick() == 20) {
                 rotationYaw = renderYawOffset;
-                Vec3d headVec = super.getHeadPosition();
+                Vec3d headVec = this.getHeadPosition();
                 this.playSound(IafSoundRegistry.LIGHTNINGDRAGON_BREATH_CRACKLE, 4, 1);
                 double d2 = controller.getLookVec().x;
                 double d3 = controller.getLookVec().y;
@@ -323,7 +323,7 @@ public class EntityLightningDragon extends EntityDragonBase {
                     this.setAnimation(ANIMATION_FIRECHARGE);
                 } else if (this.getAnimationTick() == 20) {
                     rotationYaw = renderYawOffset;
-                    Vec3d headVec = super.getHeadPosition();
+                    Vec3d headVec = this.getHeadPosition();
                     double d2 = entity.posX - headVec.x;
                     double d3 = entity.posY - headVec.y;
                     double d4 = entity.posZ - headVec.z;
@@ -388,7 +388,7 @@ public class EntityLightningDragon extends EntityDragonBase {
                 this.setAnimation(ANIMATION_FIRECHARGE);
             } else if (this.getAnimationTick() == 20) {
                 rotationYaw = renderYawOffset;
-                Vec3d headVec = super.getHeadPosition();
+                Vec3d headVec = this.getHeadPosition();
                 double d2 = burnX - headVec.x;
                 double d3 = burnY - headVec.y;
                 double d4 = burnZ - headVec.z;
