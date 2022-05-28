@@ -88,6 +88,7 @@ public class ItemTideTrident extends Item {
     }
     
     @Override
+    @SuppressWarnings("deprecation")
     public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
         Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
         if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {

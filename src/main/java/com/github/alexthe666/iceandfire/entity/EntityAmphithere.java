@@ -12,7 +12,6 @@ import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -214,7 +213,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
     }
 
     protected void initEntityAI() {
-        this.tasks.addTask(0, new DragonAIRide(this));
+        this.tasks.addTask(0, new DragonAIRide<>(this));
         this.tasks.addTask(0, this.aiSit = new EntityAISit(this));
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(1, new AmphithereAIAttackMelee(this, 1.0D, true));
@@ -228,7 +227,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new AmphithereAIHurtByTarget(this, false, new Class[0]));
-        this.targetTasks.addTask(3, new AmphithereAITargetItems(this, false));
+        this.targetTasks.addTask(3, new AmphithereAITargetItems<>(this, false));
     }
 
     public boolean isStill() {
@@ -245,7 +244,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
             this.navigator = new PathNavigateFlyingCreature(this, world);
             this.navigatorType = 1;
         }else{
-            this.moveHelper = new IafDragonFlightManager.PlayerFlightMoveHelper(this);
+            this.moveHelper = new IafDragonFlightManager.PlayerFlightMoveHelper<>(this);
             this.navigator = new PathNavigateFlyingCreature(this, world);
             this.navigatorType = 2;
         }
@@ -581,7 +580,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
         int j = MathHelper.floor(this.getEntityBoundingBox().minY);
         int k = MathHelper.floor(this.posZ);
         BlockPos blockpos = new BlockPos(i, j, k);
-        Block block = this.world.getBlockState(blockpos.down()).getBlock();
+        // Block block = this.world.getBlockState(blockpos.down()).getBlock();
         return this.world.canBlockSeeSky(blockpos.up());
     }
 
@@ -847,14 +846,14 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
     }
 
     public void playLivingSound() {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playLivingSound();
     }
 
     protected void playHurtSound(DamageSource source) {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playHurtSound(source);
