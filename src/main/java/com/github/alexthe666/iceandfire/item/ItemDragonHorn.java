@@ -1,38 +1,36 @@
 package com.github.alexthe666.iceandfire.item;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
-import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.stats.StatList;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class ItemDragonHorn extends Item {
 
@@ -54,7 +52,7 @@ public class ItemDragonHorn extends Item {
         if(stack.getTagCompound() != null){
             NBTTagCompound entity = stack.getTagCompound().getCompoundTag("EntityTag");
             if(!entity.isEmpty()){
-                Class clazz = EntityList.getClassFromName(entity.getString("id"));
+                Class<? extends Entity> clazz = EntityList.getClassFromName(entity.getString("id"));
                 if(clazz != null){
                     return  clazz == EntityFireDragon.class ? 1 : 2;
                 }
@@ -106,7 +104,7 @@ public class ItemDragonHorn extends Item {
         if (stack.getTagCompound() != null) {
             NBTTagCompound entityTag = stack.getTagCompound().getCompoundTag("EntityTag");
             if(!entityTag.isEmpty()) {
-                Class clazz = EntityList.getClassFromName(entityTag.getString("id"));
+                Class<? extends Entity> clazz = EntityList.getClassFromName(entityTag.getString("id"));
                 EntityEntry entry = EntityRegistry.getEntry(clazz);
                 if (entry != null) {
                     String name = I18n.format("entity." + entry.getName() + ".name");
