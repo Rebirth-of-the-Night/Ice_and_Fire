@@ -7,6 +7,8 @@ import net.minecraft.item.ItemStack;
 
 public class SlotLectern extends Slot {
     private EntityPlayer thePlayer;
+
+    @SuppressWarnings("unused")
     private int removeCount;
 
     public SlotLectern(EntityPlayer player, IInventory inv, int slotIndex, int xPosition, int yPosition) {

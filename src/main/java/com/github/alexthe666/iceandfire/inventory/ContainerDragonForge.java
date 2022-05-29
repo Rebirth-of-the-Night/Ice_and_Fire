@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 public class ContainerDragonForge extends SyncedFieldContainer {
 
     private final IInventory tileFurnace;
-    private int cookTime;
     private boolean isFire;
 
     public ContainerDragonForge(InventoryPlayer playerInventory, IInventory furnaceInventory) {

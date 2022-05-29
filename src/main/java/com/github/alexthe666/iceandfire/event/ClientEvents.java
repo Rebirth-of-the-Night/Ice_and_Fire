@@ -1,7 +1,11 @@
 package com.github.alexthe666.iceandfire.event;
 
+import java.util.Map;
+import java.util.Random;
+
 import com.github.alexthe666.iceandfire.ClientProxy;
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.client.IafKeybindRegistry;
 import com.github.alexthe666.iceandfire.client.gui.IceAndFireMainMenu;
 import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
 import com.github.alexthe666.iceandfire.client.render.entity.ICustomStoneLayer;
@@ -9,26 +13,29 @@ import com.github.alexthe666.iceandfire.client.render.entity.RenderCockatrice;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerChainedEntity;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerStoneEntity;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerStoneEntityCrack;
-import com.github.alexthe666.iceandfire.client.IafKeybindRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.util.IAFMath;
+
+import org.lwjgl.opengl.GL11;
+
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -42,11 +49,6 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.opengl.GL11;
-
-import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.Random;
 
 public class ClientEvents {
 
@@ -58,7 +60,6 @@ public class ClientEvents {
     private static final ResourceLocation CHAIN_TEXTURE = new ResourceLocation("iceandfire:textures/models/misc/chain_link.png");
     private final Random rand = new Random();
 
-    @SuppressWarnings("unchecked")
     public static void initializeStoneLayer() {
         for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : Minecraft.getMinecraft().getRenderManager().entityRenderMap.entrySet()) {
             Render<? extends Entity> render = entry.getValue();
@@ -78,13 +79,13 @@ public class ClientEvents {
                 for (Map.Entry<Class<? extends Entity>, IRenderFactory<? extends Entity>> entry : entityRenders.entrySet()) {
                     if (entry.getValue() != null) {
                         try {
-                            Render render = entry.getValue().createRenderFor(Minecraft.getMinecraft().getRenderManager());
+                            Render<?> render = entry.getValue().createRenderFor(Minecraft.getMinecraft().getRenderManager());
                             if (render != null && render instanceof RenderLivingBase && EntityLiving.class.isAssignableFrom(entry.getKey())) {
-                                LayerRenderer stoneLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getStoneLayer((RenderLivingBase) render) : new LayerStoneEntity((RenderLivingBase) render);
-                                LayerRenderer crackLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getCrackLayer((RenderLivingBase) render) : new LayerStoneEntityCrack((RenderLivingBase) render);
-                                ((RenderLivingBase) render).addLayer(stoneLayer);
-                                ((RenderLivingBase) render).addLayer(crackLayer);
-                                ((RenderLivingBase) render).addLayer(new LayerChainedEntity(render));
+                                LayerRenderer<?> stoneLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getStoneLayer((RenderLivingBase<?>) render) : new LayerStoneEntity<>((RenderLivingBase<?>) render);
+                                LayerRenderer<?> crackLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getCrackLayer((RenderLivingBase<?>) render) : new LayerStoneEntityCrack((RenderLivingBase<?>) render);
+                                ((RenderLivingBase<?>) render).addLayer(stoneLayer);
+                                ((RenderLivingBase<?>) render).addLayer(crackLayer);
+                                ((RenderLivingBase<?>) render).addLayer(new LayerChainedEntity(render));
                             }
                         } catch (NullPointerException exp) {
                             IceAndFire.logger.warn("Ice and Fire: Could not apply stone render layer to " + entry.getKey().getSimpleName() + ", someone isn't registering their renderer properly... <.<");
@@ -95,13 +96,13 @@ public class ClientEvents {
             }
             if (entityRendersOld != null) {
                 for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : entityRendersOld.entrySet()) {
-                    Render render = entry.getValue();
+                    Render<?> render = entry.getValue();
                     if (render instanceof RenderLivingBase && EntityLiving.class.isAssignableFrom(entry.getKey())) {
-                        LayerRenderer stoneLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getStoneLayer((RenderLivingBase) render) : new LayerStoneEntity((RenderLivingBase) render);
-                        LayerRenderer crackLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getCrackLayer((RenderLivingBase) render) : new LayerStoneEntityCrack((RenderLivingBase) render);
-                        ((RenderLivingBase) render).addLayer(stoneLayer);
-                        ((RenderLivingBase) render).addLayer(crackLayer);
-                        ((RenderLivingBase) render).addLayer(new LayerChainedEntity(render));
+                        LayerRenderer<?> stoneLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getStoneLayer((RenderLivingBase<?>) render) : new LayerStoneEntity<>((RenderLivingBase<?>) render);
+                        LayerRenderer<?> crackLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getCrackLayer((RenderLivingBase<?>) render) : new LayerStoneEntityCrack((RenderLivingBase<?>) render);
+                        ((RenderLivingBase<?>) render).addLayer(stoneLayer);
+                        ((RenderLivingBase<?>) render).addLayer(crackLayer);
+                        ((RenderLivingBase<?>) render).addLayer(new LayerChainedEntity(render));
                     }
                 }
             }
@@ -172,7 +173,7 @@ public class ClientEvents {
             if (player.getRidingEntity() instanceof EntityDragonBase) {
                 int currentView = IceAndFire.PROXY.getDragon3rdPersonView();
                 EntityDragonBase dragon = (EntityDragonBase) player.getRidingEntity();
-                float scale = ((EntityDragonBase) player.getRidingEntity()).getRenderSize() / 3;
+                float scale = dragon.getRenderSize() / 3;
                 if (Minecraft.getMinecraft().gameSettings.thirdPersonView == 1) {
                     if (currentView == 0) {
                     } else if (currentView == 1) {
@@ -199,10 +200,10 @@ public class ClientEvents {
         }
     }
 
-    protected double translateToBody(RenderLiving renderer) {
+    protected double translateToBody(RenderLiving<?> renderer) {
         double roll = 0;
-        roll += postRenderRoll(((IceAndFireTabulaModel) renderer.getMainModel()).getCube("BodyUpper"), 0.0625F);
-        roll += postRenderRoll(((IceAndFireTabulaModel) renderer.getMainModel()).getCube("Neck1"), 0.0625F);
+        roll += postRenderRoll(((IceAndFireTabulaModel<?>) renderer.getMainModel()).getCube("BodyUpper"), 0.0625F);
+        roll += postRenderRoll(((IceAndFireTabulaModel<?>) renderer.getMainModel()).getCube("Neck1"), 0.0625F);
         return roll;
     }
 
@@ -249,11 +250,11 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public void onPreRenderLiving(RenderLivingEvent.Pre event) {
+    public void onPreRenderLiving(RenderLivingEvent.Pre<?> event) {
         if (event.getEntity().getRidingEntity() != null && event.getEntity().getRidingEntity() instanceof EntityDragonBase) {
             if (ClientProxy.currentDragonRiders.contains(event.getEntity().getUniqueID()) || event.getEntity() == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
                 event.setCanceled(true);
-                net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post(event.getEntity(), event.getRenderer(), event.getPartialRenderTick(), event.getX(), event.getY(), event.getZ()));
+                net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post<>(event.getEntity(), event.getRenderer(), event.getPartialRenderTick(), event.getX(), event.getY(), event.getZ()));
             }
         }
 
@@ -266,7 +267,7 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public void onPostRenderLiving(RenderLivingEvent.Post event) {
+    public void onPostRenderLiving(RenderLivingEvent.Post<?> event) {
         EntityLivingBase entity = event.getEntity();
         ChainEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(entity, ChainEntityProperties.class);
         if (properties != null) {
@@ -366,7 +367,7 @@ public class ClientEvents {
         }
         MiscEntityProperties miscProps = EntityPropertiesHandler.INSTANCE.getProperties(entity, MiscEntityProperties.class);
         if (miscProps != null && miscProps.glarers.size() > 0) {
-            float f = 1.0F;// ((float) miscProps.clientSideAttackTime + event.getPartialRenderTick()) / (float) 80;
+            // float f = 1.0F;// ((float) miscProps.clientSideAttackTime + event.getPartialRenderTick()) / (float) 80;
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder bufferbuilder = tessellator.getBuffer();
             event.getRenderer().bindTexture(RenderCockatrice.TEXTURE_BEAM);
@@ -376,7 +377,7 @@ public class ClientEvents {
             GlStateManager.disableBlend();
             GlStateManager.depthMask(true);
             float f1 = 240.0F;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, f1, f1);
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             float f2 = (float) entity.world.getTotalWorldTime() + event.getPartialRenderTick();
             float f3 = f2 * 0.15F % 1.0F;

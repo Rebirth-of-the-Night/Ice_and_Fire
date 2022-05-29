@@ -1,13 +1,21 @@
 package com.github.alexthe666.iceandfire.event;
 
+import static com.github.alexthe666.iceandfire.IceAndFire.CONFIG;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
-import com.github.alexthe666.iceandfire.world.gen.*;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
+import com.github.alexthe666.iceandfire.world.gen.*;
 import com.github.alexthe666.iceandfire.world.village.MapGenPixieVillage;
 import com.github.alexthe666.iceandfire.world.village.MapGenSnowVillage;
+
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
@@ -16,30 +24,16 @@ import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.common.IWorldGenerator;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-
-import static com.github.alexthe666.iceandfire.IceAndFire.CONFIG;
 
 public class WorldGenEvents implements IWorldGenerator {
 
@@ -54,7 +48,6 @@ public class WorldGenEvents implements IWorldGenerator {
     private static final WorldGenCyclopsCave CYCLOPS_CAVE = new WorldGenCyclopsCave();
     private static final WorldGenSirenIsland SIREN_ISLAND = new WorldGenSirenIsland();
     private static final WorldGenHydraCave HYDRA_CAVE = new WorldGenHydraCave();
-    private static final ResourceLocation GORGON_TEMPLE = new ResourceLocation(IceAndFire.MODID, "gorgon_temple");
     private BlockPos lastSnowVillage = null;
     private BlockPos lastPixieVillage = null;
     private BlockPos lastMyrmexHive = null;
@@ -83,6 +76,7 @@ public class WorldGenEvents implements IWorldGenerator {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if (world.getWorldType() == WorldType.FLAT && !IceAndFire.CONFIG.spawnStructuresOnSuperflat) {
             return;

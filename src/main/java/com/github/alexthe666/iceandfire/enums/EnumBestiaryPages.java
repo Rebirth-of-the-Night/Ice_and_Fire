@@ -61,7 +61,6 @@ public enum EnumBestiaryPages {
     }
 
     public static List<EnumBestiaryPages> containedPages(List<Integer> pages) {
-        Iterator<Integer> itr = pages.iterator();
         List<EnumBestiaryPages> list = new ArrayList<>();
         for (Integer page : pages) {
             if (page >= 0 && page < EnumBestiaryPages.values().length) {

@@ -14,7 +14,6 @@ public enum EnumDragonEgg {
 
     static {
         EnumDragonEgg[] var0 = values();
-        int var1 = var0.length;
 
         for (EnumDragonEgg var3 : var0) {
             META_LOOKUP.put(var3.meta, var3);

@@ -14,16 +14,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ContainerHippogryph extends SyncedFieldContainer {
     private final IInventory hippogryphInventory;
     private final EntityHippogryph hippogryph;
-    private final EntityPlayer player;
 
     public ContainerHippogryph(final EntityHippogryph hippogryph, EntityPlayer player) {
         super(hippogryph.hippogryphInventory);
         this.hippogryphInventory = hippogryph.hippogryphInventory;
         this.hippogryph = hippogryph;
-        this.player = player;
-        int i = 3;
         hippogryphInventory.openInventory(player);
-        int j = -18;
         this.addSlotToContainer(new Slot(hippogryphInventory, 0, 8, 18) {
             public boolean isItemValid(ItemStack stack) {
                 return stack.getItem() == Items.SADDLE && !this.getHasStack();
