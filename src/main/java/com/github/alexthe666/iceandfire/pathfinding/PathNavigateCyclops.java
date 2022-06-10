@@ -18,6 +18,7 @@ public class PathNavigateCyclops extends PathNavigateGround {
 	
     public PathNavigateCyclops(EntityCyclops entitylivingIn, World worldIn) {
         super(entitylivingIn, worldIn);
+        this.cyclops = entitylivingIn;
     }
 
     protected PathFinder getPathFinder() {

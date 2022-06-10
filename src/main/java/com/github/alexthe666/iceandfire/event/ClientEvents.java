@@ -251,7 +251,6 @@ public class ClientEvents {
     }
 
 	@SubscribeEvent
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     public void onPreRenderLiving(RenderLivingEvent.Pre<?> event) {
         if (event.getEntity().getRidingEntity() != null && event.getEntity().getRidingEntity() instanceof EntityDragonBase) {
             if (ClientProxy.currentDragonRiders.contains(event.getEntity().getUniqueID()) || event.getEntity() == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
