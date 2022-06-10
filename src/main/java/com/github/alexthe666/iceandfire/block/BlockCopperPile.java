@@ -103,13 +103,11 @@ public class BlockCopperPile extends Block {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isOpaqueCube(IBlockState blockstate) {
         return false;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isFullCube(IBlockState blockstate) {
         return false;
     }
@@ -143,7 +141,6 @@ public class BlockCopperPile extends Block {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(LAYERS, (meta & 7) + 1);
     }

@@ -64,7 +64,6 @@ public class LightningChargeExplosion extends Explosion {
      */
     public void doExplosionA() {
         Set<BlockPos> set = Sets.newHashSet();
-        int i = 16;
 
         for (int j = 0; j < 16; ++j) {
             for (int k = 0; k < 16; ++k) {
@@ -82,7 +81,7 @@ public class LightningChargeExplosion extends Explosion {
                         double d6 = this.explosionY;
                         double d8 = this.explosionZ;
 
-                        for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
+                        for (; f > 0.0F; f -= 0.22500001F) {
                             BlockPos blockpos = new BlockPos(d4, d6, d8);
                             IBlockState iblockstate = this.worldObj.getBlockState(blockpos);
 

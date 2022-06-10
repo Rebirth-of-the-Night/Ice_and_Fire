@@ -44,7 +44,7 @@ public class WorldGenHydraCave extends WorldGenerator {
                 boolean doorwayZ = blockpos.getZ() >= position.getZ() - 2 + rand.nextInt(2) && blockpos.getZ() <= position.getZ() + 2 + rand.nextInt(2);
                 boolean isNotInDoorway = !doorwayX && !doorwayZ && blockpos.getY() > position.getY() || blockpos.getY() > position.getY() + k - (1 + rand.nextInt(2));
                 if (blockpos.distanceSq(position) <= (double) (f * f)) {
-                    if (!(worldIn.getBlockState(position).getBlock() instanceof BlockChest) && worldIn.getBlockState(position).getBlock().getBlockHardness(worldIn.getBlockState(position), worldIn, position) >= 0 && isNotInDoorway) {
+                    if (!(worldIn.getBlockState(position).getBlock() instanceof BlockChest) && worldIn.getBlockState(position).getBlockHardness(worldIn, position) >= 0 && isNotInDoorway) {
                         worldIn.setBlockState(blockpos, Blocks.GRASS.getDefaultState(), 3);
                         if (worldIn.getBlockState(position.down()).getBlock() == Blocks.GRASS) {
                             worldIn.setBlockState(blockpos.down(), Blocks.DIRT.getDefaultState(), 3);

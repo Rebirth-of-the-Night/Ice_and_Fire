@@ -36,7 +36,6 @@ import com.github.alexthe666.iceandfire.item.ICustomRendered;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -71,6 +70,7 @@ import java.util.UUID;
 import static net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler.*;
 
 @Mod.EventBusSubscriber
+@SuppressWarnings("deprecation")
 public class ClientProxy extends CommonProxy {
 
     private static final ModelFireDragonArmor FIRE_DRAGON_SCALE_ARMOR_MODEL = new ModelFireDragonArmor(0.5F, false);
@@ -99,10 +99,10 @@ public class ClientProxy extends CommonProxy {
     @SideOnly(Side.CLIENT)
     private static final IceAndFireTEISR TEISR = new IceAndFireTEISR();
     public static List<UUID> currentDragonRiders = new ArrayList<>();
-    public static IceAndFireTabulaModel FIRE_DRAGON_MODEL;
-    public static IceAndFireTabulaModel ICE_DRAGON_MODEL;
-    public static IceAndFireTabulaModel LIGHTNING_DRAGON_MODEL;
-    public static IceAndFireTabulaModel SEA_SERPENT_MODEL;
+    public  IceAndFireTabulaModel<EntityFireDragon> FIRE_DRAGON_MODEL;
+    public IceAndFireTabulaModel<EntityIceDragon> ICE_DRAGON_MODEL;
+    public IceAndFireTabulaModel<EntityLightningDragon> LIGHTNING_DRAGON_MODEL;
+    public IceAndFireTabulaModel<EntitySeaSerpent> SEA_SERPENT_MODEL;
     private static MyrmexHive referedClientHive = null;
     private IceAndFireParticleSpawner particleSpawner;
     private FontRenderer bestiaryFontRenderer;
@@ -324,7 +324,6 @@ public class ClientProxy extends CommonProxy {
 
     @SideOnly(Side.CLIENT)
     @Override
-    @SuppressWarnings("deprecation")
     public void render() {
         try{
             this.bestiaryFontRenderer = new FontRenderer(Minecraft.getMinecraft().gameSettings, new ResourceLocation("iceandfire:textures/font/bestiary.png"), Minecraft.getMinecraft().renderEngine, false);
@@ -359,7 +358,6 @@ public class ClientProxy extends CommonProxy {
 
     }
 
-    @SuppressWarnings("deprecation")
     @SideOnly(Side.CLIENT)
     private void renderEntities() {
         EnumDragonAnimations.initializeDragonModels();
@@ -429,7 +427,8 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityHydraArrow.class, new RenderHydraArrow(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityBlackFrostDragon.class, new RenderBlackFrostDragon(Minecraft.getMinecraft().getRenderManager(), ICE_DRAGON_MODEL));
         RenderingRegistry.registerEntityRenderingHandler(EntityDreadQueen.class, new RenderDreadQueen(Minecraft.getMinecraft().getRenderManager()));
-
+        RenderingRegistry.registerEntityRenderingHandler(EntityDragonLightningBolt.class, new RenderDragonLightningBolt(Minecraft.getMinecraft().getRenderManager()));
+        
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPodium.class, new RenderPodium());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLectern.class, new RenderLectern());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEggInIce.class, new RenderEggInIce());

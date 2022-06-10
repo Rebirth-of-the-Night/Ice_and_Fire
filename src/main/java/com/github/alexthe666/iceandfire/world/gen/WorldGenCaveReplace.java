@@ -22,7 +22,6 @@ public class WorldGenCaveReplace extends WorldGenerator {
 
     public boolean generate(World worldIn, Random rand, BlockPos position) {
         while (true) {
-            Block block = worldIn.getBlockState(position.down()).getBlock();
             if (position.getY() <= 3) {
                 return false;
             }

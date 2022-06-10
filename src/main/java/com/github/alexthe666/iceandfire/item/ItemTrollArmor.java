@@ -1,9 +1,9 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.enums.EnumTroll;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -63,6 +63,6 @@ public class ItemTrollArmor extends ItemArmor {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(TextFormatting.GREEN + StatCollector.translateToLocal("item.iceandfire.troll_leather_armor_" + getArmorPart(this.armorType) + ".desc"));
+        tooltip.add(TextFormatting.GREEN + I18n.format("item.iceandfire.troll_leather_armor_" + getArmorPart(this.armorType) + ".desc"));
     }
 }

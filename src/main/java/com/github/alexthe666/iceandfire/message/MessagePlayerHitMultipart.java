@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.message;
 
 import com.github.alexthe666.iceandfire.entity.EntityHydra;
-import com.github.alexthe666.iceandfire.entity.EntityHydraHead;
+
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;

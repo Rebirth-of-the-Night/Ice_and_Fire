@@ -1,15 +1,51 @@
 package com.github.alexthe666.iceandfire.event;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockBurntTorch;
 import com.github.alexthe666.iceandfire.block.BlockVenerableStump;
 import com.github.alexthe666.iceandfire.block.BlockVenerableStump.StumpPart;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
-import com.github.alexthe666.iceandfire.item.IafItemRegistry;
-import com.github.alexthe666.iceandfire.entity.*;
+import com.github.alexthe666.iceandfire.entity.ChainEntityProperties;
+import com.github.alexthe666.iceandfire.entity.ChickenEntityProperties;
+import com.github.alexthe666.iceandfire.entity.DragonUtils;
+import com.github.alexthe666.iceandfire.entity.EntityAmphithere;
+import com.github.alexthe666.iceandfire.entity.EntityCockatrice;
+import com.github.alexthe666.iceandfire.entity.EntityCyclops;
+import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
+import com.github.alexthe666.iceandfire.entity.EntityGorgon;
+import com.github.alexthe666.iceandfire.entity.EntityHydra;
+import com.github.alexthe666.iceandfire.entity.EntityHydraHead;
+import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
+import com.github.alexthe666.iceandfire.entity.EntityMutlipartPart;
+import com.github.alexthe666.iceandfire.entity.EntitySiren;
+import com.github.alexthe666.iceandfire.entity.EntityStoneStatue;
+import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
+import com.github.alexthe666.iceandfire.entity.IAnimalFear;
+import com.github.alexthe666.iceandfire.entity.IHearsSiren;
+import com.github.alexthe666.iceandfire.entity.IPhasesThroughBlock;
+import com.github.alexthe666.iceandfire.entity.IVillagerFear;
+import com.github.alexthe666.iceandfire.entity.MiscEntityProperties;
+import com.github.alexthe666.iceandfire.entity.SirenEntityProperties;
+import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
 import com.github.alexthe666.iceandfire.entity.ai.EntitySheepAIFollowCyclops;
 import com.github.alexthe666.iceandfire.entity.ai.VillagerAIFearUntamed;
-import com.github.alexthe666.iceandfire.item.*;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+import com.github.alexthe666.iceandfire.item.ItemChain;
+import com.github.alexthe666.iceandfire.item.ItemCockatriceScepter;
+import com.github.alexthe666.iceandfire.item.ItemDeathwormGauntlet;
+import com.github.alexthe666.iceandfire.item.ItemScaleArmor;
+import com.github.alexthe666.iceandfire.item.ItemSeaSerpentArmor;
+import com.github.alexthe666.iceandfire.item.ItemTrollArmor;
 import com.github.alexthe666.iceandfire.message.MessagePlayerHitMultipart;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenFireDragonCave;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenIceDragonCave;
@@ -17,16 +53,35 @@ import com.github.alexthe666.iceandfire.world.gen.WorldGenLightningDragonCave;
 import com.google.common.base.Predicate;
 
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockShulkerBox;
+import net.minecraft.block.BlockTrapDoor;
+import net.minecraft.block.BlockWall;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.INpc;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntityRabbit;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
@@ -38,13 +93,21 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.*;
+import net.minecraft.world.storage.loot.LootEntry;
+import net.minecraft.world.storage.loot.LootEntryItem;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.conditions.RandomChance;
 import net.minecraft.world.storage.loot.functions.LootFunction;
@@ -52,7 +115,15 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -62,14 +133,10 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.*;
-
 public class ServerEvents {
 
     public static final UUID ALEX_UUID = UUID.fromString("71363abe-fd03-49c9-940d-aae8b8209b7c");
-    private static final Predicate VILLAGER_FEAR = new Predicate<EntityLivingBase>() {
+    private static final Predicate<EntityLivingBase> VILLAGER_FEAR = new Predicate<EntityLivingBase>() {
         public boolean apply(@Nullable EntityLivingBase entity) {
             return entity != null && entity instanceof IVillagerFear;
         }
@@ -609,7 +676,6 @@ public class ServerEvents {
                         entity.motionX += (Math.signum(closestSiren.posX - entity.posX) * 0.5D - entity.motionX) * 0.100000000372529;
                         entity.motionY += (Math.signum(closestSiren.posY - entity.posY + 1) * 0.5D - entity.motionY) * 0.100000000372529;
                         entity.motionZ += (Math.signum(closestSiren.posZ - entity.posZ) * 0.5D - entity.motionZ) * 0.100000000372529;
-                        float angle = (float) (Math.atan2(entity.motionZ, entity.motionX) * 180.0D / Math.PI) - 90.0F;
                         double d0 = closestSiren.posX - entity.posX;
                         double d2 = closestSiren.posZ - entity.posZ;
                         double d1 = closestSiren.posY - 1 - entity.posY;
@@ -683,7 +749,6 @@ public class ServerEvents {
             Iterator<Entity> itr = properties.entitiesWeAreGlaringAt.iterator();
             while (itr.hasNext()) {
                 Entity next = itr.next();
-                double d5 = 80F;
                 double d0 = next.posX - event.getEntityLiving().posX;
                 double d1 = next.posY + (double) (next.height * 0.5F) - (event.getEntityLiving().posY + (double) event.getEntityLiving().getEyeHeight() * 0.5D);
                 double d2 = next.posZ - event.getEntityLiving().posZ;

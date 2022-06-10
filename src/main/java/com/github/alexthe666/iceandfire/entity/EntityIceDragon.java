@@ -1,10 +1,14 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.api.event.DragonFireEvent;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.message.MessageDragonSyncFire;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
@@ -22,16 +26,11 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
-
-import javax.annotation.Nullable;
-
-import java.util.Random;
 
 public class EntityIceDragon extends EntityDragonBase {
 
@@ -179,7 +178,6 @@ public class EntityIceDragon extends EntityDragonBase {
             this.flyTicks = 0;
         }
         if (!world.isRemote && this.getAttackTarget() != null) {
-            float growSize = this.isInMaterialWater() ? 1.0F : 0.5F;
             if (this.getEntityBoundingBox().grow(2.5F + this.getRenderSize() * 0.33F, 2.5F + this.getRenderSize() * 0.33F, 2.5F + this.getRenderSize() * 0.33F).intersects(this.getAttackTarget().getEntityBoundingBox())) {
                 attackEntityAsMob(this.getAttackTarget());
             }
@@ -400,7 +398,6 @@ public class EntityIceDragon extends EntityDragonBase {
         double d2 = burnX - headPos.x;
         double d3 = burnY - headPos.y;
         double d4 = burnZ - headPos.z;
-        float particleScale = MathHelper.clamp(this.getRenderSize() * 0.08F, 0.55F, 3F);
         double distance = Math.max(5 * this.getDistance(burnX, burnY, burnZ), 0);
         double conqueredDistance = burnProgress / 40D * distance;
         int increment = (int)Math.ceil(conqueredDistance / 100);

@@ -63,7 +63,6 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
     public StymphalianBirdFlock flock;
     private int animationTick;
     private Animation currentAnimation;
-    private EntityLivingBase victorEntity;
     private boolean isFlying;
     private int flyTicks;
     private int launchTicks;
@@ -83,7 +82,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
         return LOOT;
     }
 
-    protected void initEntityAI() {
+	protected void initEntityAI() {
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new StymphalianBirdAIFlee(this, 10));
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.5D, false));
@@ -92,7 +91,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
         this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
         this.tasks.addTask(8, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new StymphalianBirdAITarget(this, EntityLivingBase.class, true));
+        this.targetTasks.addTask(2, new StymphalianBirdAITarget<EntityLivingBase>(this, EntityLivingBase.class, true));
     }
 
     @Override
@@ -221,7 +220,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
 
     @Nullable
     public UUID getVictorId() {
-        return (UUID) ((Optional) this.dataManager.get(VICTOR_ENTITY)).orNull();
+        return (UUID) ((Optional<?>) this.dataManager.get(VICTOR_ENTITY)).orNull();
     }
 
     public void setVictorId(@Nullable UUID uuid) {
@@ -412,10 +411,6 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
         return movingobjectposition == null || movingobjectposition.typeOfHit != RayTraceResult.Type.BLOCK;
     }
 
-    private boolean isLeaderNotFlying() {
-        return this.flock != null && this.flock.getLeader() != null && !this.flock.getLeader().isFlying();
-    }
-
     public void flyAround() {
         if (airTarget != null && this.isFlying()) {
             if (!isTargetInAir() || flyTicks > 6000 || !this.isFlying()) {
@@ -464,14 +459,14 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
     }
 
     public void playLivingSound() {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playLivingSound();
     }
 
     protected void playHurtSound(DamageSource source) {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playHurtSound(source);

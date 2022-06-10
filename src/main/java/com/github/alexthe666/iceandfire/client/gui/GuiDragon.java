@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.client.gui;
 
-import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.inventory.ContainerDragon;
 import net.minecraft.client.Minecraft;
@@ -9,6 +8,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -17,16 +17,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiDragon extends GuiContainer {
     private static final ResourceLocation texture = new ResourceLocation("iceandfire:textures/gui/dragon.png");
-    private final IInventory playerInventory;
-    private final IInventory dragonInv;
     private final EntityDragonBase dragon;
     private float mousePosx;
     private float mousePosY;
 
     public GuiDragon(IInventory playerInv, EntityDragonBase dragon) {
         super(new ContainerDragon(dragon, Minecraft.getMinecraft().player));
-        this.playerInventory = playerInv;
-        this.dragonInv = dragon.dragonInventory;
         this.dragon = dragon;
         this.allowUserInput = false;
         this.ySize = 214;
@@ -77,17 +73,17 @@ public class GuiDragon extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String s1 = dragon.getName();
         this.fontRenderer.drawString(s1, this.xSize / 2 - this.fontRenderer.getStringWidth(s1) / 2, 6, 4210752);
-        String s3 = dragon.getCustomNameTag().length() == 0 ? StatCollector.translateToLocal("dragon.unnamed") : StatCollector.translateToLocal("dragon.name") + dragon.getCustomNameTag();
+        String s3 = dragon.getCustomNameTag().length() == 0 ? I18n.format("dragon.unnamed") : I18n.format("dragon.name") + dragon.getCustomNameTag();
         this.fontRenderer.drawString(s3, this.xSize / 2 - this.fontRenderer.getStringWidth(s3) / 2, 75, 0XFFFFFF);
-        String s2 = StatCollector.translateToLocal("dragon.health") + Math.min(dragon.getHealth(), dragon.getMaxHealth()) + "/" + dragon.getMaxHealth();
+        String s2 = I18n.format("dragon.health") + Math.min(dragon.getHealth(), dragon.getMaxHealth()) + "/" + dragon.getMaxHealth();
         this.fontRenderer.drawString(s2, this.xSize / 2 - this.fontRenderer.getStringWidth(s2) / 2, 84, 0XFFFFFF);
-        String s5 = StatCollector.translateToLocal("dragon.gender") + StatCollector.translateToLocal((dragon.isMale() ? "dragon.gender.male" : "dragon.gender.female"));
+        String s5 = I18n.format("dragon.gender") + I18n.format((dragon.isMale() ? "dragon.gender.male" : "dragon.gender.female"));
         this.fontRenderer.drawString(s5, this.xSize / 2 - this.fontRenderer.getStringWidth(s5) / 2, 93, 0XFFFFFF);
-        String s6 = StatCollector.translateToLocal("dragon.hunger") + dragon.getHunger() + "/100";
+        String s6 = I18n.format("dragon.hunger") + dragon.getHunger() + "/100";
         this.fontRenderer.drawString(s6, this.xSize / 2 - this.fontRenderer.getStringWidth(s6) / 2, 102, 0XFFFFFF);
-        String s4 = StatCollector.translateToLocal("dragon.stage") + dragon.getDragonStage() + " " + StatCollector.translateToLocal("dragon.days.front") + dragon.getAgeInDays() + " " + StatCollector.translateToLocal("dragon.days.back");
+        String s4 = I18n.format("dragon.stage") + dragon.getDragonStage() + " " + I18n.format("dragon.days.front") + dragon.getAgeInDays() + " " + I18n.format("dragon.days.back");
         this.fontRenderer.drawString(s4, this.xSize / 2 - this.fontRenderer.getStringWidth(s4) / 2, 111, 0XFFFFFF);
-        String s7 = dragon.getOwner() != null ? StatCollector.translateToLocal("dragon.owner") + dragon.getOwner().getName() : StatCollector.translateToLocal("dragon.untamed");
+        String s7 = dragon.getOwner() != null ? I18n.format("dragon.owner") + dragon.getOwner().getName() : I18n.format("dragon.untamed");
         this.fontRenderer.drawString(s7, this.xSize / 2 - this.fontRenderer.getStringWidth(s7) / 2, 120, 0XFFFFFF);
     }
 

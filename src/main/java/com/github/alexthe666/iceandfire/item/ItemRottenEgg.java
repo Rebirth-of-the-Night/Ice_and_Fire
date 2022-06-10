@@ -37,6 +37,6 @@ public class ItemRottenEgg extends Item {
         }
 
         playerIn.addStat(StatList.getObjectUseStats(this));
-        return new ActionResult(EnumActionResult.SUCCESS, itemstack);
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
     }
 }

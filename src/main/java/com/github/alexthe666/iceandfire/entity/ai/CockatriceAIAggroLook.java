@@ -12,9 +12,6 @@ public class CockatriceAIAggroLook extends EntityAINearestAttackableTarget<Entit
     private final EntityCockatrice cockatrice;
     private EntityPlayer player;
 
-    private int aggroTime;
-    private int teleportTime;
-
     public CockatriceAIAggroLook(EntityCockatrice creature) {
         super(creature, EntityPlayer.class, false);
         this.cockatrice = creature;
@@ -40,8 +37,6 @@ public class CockatriceAIAggroLook extends EntityAINearestAttackableTarget<Entit
      * Execute a one shot task or start executing a continuous task
      */
     public void startExecuting() {
-        this.aggroTime = 5;
-        this.teleportTime = 0;
     }
 
     /**

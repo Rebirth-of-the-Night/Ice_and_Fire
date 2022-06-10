@@ -6,12 +6,11 @@ import com.github.alexthe666.iceandfire.compat.jei.firedragonforge.FireDragonFor
 import com.github.alexthe666.iceandfire.compat.jei.icedragonforge.IceDragonForgeCatagory;
 import com.github.alexthe666.iceandfire.compat.jei.icedragonforge.IceDragonForgeRecipeWrapper;
 import com.github.alexthe666.iceandfire.compat.jei.lightningdragonforge.LightningDragonForgeCatagory;
-import com.github.alexthe666.iceandfire.compat.jei.lightningdragonforge.LightningDragonForgeRecipeHandler;
 import com.github.alexthe666.iceandfire.compat.jei.lightningdragonforge.LightningDragonForgeRecipeWrapper;
-import com.github.alexthe666.iceandfire.item.IafItemRegistry;
-import com.github.alexthe666.iceandfire.recipe.IafRecipeRegistry;
 import com.github.alexthe666.iceandfire.enums.EnumSkullType;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.recipe.DragonForgeRecipe;
+import com.github.alexthe666.iceandfire.recipe.IafRecipeRegistry;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -44,7 +43,6 @@ public class IceAndFireJEIPlugin implements IModPlugin {
         registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_ice_core), ICE_DRAGON_FORGE_ID);
         
         registry.addRecipes(IafRecipeRegistry.LIGHTNING_FORGE_RECIPES, LIGHTNING_DRAGON_FORGE_ID);
-        registry.addRecipeHandlers(new LightningDragonForgeRecipeHandler());
         registry.handleRecipes(DragonForgeRecipe.class, new LightningDragonForgeFactory(), LIGHTNING_DRAGON_FORGE_ID);
         registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_lightning_core_disabled), LIGHTNING_DRAGON_FORGE_ID);
         registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_lightning_core), LIGHTNING_DRAGON_FORGE_ID);

@@ -1,9 +1,9 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityDragonSkull;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -62,9 +62,9 @@ public class ItemDragonSkull extends Item implements ICustomRendered {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         String iceorfire = stack.getMetadata() == 0 ? "dragon.fire" : stack.getMetadata() == 1 ? "dragon.ice" : "dragon.lightning";
-        tooltip.add(StatCollector.translateToLocal(iceorfire));
+        tooltip.add(I18n.format(iceorfire));
         if (stack.getTagCompound() != null) {
-            tooltip.add(StatCollector.translateToLocal("dragon.stage") + stack.getTagCompound().getInteger("Stage"));
+            tooltip.add(I18n.format("dragon.stage") + stack.getTagCompound().getInteger("Stage"));
         }
     }
 

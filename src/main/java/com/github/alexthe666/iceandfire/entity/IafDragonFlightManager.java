@@ -1,9 +1,15 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.client.model.Vec3;
 import com.github.alexthe666.iceandfire.util.IAFMath;
-import net.minecraft.entity.*;
+
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.MoverType;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.pathfinding.NodeProcessor;
 import net.minecraft.pathfinding.PathNavigate;
@@ -12,15 +18,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-import javax.annotation.Nullable;
-
 public class IafDragonFlightManager {
     private final EntityDragonBase dragon;
     private Vec3d target;
-    private IafDragonAttacks.Air prevAirAttack;
     private Vec3d startAttackVec;
     private Vec3d startPreyVec;
-    private boolean hasStartedToScorch = false;
     private EntityLivingBase prevAttackTarget = null;
 
     public IafDragonFlightManager(EntityDragonBase dragon) {
@@ -68,7 +70,6 @@ public class IafDragonFlightManager {
                 float distZ = (float) (startPreyVec.z - startAttackVec.z);
                 setTarget(new Vec3d(attackTarget.posX + distX, attackTarget.posY + distY, attackTarget.posZ + distZ));
                 dragon.tryScorchTarget();
-                hasStartedToScorch = true;
                 if (target != null && dragon.getDistance(target.x, target.y, target.z) < 10) {
                     setTarget(new Vec3d(attackTarget.posX - distX, attackTarget.posY + distY, attackTarget.posZ - distZ));
                 }
@@ -98,8 +99,6 @@ public class IafDragonFlightManager {
 
             }
         }
-
-        this.prevAirAttack = dragon.airAttack;
     }
 
     public void setTarget(Vec3d target) {
@@ -118,12 +117,6 @@ public class IafDragonFlightManager {
 
     public Vec3d getFlightTarget() {
         return target == null ? Vec3d.ZERO : target;
-    }
-
-    private float getDistanceXZ(double x, double z) {
-        float f = (float) (dragon.posX - x);
-        float f2 = (float) (dragon.posZ - z);
-        return f * f + f2 * f2;
     }
 
     public void onSetAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn) {

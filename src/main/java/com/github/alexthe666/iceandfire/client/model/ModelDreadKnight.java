@@ -36,12 +36,9 @@ public class ModelDreadKnight extends ModelDragonBase {
     public boolean isSneak;
     private final ModelAnimator animator;
 
-    private boolean armor = false;
-
     public ModelDreadKnight(float modelSize, boolean armorArms) {
         this.textureWidth = 128;
         this.textureHeight = 64;
-        this.armor = armorArms;
         this.leftArmPose = ModelBiped.ArmPose.EMPTY;
         this.rightArmPose = ModelBiped.ArmPose.EMPTY;
         this.sleeveRight = new HideableModelRenderer(this, 35, 33);

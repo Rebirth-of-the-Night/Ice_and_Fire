@@ -1,22 +1,19 @@
 package com.github.alexthe666.iceandfire.pathfinding;
 
-import com.github.alexthe666.iceandfire.block.BlockGoldPile;
-import com.github.alexthe666.iceandfire.block.BlockSilverPile;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockFence;
+import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.BlockRailBase;
+import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.pathfinding.WalkNodeProcessor;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
-
-import javax.annotation.Nullable;
 
 public class NodeProcessorDragon extends WalkNodeProcessor {
 
@@ -34,7 +31,7 @@ public class NodeProcessorDragon extends WalkNodeProcessor {
         Block block = iblockstate.getBlock();
         Material material = iblockstate.getMaterial();
 
-        PathNodeType type = block.getAiPathNodeType(iblockstate, p_189553_1_, blockpos);
+        PathNodeType type = block.getAiPathNodeType(iblockstate, p_189553_1_, blockpos, this.currentEntity);
         if (type != null) return type;
 
         if (material == Material.AIR) {

@@ -1,14 +1,26 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.entity.ai.*;
+import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIDefendHive;
+import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIFindHidingSpot;
+import com.github.alexthe666.iceandfire.entity.ai.MyrmexAILeaveHive;
+import com.github.alexthe666.iceandfire.entity.ai.MyrmexAILookAtTradePlayer;
+import com.github.alexthe666.iceandfire.entity.ai.MyrmexAITradePlayer;
+import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIWander;
 import com.google.common.base.Predicate;
+
 import net.ilexiconn.llibrary.server.animation.Animation;
-import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
@@ -23,8 +35,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.common.registry.VillagerRegistry;
-
-import javax.annotation.Nullable;
 
 public class EntityMyrmexSentinel extends EntityMyrmexBase {
 
@@ -137,7 +147,7 @@ public class EntityMyrmexSentinel extends EntityMyrmexBase {
         this.targetTasks.addTask(1, new MyrmexAIDefendHive(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(4, new MyrmexAIAttackPlayers(this));
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget(this, EntityLiving.class, 4, true, true, new Predicate<EntityLiving>() {
+        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<EntityLiving>(this, EntityLiving.class, 4, true, true, new Predicate<EntityLiving>() {
             public boolean apply(@Nullable EntityLiving entity) {
                 return entity != null && !IMob.VISIBLE_MOB_SELECTOR.apply(entity) && !EntityMyrmexBase.haveSameHive(EntityMyrmexSentinel.this, entity) && DragonUtils.isAlive(entity);
             }
@@ -225,7 +235,6 @@ public class EntityMyrmexSentinel extends EntityMyrmexBase {
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(this, StoneEntityProperties.class);
         if (amount >= 1.0D && !this.getPassengers().isEmpty() && rand.nextInt(2) == 0) {
             for (Entity entity : this.getPassengers()) {
                 entity.dismountRidingEntity();

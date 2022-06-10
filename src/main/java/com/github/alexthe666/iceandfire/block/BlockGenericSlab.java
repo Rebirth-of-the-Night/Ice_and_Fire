@@ -22,13 +22,9 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public abstract class BlockGenericSlab extends BlockSlab {
-
-	private final Block baseBlock;
-
 	public BlockGenericSlab(String name, float hardness, float resistance, SoundType soundType, Material material, Block baseBlock) {
 		super(material);
 		IBlockState iblockstate = this.blockState.getBaseState();
-		this.baseBlock = baseBlock;
 		this.setLightOpacity(0);
 		this.useNeighborBrightness = true;
 		setHardness(hardness);

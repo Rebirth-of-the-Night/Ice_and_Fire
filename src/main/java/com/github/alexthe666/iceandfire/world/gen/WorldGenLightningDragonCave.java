@@ -94,10 +94,6 @@ public class WorldGenLightningDragonCave extends WorldGenerator {
 
     }
 
-    private BlockPos offsetRandomlyBy(BlockPos in, Random rand, int offset1, int offset2) {
-        return in.offset(EnumFacing.values()[rand.nextInt(EnumFacing.values().length - 1)], offset1).offset(EnumFacing.values()[rand.nextInt(EnumFacing.values().length - 1)], offset2);
-    }
-
     private BlockPos offsetRandomlyByXZ(BlockPos in, Random rand, int offset1, int offset2) {
         return in.add(offset1, 0, offset2);
     }
@@ -109,7 +105,7 @@ public class WorldGenLightningDragonCave extends WorldGenerator {
         float f = (float) (j + k + l) * 0.333F + 0.5F;
         for (BlockPos blockpos : BlockPos.getAllInBox(position.add(-j, -k, -l), position.add(j, k, l))) {
             if (blockpos.distanceSq(position) <= (double) (f * f)) {
-                if (!(worldIn.getBlockState(position).getBlock() instanceof BlockContainer) && worldIn.getBlockState(position).getBlock().getBlockHardness(worldIn.getBlockState(position), worldIn, position) >= 0) {
+                if (!(worldIn.getBlockState(position).getBlock() instanceof BlockContainer) && worldIn.getBlockState(position).getBlockHardness(worldIn, position) >= 0) {
                     boolean doOres = rand.nextInt(IceAndFire.CONFIG.oreToStoneRatioForDragonCaves + 1) == 0;
                     if (doOres) {
                         int chance = rand.nextInt(199) + 1;

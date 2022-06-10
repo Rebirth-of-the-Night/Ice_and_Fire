@@ -1,9 +1,10 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityHippogryphEgg;
 import com.github.alexthe666.iceandfire.enums.EnumHippogryphTypes;
+
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -70,13 +71,13 @@ public class ItemHippogryphEgg extends Item implements ICustomRendered {
         }
 
         playerIn.addStat(StatList.getObjectUseStats(this));
-        return new ActionResult(EnumActionResult.SUCCESS, itemstack);
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         String type = EnumHippogryphTypes.values()[MathHelper.clamp(stack.getMetadata(), 0, EnumHippogryphTypes.values().length - 1)].name().toLowerCase();
-        tooltip.add(StatCollector.translateToLocal("entity.hippogryph." + type));
+        tooltip.add(I18n.format("entity.hippogryph." + type));
     }
 }

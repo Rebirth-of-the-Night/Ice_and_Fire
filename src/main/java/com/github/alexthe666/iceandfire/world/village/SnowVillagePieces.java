@@ -64,8 +64,6 @@ public class SnowVillagePieces {
     }
 
     private static Village findAndCreateComponentFactory(Start start, PieceWeight weight, List<StructureComponent> structureComponents, Random rand, int structureMinX, int structureMinY, int structureMinZ, EnumFacing facing, int componentType) {
-        Class<? extends SnowVillagePieces.Village> oclass = weight.villagePieceClass;
-        StructureBoundingBox structureboundingbox = Torch.findPieceBox(start, structureComponents, rand, structureMinX, structureMinY, structureMinZ, facing);
         Object village = rand.nextBoolean() ? WoodHut.createPiece(start, structureComponents, rand, structureMinX, structureMinY, structureMinZ, facing, componentType) : TorchNew.createPiece(start, structureComponents, rand, structureMinX, structureMinY, structureMinZ, facing, componentType);
         return (Village) village;
     }
@@ -153,7 +151,6 @@ public class SnowVillagePieces {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public static class House1 extends Village {
         public House1() {
         }
@@ -277,7 +274,6 @@ public class SnowVillagePieces {
         }
     }
 
-    @SuppressWarnings("deprecation")
     public static class House2 extends Village {
         private boolean hasMadeChest;
 

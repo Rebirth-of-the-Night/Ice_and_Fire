@@ -30,8 +30,7 @@ public class WorldGenMyrmexHive extends WorldGenerator {
     private boolean hasNursery;
     private boolean small;
     private final boolean jungle;
-    private BlockPos centerOfHive;
-
+    
     public WorldGenMyrmexHive(boolean small, boolean jungle) {
         this.small = small;
         this.jungle = jungle;
@@ -44,7 +43,6 @@ public class WorldGenMyrmexHive extends WorldGenerator {
         totalRooms = 0;
         BlockPos undergroundPos = new BlockPos(position.getX(), position.getY(), position.getZ());
         entrances = 0;
-        centerOfHive = undergroundPos;
         generateMainRoom(worldIn, rand, undergroundPos);
         this.small = false;
         return false;

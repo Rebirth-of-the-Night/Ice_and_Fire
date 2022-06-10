@@ -88,7 +88,7 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
         return this.getRNG().nextInt(IceAndFire.CONFIG.trollSpawnCheckChance) == 0 && !this.world.canSeeSky(pos.up()) && super.getCanSpawnHere();
     }
 
-    protected void initEntityAI() {
+	protected void initEntityAI() {
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new TrollAIFleeSun(this, 1.0D));
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, true));
@@ -96,8 +96,8 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
         this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F, 1.0F));
         this.tasks.addTask(5, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, false));
         setAvoidSun(true);
     }
 
@@ -341,8 +341,6 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
             f3 = f3 * f4;
             float f5 = MathHelper.sin(this.rotationYaw * 0.017453292F);
             float f6 = MathHelper.cos(this.rotationYaw * 0.017453292F);
-            float f7 = f2 * f6 - f3 * f5;
-            float f8 = f3 * f6 + f2 * f5;
             this.getAttackTarget().motionX = f5;
             this.getAttackTarget().motionZ = f6;
             this.getAttackTarget().motionY = 0.4F;
@@ -356,7 +354,6 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
                 float weaponX = (float) (posX + 1.9F * Math.cos((renderYawOffset + 90) * Math.PI / 180));
                 float weaponZ = (float) (posZ + 1.9F * Math.sin((renderYawOffset + 90) * Math.PI / 180));
                 float weaponY = (float) (posY + (this.getEyeHeight() / 2));
-                IBlockState state = world.getBlockState(new BlockPos(weaponX, weaponY, weaponZ));
                 BlockBreakExplosion explosion = new BlockBreakExplosion(world, this, weaponX, weaponY, weaponZ, 1F + this.getRNG().nextFloat());
                 if (!MinecraftForge.EVENT_BUS.post(new GenericGriefEvent(this, weaponX, weaponY, weaponZ))){
                     explosion.doExplosionA();
@@ -378,14 +375,14 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
     }
 
     public void playLivingSound() {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playLivingSound();
     }
 
     protected void playHurtSound(DamageSource source) {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playHurtSound(source);

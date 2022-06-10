@@ -68,7 +68,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
     private static final DataParameter<Boolean> JUMPING = EntityDataManager.createKey(EntitySeaSerpent.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> BREATHING = EntityDataManager.createKey(EntitySeaSerpent.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> ANCIENT = EntityDataManager.createKey(EntitySeaSerpent.class, DataSerializers.BOOLEAN);
-    private static final Predicate NOT_SEA_SERPENT = new Predicate<Entity>() {
+    private static final Predicate<Entity> NOT_SEA_SERPENT = new Predicate<Entity>() {
         public boolean apply(@Nullable Entity entity) {
             return entity instanceof EntityLivingBase && !(entity instanceof EntitySeaSerpent) && DragonUtils.isAlive((EntityLivingBase) entity);
         }
@@ -100,7 +100,6 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
     private boolean changedSwimBehavior = false;
     private int ticksCircling;
     private boolean isArcing = false;
-    private float arcingYAdditive = 0F;
     private int ticksSinceJump = 0;
     private int ticksSinceRoar = 0;
     private int ticksJumping = 0;
@@ -566,7 +565,6 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
                 this.swimBehavior = SwimBehavior.JUMP;
             }
             if (swimBehavior != SwimBehavior.ATTACK) {
-                arcingYAdditive = 0;
             }
             if (swimBehavior == SwimBehavior.JUMP && this.motionY < 0 && !this.isInWater()) {
                 this.swimBehavior = SwimBehavior.WANDER;
@@ -784,14 +782,14 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
     }
 
     public void playLivingSound() {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playLivingSound();
     }
 
     protected void playHurtSound(DamageSource source) {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playHurtSound(source);
@@ -894,7 +892,6 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
         }
         float f4;
         if (this.isServerWorld()) {
-            float f5;
             if (this.isInWater()) {
                 this.moveRelative(strafe, vertical, forward, 0.1F);
                 f4 = 0.6F;
@@ -960,8 +957,6 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
     }
 
     public class SwimmingMoveHelper extends EntityMoveHelper {
-        private final EntitySeaSerpent serpent = EntitySeaSerpent.this;
-
         public SwimmingMoveHelper() {
             super(EntitySeaSerpent.this);
         }
@@ -1151,7 +1146,6 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
             secondPhase = false;
             isOver = false;
             EntitySeaSerpent.this.isArcing = false;
-            EntitySeaSerpent.this.arcingYAdditive = 0;
 
         }
 
@@ -1214,7 +1208,6 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
                     double d1 = EntitySeaSerpent.this.getAttackTarget().posZ - EntitySeaSerpent.this.posZ;
                     double d2 = d0 * d0 + d1 * d1;
                     d2 = MathHelper.sqrt(d2);
-                    EntitySeaSerpent.this.arcingYAdditive = (secondPhase ? 1 : -1) * (float) d2;
                 }
                 if (!secondPhase) {
                     target = new BlockPos(EntitySeaSerpent.this.getAttackTarget());

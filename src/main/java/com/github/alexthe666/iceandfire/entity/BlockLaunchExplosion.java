@@ -52,7 +52,6 @@ public class BlockLaunchExplosion extends Explosion {
     @Override
     public void doExplosionA() {
         Set<BlockPos> set = Sets.newHashSet();
-        int i = 16;
         for (int j = 0; j < 16; ++j) {
             for (int k = 0; k < 16; ++k) {
                 for (int l = 0; l < 16; ++l) {
@@ -69,7 +68,7 @@ public class BlockLaunchExplosion extends Explosion {
                         double d6 = this.explosionY;
                         double d8 = this.explosionZ;
 
-                        for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
+                        for (; f > 0.0F; f -= 0.22500001F) {
                             BlockPos blockpos = new BlockPos(d4, d6, d8);
                             IBlockState iblockstate = this.worldObj.getBlockState(blockpos);
 
@@ -148,7 +147,6 @@ public class BlockLaunchExplosion extends Explosion {
     public void doExplosionB(boolean spawnParticles) {
         for (BlockPos blockpos : this.affectedBlockPositions) {
             IBlockState state = this.worldObj.getBlockState(blockpos);
-            Block block = this.worldObj.getBlockState(blockpos).getBlock();
             if (spawnParticles && !worldObj.isAirBlock(blockpos)) {
                 double d0 = blockpos.getX() + this.worldObj.rand.nextFloat();
                 double d1 = blockpos.getY() + this.worldObj.rand.nextFloat();
@@ -173,7 +171,6 @@ public class BlockLaunchExplosion extends Explosion {
                 EntityFallingBlock entity = new EntityFallingBlock(worldObj, blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D, state);
                 worldObj.spawnEntity(entity);
                 double d5 = entity.posX - this.explosionX;
-                double d7 = entity.posY - this.explosionY;
                 double d9 = entity.posZ - this.explosionZ;
                 double d11 = 0.6D;
                 entity.motionX += d5 * d11;

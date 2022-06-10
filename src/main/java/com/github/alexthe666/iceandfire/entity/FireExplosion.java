@@ -1,12 +1,21 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockGrass;
+import net.minecraft.block.BlockGravel;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentProtection;
@@ -15,7 +24,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -23,11 +31,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 
 public class FireExplosion extends Explosion {
     private final boolean isSmoking;
@@ -65,7 +68,6 @@ public class FireExplosion extends Explosion {
     @Override
     public void doExplosionA() {
         Set<BlockPos> set = Sets.newHashSet();
-        int i = 16;
 
         for (int j = 0; j < 16; ++j) {
             for (int k = 0; k < 16; ++k) {
@@ -83,7 +85,7 @@ public class FireExplosion extends Explosion {
                         double d6 = this.explosionY;
                         double d8 = this.explosionZ;
 
-                        for (float f1 = 0.3F; f > 0.0F; f -= 0.22500001F) {
+                        for (; f > 0.0F; f -= 0.22500001F) {
                             BlockPos blockpos = new BlockPos(d4, d6, d8);
                             IBlockState iblockstate = this.worldObj.getBlockState(blockpos);
 

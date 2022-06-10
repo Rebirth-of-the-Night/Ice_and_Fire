@@ -13,14 +13,12 @@ public class CockatriceAIStareAttack extends EntityAIBase {
     private final double moveSpeedAmp;
     private final float maxAttackDistance;
 
-    private int attackCooldown;
     private int seeTime;
     private BlockPos target = null;
 
     public CockatriceAIStareAttack(EntityCockatrice cockatrice, double speedAmplifier, int delay, float maxDistance) {
         this.entity = cockatrice;
         this.moveSpeedAmp = speedAmplifier;
-        this.attackCooldown = delay;
         this.maxAttackDistance = maxDistance;
         this.setMutexBits(3);
     }
@@ -35,7 +33,6 @@ public class CockatriceAIStareAttack extends EntityAIBase {
     }
 
     public void setAttackCooldown(int cooldown) {
-        this.attackCooldown = cooldown;
     }
 
     public boolean shouldExecute() {

@@ -88,14 +88,14 @@ public class ChainEntityProperties extends EntityProperties<EntityLivingBase> {
     }
 
     public void minimizeLists() {
-        List<UUID> noDupesUUID = new ArrayList();
+        List<UUID> noDupesUUID = new ArrayList<UUID>();
         for (UUID uuid : connectedEntityUUID) {
             if (!noDupesUUID.contains(uuid)) {
                 noDupesUUID.add(uuid);
             }
         }
         connectedEntityUUID = noDupesUUID;
-        List<Entity> noDupesEntity = new ArrayList();
+        List<Entity> noDupesEntity = new ArrayList<Entity>();
         List<UUID> addedUUIDs = new ArrayList<>();
         for (Entity entity : connectedEntities) {
             if (!addedUUIDs.contains(entity.getUniqueID())) {

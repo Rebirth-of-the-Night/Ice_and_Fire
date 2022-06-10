@@ -2,28 +2,13 @@ package com.github.alexthe666.iceandfire.client.render.entity;
 
 import javax.annotation.Nullable;
 
-import org.lwjgl.opengl.GL11;
-
-import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityDragonLightningCharge;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderCreeper;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.layers.LayerSpiderEyes;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,7 +17,6 @@ public class RenderDragonLightningCharge extends Render<EntityDragonLightningCha
 
     public static final ResourceLocation TEXTURE_CORE = new ResourceLocation("iceandfire:textures/models/lightningdragon/charge_core.png");
     public static final ResourceLocation LAYER_CHARGE = new ResourceLocation("iceandfire:textures/models/lightningdragon/charge.png");
-    private static final ModelDreadLichSkull MODEL_SPIRIT = new ModelDreadLichSkull();
 
     public RenderDragonLightningCharge(RenderManager manager) {
         super(manager);
@@ -109,10 +93,6 @@ public class RenderDragonLightningCharge extends Render<EntityDragonLightningCha
         GlStateManager.enableCull();
         GlStateManager.popMatrix();
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
-    }
-
-    private float interpolateValue(float start, float end, float pct) {
-        return start + (end - start) * pct;
     }
 
     @Nullable

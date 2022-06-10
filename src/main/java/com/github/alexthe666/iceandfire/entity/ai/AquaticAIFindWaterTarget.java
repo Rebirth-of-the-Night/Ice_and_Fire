@@ -16,12 +16,9 @@ public class AquaticAIFindWaterTarget extends EntityAIBase {
     private final EntityCreature mob;
     private final int range;
 
-    private final boolean avoidAttacker;
-
     public AquaticAIFindWaterTarget(EntityCreature mob, int range, boolean avoidAttacker) {
         this.mob = mob;
         this.range = range;
-        this.avoidAttacker = avoidAttacker;
         this.setMutexBits(1);
         fleePosSorter = new Sorter(mob);
     }

@@ -81,7 +81,7 @@ public class EntityDragonEgg extends EntityLiving implements IBlacklistedFromSta
 
     @Nullable
     public UUID getOwnerId() {
-        return (UUID) ((Optional) this.dataManager.get(OWNER_UNIQUE_ID)).orNull();
+        return (UUID) ((Optional<?>) this.dataManager.get(OWNER_UNIQUE_ID)).orNull();
     }
 
     public void setOwnerId(@Nullable UUID p_184754_1_) {

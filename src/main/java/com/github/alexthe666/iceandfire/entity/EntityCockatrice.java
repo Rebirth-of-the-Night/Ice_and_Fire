@@ -12,6 +12,7 @@ import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityPigZombie;
@@ -85,7 +86,7 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
         return this.getRNG().nextInt(IceAndFire.CONFIG.cockatriceSpawnCheckChance + 1) == 0 && super.getCanSpawnHere();
     }
 
-    protected void initEntityAI() {
+	protected void initEntityAI() {
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, aiStare = new CockatriceAIStareAttack(this, 1.0D, 0, 15.0F));
         this.tasks.addTask(2, aiMelee = new EntityAIAttackMeleeNoCooldown(this, 1.5D, false));
@@ -95,11 +96,11 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
         this.tasks.addTask(5, new CockatriceAIAggroLook(this));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityLivingBase.class, 6.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new CockatriceAITargetItems(this, false));
+        this.targetTasks.addTask(1, new CockatriceAITargetItems<EntityItem>(this, false));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(3, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(5, new CockatriceAITarget(this, EntityLivingBase.class, true, new Predicate<Entity>() {
+        this.targetTasks.addTask(5, new CockatriceAITarget<EntityLivingBase>(this, EntityLivingBase.class, true, new Predicate<Entity>() {
             @Override
             public boolean apply(@Nullable Entity entity) {
                 return ((entity instanceof IMob) && EntityCockatrice.this.isTamed() && !(entity instanceof EntityCreeper) && !(entity instanceof EntityPigZombie) && !(entity instanceof EntityEnderman) || entity instanceof EntityPlayer || ServerEvents.isAnimaniaFerret(entity)) && !ServerEvents.isAnimaniaChicken(entity);
@@ -626,14 +627,14 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
     }
 
     public void playLivingSound() {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playLivingSound();
     }
 
     protected void playHurtSound(DamageSource source) {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playHurtSound(source);

@@ -1,14 +1,14 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
-import com.github.alexthe666.iceandfire.client.render.entity.ModelDreadLichSkull;
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.entity.EntityDreadLichSkull;
+
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nullable;
 
 public class RenderDreadLichSkull extends Render<EntityDreadLichSkull> {
 
@@ -54,10 +54,6 @@ public class RenderDreadLichSkull extends Render<EntityDreadLichSkull> {
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
-    }
-
-    private float interpolateValue(float start, float end, float pct) {
-        return start + (end - start) * pct;
     }
 
     @Nullable

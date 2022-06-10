@@ -1,8 +1,10 @@
 package com.github.alexthe666.iceandfire.world.gen;
 
+import java.util.Random;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.entity.DragonUtils;
 import com.github.alexthe666.iceandfire.world.gen.processor.DreadRuinProcessor;
+
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
@@ -17,8 +19,6 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
-
-import java.util.Random;
 
 public class WorldGenGorgonTemple extends WorldGenerator {
 
@@ -68,7 +68,6 @@ public class WorldGenGorgonTemple extends WorldGenerator {
         position = position.add(rand.nextInt(8) - 4, 1, rand.nextInt(8) - 4);
         MinecraftServer server = worldIn.getMinecraftServer();
         BlockPos height = getGround(position, worldIn);
-        IBlockState dirt = worldIn.getBlockState(height.down(2));
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
         Template template = templateManager.getTemplate(server, STRUCTURE);
         PlacementSettings settings = new PlacementSettings().setRotation(getRotationFromFacing(facing));

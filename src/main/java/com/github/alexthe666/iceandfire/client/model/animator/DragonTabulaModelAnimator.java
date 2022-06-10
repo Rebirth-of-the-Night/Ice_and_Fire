@@ -30,11 +30,11 @@ public abstract class DragonTabulaModelAnimator<T extends EntityDragonBase> exte
     protected AdvancedModelRenderer[] clawL;
     protected AdvancedModelRenderer[] clawR;
 
-    public DragonTabulaModelAnimator(IceAndFireTabulaModel baseModel) {
+    public DragonTabulaModelAnimator(IceAndFireTabulaModel<?> baseModel) {
         super(baseModel);
     }
 
-    public void init(IceAndFireTabulaModel model) {
+    public void init(IceAndFireTabulaModel<T> model) {
         neckParts = new AdvancedModelRenderer[]{model.getCube("Neck1"), model.getCube("Neck2"), model.getCube("Neck3"), model.getCube("Neck3"), model.getCube("Head")};
         tailParts = new AdvancedModelRenderer[]{model.getCube("Tail1"), model.getCube("Tail2"), model.getCube("Tail3"), model.getCube("Tail4")};
         tailPartsWBody = new AdvancedModelRenderer[]{model.getCube("BodyLower"), model.getCube("Tail1"), model.getCube("Tail2"), model.getCube("Tail3"), model.getCube("Tail4")};
@@ -64,8 +64,8 @@ public abstract class DragonTabulaModelAnimator<T extends EntityDragonBase> exte
             prevIndex = swimming ? 4 : walking ? 3 : 5;
         }
 
-        IceAndFireTabulaModel currentPosition = swimming ? swimPoses.get(currentIndex) : walking ? walkPoses.get(currentIndex) : flyPoses.get(currentIndex);
-        IceAndFireTabulaModel prevPosition = swimming ? swimPoses.get(prevIndex) : walking ? walkPoses.get(prevIndex) : flyPoses.get(prevIndex);
+        IceAndFireTabulaModel<?> currentPosition = swimming ? swimPoses.get(currentIndex) : walking ? walkPoses.get(currentIndex) : flyPoses.get(currentIndex);
+        IceAndFireTabulaModel<?> prevPosition = swimming ? swimPoses.get(prevIndex) : walking ? walkPoses.get(prevIndex) : flyPoses.get(prevIndex);
         float delta = ((walking ? entity.walkCycle : entity.flightCycle) / 10.0F) % 1.0F;
         if (swimming) {
             delta = ((entity.swimCycle) / 10.0F) % 1.0F;
@@ -151,7 +151,7 @@ public abstract class DragonTabulaModelAnimator<T extends EntityDragonBase> exte
                 }
             }
 
-    private void setRotationsLoop(IceAndFireTabulaModel<T> model, T entity, float limbSwingAmount, boolean walking, IceAndFireTabulaModel<T> currentPosition, IceAndFireTabulaModel prevPosition, float deltaTicks, AdvancedModelRenderer cube) {
+    private void setRotationsLoop(IceAndFireTabulaModel<T> model, T entity, float limbSwingAmount, boolean walking, IceAndFireTabulaModel<?> currentPosition, IceAndFireTabulaModel<?> prevPosition, float deltaTicks, AdvancedModelRenderer cube) {
         this.genderMob(entity, cube);
         if (walking && entity.flyProgress <= 0.0F && entity.hoverProgress <= 0.0F && entity.modelDeadProgress <= 0.0F) {
             AdvancedModelRenderer walkPart = getModel(EnumDragonPoses.GROUND_POSE).getCube(cube.boxName);
@@ -242,7 +242,7 @@ public abstract class DragonTabulaModelAnimator<T extends EntityDragonBase> exte
         }
     }
 
-    protected boolean isWing(IceAndFireTabulaModel model, AdvancedModelRenderer modelRenderer) {
+    protected boolean isWing(IceAndFireTabulaModel<T> model, AdvancedModelRenderer modelRenderer) {
         return model.getCube("armL1") == modelRenderer || model.getCube("armR1") == modelRenderer || model.getCube("armL1").childModels.contains(modelRenderer) || model.getCube("armR1").childModels.contains(modelRenderer);
     }
 
@@ -252,8 +252,8 @@ public abstract class DragonTabulaModelAnimator<T extends EntityDragonBase> exte
 
     protected void genderMob(T entity, AdvancedModelRenderer cube) {
         if (!entity.isMale()) {
-        	IceAndFireTabulaModel maleModel = getModel(EnumDragonPoses.MALE);
-        	IceAndFireTabulaModel femaleModel = getModel(EnumDragonPoses.FEMALE);
+        	IceAndFireTabulaModel<T> maleModel = getModel(EnumDragonPoses.MALE);
+        	IceAndFireTabulaModel<T> femaleModel = getModel(EnumDragonPoses.FEMALE);
             AdvancedModelRenderer femaleModelCube = femaleModel.getCube(cube.boxName);
             AdvancedModelRenderer maleModelCube = maleModel.getCube(cube.boxName);
             if (maleModelCube == null || femaleModelCube == null)
@@ -267,7 +267,7 @@ public abstract class DragonTabulaModelAnimator<T extends EntityDragonBase> exte
         }
     }
 
-    protected abstract IceAndFireTabulaModel getModel(EnumDragonPoses pose);
+    protected abstract IceAndFireTabulaModel<T> getModel(EnumDragonPoses pose);
 
     protected void animate(IceAndFireTabulaModel<T> model, T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
     	AdvancedModelRenderer modelCubeJaw = model.getCube("Jaw");

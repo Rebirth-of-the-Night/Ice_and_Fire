@@ -24,7 +24,6 @@ public class WorldGenLightningDragonRoosts extends WorldGenerator {
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
         isMale = rand.nextBoolean();
-        int boulders = 0;
         int radius = 12 + rand.nextInt(8);
         {
             int j = radius;
@@ -128,8 +127,8 @@ public class WorldGenLightningDragonRoosts extends WorldGenerator {
         return false;
     }
 
-    private void transformState(World world, BlockPos blockpos, IBlockState state) {
-        float hardness = state.getBlock().getBlockHardness(state, world, blockpos);
+	private void transformState(World world, BlockPos blockpos, IBlockState state) {
+        float hardness = state.getBlock().getDefaultState().getBlockHardness(world, blockpos);
         if (hardness != -1.0F) {
             if (state.getBlock() instanceof BlockContainer) {
                 return;

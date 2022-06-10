@@ -1,11 +1,14 @@
 package com.github.alexthe666.iceandfire.entity.tile;
 
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.block.BlockDragonforgeBricks;
 import com.github.alexthe666.iceandfire.block.BlockDragonforgeCore;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
-import com.github.alexthe666.iceandfire.recipe.IafRecipeRegistry;
 import com.github.alexthe666.iceandfire.inventory.ContainerDragonForge;
 import com.github.alexthe666.iceandfire.recipe.DragonForgeRecipe;
+import com.github.alexthe666.iceandfire.recipe.IafRecipeRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,8 +29,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
 
 public class TileEntityDragonforge extends TileEntity implements ITickable, ISidedInventory {
     private static final int[] SLOTS_TOP = new int[]{0, 1};
@@ -258,6 +259,7 @@ public class TileEntityDragonforge extends TileEntity implements ITickable, ISid
             if (this.dragonType == 1) {
                 defaultOutput = IafBlockRegistry.dragon_ice;
             }
+            itemstack = Item.getItemFromBlock(defaultOutput).getDefaultInstance();
         }
         return itemstack;
     }

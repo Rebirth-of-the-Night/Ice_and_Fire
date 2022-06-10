@@ -1,19 +1,28 @@
 package com.github.alexthe666.iceandfire.world.village;
 
+import static com.github.alexthe666.iceandfire.block.IafBlockRegistry.venerableStump;
+
+import java.util.List;
+import java.util.Random;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockPixieHouse;
-import com.github.alexthe666.iceandfire.block.BlockVenerableStump;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityPixie;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityPixieHouse;
 import com.github.alexthe666.iceandfire.item.block.ItemBlockVenerableStump;
 import com.github.alexthe666.iceandfire.message.MessageUpdatePixieHouseModel;
 import com.google.common.collect.Lists;
-import net.minecraft.block.*;
+
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockNewLog;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockSandStone;
+import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -21,16 +30,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
-import net.minecraft.world.gen.feature.WorldGenCanopyTree;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
-
-import java.util.List;
-import java.util.Random;
-
-import static com.github.alexthe666.iceandfire.block.IafBlockRegistry.venerableStump;
 
 public class PixieVillagePieces {
 
@@ -658,8 +661,6 @@ public class PixieVillagePieces {
     }
 
     public static class Well extends Village {
-
-        private static final WorldGenCanopyTree TREE_GEN = new WorldGenCanopyTree(true);
 
         public Well() {
         }

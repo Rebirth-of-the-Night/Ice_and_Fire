@@ -1,14 +1,16 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.api.event.GenericGriefEvent;
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.entity.ai.CyclopsAIAttackMelee;
 import com.github.alexthe666.iceandfire.entity.ai.CyclopsAITargetSheepPlayers;
 import com.github.alexthe666.iceandfire.event.ServerEvents;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.pathfinding.PathNavigateCyclops;
-import com.github.alexthe666.iceandfire.pathfinding.PathNavigateDragon;
 import com.google.common.base.Predicate;
+
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
@@ -22,7 +24,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIFleeSun;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAIRestrictSun;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPolarBear;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -48,8 +57,6 @@ import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
-
-import javax.annotation.Nullable;
 
 public class EntityCyclops extends EntityMob implements IAnimatedEntity, IBlacklistedFromStatues, IVillagerFear, IHumanoid {
 
@@ -88,7 +95,7 @@ public class EntityCyclops extends EntityMob implements IAnimatedEntity, IBlackl
         return 40;
     }
 
-    protected void initEntityAI() {
+	protected void initEntityAI() {
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIRestrictSun(this));
         this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
@@ -97,13 +104,13 @@ public class EntityCyclops extends EntityMob implements IAnimatedEntity, IBlackl
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F, 1.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, 0, true, true, new Predicate<EntityLivingBase>() {
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityLivingBase>(this, EntityLivingBase.class, 0, true, true, new Predicate<EntityLivingBase>() {
             @Override
             public boolean apply(@Nullable EntityLivingBase entity) {
                 return !EntityGorgon.isStoneMob(entity) && DragonUtils.isAlive(entity) && !(entity instanceof EntityWaterMob) && !(entity instanceof EntityPlayer) && !(entity instanceof EntityCyclops) && !ServerEvents.isAnimaniaSheep(entity) && !(entity instanceof EntityAnimal && !(entity instanceof EntityWolf || entity instanceof EntityPolarBear || entity instanceof EntityDragonBase)) || entity instanceof EntityGorgon || entity instanceof EntityVillager;
             }
         }));
-        this.targetTasks.addTask(3, new CyclopsAITargetSheepPlayers(this, EntityPlayer.class, 0, true, true, new Predicate<Entity>() {
+        this.targetTasks.addTask(3, new CyclopsAITargetSheepPlayers<EntityPlayer>(this, EntityPlayer.class, 0, true, true, new Predicate<Entity>() {
             @Override
             public boolean apply(@Nullable Entity entity) {
                 return true;

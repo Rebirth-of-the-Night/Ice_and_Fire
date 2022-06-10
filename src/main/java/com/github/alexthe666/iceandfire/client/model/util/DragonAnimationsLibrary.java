@@ -1,9 +1,9 @@
 package com.github.alexthe666.iceandfire.client.model.util;
 
-import com.github.alexthe666.iceandfire.IceAndFire;
-
 import java.io.IOException;
 import java.util.HashMap;
+
+import com.github.alexthe666.iceandfire.IceAndFire;
 
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler;
 
@@ -11,8 +11,9 @@ import net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler;
  * A library containing all animations for all dragons. Contains methods for registering and retrieving models.
  * Code directly taken from 1.16 IaF, I own no rights over it.
  */
+@SuppressWarnings("rawtypes")
 public class DragonAnimationsLibrary {
-    private static HashMap<String, IceAndFireTabulaModel> models = new HashMap<>();
+	private static HashMap<String, IceAndFireTabulaModel> models = new HashMap<>();
     private static String toKey(IEnumDragonPoses p, IEnumDragonModelTypes m) {
         return p.getPose() + m.getModelType();
     }

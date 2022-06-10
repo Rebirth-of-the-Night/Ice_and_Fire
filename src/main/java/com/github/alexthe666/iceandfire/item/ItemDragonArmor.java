@@ -1,7 +1,8 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.client.StatCollector;
+
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -59,6 +60,6 @@ public class ItemDragonArmor extends Item implements ICustomRendered {
                 words = "dragon.armor_tail";
                 break;
         }
-        tooltip.add(StatCollector.translateToLocal(words));
+        tooltip.add(I18n.format(words));
     }
 }

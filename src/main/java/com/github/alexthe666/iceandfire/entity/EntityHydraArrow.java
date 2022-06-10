@@ -38,7 +38,6 @@ public class EntityHydraArrow  extends EntityArrow {
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
-            double d3 = 10.0D;
             double xRatio = motionX * height;
             double zRatio = motionZ * height;
             IceAndFire.PROXY.spawnParticle("hydra", this.posX + xRatio + (double) (this.rand.nextFloat() * this.width * 1.0F) - (double) this.width - d0 * 10.0D, this.posY + (double) (this.rand.nextFloat() * this.height) - d1 * 10.0D, this.posZ + zRatio + (double) (this.rand.nextFloat() * this.width * 1.0F) - (double) this.width - d2 * 10.0D, 0.1D, 1.0D, 0.1D);

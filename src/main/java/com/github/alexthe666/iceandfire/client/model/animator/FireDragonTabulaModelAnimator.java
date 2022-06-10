@@ -12,6 +12,7 @@ import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
 /*
  * Code directly taken from 1.16 IaF, I own no rights over it.
  */
+@SuppressWarnings("deprecation")
 public class FireDragonTabulaModelAnimator extends DragonTabulaModelAnimator<EntityFireDragon> {
 	public FireDragonTabulaModelAnimator() {
 		super(EnumDragonAnimations.GROUND_POSE.firedragon_model);
@@ -22,7 +23,8 @@ public class FireDragonTabulaModelAnimator extends DragonTabulaModelAnimator<Ent
 	}
 
 	@Override
-	protected IceAndFireTabulaModel getModel(EnumDragonPoses pose) {
+	@SuppressWarnings("unchecked")
+	protected IceAndFireTabulaModel<EntityFireDragon> getModel(EnumDragonPoses pose) {
 		return DragonAnimationsLibrary.getModel(pose, EnumDragonModelTypes.FIRE_DRAGON_MODEL);
 	}
 }

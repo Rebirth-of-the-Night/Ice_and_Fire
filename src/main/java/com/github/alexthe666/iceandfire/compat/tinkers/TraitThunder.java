@@ -1,17 +1,11 @@
 package com.github.alexthe666.iceandfire.compat.tinkers;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
+import com.github.alexthe666.iceandfire.entity.EntityDragonLightningBolt;
 
-import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import slimeknights.tconstruct.library.modifiers.IToolMod;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
 
@@ -42,11 +36,8 @@ public class TraitThunder extends ModifierTrait {
             }
         }
         if(!player.world.isRemote && flag && !target.isDead) {
-		EntityLightningBolt lightningBolt = new EntityLightningBolt(target.world, target.posX, target.posY, target.posZ, false);
-		    target.world.addWeatherEffect(lightningBolt);
-    	if(IceAndFire.CONFIG.saferBoltStrike) {
-    		lightningBolt.move(MoverType.SELF, target.posX - player.posX, target.posY, target.posZ - player.posZ); 	    
-    	    }
+        	EntityDragonLightningBolt dragonLightningBolt = new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, player);
+        	target.world.spawnEntity(dragonLightningBolt);
         }
         if (level >= 2 && IceAndFire.CONFIG.dragonsteelKnockback) {
             target.knockBack(target, 1F, player.posX - target.posX, player.posZ - target.posZ);

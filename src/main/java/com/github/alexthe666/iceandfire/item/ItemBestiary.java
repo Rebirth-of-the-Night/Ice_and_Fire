@@ -1,8 +1,9 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.enums.EnumBestiaryPages;
+
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -76,13 +77,13 @@ public class ItemBestiary extends Item {
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         if (stack.getTagCompound() != null) {
             if(IceAndFire.PROXY.shouldSeeBestiaryContents()){
-                tooltip.add(StatCollector.translateToLocal("bestiary.contains"));
+                tooltip.add(I18n.format("bestiary.contains"));
                 List<EnumBestiaryPages> pages = EnumBestiaryPages.containedPages(EnumBestiaryPages.toList(stack.getTagCompound().getIntArray("Pages")));
                 for (EnumBestiaryPages page : pages) {
-                    tooltip.add(TextFormatting.WHITE + "-" + StatCollector.translateToLocal("bestiary." + EnumBestiaryPages.values()[page.ordinal()].toString().toLowerCase()));
+                    tooltip.add(TextFormatting.WHITE + "-" + I18n.format("bestiary." + EnumBestiaryPages.values()[page.ordinal()].toString().toLowerCase()));
                 }
             }else{
-                tooltip.add(StatCollector.translateToLocal("bestiary.hold_shift"));
+                tooltip.add(I18n.format("bestiary.hold_shift"));
 
             }
 

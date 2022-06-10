@@ -1,25 +1,23 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.google.common.base.Optional;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntitySkeletonHorse;
-import net.minecraft.init.Items;
-import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class EntityDreadHorse extends EntitySkeletonHorse implements IDreadMob {
 
@@ -86,7 +84,7 @@ public class EntityDreadHorse extends EntitySkeletonHorse implements IDreadMob {
 
     @Nullable
     public UUID getCommanderId() {
-        return (UUID) ((Optional) this.dataManager.get(COMMANDER_UNIQUE_ID)).orNull();
+        return (UUID) ((Optional<?>) this.dataManager.get(COMMANDER_UNIQUE_ID)).orNull();
     }
 
     public void setCommanderId(@Nullable UUID uuid) {

@@ -81,7 +81,7 @@ public class ItemStoneStatue extends Item {
                     return EnumActionResult.SUCCESS;
                 } else {
                     EntityEntry entry = net.minecraftforge.registries.GameData.getEntityRegistry().getValue((stack.getTagCompound().getInteger("IAFStoneStatueEntityID")));
-                    Class classFromEntity = entry.getEntityClass();
+                    Class<?> classFromEntity = entry.getEntityClass();
                     Entity entity = null;
                     if (classFromEntity == null) {
                         return EnumActionResult.SUCCESS;

@@ -35,8 +35,6 @@ public class PathNavigateDeathWormSand extends PathNavigate {
     protected void pathFollow() {
         Vec3d vec3d = this.getEntityPosition();
         float f = 0.65F;
-        int i = 6;
-
         if (vec3d.squareDistanceTo(this.currentPath.getVectorFromIndex(this.entity, this.currentPath.getCurrentPathIndex())) < (double) f) {
             this.currentPath.incrementPathIndex();
         }

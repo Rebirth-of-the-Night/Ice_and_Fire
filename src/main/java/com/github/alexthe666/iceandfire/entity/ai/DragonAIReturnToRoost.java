@@ -1,23 +1,14 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
-import java.util.EnumSet;
-
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.util.IAFMath;
 
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.pathfinding.Path;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 
 public class DragonAIReturnToRoost extends EntityAIBase {
     private final EntityDragonBase dragon;
-    private final double movementSpeed;
-    private Path path;
-    
     public DragonAIReturnToRoost(EntityDragonBase entityIn, double movementSpeedIn) {
         this.dragon = entityIn;
-        this.movementSpeed = movementSpeedIn;
         this.setMutexBits(1);
     }
 
@@ -38,7 +29,7 @@ public class DragonAIReturnToRoost extends EntityAIBase {
                 this.dragon.setFlying(false);
                 this.dragon.setHovering(false);
                 this.dragon.getNavigator().tryMoveToXYZ(this.dragon.getHomePosition().getX(), this.dragon.getHomePosition().getY(), this.dragon.getHomePosition().getZ(), 1.0F);
-            }else {
+            } else {
                 double yAddition = 15 + dragon.getRNG().nextInt(3);
                 if(xzDist < 40){
                     yAddition = 0;

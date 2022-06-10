@@ -78,7 +78,7 @@ public class EntitySiren extends EntityMob implements IAnimatedEntity, IVillager
     private boolean isLandNavigator;
     private int ticksAgressive;
 
-    public EntitySiren(World worldIn) {
+	public EntitySiren(World worldIn) {
         super(worldIn);
         this.setSize(1.6F, 0.9F);
         this.switchNavigator(true);
@@ -91,13 +91,13 @@ public class EntitySiren extends EntityMob implements IAnimatedEntity, IVillager
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F, 1.0F));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true, false, new Predicate<EntityPlayer>() {
+        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 0, true, false, new Predicate<EntityPlayer>() {
             @Override
             public boolean apply(@Nullable EntityPlayer entity) {
                 return EntitySiren.this.isAgressive() && !(entity.isCreative() || entity.isSpectator());
             }
         }));
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, true, false, new Predicate<EntityVillager>() {
+        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<EntityVillager>(this, EntityVillager.class, 0, true, false, new Predicate<EntityVillager>() {
             @Override
             public boolean apply(@Nullable EntityVillager entity) {
                 return EntitySiren.this.isAgressive();
@@ -203,7 +203,6 @@ public class EntitySiren extends EntityMob implements IAnimatedEntity, IVillager
             this.getAttackTarget().motionX += (Math.signum(this.posX - this.getAttackTarget().posX) * 0.5D - this.getAttackTarget().motionX) * 0.100000000372529 * 5;
             this.getAttackTarget().motionY += (Math.signum(this.posY - this.getAttackTarget().posY + 1) * 0.5D - this.getAttackTarget().motionY) * 0.100000000372529 * 5;
             this.getAttackTarget().motionZ += (Math.signum(this.posZ - this.getAttackTarget().posZ) * 0.5D - this.getAttackTarget().motionZ) * 0.100000000372529 * 5;
-            float angle = (float) (Math.atan2(this.getAttackTarget().motionZ, this.getAttackTarget().motionX) * 180.0D / Math.PI) - 90.0F;
             //entity.moveForward = 0.5F;
             double d0 = this.posX - this.getAttackTarget().posX;
             double d2 = this.posZ - this.getAttackTarget().posZ;
@@ -497,7 +496,6 @@ public class EntitySiren extends EntityMob implements IAnimatedEntity, IVillager
     public void travel(float strafe, float forward, float vertical) {
         if (this.isServerWorld()) {
             float f4;
-            float f5;
             if (this.isInWater()) {
                 this.moveRelative(strafe, forward, vertical, 0.1F);
                 f4 = 0.8F;

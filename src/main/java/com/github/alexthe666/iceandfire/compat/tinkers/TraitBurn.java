@@ -5,7 +5,6 @@ import com.github.alexthe666.iceandfire.util.IsImmune;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import slimeknights.tconstruct.library.modifiers.IToolMod;
 import slimeknights.tconstruct.library.modifiers.ModifierTrait;
 

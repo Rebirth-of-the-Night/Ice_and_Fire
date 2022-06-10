@@ -1,16 +1,18 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import java.util.Random;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.api.event.DragonFireEvent;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.message.MessageDragonSyncFire;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
@@ -25,14 +27,11 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
-
-import java.util.Random;
 
 public class EntityLightningDragon extends EntityDragonBase {
 
@@ -414,7 +413,6 @@ public class EntityLightningDragon extends EntityDragonBase {
         double d2 = burnX - headPos.x;
         double d3 = burnY - headPos.y;
         double d4 = burnZ - headPos.z;
-        float particleScale = MathHelper.clamp(this.getRenderSize() * 0.08F, 0.55F, 3F);
         double distance = Math.max(2.5F * this.getDistance(burnX, burnY, burnZ), 0);
         double conqueredDistance = burnProgress / 40D * distance;
         int increment = (int) Math.ceil(conqueredDistance / 100);
@@ -513,8 +511,6 @@ public class EntityLightningDragon extends EntityDragonBase {
         float epicRoarProg = this.getAnimation() == ANIMATION_EPIC_ROAR && !this.isSitting() ? tick * 0.1F : 0;
         float sleepProg = this.sleepProgress * 0.025F;
         float pitchY = 0;
-        float pitchAdjustment = 0;
-        float pitchMinus = 0;
         float dragonPitch = -getDragonPitch();
         if (this.isFlying() || this.isHovering()) {
             if(dragonPitch > 0) {

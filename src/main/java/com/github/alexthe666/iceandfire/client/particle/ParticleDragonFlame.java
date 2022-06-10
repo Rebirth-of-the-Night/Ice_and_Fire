@@ -18,7 +18,8 @@ import java.util.List;
 
 public class ParticleDragonFlame extends ParticleFlame {
 
-    private static final ResourceLocation DRAGONFLAME = new ResourceLocation("iceandfire:textures/particles/flame.png");
+    @SuppressWarnings("unused")
+	private static final ResourceLocation DRAGONFLAME = new ResourceLocation("iceandfire:textures/particles/flame.png");
     private final float dragonSize;
     private final double initialX;
     private final double initialY;

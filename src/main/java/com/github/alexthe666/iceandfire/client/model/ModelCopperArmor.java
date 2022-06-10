@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.client.model;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -63,12 +62,6 @@ public class ModelCopperArmor extends ModelBiped {
             copyModelAngles(this.bipedHead, this.bipedHeadwear);
         } else {
             super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
-        }
-        float f = 0;
-        float f1 = 12;
-        if (isSneak) {
-            f = -1;
-            f1 = 10;
         }
     }
 

@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -69,7 +70,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
                 return entity instanceof EntityLivingBase && DragonUtils.canHostilesTarget(entity);
             }
         }));
-        this.targetTasks.addTask(5, new DragonAITargetItems(this, false));
+        this.targetTasks.addTask(5, new DragonAITargetItems<EntityItem>(this, false));
     }
 
     @Nullable
@@ -178,7 +179,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     }
     @Nullable
     public UUID getCommanderId() {
-        return (UUID) ((Optional) this.dataManager.get(COMMANDER_UNIQUE_ID)).orNull();
+        return (UUID) ((Optional<?>) this.dataManager.get(COMMANDER_UNIQUE_ID)).orNull();
     }
 
     public void setCommanderId(@Nullable UUID uuid) {
