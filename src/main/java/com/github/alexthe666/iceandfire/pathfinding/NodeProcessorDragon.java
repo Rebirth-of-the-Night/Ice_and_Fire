@@ -31,7 +31,7 @@ public class NodeProcessorDragon extends WalkNodeProcessor {
         Block block = iblockstate.getBlock();
         Material material = iblockstate.getMaterial();
 
-        PathNodeType type = block.getAiPathNodeType(iblockstate, p_189553_1_, blockpos, this.currentEntity);
+        PathNodeType type = block.getAiPathNodeType(iblockstate, p_189553_1_, blockpos, this.entity);
         if (type != null) return type;
 
         if (material == Material.AIR) {

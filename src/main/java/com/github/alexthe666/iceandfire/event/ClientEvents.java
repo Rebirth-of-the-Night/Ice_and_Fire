@@ -3,8 +3,6 @@ package com.github.alexthe666.iceandfire.event;
 import java.util.Map;
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
 import com.github.alexthe666.iceandfire.ClientProxy;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.client.IafKeybindRegistry;
@@ -15,14 +13,10 @@ import com.github.alexthe666.iceandfire.client.render.entity.RenderCockatrice;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerChainedEntity;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerStoneEntity;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerStoneEntityCrack;
-import com.github.alexthe666.iceandfire.entity.ChainEntityProperties;
-import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
-import com.github.alexthe666.iceandfire.entity.EntitySiren;
-import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
-import com.github.alexthe666.iceandfire.entity.MiscEntityProperties;
-import com.github.alexthe666.iceandfire.entity.SirenEntityProperties;
-import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
+import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.util.IAFMath;
+
+import org.lwjgl.opengl.GL11;
 
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
@@ -258,11 +252,11 @@ public class ClientEvents {
 
 	@SubscribeEvent
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public void onPreRenderLiving(RenderLivingEvent.Pre event) {
+    public void onPreRenderLiving(RenderLivingEvent.Pre<?> event) {
         if (event.getEntity().getRidingEntity() != null && event.getEntity().getRidingEntity() instanceof EntityDragonBase) {
             if (ClientProxy.currentDragonRiders.contains(event.getEntity().getUniqueID()) || event.getEntity() == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
                 event.setCanceled(true);
-                net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post(event.getEntity(), event.getRenderer(), event.getPartialRenderTick(), event.getX(), event.getY(), event.getZ()));
+                net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post<>(event.getEntity(), event.getRenderer(), event.getPartialRenderTick(), event.getX(), event.getY(), event.getZ()));
             }
         }
 
@@ -384,7 +378,8 @@ public class ClientEvents {
             GlStateManager.disableCull();
             GlStateManager.disableBlend();
             GlStateManager.depthMask(true);
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
+            float f1 = 240.0F;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, f1, f1);
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             float f2 = (float) entity.world.getTotalWorldTime() + event.getPartialRenderTick();
             float f3 = f2 * 0.15F % 1.0F;

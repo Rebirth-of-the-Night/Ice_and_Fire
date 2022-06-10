@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 public class ContainerDragonForge extends SyncedFieldContainer {
 
     private final IInventory tileFurnace;
+	
     private int dragonType;
 
     public ContainerDragonForge(InventoryPlayer playerInventory, IInventory furnaceInventory) {

@@ -66,7 +66,7 @@ public class DeathwormAITargetItems extends EntityAITarget {
     public void updateTask() {
         super.updateTask();
 
-        if (this.target.getRNG().nextFloat() < targetChance / 100f) {
+        if (this.taskOwner.getRNG().nextFloat() < targetChance / 100f) {
             if (this.targetEntity == null || this.targetEntity != null && this.targetEntity.isDead) {
                 this.resetTask();
             }

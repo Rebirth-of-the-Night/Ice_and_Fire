@@ -1,5 +1,9 @@
 package com.github.alexthe666.iceandfire;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import net.minecraftforge.common.config.Configuration;
 
 public class IceAndFireConfig {
@@ -90,6 +94,7 @@ public class IceAndFireConfig {
     public int sirenMaxSingTime = 12000;
     public int sirenTimeBetweenSongs = 2000;
     public int generateSirenChance = 300;
+    public List<String> sirenFluteMobBlacklist = new ArrayList<>();
     public boolean spawnHippocampus = true;
     public int hippocampusSpawnChance = 70;
     public String hippocampusTameItem = "minecraft:prismarine_crystals";
@@ -272,6 +277,7 @@ public class IceAndFireConfig {
         this.generateSirenChance = config.getInt("Spawn Sirens Chance", "all", 300, 1, 10000, "1 out of this number chance per chunk for generation");
         this.sirenMaxSingTime = config.getInt("Siren Max Sing Time", "all", 12000, 100, 24000, "how long(in ticks) can a siren use its sing effect on a player, without a cooldown.");
         this.sirenTimeBetweenSongs = config.getInt("Siren Time Between Songs", "all", 2000, 100, 24000, "how long(in ticks) a siren has to wait after failing to lure in a player");
+        this.sirenFluteMobBlacklist = Arrays.asList(config.getStringList("Siren Flute Mob Blacklist", "all", new String[]{}, "IDs of mobs that the siren flute will not work on"));
 
         this.spawnHippocampus = config.getBoolean("Spawn Hippocampus", "all", true, "True if hippocampi are allowed to spawn");
         this.hippocampusSpawnChance = config.getInt("Spawn Hippocampus Chance", "all", 70, 1, 10000, "1 out of this number chance per chunk for generation");

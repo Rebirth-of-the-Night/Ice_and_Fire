@@ -18,18 +18,7 @@ import com.github.alexthe666.iceandfire.entity.EntitySeaSerpent;
 import com.github.alexthe666.iceandfire.entity.EntityStymphalianBird;
 import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenCyclopsCave;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenFireDragonCave;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenFireDragonRoosts;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenGorgonTemple;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenHydraCave;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenIceDragonCave;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenIceDragonRoosts;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenLightningDragonCave;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenLightningDragonRoosts;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenMausoleum;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenMyrmexHive;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenSirenIsland;
+import com.github.alexthe666.iceandfire.world.gen.*;
 import com.github.alexthe666.iceandfire.world.village.MapGenPixieVillage;
 import com.github.alexthe666.iceandfire.world.village.MapGenSnowVillage;
 
@@ -94,7 +83,7 @@ public class WorldGenEvents implements IWorldGenerator {
         return surface;
     }
 
-	@Override
+    @Override
     @SuppressWarnings("deprecation")
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if (world.getWorldType() == WorldType.FLAT && !IceAndFire.CONFIG.spawnStructuresOnSuperflat) {

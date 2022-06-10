@@ -4,12 +4,12 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.entity.MiscEntityProperties;
 import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
-import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,6 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
 import java.util.List;
 
 public class ItemSirenFlute extends Item {
@@ -51,11 +52,23 @@ public class ItemSirenFlute extends Item {
         Vec3d vec3d2 = vec3d.add(vec3d1.x * dist, vec3d1.y * dist, vec3d1.z * dist);
         double d1 = dist;
         Entity pointedEntity = null;
-        List<Entity> list = player.world.getEntitiesInAABBexcluding(player, player.getEntityBoundingBox().expand(vec3d1.x * dist, vec3d1.y * dist, vec3d1.z * dist).grow(1.0D, 1.0D, 1.0D), Predicates.and(EntitySelectors.NOT_SPECTATING, new Predicate<Entity>() {
-            public boolean apply(@Nullable Entity entity) {
-                return entity != null && entity.canBeCollidedWith() && (entity instanceof EntityPlayer || (entity instanceof EntityLiving && EntityPropertiesHandler.INSTANCE.getProperties(entity, StoneEntityProperties.class) != null && !EntityPropertiesHandler.INSTANCE.getProperties(entity, StoneEntityProperties.class).isStone));
-            }
-        }));
+        List<Entity> list = player.world.getEntitiesInAABBexcluding(
+                player, 
+                player.getEntityBoundingBox().expand(vec3d1.x * dist, vec3d1.y * dist, vec3d1.z * dist).grow(1.0D, 1.0D, 1.0D), 
+                Predicates.and(EntitySelectors.NOT_SPECTATING, 
+                    (entity) -> {
+                        return  entity != null && 
+                                entity.canBeCollidedWith() && (
+                                    entity instanceof EntityPlayer || 
+                                        (entity instanceof EntityLiving && 
+                                         EntityPropertiesHandler.INSTANCE.getProperties(entity, StoneEntityProperties.class) != null && 
+                                         !EntityPropertiesHandler.INSTANCE.getProperties(entity, StoneEntityProperties.class).isStone
+                                        )
+                                ) &&
+                                !IceAndFire.CONFIG.sirenFluteMobBlacklist.contains(EntityList.getKey(entity).toString());
+                    }
+                )
+        );
         double d2 = d1;
         for (int j = 0; j < list.size(); ++j) {
             Entity entity1 = list.get(j);

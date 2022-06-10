@@ -12,7 +12,10 @@ import net.minecraft.world.World;
 
 public class PathNavigateCyclops extends PathNavigateGround {
     public BlockPos targetPosition;
-    
+	
+    @SuppressWarnings("unused")
+    private final EntityCyclops cyclops;
+	
     public PathNavigateCyclops(EntityCyclops entitylivingIn, World worldIn) {
         super(entitylivingIn, worldIn);
     }

@@ -81,14 +81,15 @@ public class ItemStoneStatue extends Item {
                     return EnumActionResult.SUCCESS;
                 } else {
                     EntityEntry entry = net.minecraftforge.registries.GameData.getEntityRegistry().getValue((stack.getTagCompound().getInteger("IAFStoneStatueEntityID")));
-                    Class<?> classFromEntity = entry.getEntityClass();
+					
+                    Class<? extends Entity> classFromEntity = entry.getEntityClass();
                     Entity entity = null;
                     if (classFromEntity == null) {
                         return EnumActionResult.SUCCESS;
                     }
                     if (Entity.class.isAssignableFrom(classFromEntity)) {
                         try {
-                            entity = (Entity) classFromEntity.getDeclaredConstructor(World.class).newInstance(worldIn);
+                            entity = classFromEntity.getDeclaredConstructor(World.class).newInstance(worldIn);
                         } catch (ReflectiveOperationException e) {
                             e.printStackTrace();
                             return EnumActionResult.SUCCESS;
