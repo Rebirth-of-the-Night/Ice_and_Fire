@@ -1,12 +1,13 @@
-package com.github.alexthe666.iceandfire.entity;
+package com.github.alexthe666.iceandfire.entity.ai;
 
+import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.player.EntityPlayer;
 
 import javax.annotation.Nullable;
 
-public class MyrmexAIAttackPlayers extends EntityAINearestAttackableTarget {
+public class MyrmexAIAttackPlayers extends EntityAINearestAttackableTarget<EntityPlayer> {
     private final EntityMyrmexBase myrmex;
 
     public MyrmexAIAttackPlayers(EntityMyrmexBase myrmex) {
