@@ -21,7 +21,6 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
 
     public EntityDragonFireCharge(World worldIn) {
         super(worldIn);
-
     }
 
     public EntityDragonFireCharge(World worldIn, double posX, double posY, double posZ, double accelX, double accelY, double accelZ) {
@@ -42,11 +41,6 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
 
     public void setSizes(float width, float height) {
         this.setSize(width, height);
-    }
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return false;
     }
 
     public void onUpdate() {
@@ -185,9 +179,4 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
     public boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
     }
-
-    public float getCollisionBorderSize() {
-        return 0F;
-    }
-
 }

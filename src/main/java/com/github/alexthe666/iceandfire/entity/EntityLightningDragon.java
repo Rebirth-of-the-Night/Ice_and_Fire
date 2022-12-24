@@ -65,18 +65,17 @@ public class EntityLightningDragon extends EntityDragonBase {
         this.growth_stages = new float[][]{growth_stage_1, growth_stage_2, growth_stage_3, growth_stage_4, growth_stage_5};
     }
 
+    @Override
     public void onStruckByLightning(EntityLightningBolt lightningBolt) {
         this.heal(IceAndFire.CONFIG.lightningDragonHealAmount);
+        this.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 20, 1));
     }
+    
     @Override
     public boolean isEntityInvulnerable(DamageSource i) {
-        if(i.damageType.equals(DamageSource.LIGHTNING_BOLT.damageType)) {
-            this.heal(IceAndFire.CONFIG.lightningDragonHealAmount);
-            this.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 20, 1));
-            return true;
-        }
-        return super.isEntityInvulnerable(i);
+        return super.isEntityInvulnerable(i) || i == DamageSource.LIGHTNING_BOLT || i == IceAndFire.dragonLightning ;
     }
+    
     @Override
     protected void entityInit() {
         super.entityInit();
@@ -158,10 +157,6 @@ public class EntityLightningDragon extends EntityDragonBase {
 
     public float getLightningTargetZ() {
         return this.dataManager.get(LIGHTNING_TARGET_Z);
-    }
-
-    public boolean canBeSteered() {
-        return true;
     }
 
     @Override
@@ -480,7 +475,7 @@ public class EntityLightningDragon extends EntityDragonBase {
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             if (world.isRemote) {
-                this.world.spawnParticle(EnumParticleTypes.WATER_DROP, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2, d0, d1);
+                this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, d2, d0, d1);
             }
         }
     }
@@ -491,7 +486,7 @@ public class EntityLightningDragon extends EntityDragonBase {
             float headPosX = (float) (posX + 1.8F * getRenderSize() * (0.3F + radiusAdd) * Math.cos((rotationYaw + 90) * Math.PI / 180));
             float headPosZ = (float) (posZ + 1.8F * getRenderSize() * (0.3F + radiusAdd) * Math.sin((rotationYaw + 90) * Math.PI / 180));
             float headPosY = (float) (posY + 0.5 * getRenderSize() * 0.3F);
-            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, headPosX, headPosY, headPosZ, 0, 0, 0);
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, headPosX, headPosY, headPosZ, 0, 0, 0);
         }
     }
     

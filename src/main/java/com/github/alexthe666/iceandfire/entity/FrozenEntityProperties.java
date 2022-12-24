@@ -43,7 +43,7 @@ public class FrozenEntityProperties extends EntityProperties<EntityLivingBase> {
     }
 
     public void setFrozenFor(int frozenFor) {
-        if (!(this.getEntity() instanceof EntityIceDragon)) {
+        if (!(this.getEntity() instanceof EntityIceDragon) && !this.isFrozen) {
             this.isFrozen = true;
             this.ticksUntilUnfrozen = frozenFor;
         }

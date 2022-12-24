@@ -8,14 +8,13 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.util.ItemUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemSpade;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemModShovel extends ItemSpade {
+public class ItemModShovel extends ItemSpade implements IaFTool {
     private final int toolID;
 
     public ItemModShovel(ToolMaterial toolmaterial, String gameName, String name) {
@@ -33,28 +32,6 @@ public class ItemModShovel extends ItemSpade {
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
     	return ItemUtil.getIsRepairable(toolMaterial, toRepair, repair, super.getIsRepairable(toRepair, repair));
-    }
-    
-    @Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-    	switch(this.toolID) {
-    	case 0: 
-    		ItemUtil.hitWithSilver(target, this.toolMaterial, 4.0F);
-    		break;
-    	case 1: 
-    		ItemUtil.hitWithMyrmex(target, this.toolMaterial, 6.0F);
-    		break;
-    	case 2: 
-    		ItemUtil.hitWithFireDragonsteel(target, attacker);
-    		break;
-    	case 3: 
-    		ItemUtil.hitWithIceDragonsteel(target, attacker);
-    		break;
-    	case 4: 
-    		ItemUtil.hitWithLightningDragonsteel(target, attacker);
-    		break;
-    	}
-    	return super.hitEntity(stack, target, attacker);
     }
 
     @Override
@@ -78,4 +55,9 @@ public class ItemModShovel extends ItemSpade {
     		break;
     	}
     }
+
+	@Override
+	public int getToolMode() {
+		return Math.max(this.toolID, 1);
+	}
 }

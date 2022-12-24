@@ -2,6 +2,8 @@ package com.github.alexthe666.iceandfire.compat.tinkers;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntityDragonLightningBolt;
+import com.github.alexthe666.iceandfire.util.IsImmune;
+import com.github.alexthe666.iceandfire.util.ItemUtil;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,18 +31,30 @@ public class TraitThunder extends ModifierTrait {
 
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
-        boolean flag = true;
+    	boolean flag = true;
         if(player instanceof EntityPlayer) {
             if(((EntityPlayer)player).swingProgress > 0.2) {
                 flag = false;
             }
         }
         if(!player.world.isRemote && flag && !target.isDead) {
-        	EntityDragonLightningBolt dragonLightningBolt = new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, player);
-        	target.world.spawnEntity(dragonLightningBolt);
+        	target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, player, target));
         }
-        if (level >= 2 && IceAndFire.CONFIG.dragonsteelKnockback) {
-            target.knockBack(target, 1F, player.posX - target.posX, player.posZ - target.posZ);
+        if(level > 1) {
+        	ItemUtil.knockbackWithDragonsteel(target, player);
         }
+    }
+    
+    
+    @Override
+    public float damage(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, float newDamage, boolean isCritical) {
+    	if(!IsImmune.toDragonLightning(target)) {
+            if(player instanceof EntityPlayer) {
+                if(((EntityPlayer)player).swingProgress > 0.2) {
+                	return newDamage + (float) IceAndFire.CONFIG.dragonAttackDamageLightning * level;
+                }
+            }
+    	}
+    	return newDamage;
     }
 }

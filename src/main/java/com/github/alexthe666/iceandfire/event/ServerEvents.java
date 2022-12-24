@@ -20,6 +20,9 @@ import com.github.alexthe666.iceandfire.entity.ai.EntitySheepAIFollowCyclops;
 import com.github.alexthe666.iceandfire.entity.ai.VillagerAIFearUntamed;
 import com.github.alexthe666.iceandfire.item.*;
 import com.github.alexthe666.iceandfire.message.MessagePlayerHitMultipart;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
+import com.github.alexthe666.iceandfire.util.IsImmune;
+import com.github.alexthe666.iceandfire.util.ItemUtil;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenFireDragonCave;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenIceDragonCave;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenLightningDragonCave;
@@ -40,8 +43,10 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.INpc;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
@@ -76,6 +81,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootEntry;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
@@ -528,6 +534,145 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
+    public void onLivingHurt(LivingHurtEvent event) {
+    	if(event.getSource().getTrueSource() instanceof EntityLivingBase) {
+    		EntityLivingBase attacker = (EntityLivingBase)event.getSource().getTrueSource();
+    		EntityLivingBase target = event.getEntityLiving();
+    		
+    		Item weapon = attacker.getHeldItemMainhand().getItem();
+    		float amount = event.getAmount();
+    		
+    		if(weapon instanceof IaFTool) {
+    			switch(((IaFTool)weapon).getToolMode()) {
+    			case 0:
+    				if(target.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
+    					event.setAmount(amount + 2.0F);
+    				}
+    				break;
+    			case 1:
+    				if(target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
+    					event.setAmount(amount + 4.0F);
+    				}
+    				break;
+    			case 2:
+    				if(target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
+    					target.addPotionEffect(new PotionEffect(MobEffects.POISON, 200, 2));
+    					event.setAmount(amount + 4.0F);
+    				}
+    				break;
+    			case 3:
+    				ItemUtil.hitWithFireDragonsteel(target, attacker);
+    				break;
+    			case 4:
+    				ItemUtil.hitWithIceDragonsteel(target, attacker);
+    				break;
+    			case 5:
+    				boolean flag = true;
+    		        if(attacker instanceof EntityPlayer) {
+    		        	EntityPlayer player = (EntityPlayer)attacker;
+    		            if(player.swingProgress > 0.2) {
+    		                flag = false;
+    		            }
+    		        }
+    		        if(!attacker.world.isRemote && flag && !target.isDead) {
+    		        	target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, attacker, target));
+    		        	if(!IsImmune.toDragonLightning(target)) {
+    		        		float newAmount = amount + (float)IceAndFire.CONFIG.dragonAttackDamageLightning * 2.0F;
+    		        		event.setAmount(newAmount);
+    		        	}
+    		        }
+    		        ItemUtil.knockbackWithDragonsteel(target, attacker);
+    				break;
+    			}
+    		}
+    		if(weapon instanceof ItemAlchemySword) {
+    			switch(((ItemAlchemySword)weapon).toolID) {
+    			case 0:
+    	            if (target instanceof EntityIceDragon) {
+    	            	event.setAmount(amount + 8.0F);
+    	            }
+    				if (!IsImmune.toDragonFire(target)) {
+    		            target.setFire(5);
+    	            }
+    				break;
+    			case 1:
+    				if (target instanceof EntityFireDragon) {
+    	                event.setAmount(amount + 8.0F);
+    	            }
+    	            if (!IsImmune.toDragonIce(target)) {
+    		            FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(target, FrozenEntityProperties.class);
+    		            if(frozenProps != null) frozenProps.setFrozenFor(50);
+    		            target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 2));
+    		            target.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 100, 2));
+    	            }
+    				break;
+    			case 2:
+    				float newAmount = amount + (!IsImmune.toDragonLightning(target) ? (float)IceAndFire.CONFIG.dragonAttackDamageLightning * 2.0F : 0.0F);
+    	            if (target instanceof EntityFireDragon || target instanceof EntityIceDragon) {
+    	            	event.setAmount(newAmount + 4.0F);
+    	            }
+    	            boolean flag = true;
+    	            if(attacker instanceof EntityPlayer) {
+    	            	EntityPlayer player = (EntityPlayer)attacker;
+    	                if(player.swingProgress > 0.2) {
+    	                    flag = false;
+    	                }
+    	            }
+    	            if(!attacker.world.isRemote && flag && !target.isDead) {
+    	            	target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, attacker, target));
+    	            	event.setAmount(newAmount);
+    	            }
+    				break;
+    			}
+    			ItemUtil.knockbackWithDragonsteel(target, attacker);
+    		} else if(weapon instanceof ItemAmphithereMacuahuitl) {
+    			target.playSound(IafSoundRegistry.AMPHITHERE_GUST, 1, 1);
+    			target.playSound(SoundEvents.ITEM_SHIELD_BLOCK, 1, 1);
+    			target.isAirBorne = true;
+    	        double xRatio = -MathHelper.sin(attacker.rotationYaw * 0.017453292F);
+    	        double zRatio = MathHelper.cos(attacker.rotationYaw * 0.017453292F);
+    	        float strength = -0.6F;
+    	        float f = MathHelper.sqrt(xRatio * xRatio + zRatio * zRatio);
+    	        target.motionX /= 2.0D;
+    	        target.motionZ /= 2.0D;
+    	        target.motionX -= xRatio / (double) f * (double) strength;
+    	        target.motionZ -= zRatio / (double) f * (double) strength;
+    	        target.motionY = 0.8D;
+    	        Random rand = new Random();
+    	        for (int i = 0; i < 20; ++i) {
+    	            double d0 = rand.nextGaussian() * 0.02D;
+    	            double d1 = rand.nextGaussian() * 0.02D;
+    	            double d2 = rand.nextGaussian() * 0.02D;
+    	            target.world.spawnParticle(EnumParticleTypes.CLOUD, target.posX + (double) (rand.nextFloat() * target.width * 5.0F) - (double) target.width - d0 * 10.0D, target.posY + (double) (rand.nextFloat() * target.height) - d1 * 10.0D, target.posZ + (double) (rand.nextFloat() * target.width * 5.0F) - (double) target.width - d2 * 10.0D, d0, d1, d2);
+    	        }
+    		} else if(weapon instanceof ItemHippocampusSlapper) {
+    			target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 2));
+    			target.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 100, 2));
+    			target.playSound(SoundEvents.ENTITY_GUARDIAN_FLOP, 3, 1);
+    		} else if(weapon instanceof ItemHippogryphSword) {
+    			float f = (float) attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+    	        float f3 = 1.0F + EnchantmentHelper.getSweepingDamageRatio(attacker) * f;
+    	        for (EntityLivingBase entitylivingbase : attacker.world.getEntitiesWithinAABB(EntityLivingBase.class, target.getEntityBoundingBox().grow(1.0D, 0.25D, 1.0D))) {
+	                if (entitylivingbase != attacker && entitylivingbase != target && !attacker.isOnSameTeam(entitylivingbase) && attacker.getDistanceSq(entitylivingbase) < 9.0D) {
+	                    entitylivingbase.knockBack(attacker, 0.4F, MathHelper.sin(attacker.rotationYaw * 0.017453292F), -MathHelper.cos(attacker.rotationYaw * 0.017453292F));
+	                    event.setAmount(amount + f3);
+	                }
+	            }
+	            attacker.world.playSound(null, attacker.posX, attacker.posY, attacker.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, attacker.getSoundCategory(), 1.0F, 1.0F);
+	            if(attacker instanceof EntityPlayer) {
+	            	EntityPlayer player = (EntityPlayer)attacker;
+	            	double d0 = (double)(-MathHelper.sin(player.rotationYaw * 0.017453292F));
+		            double d1 = (double)MathHelper.cos(player.rotationYaw * 0.017453292F);
+
+		            if (player.world instanceof WorldServer) {
+		                ((WorldServer)player.world).spawnParticle(EnumParticleTypes.SWEEP_ATTACK, player.posX + d0, player.posY + (double)player.height * 0.5D, player.posZ + d1, 0, d0, 0.0D, d1, 0.0D);
+		            }
+	            }
+    		}
+    	}
+    }
+    
+    @SubscribeEvent
     public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
         ChainEntityProperties chainProperties = EntityPropertiesHandler.INSTANCE.getProperties(event.getEntity(), ChainEntityProperties.class);
         if (chainProperties != null && chainProperties.isChained()) {
@@ -765,6 +910,23 @@ public class ServerEvents {
             if (rand.nextInt(7) == 0) {
                 for (int i = 0; i < 5; i++) {
                     event.getEntityLiving().world.spawnParticle(EnumParticleTypes.HEART, event.getEntityLiving().posX + ((rand.nextDouble() - 0.5D) * 3), event.getEntityLiving().posY + ((rand.nextDouble() - 0.5D) * 3), event.getEntityLiving().posZ + ((rand.nextDouble() - 0.5D) * 3), 0, 0, 0);
+                }
+            }
+        }
+        
+        if(event.getEntityLiving().getHeldItemMainhand().getItem() instanceof ItemHydraHeart || event.getEntityLiving().getHeldItemOffhand().getItem() instanceof ItemHydraHeart) {
+        	double healthPercentage = event.getEntityLiving().getHealth() / Math.max(1, event.getEntityLiving().getMaxHealth());
+            if(healthPercentage < 1.0D){
+                int level = 0;
+                if(healthPercentage < 0.25D){
+                    level = 3;
+                } else if(healthPercentage < 0.5D){
+                    level = 2;
+                } else if(healthPercentage < 0.75D){
+                    level = 1;
+                }
+                if(!event.getEntityLiving().isPotionActive(MobEffects.REGENERATION)) {
+                	event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 900, level, true, false));
                 }
             }
         }

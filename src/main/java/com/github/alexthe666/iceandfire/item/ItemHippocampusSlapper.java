@@ -1,18 +1,16 @@
 package com.github.alexthe666.iceandfire.item;
 
-import com.github.alexthe666.iceandfire.IceAndFire;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.world.World;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import com.github.alexthe666.iceandfire.IceAndFire;
+
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.world.World;
 
 public class ItemHippocampusSlapper extends ItemSword {
 
@@ -21,15 +19,6 @@ public class ItemHippocampusSlapper extends ItemSword {
         this.setTranslationKey("iceandfire.hippocampus_slapper");
         this.setCreativeTab(IceAndFire.TAB_ITEMS);
         this.setRegistryName(IceAndFire.MODID, "hippocampus_slapper");
-    }
-
-    @Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase targetEntity, EntityLivingBase attacker) {
-        targetEntity.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 2));
-        targetEntity.addPotionEffect(new PotionEffect(MobEffects.NAUSEA, 100, 2));
-        targetEntity.playSound(SoundEvents.ENTITY_GUARDIAN_FLOP, 3, 1);
-
-        return super.hitEntity(stack, targetEntity, attacker);
     }
 
     @Override

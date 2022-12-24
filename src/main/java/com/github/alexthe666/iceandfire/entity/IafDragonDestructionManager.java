@@ -47,9 +47,9 @@ public class IafDragonDestructionManager {
             }
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                    entityliving.attackEntityFrom(IceAndFire.dragonFire, stage * dmgScale);
                     if (!IsImmune.toDragonFire(entityliving)) {
 	                    entityliving.setFire(5 + stage * 5);
+	                    entityliving.attackEntityFrom(IceAndFire.dragonFire, stage * dmgScale);
                     }
                 }
             }
@@ -78,9 +78,9 @@ public class IafDragonDestructionManager {
             }
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                    entityliving.attackEntityFrom(IceAndFire.dragonFire, stage * dmgScale);
                     if (!IsImmune.toDragonFire(entityliving)) {
 	                    entityliving.setFire(5 + stage * 5);
+	                    entityliving.attackEntityFrom(IceAndFire.dragonFire, stage * dmgScale);
                     }
                 }
             }
@@ -108,13 +108,11 @@ public class IafDragonDestructionManager {
             }
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                    entityliving.attackEntityFrom(IceAndFire.dragonIce, stage * dmgScale);
-                    FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
-                    if (frozenProps != null) {
-                        if (!IsImmune.toDragonIce(entityliving)) {
-                            frozenProps.setFrozenFor(50 * stage);
-                        }
-                    }
+                	if (!IsImmune.toDragonIce(entityliving)) {
+                		FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
+                        if (frozenProps != null) frozenProps.setFrozenFor(50 * stage);
+                        entityliving.attackEntityFrom(IceAndFire.dragonIce, stage * dmgScale);
+                	}
                 }
             }
         } else {
@@ -141,13 +139,11 @@ public class IafDragonDestructionManager {
             }
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                    entityliving.attackEntityFrom(IceAndFire.dragonIce, stage * dmgScale);
-                    FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
-                    if (frozenProps != null) {
-                        if (!IsImmune.toDragonIce(entityliving)) {
-                            frozenProps.setFrozenFor(50 * stage);
-                        }
-                    }
+                	if(!IsImmune.toDragonIce(entityliving)) {
+                		FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
+                        if (frozenProps != null) frozenProps.setFrozenFor(50 * stage);
+                        entityliving.attackEntityFrom(IceAndFire.dragonIce, stage * dmgScale);
+                	}
                 }
             }
         }
@@ -174,11 +170,11 @@ public class IafDragonDestructionManager {
             }
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                    entityliving.attackEntityFrom(IceAndFire.dragonLightning, stage * dmgScale);
                     if (!IsImmune.toDragonLightning(entityliving)) {
                         double d1 = destroyer.posX - entityliving.posX;
                         double d0 = destroyer.posZ - entityliving.posZ;
                     	entityliving.knockBack(entityliving, 0.3F, d1, d0);
+                    	entityliving.attackEntityFrom(IceAndFire.dragonLightning, stage * dmgScale);
                     }
                 }
             }
@@ -204,11 +200,11 @@ public class IafDragonDestructionManager {
             }
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                    entityliving.attackEntityFrom(IceAndFire.dragonLightning, stage * dmgScale);
                     if (!IsImmune.toDragonLightning(entityliving)) {
                         double d1 = destroyer.posX - entityliving.posX;
                         double d0 = destroyer.posZ - entityliving.posZ;
                     	entityliving.knockBack(entityliving, 0.3F, d1, d0);
+                    	entityliving.attackEntityFrom(IceAndFire.dragonLightning, stage * dmgScale);
                     }
                 }
             }
@@ -238,9 +234,9 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - 2, (double) center.getY() - 2, (double) center.getZ() - 2, (double) center.getX() + 2, (double) center.getY() + 2, (double) center.getZ() + 2))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
 	                    if (!IsImmune.toDragonFire(entityliving)) {
 		                    entityliving.setFire(15);
+		                    entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
 	                    }
                     }
                 }
@@ -273,9 +269,9 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - j, (double) center.getY() - k, (double) center.getZ() - l, (double) center.getX() + j, (double) center.getY() + k, (double) center.getZ() + l))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
 	                    if (!IsImmune.toDragonFire(entityliving)) {
 		                    entityliving.setFire(15);
+		                    entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
 	                    }
                     }
                 }
@@ -311,13 +307,11 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - 2, (double) center.getY() - 2, (double) center.getZ() - 2, (double) center.getX() + 2, (double) center.getY() + 2, (double) center.getZ() + 2))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
-                        FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
-                        if (frozenProps != null) {
-                            if (!IsImmune.toDragonIce(entityliving)) {
-                                frozenProps.setFrozenFor(400);
-                            }
-                        }
+                    	if(!IsImmune.toDragonIce(entityliving)) { 
+                    		FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
+                            if (frozenProps != null) frozenProps.setFrozenFor(400);
+                            entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
+                    	}
                     }
                 }
             } else {
@@ -348,13 +342,11 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - j, (double) center.getY() - k, (double) center.getZ() - l, (double) center.getX() + j, (double) center.getY() + k, (double) center.getZ() + l))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
-                        FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
-                        if (frozenProps != null) {
-                            if (!IsImmune.toDragonIce(entityliving)) {
-                                frozenProps.setFrozenFor(400);
-                            }
-                        }
+                    	if (!IsImmune.toDragonIce(entityliving)) {
+                            FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
+                            if (frozenProps != null) frozenProps.setFrozenFor(400);
+                            entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
+                    	}
                     }
                 }
             }
@@ -388,11 +380,11 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - 2, (double) center.getY() - 2, (double) center.getZ() - 2, (double) center.getX() + 2, (double) center.getY() + 2, (double) center.getZ() + 2))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonLightning, Math.max(1, stage - 1) * 2F);
                         if (!IsImmune.toDragonLightning(entityliving)) {
                             double d1 = destroyer.posX - entityliving.posX;
                             double d0 = destroyer.posZ - entityliving.posZ;
                         	entityliving.knockBack(entityliving, 0.3F, d1, d0);
+                        	entityliving.attackEntityFrom(IceAndFire.dragonLightning, Math.max(1, stage - 1) * 2F);
                         }
                     }
                 }
@@ -424,11 +416,11 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - j, (double) center.getY() - k, (double) center.getZ() - l, (double) center.getX() + j, (double) center.getY() + k, (double) center.getZ() + l))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonLightning, Math.max(1, stage - 1) * 2F);
                         if (!IsImmune.toDragonLightning(entityliving)) {
                             double d1 = destroyer.posX - entityliving.posX;
                             double d0 = destroyer.posZ - entityliving.posZ;
                         	entityliving.knockBack(entityliving, 0.3F, d1, d0);
+                        	entityliving.attackEntityFrom(IceAndFire.dragonLightning, Math.max(1, stage - 1) * 2F);
                         }
                     }
                 }
@@ -453,11 +445,11 @@ public class IafDragonDestructionManager {
     public static IBlockState transformBlockFire(IBlockState in) {
         if (in.getMaterial() == Material.GRASS || in.getMaterial() == Material.CRAFTED_SNOW) {
             return IafBlockRegistry.charedGrass.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.GROUND && in.getBlock() == Blocks.DIRT) {
+        } else if (in.getBlock() == Blocks.DIRT) {
             return IafBlockRegistry.charedDirt.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.GROUND && in.getBlock() == Blocks.GRAVEL) {
+        } else if (in.getBlock() == Blocks.GRAVEL) {
             return IafBlockRegistry.charedGravel.getDefaultState().withProperty(BlockFallingReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.ROCK && (in.getBlock() == Blocks.COBBLESTONE || in.getBlock().getTranslationKey().contains("cobblestone"))) {
+        } else if (in.getBlock() == Blocks.COBBLESTONE || in.getBlock().getTranslationKey().contains("cobblestone")) {
             return IafBlockRegistry.charedCobblestone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
         } else if (in.getMaterial() == Material.ROCK && in.getBlock() != IafBlockRegistry.charedCobblestone) {
             return IafBlockRegistry.charedStone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
@@ -474,11 +466,11 @@ public class IafDragonDestructionManager {
     public static IBlockState transformBlockIce(IBlockState in) {
         if (in.getMaterial() == Material.GRASS || in.getMaterial() == Material.CRAFTED_SNOW) {
             return IafBlockRegistry.frozenGrass.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.GROUND && in.getBlock() == Blocks.DIRT || in.getMaterial() == Material.CRAFTED_SNOW) {
+        } else if (in.getBlock() == Blocks.DIRT || in.getMaterial() == Material.CRAFTED_SNOW) {
             return IafBlockRegistry.frozenDirt.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.GROUND && in.getBlock() == Blocks.GRAVEL) {
+        } else if (in.getBlock() == Blocks.GRAVEL) {
             return IafBlockRegistry.frozenGravel.getDefaultState().withProperty(BlockFallingReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.ROCK && (in.getBlock() == Blocks.COBBLESTONE || in.getBlock().getTranslationKey().contains("cobblestone"))) {
+        } else if (in.getBlock() == Blocks.COBBLESTONE || in.getBlock().getTranslationKey().contains("cobblestone")) {
             return IafBlockRegistry.frozenCobblestone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
         } else if (in.getMaterial() == Material.ROCK && in.getBlock() != IafBlockRegistry.frozenCobblestone) {
             return IafBlockRegistry.frozenStone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
@@ -496,11 +488,11 @@ public class IafDragonDestructionManager {
     public static IBlockState transformBlockLightning(IBlockState in) {
         if (in.getMaterial() == Material.GRASS || in.getMaterial() == Material.CRAFTED_SNOW) {
             return IafBlockRegistry.crackledGrass.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.GROUND && in.getBlock() == Blocks.DIRT) {
+        } else if (in.getBlock() == Blocks.DIRT) {
             return IafBlockRegistry.crackledDirt.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.GROUND && in.getBlock() == Blocks.GRAVEL) {
+        } else if (in.getBlock() == Blocks.GRAVEL) {
             return IafBlockRegistry.crackledGravel.getDefaultState().withProperty(BlockFallingReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.ROCK && (in.getBlock() == Blocks.COBBLESTONE || in.getBlock().getTranslationKey().contains("cobblestone"))) {
+        } else if (in.getBlock() == Blocks.COBBLESTONE || in.getBlock().getTranslationKey().contains("cobblestone")) {
             return IafBlockRegistry.crackledCobblestone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
         } else if (in.getMaterial() == Material.ROCK && in.getBlock() != IafBlockRegistry.crackledCobblestone) {
             return IafBlockRegistry.crackledStone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);

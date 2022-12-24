@@ -23,7 +23,6 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
 
     public EntityDragonIceCharge(World worldIn) {
         super(worldIn);
-
     }
 
     public EntityDragonIceCharge(World worldIn, double posX, double posY, double posZ, double accelX, double accelY, double accelZ) {
@@ -47,11 +46,6 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
     }
 
     protected boolean isFireballFiery() {
-        return false;
-    }
-
-    @Override
-    public boolean canBeCollidedWith() {
         return false;
     }
 
@@ -198,9 +192,4 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
     public boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
     }
-
-    public float getCollisionBorderSize() {
-        return 0F;
-    }
-
 }

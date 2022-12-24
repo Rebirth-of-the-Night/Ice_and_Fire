@@ -16,12 +16,10 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityDragonLightningCharge extends EntityFireball implements IDragonProjectile {
-
     public int ticksInAir;
 
     public EntityDragonLightningCharge(World worldIn) {
         super(worldIn);
-
     }
 
     public EntityDragonLightningCharge(World worldIn, double posX, double posY, double posZ, double accelX, double accelY, double accelZ) {
@@ -39,14 +37,9 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
         this.accelerationY = accelY / d0 * 0.07D;
         this.accelerationZ = accelZ / d0 * 0.07D;
     }
-
+    
     public void setSizes(float width, float height) {
         this.setSize(width, height);
-    }
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return false;
     }
 
     public void onUpdate() {
@@ -178,9 +171,4 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
     public boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
     }
-
-    public float getCollisionBorderSize() {
-        return 0F;
-    }
-
 }

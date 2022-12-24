@@ -8,14 +8,13 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.util.ItemUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemModAxe extends ItemAxe {
+public class ItemModAxe extends ItemAxe implements IaFTool {
     private final int toolID;
     
     public ItemModAxe(ToolMaterial toolmaterial, String gameName, String name) {
@@ -41,28 +40,6 @@ public class ItemModAxe extends ItemAxe {
     }
 
     @Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-    	switch(this.toolID) {
-    	case 0: 
-    		ItemUtil.hitWithSilver(target, this.toolMaterial, 8.0F);
-    		break;
-    	case 1: 
-    		ItemUtil.hitWithMyrmex(target, this.toolMaterial, 10.0F);
-    		break;
-    	case 2: 
-    		ItemUtil.hitWithFireDragonsteel(target, attacker);
-    		break;
-    	case 3: 
-    		ItemUtil.hitWithIceDragonsteel(target, attacker);
-    		break;
-    	case 4: 
-    		ItemUtil.hitWithLightningDragonsteel(target, attacker);
-    		break;
-    	}
-    	return super.hitEntity(stack, target, attacker);
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
     	switch(this.toolID) {
@@ -83,4 +60,9 @@ public class ItemModAxe extends ItemAxe {
     		break;
     	}
     }
+
+	@Override
+	public int getToolMode() {
+		return Math.max(this.toolID, 1);
+	}
 }

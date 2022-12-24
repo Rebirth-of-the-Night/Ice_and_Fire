@@ -112,6 +112,10 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
         }));
         initSegments(1);
     }
+	
+    public EnumCreatureAttribute getCreatureAttribute() {
+        return EnumCreatureAttribute.ARTHROPOD;
+    }
 
     public EntityLookHelper getLookHelper() {
         return this.lookHelper;

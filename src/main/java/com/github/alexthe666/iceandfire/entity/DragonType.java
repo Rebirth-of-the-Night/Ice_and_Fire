@@ -98,7 +98,7 @@ public class DragonType {
                 }
             }
         }
-        if(this == LIGHTNING){
+        if(this == LIGHTNING) {
             if (egg.world.isRainingAt(pos) && egg.world.canSeeSky(egg.getPosition().up())) {
                 egg.setDragonAge(egg.getDragonAge() + 1);
             }
