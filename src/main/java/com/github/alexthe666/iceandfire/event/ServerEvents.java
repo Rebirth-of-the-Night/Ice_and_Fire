@@ -535,8 +535,8 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onLivingHurt(LivingHurtEvent event) {
-    	if(event.getSource().getTrueSource() instanceof EntityLivingBase) {
-    		EntityLivingBase attacker = (EntityLivingBase)event.getSource().getTrueSource();
+    	if(event.getSource().getImmediateSource() instanceof EntityLivingBase && event.getSource().getDamageType() != "thorns") {
+    		EntityLivingBase attacker = (EntityLivingBase)event.getSource().getImmediateSource();
     		EntityLivingBase target = event.getEntityLiving();
     		
     		Item weapon = attacker.getHeldItemMainhand().getItem();

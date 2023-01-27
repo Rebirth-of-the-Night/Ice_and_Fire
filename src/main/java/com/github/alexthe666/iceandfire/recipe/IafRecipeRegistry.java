@@ -218,6 +218,8 @@ public class IafRecipeRegistry {
         OreDictionary.registerOre("toolAxe", IafItemRegistry.dragonsteel_fire_axe);
         OreDictionary.registerOre("toolAxe", IafItemRegistry.dragonsteel_ice_axe);
         OreDictionary.registerOre("toolAxe", IafItemRegistry.dragonsteel_lightning_axe);
+        
+        OreDictionary.registerOre("logWood", IafBlockRegistry.dreadwood_log);
 
         OreDictionary.registerOre("dragonSkull",  new ItemStack(IafItemRegistry.dragon_skull, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("mythicalSkull",  new ItemStack(IafItemRegistry.dragon_skull, 1, OreDictionary.WILDCARD_VALUE));
