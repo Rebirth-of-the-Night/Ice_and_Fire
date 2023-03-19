@@ -535,7 +535,7 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onLivingHurt(LivingHurtEvent event) {
-    	if(event.getSource().getImmediateSource() instanceof EntityLivingBase && event.getSource().getDamageType() != "thorns") {
+    	if(event.getSource().getImmediateSource() instanceof EntityLivingBase && event.getSource().getDamageType() != "thorns" && !(event.getEntity() instanceof EntityItem)) {
     		EntityLivingBase attacker = (EntityLivingBase)event.getSource().getImmediateSource();
     		EntityLivingBase target = event.getEntityLiving();
     		

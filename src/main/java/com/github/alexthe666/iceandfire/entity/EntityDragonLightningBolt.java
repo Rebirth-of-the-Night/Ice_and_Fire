@@ -10,6 +10,7 @@ import com.github.alexthe666.iceandfire.util.IsImmune;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
@@ -89,6 +90,7 @@ public class EntityDragonLightningBolt extends EntityLightningBolt {
                 for (int i = 0; i < list.size(); ++i) {
                     Entity entity = list.get(i);
                     if(IsImmune.toDragonLightning(entity)) list.remove(entity);
+                    if(entity instanceof EntityItem) list.remove(entity);
                     
                     if (!net.minecraftforge.event.ForgeEventFactory.onEntityStruckByLightning(entity, this)) {
                     	entity.attackEntityFrom(DamageSource.LIGHTNING_BOLT, (float)IceAndFire.CONFIG.dragonAttackDamageLightning * 2.0F);
