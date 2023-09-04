@@ -31,13 +31,7 @@ public class TraitThunder extends ModifierTrait {
 
     @Override
     public void onHit(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, boolean isCritical) {
-    	boolean flag = true;
-        if(player instanceof EntityPlayer) {
-            if(((EntityPlayer)player).swingProgress > 0.2) {
-                flag = false;
-            }
-        }
-        if(!player.world.isRemote && flag && !target.isDead) {
+        if(!player.world.isRemote && player.swingProgress < 0.2 && !target.isDead) {
         	target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, player, target));
         }
         if(level > 1) {
@@ -48,13 +42,9 @@ public class TraitThunder extends ModifierTrait {
     
     @Override
     public float damage(ItemStack tool, EntityLivingBase player, EntityLivingBase target, float damage, float newDamage, boolean isCritical) {
-    	if(!IsImmune.toDragonLightning(target)) {
-            if(player instanceof EntityPlayer) {
-                if(((EntityPlayer)player).swingProgress > 0.2) {
-                	return newDamage + (float) IceAndFire.CONFIG.dragonAttackDamageLightning * level;
-                }
-            }
-    	}
+    	if(!IsImmune.toDragonLightning(target) && player instanceof EntityPlayer && player.swingProgress == 0) {
+            return newDamage + (float)IceAndFire.CONFIG.dragonAttackDamageLightning / 2 * level;
+        }
     	return newDamage;
     }
 }

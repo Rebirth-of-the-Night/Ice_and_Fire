@@ -158,11 +158,9 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     6 = tackle
      */
     public boolean isSwimming;
-    public float prevSwimProgress;
     public float swimProgress;
     public int ticksSwiming;
     public int swimCycle;
-    public float[] prevAnimationProgresses = new float[10];
     public boolean isDaytime;
     public int flightCycle;
     public BlockPos homePos;
@@ -260,7 +258,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         this.tasks.addTask(0, new DragonAIRide<>(this));
         this.tasks.addTask(1, this.aiSit = new EntityAISit(this));
         this.tasks.addTask(2, new DragonAIMate(this, 1.0D));
-        this.tasks.addTask(3, new DragonAIReturnToRoost(this, 1.0D));
+        this.tasks.addTask(3, new DragonAIReturnToRoost(this));
         this.tasks.addTask(4, new DragonAIEscort(this, 1.5D));
         this.tasks.addTask(5, new DragonAIAttackMelee(this, 1.5D, false));
         this.tasks.addTask(6, new AquaticAITempt(this, 1.0D, IafItemRegistry.fire_stew, false));
@@ -282,16 +280,16 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 return entity instanceof EntityLivingBase && DragonUtils.canHostilesTarget(entity);
             }
         }));
-        this.targetTasks.addTask(6, new DragonAITargetItems<EntityItem>(this, false));
+        this.targetTasks.addTask(6, new DragonAITargetItems<>(this, false));
     }
 
     public void resetParts(float scale) {
         removeParts();
         headPart = new EntityDragonPart(this, 1.55F * scale, 0, 0.6F * scale, 0.5F * scale, 0.35F * scale, 1.5F);
         neckPart = new EntityDragonPart(this, 0.85F * scale, 0, 0.7F * scale, 0.5F * scale, 0.2F * scale, 1);
-        rightWingUpperPart = new EntityDragonPart(this, 1F * scale, 90, 0.5F * scale, 0.85F * scale, 0.3F * scale, 0.5F);
+        rightWingUpperPart = new EntityDragonPart(this, scale, 90, 0.5F * scale, 0.85F * scale, 0.3F * scale, 0.5F);
         rightWingLowerPart = new EntityDragonPart(this, 1.4F * scale, 100, 0.3F * scale, 0.85F * scale, 0.2F * scale, 0.5F);
-        leftWingUpperPart = new EntityDragonPart(this, 1F * scale, -90, 0.5F * scale, 0.85F * scale, 0.3F * scale, 0.5F);
+        leftWingUpperPart = new EntityDragonPart(this, scale, -90, 0.5F * scale, 0.85F * scale, 0.3F * scale, 0.5F);
         leftWingLowerPart = new EntityDragonPart(this, 1.4F * scale, -100, 0.3F * scale, 0.85F * scale, 0.2F * scale, 0.5F);
         tail1Part = new EntityDragonPart(this, -0.75F * scale, 0, 0.6F * scale, 0.35F * scale, 0.35F * scale, 1);
         tail2Part = new EntityDragonPart(this, -1.15F * scale, 0, 0.45F * scale, 0.35F * scale, 0.35F * scale, 1);
@@ -961,7 +959,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             return true;
         }
         if (this.isModelDead() && this.getDeathStage() < lastDeathStage && player.capabilities.allowEdit) {
-            if (!world.isRemote && !stack.isEmpty() && stack.getItem() != null && stack.getItem() == Items.GLASS_BOTTLE && this.getDeathStage() < lastDeathStage / 2 && IceAndFire.CONFIG.dragonDropBlood) {
+            if (!world.isRemote && !stack.isEmpty() && stack.getItem() == Items.GLASS_BOTTLE && this.getDeathStage() < lastDeathStage / 2 && IceAndFire.CONFIG.dragonDropBlood) {
                 if (!player.capabilities.isCreativeMode) {
                     stack.shrink(1);
                 }
@@ -1108,14 +1106,12 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                             if (this.hasHomePosition) {
                                 this.hasHomePosition = false;
                                 player.sendStatusMessage(new TextComponentTranslation("dragon.command.remove_home"), true);
-                                return true;
                             } else {
-                                BlockPos pos = new BlockPos(this);
-                                this.homePos = pos;
+                                this.homePos = new BlockPos(this);
                                 this.hasHomePosition = true;
                                 player.sendStatusMessage(new TextComponentTranslation("dragon.command.new_home", homePos.getX(), homePos.getY(), homePos.getZ()), true);
-                                return true;
                             }
+                            return true;
                         } else {
                             this.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, this.getSoundVolume(), this.getSoundPitch());
                             if (!world.isRemote) {
@@ -1673,7 +1669,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 } else if (!world.isAirBlock(pos)) {
                     return true;
                 }
-                return rayTrace != null && rayTrace.typeOfHit != RayTraceResult.Type.BLOCK;
+                return rayTrace.typeOfHit != RayTraceResult.Type.BLOCK;
             }
         }
         return false;

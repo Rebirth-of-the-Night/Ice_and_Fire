@@ -567,18 +567,10 @@ public class ServerEvents {
     				ItemUtil.hitWithIceDragonsteel(target, attacker);
     				break;
     			case 5:
-    				boolean flag = true;
-    		        if(attacker instanceof EntityPlayer) {
-    		        	EntityPlayer player = (EntityPlayer)attacker;
-    		            if(player.swingProgress > 0.2) {
-    		                flag = false;
-    		            }
-    		        }
-    		        if(!attacker.world.isRemote && flag && !target.isDead) {
+    		        if(!attacker.world.isRemote && attacker.swingProgress < 0.2 && !target.isDead) {
     		        	target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, attacker, target));
     		        	if(!IsImmune.toDragonLightning(target)) {
-    		        		float newAmount = amount + (float)IceAndFire.CONFIG.dragonAttackDamageLightning * 2.0F;
-    		        		event.setAmount(newAmount);
+    		        		event.setAmount(amount + (float)IceAndFire.CONFIG.dragonAttackDamageLightning);
     		        	}
     		        }
     		        ItemUtil.knockbackWithDragonsteel(target, attacker);
@@ -611,14 +603,7 @@ public class ServerEvents {
     	            if (target instanceof EntityFireDragon || target instanceof EntityIceDragon) {
     	            	event.setAmount(newAmount + 4.0F);
     	            }
-    	            boolean flag = true;
-    	            if(attacker instanceof EntityPlayer) {
-    	            	EntityPlayer player = (EntityPlayer)attacker;
-    	                if(player.swingProgress > 0.2) {
-    	                    flag = false;
-    	                }
-    	            }
-    	            if(!attacker.world.isRemote && flag && !target.isDead) {
+    	            if(!attacker.world.isRemote && attacker.swingProgress < 0.2 && !target.isDead) {
     	            	target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, attacker, target));
     	            	event.setAmount(newAmount);
     	            }

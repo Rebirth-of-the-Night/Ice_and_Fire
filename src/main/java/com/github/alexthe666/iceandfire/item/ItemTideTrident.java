@@ -79,30 +79,6 @@ public class ItemTideTrident extends Item {
     		return false;
     	}
     }
-    
-    /*
-	@Override
-    @SuppressWarnings("deprecation")
-    public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
-        Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
-        if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
-            multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double) 12D, 0));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double) -2.9F, 0));
-        }
-        return multimap;
-    }
-    
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack itemStack, Enchantment enchantment) {
-        if(enchantment == Enchantments.LOOTING || enchantment == Enchantments.KNOCKBACK || enchantment == Enchantments.VANISHING_CURSE) return true;
-    	
-        return enchantment.type == EnumEnchantmentType.BREAKABLE;
-    }
-    
-    public int getItemEnchantability() {
-        return 1;
-    }
-    */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {

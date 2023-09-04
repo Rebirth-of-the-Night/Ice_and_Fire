@@ -33,6 +33,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 
+import javax.annotation.Nonnull;
+
 public class EntityLightningDragon extends EntityDragonBase {
 
     public static final float[] growth_stage_1 = new float[]{1F, 3F};
@@ -43,10 +45,10 @@ public class EntityLightningDragon extends EntityDragonBase {
     public static final ResourceLocation FEMALE_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/lightning_dragon_female"));
     public static final ResourceLocation MALE_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/lightning_dragon_male"));
     public static final ResourceLocation SKELETON_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/lightning_dragon_skeleton"));
-    private static final DataParameter<Boolean> HAS_LIGHTNING_TARGET = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Float> LIGHTNING_TARGET_X = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> LIGHTNING_TARGET_Y = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.FLOAT);
-    private static final DataParameter<Float> LIGHTNING_TARGET_Z = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.FLOAT);
+    private static final DataParameter<Boolean> HAS_LIGHTNING_TARGET = EntityDataManager.createKey(EntityLightningDragon.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Float> LIGHTNING_TARGET_X = EntityDataManager.createKey(EntityLightningDragon.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> LIGHTNING_TARGET_Y = EntityDataManager.createKey(EntityLightningDragon.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> LIGHTNING_TARGET_Z = EntityDataManager.createKey(EntityLightningDragon.class, DataSerializers.FLOAT);
     
     public EntityLightningDragon(World worldIn) {
         super(worldIn, DragonType.LIGHTNING, 1, 1 + IceAndFire.CONFIG.dragonAttackDamage, IceAndFire.CONFIG.dragonHealth * 0.04, IceAndFire.CONFIG.dragonHealth, 0.15F, 0.4F);
@@ -66,13 +68,13 @@ public class EntityLightningDragon extends EntityDragonBase {
     }
 
     @Override
-    public void onStruckByLightning(EntityLightningBolt lightningBolt) {
+    public void onStruckByLightning(@Nonnull EntityLightningBolt lightningBolt) {
         this.heal(IceAndFire.CONFIG.lightningDragonHealAmount);
         this.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, 20, 1));
     }
     
     @Override
-    public boolean isEntityInvulnerable(DamageSource i) {
+    public boolean isEntityInvulnerable(@Nonnull DamageSource i) {
         return super.isEntityInvulnerable(i) || i == DamageSource.LIGHTNING_BOLT || i == IceAndFire.dragonLightning ;
     }
     
@@ -138,7 +140,7 @@ public class EntityLightningDragon extends EntityDragonBase {
     }
 
     public boolean hasLightningTarget() {
-        return this.dataManager.get(HAS_LIGHTNING_TARGET).booleanValue();
+        return this.dataManager.get(HAS_LIGHTNING_TARGET);
     }
 
     public void setLightningTargetVec(float x, float y, float z) {
@@ -333,7 +335,7 @@ public class EntityLightningDragon extends EntityDragonBase {
                     if (!world.isRemote) {
                         world.spawnEntity(entitylargefireball);
                     }
-                    if (entity.isDead || entity == null) {
+                    if (entity.isDead) {
                         this.setBreathingFire(false);
                     }
                     this.randomizeAttacks();
@@ -346,7 +348,7 @@ public class EntityLightningDragon extends EntityDragonBase {
                             this.playSound(IafSoundRegistry.LIGHTNINGDRAGON_BREATH, 4, 1);
                         }
                         stimulateFire(entity.posX, entity.posY, entity.posZ, 1);
-                        if (entity.isDead || entity == null) {
+                        if (entity.isDead) {
                             this.setBreathingFire(false);
                             this.randomizeAttacks();
                         }
@@ -421,6 +423,7 @@ public class EntityLightningDragon extends EntityDragonBase {
             } else {
                 if (!world.isRemote) {
                     RayTraceResult result = this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), new Vec3d(progressX, progressY, progressZ), false, true, false);
+                    if(result == null) return;
                     BlockPos pos = result.getBlockPos();
                     IafDragonDestructionManager.destroyAreaLightning(world, pos, this);
                     setHasLightningTarget(true);
@@ -446,7 +449,7 @@ public class EntityLightningDragon extends EntityDragonBase {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource p_184601_1_) {
+    protected SoundEvent getHurtSound(@Nonnull DamageSource p_184601_1_) {
         return this.isTeen() ? IafSoundRegistry.LIGHTNINGDRAGON_TEEN_HURT : this.isAdult() ? IafSoundRegistry.LIGHTNINGDRAGON_ADULT_HURT : IafSoundRegistry.LIGHTNINGDRAGON_CHILD_HURT;
     }
 
@@ -466,7 +469,7 @@ public class EntityLightningDragon extends EntityDragonBase {
     }
 
     public boolean isBreedingItem(ItemStack stack) {
-        return !stack.isEmpty() && stack.getItem() != null && stack.getItem() == IafItemRegistry.lightning_stew;
+        return !stack.isEmpty() && stack.getItem() == IafItemRegistry.lightning_stew;
     }
 
 	protected void spawnDeathParticles() {
@@ -495,13 +498,11 @@ public class EntityLightningDragon extends EntityDragonBase {
         float deadProg = this.modelDeadProgress * -0.02F;
         float hoverProg = this.hoverProgress * 0.03F;
         float flyProg = Math.max(0, this.flyProgress * 0.01F);
-        int tick = 0;
+        int tick = 10;
         if (this.getAnimationTick() < 10) {
             tick = this.getAnimationTick();
         } else if (this.getAnimationTick() > 50) {
             tick = 60 - this.getAnimationTick();
-        } else {
-            tick = 10;
         }
         float epicRoarProg = this.getAnimation() == ANIMATION_EPIC_ROAR && !this.isSitting() ? tick * 0.1F : 0;
         float sleepProg = this.sleepProgress * 0.025F;
