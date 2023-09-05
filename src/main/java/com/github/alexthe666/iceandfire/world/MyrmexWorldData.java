@@ -1,8 +1,12 @@
 package com.github.alexthe666.iceandfire.world;
 
+import java.util.List;
+import java.util.UUID;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.MyrmexHive;
 import com.google.common.collect.Lists;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
@@ -10,14 +14,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
-
 public class MyrmexWorldData extends WorldSavedData {
 
     private static final String IDENTIFIER = "iceandfire_myrmex";
-    private final List<BlockPos> villagerPositionsList = Lists.newArrayList();
     private final List<MyrmexHive> hiveList = Lists.newArrayList();
     private World world;
     private int tickCounter;
@@ -64,19 +63,6 @@ public class MyrmexWorldData extends WorldSavedData {
 
     }
 
-    private void removeAnnihilatedHives() {
-        Iterator<MyrmexHive> iterator = this.hiveList.iterator();
-
-        while (iterator.hasNext()) {
-            MyrmexHive village = iterator.next();
-
-            if (village.isAnnihilated()) {
-                iterator.remove();
-                this.markDirty();
-            }
-        }
-    }
-
     public List<MyrmexHive> getHivelist() {
         return this.hiveList;
     }
@@ -99,16 +85,6 @@ public class MyrmexWorldData extends WorldSavedData {
         }
 
         return village;
-    }
-
-    private boolean positionInList(BlockPos pos) {
-        for (BlockPos blockpos : this.villagerPositionsList) {
-            if (blockpos.equals(pos)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public void debug() {

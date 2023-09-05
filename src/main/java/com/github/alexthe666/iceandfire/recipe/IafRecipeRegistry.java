@@ -31,11 +31,13 @@ public class IafRecipeRegistry {
 
     public static List<DragonForgeRecipe> FIRE_FORGE_RECIPES = new ArrayList<>();
     public static List<DragonForgeRecipe> ICE_FORGE_RECIPES = new ArrayList<>();
+    public static List<DragonForgeRecipe> LIGHTNING_FORGE_RECIPES = new ArrayList<>();
     public static List<ItemStack> BANNER_ITEMS = new ArrayList<>();
 
     public static void preInit() {
         FIRE_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(IafItemRegistry.fire_dragon_blood), new ItemStack(IafItemRegistry.dragonsteel_fire_ingot)));
         ICE_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(IafItemRegistry.ice_dragon_blood), new ItemStack(IafItemRegistry.dragonsteel_ice_ingot)));
+        LIGHTNING_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(IafItemRegistry.lightning_dragon_blood), new ItemStack(IafItemRegistry.dragonsteel_lightning_ingot)));
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(IafItemRegistry.stymphalian_arrow, new BehaviorProjectileDispense() {
             /**
              * Return the projectile entity spawned by this dispense behavior.
@@ -127,17 +129,32 @@ public class IafRecipeRegistry {
         OreDictionary.registerOre("frozenBlock", IafBlockRegistry.frozenGravel);
         OreDictionary.registerOre("frozenBlock", IafBlockRegistry.frozenCobblestone);
         OreDictionary.registerOre("frozenBlock", IafBlockRegistry.frozenStone);
+        OreDictionary.registerOre("crackledBlock", IafBlockRegistry.crackledDirt);
+        OreDictionary.registerOre("crackledBlock", IafBlockRegistry.crackledGrass);
+        OreDictionary.registerOre("crackledBlock", IafBlockRegistry.crackledGrassPath);
+        OreDictionary.registerOre("crackledBlock", IafBlockRegistry.crackledGravel);
+        OreDictionary.registerOre("crackledBlock", IafBlockRegistry.crackledCobblestone);
+        OreDictionary.registerOre("crackledBlock", IafBlockRegistry.crackledStone);
         OreDictionary.registerOre("ingotFireDragonsteel", IafItemRegistry.dragonsteel_fire_ingot);
         OreDictionary.registerOre("blockFireDragonsteel", IafBlockRegistry.dragonsteel_fire_block);
         OreDictionary.registerOre("ingotIceDragonsteel", IafItemRegistry.dragonsteel_ice_ingot);
         OreDictionary.registerOre("blockIceDragonsteel", IafBlockRegistry.dragonsteel_ice_block);
+        OreDictionary.registerOre("ingotLightningDragonsteel", IafItemRegistry.dragonsteel_lightning_ingot);
+        OreDictionary.registerOre("blockLightningDragonsteel", IafBlockRegistry.dragonsteel_lightning_block);
         OreDictionary.registerOre("ingotSilver", IafItemRegistry.silverIngot);
         OreDictionary.registerOre("nuggetSilver", IafItemRegistry.silverNugget);
         OreDictionary.registerOre("oreSilver", IafBlockRegistry.silverOre);
         OreDictionary.registerOre("blockSilver", IafBlockRegistry.silverBlock);
+        OreDictionary.registerOre("ingotCopper", IafItemRegistry.copperIngot);
+        OreDictionary.registerOre("nuggetCopper", IafItemRegistry.copperNugget);
+        OreDictionary.registerOre("oreCopper", IafBlockRegistry.copperOre);
+        OreDictionary.registerOre("blockCopper", IafBlockRegistry.copperBlock);   
         OreDictionary.registerOre("gemSapphire", IafItemRegistry.sapphireGem);
         OreDictionary.registerOre("oreSapphire", IafBlockRegistry.sapphireOre);
         OreDictionary.registerOre("blockSapphire", IafBlockRegistry.sapphireBlock);
+        OreDictionary.registerOre("gemAmythest", IafItemRegistry.amythestGem);
+        OreDictionary.registerOre("oreAmythest", IafBlockRegistry.amythestOre);
+        OreDictionary.registerOre("blockAmythest", IafBlockRegistry.amythestBlock);  
         OreDictionary.registerOre("boneWither", IafItemRegistry.witherbone);
         OreDictionary.registerOre("fireDragonScaleBlock", IafBlockRegistry.dragonscale_red);
         OreDictionary.registerOre("fireDragonScaleBlock", IafBlockRegistry.dragonscale_bronze);
@@ -147,6 +164,10 @@ public class IafRecipeRegistry {
         OreDictionary.registerOre("iceDragonScaleBlock", IafBlockRegistry.dragonscale_white);
         OreDictionary.registerOre("iceDragonScaleBlock", IafBlockRegistry.dragonscale_sapphire);
         OreDictionary.registerOre("iceDragonScaleBlock", IafBlockRegistry.dragonscale_silver);
+        OreDictionary.registerOre("lightningDragonScaleBlock", IafBlockRegistry.dragonscale_electric);
+        OreDictionary.registerOre("lightningDragonScaleBlock", IafBlockRegistry.dragonscale_amythest);
+        OreDictionary.registerOre("lightningDragonScaleBlock", IafBlockRegistry.dragonscale_copper);
+        OreDictionary.registerOre("lightningDragonScaleBlock", IafBlockRegistry.dragonscale_black);
         OreDictionary.registerOre("woolBlock", new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("foodMeat", Items.CHICKEN);
         OreDictionary.registerOre("foodMeat", Items.COOKED_CHICKEN);
@@ -193,8 +214,12 @@ public class IafRecipeRegistry {
         OreDictionary.registerOre("toolAxe", IafItemRegistry.myrmex_desert_axe);
         OreDictionary.registerOre("toolAxe", IafItemRegistry.myrmex_jungle_axe);
         OreDictionary.registerOre("toolAxe", IafItemRegistry.silver_axe);
+        OreDictionary.registerOre("toolAxe", IafItemRegistry.copper_axe);
         OreDictionary.registerOre("toolAxe", IafItemRegistry.dragonsteel_fire_axe);
         OreDictionary.registerOre("toolAxe", IafItemRegistry.dragonsteel_ice_axe);
+        OreDictionary.registerOre("toolAxe", IafItemRegistry.dragonsteel_lightning_axe);
+        
+        OreDictionary.registerOre("logWood", IafBlockRegistry.dreadwood_log);
 
         OreDictionary.registerOre("dragonSkull",  new ItemStack(IafItemRegistry.dragon_skull, 1, OreDictionary.WILDCARD_VALUE));
         OreDictionary.registerOre("mythicalSkull",  new ItemStack(IafItemRegistry.dragon_skull, 1, OreDictionary.WILDCARD_VALUE));
@@ -204,8 +229,10 @@ public class IafRecipeRegistry {
 
         addBanner("fire", new ItemStack(IafItemRegistry.fire_dragon_heart));
         addBanner("ice", new ItemStack(IafItemRegistry.ice_dragon_heart));
+        addBanner("lightning", new ItemStack(IafItemRegistry.lightning_dragon_heart));
         addBanner("fire_head", new ItemStack(IafItemRegistry.dragon_skull, 1, 0));
         addBanner("ice_head", new ItemStack(IafItemRegistry.dragon_skull, 1, 1));
+        addBanner("lightning_head", new ItemStack(IafItemRegistry.dragon_skull, 1, 2));
         addBanner("amphithere", new ItemStack(IafItemRegistry.amphithere_feather));
         addBanner("bird", new ItemStack(IafItemRegistry.stymphalian_bird_feather));
         addBanner("eye", new ItemStack(IafItemRegistry.cyclops_eye));
@@ -220,7 +247,9 @@ public class IafRecipeRegistry {
         addBanner("weezer", new ItemStack(IafItemRegistry.weezer_blue_album));
         addBanner("dread", new ItemStack(IafItemRegistry.dread_shard));
         GameRegistry.addSmelting(IafBlockRegistry.silverOre, new ItemStack(IafItemRegistry.silverIngot), 1);
+        GameRegistry.addSmelting(IafBlockRegistry.copperOre, new ItemStack(IafItemRegistry.copperIngot), 1);
         GameRegistry.addSmelting(IafBlockRegistry.sapphireOre, new ItemStack(IafItemRegistry.sapphireGem), 1);
+        GameRegistry.addSmelting(IafBlockRegistry.amythestOre, new ItemStack(IafItemRegistry.amythestGem), 1);
         GameRegistry.addSmelting(IafBlockRegistry.myrmex_desert_resin_block, new ItemStack(IafBlockRegistry.myrmex_desert_resin_glass), 1);
         GameRegistry.addSmelting(IafBlockRegistry.myrmex_jungle_resin_block, new ItemStack(IafBlockRegistry.myrmex_jungle_resin_glass), 1);
         GameRegistry.addSmelting(IafBlockRegistry.frozenDirt, new ItemStack(Blocks.DIRT), 0.1F);
@@ -234,14 +263,18 @@ public class IafRecipeRegistry {
         IafItemRegistry.blindfoldArmor.setRepairItem(new ItemStack(Items.STRING));
         IafItemRegistry.silverMetal.setRepairItem(new ItemStack(IafItemRegistry.silverIngot));
         IafItemRegistry.silverTools.setRepairItem(new ItemStack(IafItemRegistry.silverIngot));
+        IafItemRegistry.copperArmor.setRepairItem(new ItemStack(IafItemRegistry.copperIngot));
+        IafItemRegistry.copperTools.setRepairItem(new ItemStack(IafItemRegistry.copperIngot));
         IafItemRegistry.boneTools.setRepairItem(new ItemStack(IafItemRegistry.dragonbone));
         IafItemRegistry.fireBoneTools.setRepairItem(new ItemStack(IafItemRegistry.dragonbone));
         IafItemRegistry.iceBoneTools.setRepairItem(new ItemStack(IafItemRegistry.dragonbone));
+        IafItemRegistry.lightningBoneTools.setRepairItem(new ItemStack(IafItemRegistry.dragonbone));
         for (EnumDragonArmor armor : EnumDragonArmor.values()) {
             armor.armorMaterial.setRepairItem(new ItemStack(EnumDragonArmor.getScaleItem(armor)));
         }
         IafItemRegistry.dragonsteel_fire_armor.setRepairItem(new ItemStack(IafItemRegistry.dragonsteel_fire_ingot));
         IafItemRegistry.dragonsteel_ice_armor.setRepairItem(new ItemStack(IafItemRegistry.dragonsteel_ice_ingot));
+        IafItemRegistry.dragonsteel_lightning_armor.setRepairItem(new ItemStack(IafItemRegistry.dragonsteel_lightning_ingot));
         IafItemRegistry.sheep.setRepairItem(new ItemStack(Blocks.WOOL));
         IafItemRegistry.earplugsArmor.setRepairItem(new ItemStack(Blocks.WOODEN_BUTTON));
         IafItemRegistry.yellow_deathworm.setRepairItem(new ItemStack(IafItemRegistry.deathworm_chitin, 1, 0));
@@ -256,6 +289,7 @@ public class IafRecipeRegistry {
         IafItemRegistry.amphithere_sword_tools.setRepairItem(new ItemStack(IafItemRegistry.amphithere_feather));
         IafItemRegistry.dragonsteel_fire_tools.setRepairItem(new ItemStack(IafItemRegistry.dragonsteel_fire_ingot));
         IafItemRegistry.dragonsteel_ice_tools.setRepairItem(new ItemStack(IafItemRegistry.dragonsteel_ice_ingot));
+        IafItemRegistry.dragonsteel_lightning_tools.setRepairItem(new ItemStack(IafItemRegistry.dragonsteel_lightning_ingot));
         IafItemRegistry.stymphalian_sword_tools.setRepairItem(new ItemStack(IafItemRegistry.stymphalian_bird_feather));
         IafItemRegistry.myrmexChitin.setRepairItem(new ItemStack(IafItemRegistry.myrmex_desert_chitin));
         IafItemRegistry.myrmexDesert.setRepairItem(new ItemStack(IafItemRegistry.myrmex_desert_chitin));
@@ -317,6 +351,14 @@ public class IafRecipeRegistry {
         }
         return null;
     }
+    public static DragonForgeRecipe getLightningForgeRecipe(ItemStack stack) {
+        for (DragonForgeRecipe recipe : LIGHTNING_FORGE_RECIPES) {
+            if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
+                return recipe;
+            }
+        }
+        return null;
+    }
 
     public static DragonForgeRecipe getFireForgeRecipeForBlood(ItemStack stack) {
         for (DragonForgeRecipe recipe : FIRE_FORGE_RECIPES) {
@@ -329,6 +371,14 @@ public class IafRecipeRegistry {
 
     public static DragonForgeRecipe getIceForgeRecipeForBlood(ItemStack stack) {
         for (DragonForgeRecipe recipe : ICE_FORGE_RECIPES) {
+            if (OreDictionary.itemMatches(recipe.getBlood(), stack, false)) {
+                return recipe;
+            }
+        }
+        return null;
+    }
+    public static DragonForgeRecipe getLightningForgeRecipeForBlood(ItemStack stack) {
+        for (DragonForgeRecipe recipe : LIGHTNING_FORGE_RECIPES) {
             if (OreDictionary.itemMatches(recipe.getBlood(), stack, false)) {
                 return recipe;
             }

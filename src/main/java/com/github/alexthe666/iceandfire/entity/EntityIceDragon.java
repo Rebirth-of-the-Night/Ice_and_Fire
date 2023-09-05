@@ -1,10 +1,15 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.api.event.DragonFireEvent;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.message.MessageDragonSyncFire;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
+
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.block.material.Material;
@@ -21,15 +26,11 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
-
-import javax.annotation.Nullable;
-import java.util.Random;
 
 public class EntityIceDragon extends EntityDragonBase {
 
@@ -42,11 +43,6 @@ public class EntityIceDragon extends EntityDragonBase {
     public static final ResourceLocation MALE_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/ice_dragon_male"));
     public static final ResourceLocation SKELETON_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/ice_dragon_skeleton"));
     private static final DataParameter<Boolean> SWIMMING = EntityDataManager.createKey(EntityIceDragon.class, DataSerializers.BOOLEAN);
-    public static Animation ANIMATION_FIRECHARGE;
-    public boolean isSwimming;
-    public float swimProgress;
-    public int ticksSwiming;
-    public int swimCycle;
 
     public EntityIceDragon(World worldIn) {
         super(worldIn, DragonType.ICE, 1, 1 + IceAndFire.CONFIG.dragonAttackDamage, IceAndFire.CONFIG.dragonHealth * 0.04, IceAndFire.CONFIG.dragonHealth, 0.15F, 0.4F);
@@ -161,6 +157,8 @@ public class EntityIceDragon extends EntityDragonBase {
                 case WING_BLAST:
                     this.setAnimation(ANIMATION_WINGBLAST);
                     break;
+			default:
+				break;
             }
         }
         return false;
@@ -180,7 +178,6 @@ public class EntityIceDragon extends EntityDragonBase {
             this.flyTicks = 0;
         }
         if (!world.isRemote && this.getAttackTarget() != null) {
-            float growSize = this.isInMaterialWater() ? 1.0F : 0.5F;
             if (this.getEntityBoundingBox().grow(2.5F + this.getRenderSize() * 0.33F, 2.5F + this.getRenderSize() * 0.33F, 2.5F + this.getRenderSize() * 0.33F).intersects(this.getAttackTarget().getEntityBoundingBox())) {
                 attackEntityAsMob(this.getAttackTarget());
             }
@@ -401,7 +398,6 @@ public class EntityIceDragon extends EntityDragonBase {
         double d2 = burnX - headPos.x;
         double d3 = burnY - headPos.y;
         double d4 = burnZ - headPos.z;
-        float particleScale = MathHelper.clamp(this.getRenderSize() * 0.08F, 0.55F, 3F);
         double distance = Math.max(5 * this.getDistance(burnX, burnY, burnZ), 0);
         double conqueredDistance = burnProgress / 40D * distance;
         int increment = (int)Math.ceil(conqueredDistance / 100);
@@ -490,6 +486,26 @@ public class EntityIceDragon extends EntityDragonBase {
             this.setBreathingFire(true);
         }
     }
+    
+    @Override
+    public void tryScorchTarget() {
+        EntityLivingBase entity = this.getAttackTarget();
+        if (entity != null) {
+            float distX = (float) (entity.posX - this.posX);
+            float distZ = (float) (entity.posZ - this.posZ);
+            if (this.isBreathingFire()) {
+                if (this.isActuallyBreathingFire()) {
+                    rotationYaw = renderYawOffset;
+                    if (this.ticksExisted % 5 == 0) {
+                        this.playSound(IafSoundRegistry.ICEDRAGON_BREATH, 4, 1);
+                    }
+                    stimulateFire(this.posX + distX * this.fireTicks / 40, entity.posY, this.posZ + distZ * this.fireTicks / 40, 1);
+                }
+            } else {
+                this.setBreathingFire(true);
+            }
+        }
+    }
 
     public float getFlightSpeedModifier() {
         return super.getFlightSpeedModifier() * (this.isInMaterialWater() ? 0.8F : 1F);
@@ -544,22 +560,13 @@ public class EntityIceDragon extends EntityDragonBase {
         return IafItemRegistry.summoning_crystal_ice;
     }
 
-    public void tryScorchTarget() {
-        EntityLivingBase entity = this.getAttackTarget();
-        if (entity != null) {
-            float distX = (float) (entity.posX - this.posX);
-            float distZ = (float) (entity.posZ - this.posZ);
-            if (this.isBreathingFire()) {
-                if (this.isActuallyBreathingFire()) {
-                    rotationYaw = renderYawOffset;
-                    if (this.ticksExisted % 5 == 0) {
-                        this.playSound(IafSoundRegistry.ICEDRAGON_BREATH, 4, 1);
-                    }
-                    stimulateFire(this.posX + distX * this.fireTicks / 40, entity.posY, this.posZ + distZ * this.fireTicks / 40, 1);
-                }
-            } else {
-                this.setBreathingFire(true);
-            }
-        }
-    }
+	@Override
+	protected Item getHeartItem() {
+		return IafItemRegistry.ice_dragon_heart;
+	}
+
+	@Override
+	protected Item getBloodItem() {
+		return IafItemRegistry.ice_dragon_blood;
+	}
 }

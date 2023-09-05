@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "iceandfire:blocks/crackled_dirt",
+    "top": "iceandfire:blocks/crackled_grass_top",
+    "side": "iceandfire:blocks/crackled_grass_side"
+  }
+}

@@ -4,6 +4,7 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
 import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
+import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
 
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -11,6 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
+@Deprecated
 public enum EnumDragonAnimations {
     MALE("BaseMale"),
     FEMALE("BaseFemale"),
@@ -76,6 +78,8 @@ public enum EnumDragonAnimations {
     public IceAndFireTabulaModel<? extends EntityDragonBase> firedragon_model;
     @SideOnly(Side.CLIENT)
     public IceAndFireTabulaModel<? extends EntityDragonBase> icedragon_model;
+	@SideOnly(Side.CLIENT)
+    public IceAndFireTabulaModel<? extends EntityDragonBase> lightningdragon_model;
     private final String fileSuffix;
     private int dragonType;
 
@@ -93,42 +97,54 @@ public enum EnumDragonAnimations {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
             for (EnumDragonAnimations animation : values()) {
                 switch (animation.dragonType) {
-                    case 0:
-                        try {
-                            animation.firedragon_model = new IceAndFireTabulaModel<EntityFireDragon>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/dragonFire" + animation.fileSuffix));
-                        } catch (Exception e) {
-                            IceAndFire.logger.warn("dragon model at: dragonFire" + animation.fileSuffix + ".tbl doesn't exist!");
-                            e.printStackTrace();
-                        }
-                        try {
-                            animation.icedragon_model = new IceAndFireTabulaModel<EntityIceDragon>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/icedragon/dragonIce" + animation.fileSuffix));
-                        } catch (Exception e) {
-                            IceAndFire.logger.warn("dragon model at: dragonIce" + animation.fileSuffix + ".tbl doesn't exist!");
-                            e.printStackTrace();
-                        }
-                        break;
-                    case 1:
-                        try {
-                            animation.firedragon_model = new IceAndFireTabulaModel<EntityFireDragon>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/dragonFire" + animation.fileSuffix));
-                            animation.icedragon_model = animation.firedragon_model;
-                        } catch (Exception e) {
-                            IceAndFire.logger.warn("dragon model at: dragonFire" + animation.fileSuffix + ".tbl doesn't exist!");
-                            e.printStackTrace();
-                        }
-                        break;
-                    case 2:
-                        try {
-                            animation.icedragon_model = new IceAndFireTabulaModel<EntityFireDragon>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/icedragon/dragonIce" + animation.fileSuffix));
-                            animation.firedragon_model = animation.icedragon_model;
-                        } catch (Exception e) {
-                            IceAndFire.logger.warn("dragon model at: dragonIce" + animation.fileSuffix + ".tbl doesn't exist!");
-                            e.printStackTrace();
-                        }
-                        break;
+                case 0:
+                    try {
+                        animation.firedragon_model = new IceAndFireTabulaModel<EntityFireDragon>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/firedragon_" + animation.fileSuffix));
+                    } catch (Exception e) {
+                        IceAndFire.logger.warn("dragon model at: dragonFire" + animation.fileSuffix + ".tbl doesn't exist!");
+                        e.printStackTrace();
+                    } try {
+                        animation.icedragon_model = new IceAndFireTabulaModel<EntityIceDragon>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/icedragon/icedragon_" + animation.fileSuffix));
+                    } catch (Exception e) {
+                        IceAndFire.logger.warn("dragon model at: dragonIce" + animation.fileSuffix + ".tbl doesn't exist!");
+                        e.printStackTrace();
+                    } try {
+                        animation.lightningdragon_model = new IceAndFireTabulaModel<EntityLightningDragon>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/lightningdragon/lightningdragon_" + animation.fileSuffix));
+                    } catch (Exception e) {
+                        IceAndFire.logger.warn("dragon model at: dragonLightning" + animation.fileSuffix + ".tbl doesn't exist!");
+                        e.printStackTrace();
+                    }
+                    break;
+                case 1:
+                    try {
+                        animation.firedragon_model = new IceAndFireTabulaModel<EntityFireDragon>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/firedragon_" + animation.fileSuffix));
+                        animation.icedragon_model = animation.firedragon_model;
+                    } catch (Exception e) {
+                        IceAndFire.logger.warn("dragon model at: dragonFire" + animation.fileSuffix + ".tbl doesn't exist!");
+                        e.printStackTrace();
+                    } try {
+                        animation.lightningdragon_model = new IceAndFireTabulaModel<EntityLightningDragon>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/lightningdragon/lightningdragon_" + animation.fileSuffix));
+                    } catch (Exception e) {
+                        IceAndFire.logger.warn("dragon model at: dragonLightning" + animation.fileSuffix + ".tbl doesn't exist!");
+                        e.printStackTrace();
+                    }
+                    break;
+                case 2:
+                    try {
+                        animation.icedragon_model = new IceAndFireTabulaModel<EntityIceDragon>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/icedragon/icedragon_" + animation.fileSuffix));
+                        animation.firedragon_model = animation.icedragon_model;
+                    } catch (Exception e) {
+                        IceAndFire.logger.warn("dragon model at: dragonIce" + animation.fileSuffix + ".tbl doesn't exist!");
+                        e.printStackTrace();
+                    } try {
+                        animation.lightningdragon_model = new IceAndFireTabulaModel<EntityLightningDragon>(TabulaModelHandler.INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/lightningdragon/lightningdragon_" + animation.fileSuffix));
+                    } catch (Exception e) {
+                        IceAndFire.logger.warn("dragon model at: dragonLightning" + animation.fileSuffix + ".tbl doesn't exist!");
+                        e.printStackTrace();
+                    }
+                    break; 
                 }
-
             }
         }
-
     }
 }

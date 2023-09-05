@@ -36,6 +36,14 @@ public class RenderPodium extends TileEntitySpecialRenderer<TileEntityPodium> {
                 return RenderDragonEgg.EGG_SAPPHIRE;
             case SILVER:
                 return RenderDragonEgg.EGG_SILVER;
+            case ELECTRIC:
+                return RenderDragonEgg.EGG_ELECTRIC;
+            case AMYTHEST:
+                return RenderDragonEgg.EGG_AMYTHEST;
+            case COPPER:
+                return RenderDragonEgg.EGG_COPPER;
+            case BLACK:
+                return RenderDragonEgg.EGG_BLACK;
         }
     }
 

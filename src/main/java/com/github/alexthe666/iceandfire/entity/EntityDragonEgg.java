@@ -81,7 +81,7 @@ public class EntityDragonEgg extends EntityLiving implements IBlacklistedFromSta
 
     @Nullable
     public UUID getOwnerId() {
-        return (UUID) ((Optional) this.dataManager.get(OWNER_UNIQUE_ID)).orNull();
+        return (UUID) ((Optional<?>) this.dataManager.get(OWNER_UNIQUE_ID)).orNull();
     }
 
     public void setOwnerId(@Nullable UUID p_184754_1_) {
@@ -153,7 +153,14 @@ public class EntityDragonEgg extends EntityLiving implements IBlacklistedFromSta
                 return new ItemStack(IafItemRegistry.dragonegg_sapphire);
             case 7:
                 return new ItemStack(IafItemRegistry.dragonegg_silver);
-
+            case 8:
+                return new ItemStack(IafItemRegistry.dragonegg_electric);
+            case 9:
+                return new ItemStack(IafItemRegistry.dragonegg_amythest);
+            case 10:
+                return new ItemStack(IafItemRegistry.dragonegg_copper);
+            case 11:
+                return new ItemStack(IafItemRegistry.dragonegg_black);
         }
     }
 

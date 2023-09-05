@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -128,7 +129,7 @@ public class BlockSilverPile extends Block {
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return IafItemRegistry.silverNugget;
+        return IceAndFire.CONFIG.generateSilverOre ? IafItemRegistry.silverNugget : Items.IRON_NUGGET;
     }
 
     @Override

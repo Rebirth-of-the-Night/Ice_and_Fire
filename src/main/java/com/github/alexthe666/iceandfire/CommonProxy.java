@@ -152,6 +152,11 @@ public class CommonProxy {
         registerSpawnable(EntityEntryBuilder.<EntityHydra>create(), event, EntityHydra.class, "if_hydra", 52, 0X8B8B78, 0X2E372B, 256, 3);
         registerUnspawnable(EntityEntryBuilder.<EntityHydraBreath>create(), event, EntityHydraBreath.class, "hydra_breath", 53);
         registerUnspawnable(EntityEntryBuilder.<EntityHydraArrow>create(), event, EntityHydraArrow.class, "hydra_arrow", 54);
+        registerSpawnable(EntityEntryBuilder.<EntityLightningDragon>create(), event, EntityLightningDragon.class, "lightningdragon", 55, 0X422367, 0X725691, 256, 3);
+        registerUnspawnable(EntityEntryBuilder.<EntityDragonLightningCharge>create(), event, EntityDragonLightningCharge.class, "dragonlightningcharge", 56);
+        registerSpawnable(EntityEntryBuilder.<EntityBlackFrostDragon>create(), event, EntityBlackFrostDragon.class, "blackfrost", 57, 0XE0E6E6, 0X38373C);
+        registerSpawnable(EntityEntryBuilder.<EntityDreadQueen>create(), event, EntityDreadQueen.class, "dread_queen", 58, 0XE0E6E6, 0X4A6C6E);
+        registerUnspawnable(EntityEntryBuilder.<EntityDragonLightningBolt>create(), event, EntityDragonLightningBolt.class, "dragon_lightning_bolt", 59);
     }
 
     public static <T extends Entity> void registerSpawnable(EntityEntryBuilder<T> builder, RegistryEvent.Register<EntityEntry> event, Class<T> entityClass, String name, int id, int mainColor, int subColor) {

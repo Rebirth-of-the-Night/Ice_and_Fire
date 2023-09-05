@@ -1,8 +1,6 @@
 package com.github.alexthe666.iceandfire.client.particle;
 
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleFlame;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
@@ -20,7 +18,8 @@ import java.util.List;
 
 public class ParticleDragonFlame extends ParticleFlame {
 
-    private static final ResourceLocation DRAGONFLAME = new ResourceLocation("iceandfire:textures/particles/flame.png");
+    @SuppressWarnings("unused")
+	private static final ResourceLocation DRAGONFLAME = new ResourceLocation("iceandfire:textures/particles/flame.png");
     private final float dragonSize;
     private final double initialX;
     private final double initialY;
@@ -98,7 +97,7 @@ public class ParticleDragonFlame extends ParticleFlame {
                 avec3d[l] = vec3d.scale(2.0D * avec3d[l].dotProduct(vec3d)).add(avec3d[l].scale((double) (f9 * f9) - vec3d.dotProduct(vec3d))).add(vec3d.crossProduct(avec3d[l]).scale(2.0F * f9));
             }
         }
-        Minecraft.getMinecraft().getTextureManager().bindTexture(DRAGONFLAME);
+        
         GL11.glPushMatrix();
         buffer.pos((double) f5 + avec3d[0].x, (double) f6 + avec3d[0].y, (double) f7 + avec3d[0].z).tex(f1, f3).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();
         buffer.pos((double) f5 + avec3d[1].x, (double) f6 + avec3d[1].y, (double) f7 + avec3d[1].z).tex(f1, f2).color(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha).lightmap(j, k).endVertex();

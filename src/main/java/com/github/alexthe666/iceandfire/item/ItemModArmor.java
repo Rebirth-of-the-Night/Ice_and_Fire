@@ -1,7 +1,8 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.client.StatCollector;
+
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
@@ -40,7 +41,7 @@ public class ItemModArmor extends ItemArmor {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
             if (calendar.get(2) + 1 == 4 && calendar.get(5) == 1) {
-                tooltip.add(TextFormatting.GREEN + StatCollector.translateToLocal("item.iceandfire.air_pods.desc"));
+                tooltip.add(TextFormatting.GREEN + I18n.format("item.iceandfire.air_pods.desc"));
             }
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);

@@ -52,6 +52,46 @@
       ]
     }
   },
+  "electric": {
+    "trigger": "minecraft:inventory_changed",
+    "conditions": {
+      "items": [
+        {
+          "item": "iceandfire:dragonarmor_electric"
+        }
+      ]
+    }
+  },
+  "amythest": {
+    "trigger": "minecraft:inventory_changed",
+    "conditions": {
+      "items": [
+        {
+          "item": "iceandfire:dragonarmor_amythest"
+        }
+      ]
+    }
+  },
+    "copper": {
+    "trigger": "minecraft:inventory_changed",
+    "conditions": {
+      "items": [
+        {
+          "item": "iceandfire:dragonarmor_copper"
+        }
+      ]
+    }
+  },
+  "black": {
+    "trigger": "minecraft:inventory_changed",
+    "conditions": {
+      "items": [
+        {
+          "item": "iceandfire:dragonarmor_black"
+        }
+      ]
+    }
+  },
     "dragonsteel_fire": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -71,6 +111,16 @@
           }
         ]
       }
+    },
+	"dragonsteel_lightning": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "iceandfire:dragonarmor_dragonsteel_lightning"
+          }
+        ]
+      }
     }
   },
   "requirements": [
@@ -79,8 +129,13 @@
       "gold",
       "diamond",
       "silver",
+	  "electric",
+	  "amythest",
+	  "copper",
+	  "black",
       "dragonsteel_fire",
-      "dragonsteel_ice"
+      "dragonsteel_ice",
+	  "dragonsteel_lightning"
     ]
   ]
 }

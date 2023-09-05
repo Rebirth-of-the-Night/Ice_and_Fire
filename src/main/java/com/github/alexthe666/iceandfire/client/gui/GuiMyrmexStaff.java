@@ -29,13 +29,10 @@ public class GuiMyrmexStaff extends GuiScreen {
     public ChangePageButton nextPage;
     int ticksSinceDeleted = 0;
     int currentPage = 0;
-    @SuppressWarnings("unused")
-    private final ItemStack staff;
     private final boolean jungle;
     private int hiveCount;
 
     public GuiMyrmexStaff(ItemStack staff) {
-        this.staff = staff;
         this.jungle = staff.getItem() == IafItemRegistry.myrmex_jungle_staff;
         initGui();
     }

@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ContainerHippocampus extends SyncedFieldContainer {
     private final IInventory hippocampusInventory;
     private final EntityHippocampus hippocampus;
-
+	
     public ContainerHippocampus(final EntityHippocampus hippocampus, EntityPlayer player) {
         super(hippocampus.hippocampusInventory);
         this.hippocampusInventory = hippocampus.hippocampusInventory;

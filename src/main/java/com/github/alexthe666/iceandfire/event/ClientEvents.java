@@ -51,7 +51,6 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ClientEvents {
-
     private static final ResourceLocation SIREN_SHADER = new ResourceLocation("iceandfire:shaders/post/siren.json");
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("textures/blocks/frosted_ice_0.png");
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("textures/blocks/frosted_ice_1.png");
@@ -81,11 +80,12 @@ public class ClientEvents {
                         try {
                             Render<?> render = entry.getValue().createRenderFor(Minecraft.getMinecraft().getRenderManager());
                             if (render != null && render instanceof RenderLivingBase && EntityLiving.class.isAssignableFrom(entry.getKey())) {
-                                LayerRenderer<?> stoneLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getStoneLayer((RenderLivingBase<?>) render) : new LayerStoneEntity<>((RenderLivingBase<?>) render);
-                                LayerRenderer<?> crackLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getCrackLayer((RenderLivingBase<?>) render) : new LayerStoneEntityCrack((RenderLivingBase<?>) render);
-                                ((RenderLivingBase<?>) render).addLayer(stoneLayer);
-                                ((RenderLivingBase<?>) render).addLayer(crackLayer);
-                                ((RenderLivingBase<?>) render).addLayer(new LayerChainedEntity(render));
+                            	RenderLivingBase<?> livingRender = (RenderLivingBase<?>) render;
+                                LayerRenderer<?> stoneLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getStoneLayer(livingRender) : new LayerStoneEntity<>(livingRender);
+                                LayerRenderer<?> crackLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getCrackLayer(livingRender) : new LayerStoneEntityCrack(livingRender);
+                                livingRender.addLayer(stoneLayer);
+                                livingRender.addLayer(crackLayer);
+                                livingRender.addLayer(new LayerChainedEntity(render));
                             }
                         } catch (NullPointerException exp) {
                             IceAndFire.logger.warn("Ice and Fire: Could not apply stone render layer to " + entry.getKey().getSimpleName() + ", someone isn't registering their renderer properly... <.<");
@@ -98,11 +98,12 @@ public class ClientEvents {
                 for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : entityRendersOld.entrySet()) {
                     Render<?> render = entry.getValue();
                     if (render instanceof RenderLivingBase && EntityLiving.class.isAssignableFrom(entry.getKey())) {
-                        LayerRenderer<?> stoneLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getStoneLayer((RenderLivingBase<?>) render) : new LayerStoneEntity<>((RenderLivingBase<?>) render);
-                        LayerRenderer<?> crackLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getCrackLayer((RenderLivingBase<?>) render) : new LayerStoneEntityCrack((RenderLivingBase<?>) render);
-                        ((RenderLivingBase<?>) render).addLayer(stoneLayer);
-                        ((RenderLivingBase<?>) render).addLayer(crackLayer);
-                        ((RenderLivingBase<?>) render).addLayer(new LayerChainedEntity(render));
+                    	RenderLivingBase<?> livingRender = (RenderLivingBase<?>) render;
+                        LayerRenderer<?> stoneLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getStoneLayer(livingRender) : new LayerStoneEntity<>(livingRender);
+                        LayerRenderer<?> crackLayer = render instanceof ICustomStoneLayer ? ((ICustomStoneLayer) render).getCrackLayer(livingRender) : new LayerStoneEntityCrack(livingRender);
+                        livingRender.addLayer(stoneLayer);
+                        livingRender.addLayer(crackLayer);
+                        livingRender.addLayer(new LayerChainedEntity(render));
                     }
                 }
             }
@@ -249,7 +250,7 @@ public class ClientEvents {
         }
     }
 
-    @SubscribeEvent
+	@SubscribeEvent
     public void onPreRenderLiving(RenderLivingEvent.Pre<?> event) {
         if (event.getEntity().getRidingEntity() != null && event.getEntity().getRidingEntity() instanceof EntityDragonBase) {
             if (ClientProxy.currentDragonRiders.contains(event.getEntity().getUniqueID()) || event.getEntity() == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
@@ -266,8 +267,9 @@ public class ClientEvents {
         }
     }
 
-    @SubscribeEvent
-    public void onPostRenderLiving(RenderLivingEvent.Post<?> event) {
+	@SubscribeEvent
+    @SuppressWarnings("rawtypes")
+    public void onPostRenderLiving(RenderLivingEvent.Post event) {
         EntityLivingBase entity = event.getEntity();
         ChainEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(entity, ChainEntityProperties.class);
         if (properties != null) {
@@ -367,7 +369,6 @@ public class ClientEvents {
         }
         MiscEntityProperties miscProps = EntityPropertiesHandler.INSTANCE.getProperties(entity, MiscEntityProperties.class);
         if (miscProps != null && miscProps.glarers.size() > 0) {
-            // float f = 1.0F;// ((float) miscProps.clientSideAttackTime + event.getPartialRenderTick()) / (float) 80;
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder bufferbuilder = tessellator.getBuffer();
             event.getRenderer().bindTexture(RenderCockatrice.TEXTURE_BEAM);

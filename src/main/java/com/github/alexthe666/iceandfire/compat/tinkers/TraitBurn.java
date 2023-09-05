@@ -33,9 +33,8 @@ public class TraitBurn extends ModifierTrait {
 		    target.attackEntityFrom(IceAndFire.dragonFire, level * 2F);
 		    target.setFire(level == 1 ? 10 : 15);
 	    }
-        if (level >= 2) {
+        if (level >= 2 && IceAndFire.CONFIG.dragonsteelKnockback) {
             target.knockBack(target, 1F, player.posX - target.posX, player.posZ - target.posZ);
         }
     }
-
 }

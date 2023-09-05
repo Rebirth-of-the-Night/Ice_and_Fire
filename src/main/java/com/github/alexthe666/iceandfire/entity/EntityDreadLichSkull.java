@@ -1,6 +1,9 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import java.util.List;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,9 +14,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -21,9 +22,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Collections;
-import java.util.List;
 
 public class EntityDreadLichSkull extends EntityArrow {
 
@@ -90,7 +88,6 @@ public class EntityDreadLichSkull extends EntityArrow {
                 double minusX = target.posX - this.posX;
                 double minusY = target.posY + target.getEyeHeight() - this.posY;
                 double minusZ = target.posZ - this.posZ;
-                double speed = 0.25D * Math.min(this.getDistance(target), 10D) / 10D;
                 this.motionX += (Math.signum(minusX) * 0.5D - this.motionX) * 0.10000000149011612D;
                 this.motionY += (Math.signum(minusY) * 0.5D - this.motionY) * 0.10000000149011612D;
                 this.motionZ += (Math.signum(minusZ) * 0.5D - this.motionZ) * 0.10000000149011612D;

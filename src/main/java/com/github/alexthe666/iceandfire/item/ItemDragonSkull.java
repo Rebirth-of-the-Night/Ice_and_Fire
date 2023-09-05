@@ -1,8 +1,9 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityDragonSkull;
+
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -20,6 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
 import java.util.List;
 
 public class ItemDragonSkull extends Item implements ICustomRendered {
@@ -43,6 +45,7 @@ public class ItemDragonSkull extends Item implements ICustomRendered {
         if (this.isInCreativeTab(tab)) {
             items.add(new ItemStack(this, 1, 0));
             items.add(new ItemStack(this, 1, 1));
+            items.add(new ItemStack(this, 1, 2));
         }
     }
 
@@ -58,10 +61,10 @@ public class ItemDragonSkull extends Item implements ICustomRendered {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        String iceorfire = stack.getMetadata() == 0 ? "dragon.fire" : "dragon.ice";
-        tooltip.add(StatCollector.translateToLocal(iceorfire));
+        String iceorfire = stack.getMetadata() == 0 ? "dragon.fire" : stack.getMetadata() == 1 ? "dragon.ice" : "dragon.lightning";
+        tooltip.add(I18n.format(iceorfire));
         if (stack.getTagCompound() != null) {
-            tooltip.add(StatCollector.translateToLocal("dragon.stage") + stack.getTagCompound().getInteger("Stage"));
+            tooltip.add(I18n.format("dragon.stage") + stack.getTagCompound().getInteger("Stage"));
         }
     }
 

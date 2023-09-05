@@ -20,9 +20,9 @@ public class IafBlockRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":podium")
     public static Block podium = new BlockPodium();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":fire_lily")
-    public static Block fire_lily = new BlockElementalFlower(true);
+    public static Block fire_lily = new BlockElementalFlower("fire_lily");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":frost_lily")
-    public static Block frost_lily = new BlockElementalFlower(false);
+    public static Block frost_lily = new BlockElementalFlower("frost_lily");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":goldpile")
     public static Block goldPile = new BlockGoldPile();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":silverpile")
@@ -44,9 +44,9 @@ public class IafBlockRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":chared_cobblestone")
     public static Block charedCobblestone = new BlockReturningState(Material.ROCK, "chared_cobblestone", "iceandfire.charedCobblestone", "pickaxe", 0, 2F, 10.0F, SoundType.STONE, Blocks.COBBLESTONE.getDefaultState());
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":chared_gravel")
-    public static Block charedGravel = new BlockFallingReturningState(Material.GROUND, "chared_gravel", "iceandfire.charedGravel", "pickaxe", 0, 0.6F, 0F, SoundType.GROUND);
+    public static Block charedGravel = new BlockFallingReturningState(Material.GROUND, "chared_gravel", "iceandfire.charedGravel", "shovel", 0, 0.6F, 0F, SoundType.GROUND);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":chared_grass_path")
-    public static Block charedGrassPath = new BlockCharedPath(true);
+    public static Block charedGrassPath = new BlockCharedPath(0);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":ash")
     public static Block ash = new BlockFallingGeneric(Material.SAND, "ash", "iceandfire.ash", "shovel", 0, 0.5F, 0F, SoundType.SAND);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":frozen_dirt")
@@ -58,9 +58,9 @@ public class IafBlockRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":frozen_cobblestone")
     public static Block frozenCobblestone = new BlockReturningState(Material.ROCK, "frozen_cobblestone", "iceandfire.frozenCobblestone", "pickaxe", 0, 2F, 10.0F, SoundType.GLASS, true, Blocks.COBBLESTONE.getDefaultState());
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":frozen_gravel")
-    public static Block frozenGravel = new BlockFallingReturningState(Material.GROUND, "frozen_gravel", "iceandfire.frozenGravel", "pickaxe", 0, 0.6F, 0F, SoundType.GLASS, true);
+    public static Block frozenGravel = new BlockFallingReturningState(Material.GROUND, "frozen_gravel", "iceandfire.frozenGravel", "shovel", 0, 0.6F, 0F, SoundType.GLASS, true);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":frozen_grass_path")
-    public static Block frozenGrassPath = new BlockCharedPath(false);
+    public static Block frozenGrassPath = new BlockCharedPath(1);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":frozen_splinters")
     public static Block frozenSplinters = new BlockGeneric(Material.WOOD, "frozen_splinters", "iceandfire.frozenSplinters", "pickaxe", 0, 2.0F, 10.0F, SoundType.GLASS, true);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_ice")
@@ -91,22 +91,22 @@ public class IafBlockRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_bone_wall")
     public static Block dragon_bone_block_wall = new BlockDragonBoneWall();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_fire_brick")
-    public static Block dragonforge_fire_brick = new BlockDragonforgeBricks(true);
+    public static Block dragonforge_fire_brick = new BlockDragonforgeBricks(0);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_ice_brick")
-    public static Block dragonforge_ice_brick = new BlockDragonforgeBricks(false);
+    public static Block dragonforge_ice_brick = new BlockDragonforgeBricks(1);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_fire_input")
-    public static Block dragonforge_fire_input = new BlockDragonforgeInput(true);
+    public static Block dragonforge_fire_input = new BlockDragonforgeInput(0);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_ice_input")
-    public static Block dragonforge_ice_input = new BlockDragonforgeInput(false);
+    public static Block dragonforge_ice_input = new BlockDragonforgeInput(1);
 
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_fire_core_disabled")
-    public static Block dragonforge_fire_core = new BlockDragonforgeCore(true, true);
+    public static Block dragonforge_fire_core = new BlockDragonforgeCore(0, true);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_ice_core_disabled")
-    public static Block dragonforge_ice_core = new BlockDragonforgeCore(false, true);
+    public static Block dragonforge_ice_core = new BlockDragonforgeCore(1, true);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_fire_core")
-    public static Block dragonforge_fire_core_disabled = new BlockDragonforgeCore(true, false);
+    public static Block dragonforge_fire_core_disabled = new BlockDragonforgeCore(1, false);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_ice_core")
-    public static Block dragonforge_ice_core_disabled = new BlockDragonforgeCore(false, false);
+    public static Block dragonforge_ice_core_disabled = new BlockDragonforgeCore(0, false);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":egginice")
     public static Block eggInIce = new BlockEggInIce();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":pixie_house")
@@ -176,6 +176,53 @@ public class IafBlockRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":burnt_torch")
     public static Block burnt_torch = new BlockBurntTorch();
 
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":crackled_dirt")
+    public static Block crackledDirt = new BlockReturningState(Material.GROUND, "crackled_dirt", "iceandfire.crackledDirt", "shovel", 0, 0.5F, 0.0F, SoundType.GROUND, Blocks.DIRT.getDefaultState());
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":crackled_grass")
+    public static Block crackledGrass = new BlockReturningState(Material.GRASS, "crackled_grass", "iceandfire.crackledGrass", "shovel", 0, 0.6F, 0.0F, SoundType.GROUND, Blocks.GRASS.getDefaultState());
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":crackled_stone")
+    public static Block crackledStone = new BlockReturningState(Material.ROCK, "crackled_stone", "iceandfire.crackledStone", "pickaxe", 0, 1.5F, 10.0F, SoundType.STONE, Blocks.STONE.getDefaultState());
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":crackled_cobblestone")
+    public static Block crackledCobblestone = new BlockReturningState(Material.ROCK, "crackled_cobblestone", "iceandfire.crackledCobblestone", "pickaxe", 0, 2F, 10.0F, SoundType.STONE, Blocks.COBBLESTONE.getDefaultState());
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":crackled_gravel")
+    public static Block crackledGravel = new BlockFallingReturningState(Material.GROUND, "crackled_gravel", "iceandfire.crackledGravel", "shovel", 0, 0.6F, 0F, SoundType.GROUND);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":crackled_grass_path")
+    public static Block crackledGrassPath = new BlockCharedPath(2);
+    
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_lightning_brick")
+    public static Block dragonforge_lightning_brick = new BlockDragonforgeBricks(2);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_lightning_input")
+    public static Block dragonforge_lightning_input = new BlockDragonforgeInput(2);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_lightning_core_disabled")
+    public static Block dragonforge_lightning_core = new BlockDragonforgeCore(2, true);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_lightning_core")
+    public static Block dragonforge_lightning_core_disabled = new BlockDragonforgeCore(2, false);
+    
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copperpile")
+    public static Block copperPile = new BlockCopperPile();   
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":lightning_lily")
+    public static Block lightning_lily = new BlockElementalFlower("lightning_lily");
+    
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_electric")
+    public static Block dragonscale_electric = new BlockDragonScales("dragonscale_electric", EnumDragonEgg.ELECTRIC);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_amythest")
+    public static Block dragonscale_amythest = new BlockDragonScales("dragonscale_amythest", EnumDragonEgg.AMYTHEST);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_copper")
+    public static Block dragonscale_copper = new BlockDragonScales("dragonscale_copper", EnumDragonEgg.COPPER);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_black")
+    public static Block dragonscale_black = new BlockDragonScales("dragonscale_black", EnumDragonEgg.BLACK);
+    
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copper_ore")
+    public static Block copperOre = new BlockDragonOre(2, 3.0F, 5.0F, "iceandfire.copperOre", "copper_ore");
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amythest_ore")
+    public static Block amythestOre = new BlockDragonOre(2, 3.0F, 5.0F, "iceandfire.amythestOre", "amythest_ore");
+    
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copper_block")
+    public static Block copperBlock = new BlockGeneric(Material.IRON, "copper_block", "iceandfire.copperBlock", "pickaxe", 0, 4.0F, 10.0F, SoundType.METAL);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amythest_block")
+    public static Block amythestBlock = new BlockGeneric(Material.IRON, "amythest_block", "iceandfire.amythestBlock", "pickaxe", 2, 5.0F, 15.0F, SoundType.METAL);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_block")
+    public static Block dragonsteel_lightning_block = new BlockGeneric(Material.IRON, "dragonsteel_lightning_block", "iceandfire.dragonsteel_lightning_block", "pickaxe", 3, 10.0F, 1000.0F, SoundType.METAL);
     static {
         GameRegistry.registerTileEntity(TileEntityDummyGorgonHead.class, new ResourceLocation(IceAndFire.MODID, "dummyGorgonHeadIdle"));
         GameRegistry.registerTileEntity(TileEntityDummyGorgonHeadActive.class, new ResourceLocation(IceAndFire.MODID, "dummyGorgonHeadActive"));

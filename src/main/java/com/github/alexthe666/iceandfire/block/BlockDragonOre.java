@@ -53,6 +53,6 @@ public class BlockDragonOre extends Block {
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return this == IafBlockRegistry.sapphireOre ? IafItemRegistry.sapphireGem : Item.getItemFromBlock(IafBlockRegistry.silverOre);
+        return this == IafBlockRegistry.sapphireOre ? IafItemRegistry.sapphireGem : this == IafBlockRegistry.silverOre ? Item.getItemFromBlock(IafBlockRegistry.silverOre) : this == IafBlockRegistry.amythestOre ? IafItemRegistry.amythestGem : Item.getItemFromBlock(IafBlockRegistry.copperOre);
     }
 }

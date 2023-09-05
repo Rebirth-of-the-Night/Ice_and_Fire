@@ -6,13 +6,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IRenderHandler;
 
 // TODO
-@SuppressWarnings("unused")
 public class RenderDreadlandsAurora extends IRenderHandler {
-    private static final ResourceLocation AURORA_TEXTURES = new ResourceLocation("iceandfire:textures/environment/dread_aurora.png");
+    @SuppressWarnings("unused")
+	private static final ResourceLocation AURORA_TEXTURES = new ResourceLocation("iceandfire:textures/environment/dread_aurora.png");
 
-    private final int skyboxList = -1;
-
-    
     @Override
     public void render(float partialTicks, WorldClient world, Minecraft mc) {
         this.renderClouds(mc);

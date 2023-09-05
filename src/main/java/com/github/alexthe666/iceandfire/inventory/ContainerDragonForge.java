@@ -12,12 +12,13 @@ import net.minecraft.item.ItemStack;
 public class ContainerDragonForge extends SyncedFieldContainer {
 
     private final IInventory tileFurnace;
-    private boolean isFire;
+	
+    private int dragonType;
 
     public ContainerDragonForge(InventoryPlayer playerInventory, IInventory furnaceInventory) {
         super(furnaceInventory);
         this.tileFurnace = furnaceInventory;
-        isFire = ((TileEntityDragonforge) tileFurnace).isFire;
+        dragonType = ((TileEntityDragonforge) tileFurnace).dragonType;
         this.addSlotToContainer(new Slot(furnaceInventory, 0, 68, 34));
         this.addSlotToContainer(new Slot(furnaceInventory, 1, 86, 34));
         this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, furnaceInventory, 2, 148, 35));
@@ -52,11 +53,11 @@ public class ContainerDragonForge extends SyncedFieldContainer {
                 }
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (index != 1 && index != 0) {
-                if (isFire && IafRecipeRegistry.getFireForgeRecipe(itemstack1) != null || !isFire && IafRecipeRegistry.getIceForgeRecipe(itemstack1) != null) {
+                if (dragonType == 0 && IafRecipeRegistry.getFireForgeRecipe(itemstack1) != null || dragonType == 1 && IafRecipeRegistry.getIceForgeRecipe(itemstack1) != null || dragonType == 2 && IafRecipeRegistry.getLightningForgeRecipe(itemstack1) != null) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (isFire && IafRecipeRegistry.getFireForgeRecipeForBlood(itemstack1) != null || !isFire && IafRecipeRegistry.getIceForgeRecipeForBlood(itemstack1) != null) {
+                } else if (dragonType == 0 && IafRecipeRegistry.getFireForgeRecipeForBlood(itemstack1) != null || dragonType == 1 && IafRecipeRegistry.getIceForgeRecipeForBlood(itemstack1) != null || dragonType == 2 && IafRecipeRegistry.getLightningForgeRecipeForBlood(itemstack1) != null) {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }

@@ -22,11 +22,14 @@ public class TinkersCompatClient {
         TinkersCompat.MATERIAL_DRAGONSTEEL_FIRE.setRenderInfo(dragonsteelFireInfo);
         MaterialRenderInfo dragonsteelIceInfo = new MaterialRenderInfo.BlockTexture(new ResourceLocation("iceandfire:tinkers/dragonsteel_ice"));
         TinkersCompat.MATERIAL_DRAGONSTEEL_ICE.setRenderInfo(dragonsteelIceInfo);
+        MaterialRenderInfo dragonsteelLightningInfo = new MaterialRenderInfo.BlockTexture(new ResourceLocation("iceandfire:tinkers/dragonsteel_lightning"));
+        TinkersCompat.MATERIAL_DRAGONSTEEL_LIGHTNING.setRenderInfo(dragonsteelLightningInfo);
         MaterialRenderInfo weezerInfo = new MaterialRenderInfo.BlockTexture(new ResourceLocation("iceandfire:tinkers/weezer"));
         TinkersCompat.MATERIAL_WEEZER.setRenderInfo(weezerInfo);
         ModelRegisterUtil.registerModifierModel(TinkersCompat.BURN_I, new ResourceLocation("iceandfire:models/item/tinkers/flame"));
         ModelRegisterUtil.registerModifierModel(TinkersCompat.FREEZE_I, new ResourceLocation("iceandfire:models/item/tinkers/frost"));
-
+        ModelRegisterUtil.registerModifierModel(TinkersCompat.LIGHTNING_I, new ResourceLocation("iceandfire:models/item/tinkers/thunder"));
+        
     }
 
     public static void registerModels(ModelRegistryEvent event) {

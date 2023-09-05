@@ -520,7 +520,6 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
             return;
         }
         if (this.isServerWorld()) {
-            float f5;
             if (this.isInWater()) {
                 this.moveRelative(strafe, vertical, forward, 0.1F);
                 f4 = 0.6F;
@@ -563,14 +562,14 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
     }
 
     public void playLivingSound() {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playLivingSound();
     }
 
     protected void playHurtSound(DamageSource source) {
-        if (this.getAnimation() == this.NO_ANIMATION) {
+        if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
             this.setAnimation(ANIMATION_SPEAK);
         }
         super.playHurtSound(source);

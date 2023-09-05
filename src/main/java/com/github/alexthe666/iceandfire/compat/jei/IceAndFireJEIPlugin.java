@@ -5,10 +5,13 @@ import com.github.alexthe666.iceandfire.compat.jei.firedragonforge.FireDragonFor
 import com.github.alexthe666.iceandfire.compat.jei.firedragonforge.FireDragonForgeRecipeWrapper;
 import com.github.alexthe666.iceandfire.compat.jei.icedragonforge.IceDragonForgeCatagory;
 import com.github.alexthe666.iceandfire.compat.jei.icedragonforge.IceDragonForgeRecipeWrapper;
-import com.github.alexthe666.iceandfire.item.IafItemRegistry;
-import com.github.alexthe666.iceandfire.recipe.IafRecipeRegistry;
+import com.github.alexthe666.iceandfire.compat.jei.lightningdragonforge.LightningDragonForgeCatagory;
+import com.github.alexthe666.iceandfire.compat.jei.lightningdragonforge.LightningDragonForgeRecipeWrapper;
 import com.github.alexthe666.iceandfire.enums.EnumSkullType;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.recipe.DragonForgeRecipe;
+import com.github.alexthe666.iceandfire.recipe.IafRecipeRegistry;
+
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
@@ -22,6 +25,7 @@ public class IceAndFireJEIPlugin implements IModPlugin {
 
     public static final String FIRE_DRAGON_FORGE_ID = "iceandfire.fire_dragon_forge";
     public static final String ICE_DRAGON_FORGE_ID = "iceandfire.ice_dragon_forge";
+    public static final String LIGHTNING_DRAGON_FORGE_ID = "iceandfire.lightning_dragon_forge";
 
     private static void addDescription(IModRegistry registry, ItemStack stack) {
         registry.addIngredientInfo(stack, ItemStack.class, stack.getTranslationKey() + ".jei_desc");
@@ -37,8 +41,15 @@ public class IceAndFireJEIPlugin implements IModPlugin {
         registry.handleRecipes(DragonForgeRecipe.class, new IceDragonForgeFactory(), ICE_DRAGON_FORGE_ID);
         registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_ice_core_disabled), ICE_DRAGON_FORGE_ID);
         registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_ice_core), ICE_DRAGON_FORGE_ID);
+        
+        registry.addRecipes(IafRecipeRegistry.LIGHTNING_FORGE_RECIPES, LIGHTNING_DRAGON_FORGE_ID);
+        registry.handleRecipes(DragonForgeRecipe.class, new LightningDragonForgeFactory(), LIGHTNING_DRAGON_FORGE_ID);
+        registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_lightning_core_disabled), LIGHTNING_DRAGON_FORGE_ID);
+        registry.addRecipeCatalyst(new ItemStack(IafBlockRegistry.dragonforge_lightning_core), LIGHTNING_DRAGON_FORGE_ID);
+		
         addDescription(registry, new ItemStack(IafItemRegistry.fire_dragon_blood));
         addDescription(registry, new ItemStack(IafItemRegistry.ice_dragon_blood));
+        addDescription(registry, new ItemStack(IafItemRegistry.lightning_dragon_blood));
         addDescription(registry, new ItemStack(IafItemRegistry.dragonegg_red));
         addDescription(registry, new ItemStack(IafItemRegistry.dragonegg_bronze));
         addDescription(registry, new ItemStack(IafItemRegistry.dragonegg_gray));
@@ -47,10 +58,16 @@ public class IceAndFireJEIPlugin implements IModPlugin {
         addDescription(registry, new ItemStack(IafItemRegistry.dragonegg_white));
         addDescription(registry, new ItemStack(IafItemRegistry.dragonegg_sapphire));
         addDescription(registry, new ItemStack(IafItemRegistry.dragonegg_silver));
+        addDescription(registry, new ItemStack(IafItemRegistry.dragonegg_electric));
+        addDescription(registry, new ItemStack(IafItemRegistry.dragonegg_amythest));
+        addDescription(registry, new ItemStack(IafItemRegistry.dragonegg_copper));
+        addDescription(registry, new ItemStack(IafItemRegistry.dragonegg_black));
         addDescription(registry, new ItemStack(IafItemRegistry.dragon_skull));
         addDescription(registry, new ItemStack(IafItemRegistry.dragon_skull, 1, 1));
+        addDescription(registry, new ItemStack(IafItemRegistry.dragon_skull, 1, 2));
         addDescription(registry, new ItemStack(IafItemRegistry.fire_stew));
         addDescription(registry, new ItemStack(IafItemRegistry.frost_stew));
+        addDescription(registry, new ItemStack(IafItemRegistry.lightning_stew));
 
         for (EnumSkullType skull : EnumSkullType.values()) {
             addDescription(registry, new ItemStack(skull.skull_item));
@@ -63,6 +80,7 @@ public class IceAndFireJEIPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registry) {
         registry.addRecipeCategories(new FireDragonForgeCatagory());
         registry.addRecipeCategories(new IceDragonForgeCatagory());
+        registry.addRecipeCategories(new LightningDragonForgeCatagory());
     }
 
     public class FireDragonForgeFactory implements IRecipeWrapperFactory<DragonForgeRecipe> {
@@ -76,6 +94,13 @@ public class IceAndFireJEIPlugin implements IModPlugin {
         @Override
         public IRecipeWrapper getRecipeWrapper(DragonForgeRecipe recipe) {
             return new IceDragonForgeRecipeWrapper(recipe);
+        }
+    }
+    
+    public class LightningDragonForgeFactory implements IRecipeWrapperFactory<DragonForgeRecipe> {
+        @Override
+        public IRecipeWrapper getRecipeWrapper(DragonForgeRecipe recipe) {
+            return new LightningDragonForgeRecipeWrapper(recipe);
         }
     }
 }

@@ -3,6 +3,8 @@ package com.github.alexthe666.iceandfire.entity;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.message.MessageSpawnParticleAt;
+import com.github.alexthe666.iceandfire.util.IAFMath;
+
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +17,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+
 import org.apache.logging.log4j.Level;
 
 /*
@@ -121,8 +124,18 @@ public class IafDragonLogic {
         } else {
             dragon.setDragonPitch(0);
         }
-        if (IceAndFire.CONFIG.doDragonsSleep && !dragon.isInWater() && !dragon.isSleeping() && onGround && !flying && !hovering && dragon.getAttackTarget() == null && !dragon.isDaytime() && dragon.getRNG().nextInt(250) == 0 && dragon.getAttackTarget() == null && dragon.getPassengers().isEmpty()) {
-            dragon.setSleeping(true);
+        if(dragon.lookingForRoostAIFlag && dragon.getRevengeTarget() != null || dragon.isSleeping()){
+            dragon.lookingForRoostAIFlag = false;
+        }
+        if (IceAndFire.CONFIG.doDragonsSleep && !dragon.isSleeping() && !dragon.isDaytime() && dragon.getPassengers().isEmpty()) {
+            if(dragon.hasHomePosition && dragon.getHomePosition() != null && dragon.getDistanceSquared(IAFMath.copyCentered(dragon.getHomePosition())) > dragon.width * 10){
+                dragon.lookingForRoostAIFlag = true;
+            }else{
+                dragon.lookingForRoostAIFlag = false;
+                if(!dragon.isInWater() && dragon.onGround && !dragon.isFlying() && !dragon.isHovering() && dragon.getAttackTarget() == null) {
+                    dragon.setSleeping(true);
+                }
+            }
         }
         if (dragon.isSleeping() && (flying || hovering || dragon.isInWater() || (dragon.world.canBlockSeeSky(new BlockPos(dragon)) && dragon.isDaytime() && !dragon.isTamed() || dragon.isDaytime() && dragon.isTamed()) || dragon.getAttackTarget() != null || !dragon.getPassengers().isEmpty())) {
             dragon.setSleeping(false);

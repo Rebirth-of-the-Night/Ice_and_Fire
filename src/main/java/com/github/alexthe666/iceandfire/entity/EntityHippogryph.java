@@ -693,14 +693,14 @@ public class EntityHippogryph extends EntityTameable implements ISyncMount, IAni
 	}
 	
 	public void playLivingSound() {
-		if (this.getAnimation() == this.NO_ANIMATION) {
+		if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
 			this.setAnimation(ANIMATION_SPEAK);
 		}
 		super.playLivingSound();
 	}
 	
 	protected void playHurtSound(DamageSource source) {
-		if (this.getAnimation() == this.NO_ANIMATION) {
+		if (this.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
 			this.setAnimation(ANIMATION_SPEAK);
 		}
 		super.playHurtSound(source);

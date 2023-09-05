@@ -19,6 +19,9 @@ public class DragonAITargetNonTamed<T extends EntityLivingBase> extends EntityAI
 
     @Override
     public boolean shouldExecute() {
+        if(!dragon.isTamed() && dragon.lookingForRoostAIFlag){
+            return false;
+        }
         return !dragon.isTamed() && !dragon.isSleeping() && super.shouldExecute();
     }
 

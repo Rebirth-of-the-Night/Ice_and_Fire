@@ -12,14 +12,11 @@ public class ChangePageButton extends GuiButton {
     private final boolean right;
     public int lastpage = 1;
 
-    @SuppressWarnings("unused")
-    private final int page;
     private final int color;
 
     public ChangePageButton(int id, int x, int y, boolean right, int bookpage, int color) {
         super(id, x, y, 23, 10, "");
         this.right = right;
-        page = bookpage;
         this.color = color;
     }
 

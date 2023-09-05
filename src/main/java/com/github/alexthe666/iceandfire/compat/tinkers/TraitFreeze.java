@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.compat.tinkers;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
 import com.github.alexthe666.iceandfire.util.IsImmune;
 
@@ -34,7 +35,7 @@ public class TraitFreeze extends ModifierTrait {
 	        target.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 150 * (level), 2));
 	    }
 	    
-	    if (level >= 2) {
+	    if (level >= 2 && IceAndFire.CONFIG.dragonsteelKnockback) {
             target.knockBack(target, 1F, player.posX - target.posX, player.posZ - target.posZ);
         }
     }

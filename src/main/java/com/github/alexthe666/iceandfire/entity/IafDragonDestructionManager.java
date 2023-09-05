@@ -9,14 +9,13 @@ import com.github.alexthe666.iceandfire.block.IDragonProof;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforgeInput;
 import com.github.alexthe666.iceandfire.util.IsImmune;
+
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -48,9 +47,9 @@ public class IafDragonDestructionManager {
             }
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                    entityliving.attackEntityFrom(IceAndFire.dragonFire, stage * dmgScale);
                     if (!IsImmune.toDragonFire(entityliving)) {
 	                    entityliving.setFire(5 + stage * 5);
+	                    entityliving.attackEntityFrom(IceAndFire.dragonFire, stage * dmgScale);
                     }
                 }
             }
@@ -79,9 +78,9 @@ public class IafDragonDestructionManager {
             }
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                    entityliving.attackEntityFrom(IceAndFire.dragonFire, stage * dmgScale);
                     if (!IsImmune.toDragonFire(entityliving)) {
 	                    entityliving.setFire(5 + stage * 5);
+	                    entityliving.attackEntityFrom(IceAndFire.dragonFire, stage * dmgScale);
                     }
                 }
             }
@@ -109,13 +108,11 @@ public class IafDragonDestructionManager {
             }
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                    entityliving.attackEntityFrom(IceAndFire.dragonIce, stage * dmgScale);
-                    FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
-                    if (frozenProps != null) {
-                        if (!IsImmune.toDragonIce(entityliving)) {
-                            frozenProps.setFrozenFor(50 * stage);
-                        }
-                    }
+                	if (!IsImmune.toDragonIce(entityliving)) {
+                		FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
+                        if (frozenProps != null) frozenProps.setFrozenFor(50 * stage);
+                        entityliving.attackEntityFrom(IceAndFire.dragonIce, stage * dmgScale);
+                	}
                 }
             }
         } else {
@@ -142,18 +139,78 @@ public class IafDragonDestructionManager {
             }
             for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
                 if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                    entityliving.attackEntityFrom(IceAndFire.dragonIce, stage * dmgScale);
-                    FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
-                    if (frozenProps != null) {
-                        if (!IsImmune.toDragonIce(entityliving)) {
-                            frozenProps.setFrozenFor(50 * stage);
-                        }
-                    }
+                	if(!IsImmune.toDragonIce(entityliving)) {
+                		FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
+                        if (frozenProps != null) frozenProps.setFrozenFor(50 * stage);
+                        entityliving.attackEntityFrom(IceAndFire.dragonIce, stage * dmgScale);
+                	}
                 }
             }
         }
     }
 
+    public static void destroyAreaLightning(World world, BlockPos center, EntityDragonBase destroyer) {
+        if (MinecraftForge.EVENT_BUS.post(new DragonFireDamageWorldEvent(destroyer, center.getX(), center.getY(), center.getZ()))) return;
+        int stage = destroyer.getDragonStage();
+        double damageRadius = 3.5D;
+        float dmgScale = (float) IceAndFire.CONFIG.dragonAttackDamageLightning;
+        if (stage <= 3) {
+            for (BlockPos pos : BlockPos.getAllInBox(center.add(-1, -1, -1), center.add(1, 1, 1))) {
+                if (IceAndFire.CONFIG.dragonGriefing != 2 && world.rand.nextBoolean()) {
+                    if (!(world.getBlockState(pos).getBlock() instanceof IDragonProof) && DragonUtils.canDragonBreak(world.getBlockState(pos).getBlock())) {
+                        IBlockState transformState = transformBlockLightning(world.getBlockState(pos));
+                        if(transformState.getBlock() != world.getBlockState(pos).getBlock()){
+                            world.setBlockState(pos, transformState);
+                        }
+                    }
+                }
+                if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityDragonforgeInput) {
+                    ((TileEntityDragonforgeInput) world.getTileEntity(pos)).onHitWithFlame();
+                }
+            }
+            for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
+                if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
+                    if (!IsImmune.toDragonLightning(entityliving)) {
+                        double d1 = destroyer.posX - entityliving.posX;
+                        double d0 = destroyer.posZ - entityliving.posZ;
+                    	entityliving.knockBack(entityliving, 0.3F, d1, d0);
+                    	entityliving.attackEntityFrom(IceAndFire.dragonLightning, stage * dmgScale);
+                    }
+                }
+            }
+        } else {
+            int radius = stage == 4 ? 2 : 3;
+            int j = radius + world.rand.nextInt(1);
+            int k = (radius + world.rand.nextInt(1));
+            int l = radius + world.rand.nextInt(1);
+            float f = (float) (j + k + l) * 0.333F + 0.5F;
+            damageRadius = 2.5F + f * 1.2F;
+            for (BlockPos blockpos : BlockPos.getAllInBox(center.add(-j, -k, -l), center.add(j, k, l))) {
+                if (blockpos.distanceSq(center) <= (double) (f * f)) {
+                    if (IceAndFire.CONFIG.dragonGriefing != 2 && world.rand.nextFloat() > (float) blockpos.distanceSq(center) / (f * f)) {
+                        if (!(world.getBlockState(blockpos).getBlock() instanceof IDragonProof) && DragonUtils.canDragonBreak(world.getBlockState(blockpos).getBlock())) {
+                            IBlockState transformState = transformBlockLightning(world.getBlockState(blockpos));
+                            world.setBlockState(blockpos, transformState);
+                        }
+                    }
+                }
+                if (world.getTileEntity(blockpos) != null && world.getTileEntity(blockpos) instanceof TileEntityDragonforgeInput) {
+                    ((TileEntityDragonforgeInput) world.getTileEntity(blockpos)).onHitWithFlame();
+                }
+            }
+            for (EntityLivingBase entityliving : world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB((double) center.getX() - damageRadius, (double) center.getY() - damageRadius, (double) center.getZ() - damageRadius, (double) center.getX() + damageRadius, (double) center.getY() + damageRadius, (double) center.getZ() + damageRadius))) {
+                if (!DragonUtils.onSameTeam(destroyer, entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
+                    if (!IsImmune.toDragonLightning(entityliving)) {
+                        double d1 = destroyer.posX - entityliving.posX;
+                        double d0 = destroyer.posZ - entityliving.posZ;
+                    	entityliving.knockBack(entityliving, 0.3F, d1, d0);
+                    	entityliving.attackEntityFrom(IceAndFire.dragonLightning, stage * dmgScale);
+                    }
+                }
+            }
+        }
+    }
+    
     public static void destroyAreaFireCharge(World world, BlockPos center, EntityDragonBase destroyer) {
         if (destroyer != null) {
             if (MinecraftForge.EVENT_BUS.post(new DragonFireDamageWorldEvent(destroyer, center.getX(), center.getY(), center.getZ()))) return;
@@ -177,9 +234,9 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - 2, (double) center.getY() - 2, (double) center.getZ() - 2, (double) center.getX() + 2, (double) center.getY() + 2, (double) center.getZ() + 2))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
 	                    if (!IsImmune.toDragonFire(entityliving)) {
 		                    entityliving.setFire(15);
+		                    entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
 	                    }
                     }
                 }
@@ -212,9 +269,9 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - j, (double) center.getY() - k, (double) center.getZ() - l, (double) center.getX() + j, (double) center.getY() + k, (double) center.getZ() + l))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
 	                    if (!IsImmune.toDragonFire(entityliving)) {
 		                    entityliving.setFire(15);
+		                    entityliving.attackEntityFrom(IceAndFire.dragonFire, Math.max(1, stage - 1) * 2F);
 	                    }
                     }
                 }
@@ -250,13 +307,11 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - 2, (double) center.getY() - 2, (double) center.getZ() - 2, (double) center.getX() + 2, (double) center.getY() + 2, (double) center.getZ() + 2))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
-                        FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
-                        if (frozenProps != null) {
-                            if (!IsImmune.toDragonIce(entityliving)) {
-                                frozenProps.setFrozenFor(400);
-                            }
-                        }
+                    	if(!IsImmune.toDragonIce(entityliving)) { 
+                    		FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
+                            if (frozenProps != null) frozenProps.setFrozenFor(400);
+                            entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
+                    	}
                     }
                 }
             } else {
@@ -287,12 +342,85 @@ public class IafDragonDestructionManager {
                 }
                 for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - j, (double) center.getY() - k, (double) center.getZ() - l, (double) center.getX() + j, (double) center.getY() + k, (double) center.getZ() + l))) {
                     if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
-                        entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
-                        FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
-                        if (frozenProps != null) {
-                            if (!IsImmune.toDragonIce(entityliving)) {
-                                frozenProps.setFrozenFor(400);
+                    	if (!IsImmune.toDragonIce(entityliving)) {
+                            FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityliving, FrozenEntityProperties.class);
+                            if (frozenProps != null) frozenProps.setFrozenFor(400);
+                            entityliving.attackEntityFrom(IceAndFire.dragonIce, Math.max(1, stage - 1) * 2F);
+                    	}
+                    }
+                }
+            }
+            if(IceAndFire.CONFIG.explosiveDragonBreath){
+                BlockLaunchExplosion explosion = new BlockLaunchExplosion(world, destroyer, center.getX(), center.getY(), center.getZ(), Math.min(2, stage - 2));
+                explosion.doExplosionA();
+                explosion.doExplosionB(true);
+            }
+        }
+    }
+    
+    public static void destroyAreaLightningCharge(World world, BlockPos center, EntityDragonBase destroyer) {
+        if (destroyer != null) {
+            if (MinecraftForge.EVENT_BUS.post(new DragonFireDamageWorldEvent(destroyer, center.getX(), center.getY(), center.getZ()))) return;
+            int stage = destroyer.getDragonStage();
+            if (stage <= 3) {
+                for (BlockPos pos : BlockPos.getAllInBox(center.add(-2, -2, -2), center.add(2, 2, 2))) {
+                    if (world.rand.nextFloat() > pos.distanceSq(center) && !(world.getBlockState(pos).getBlock() instanceof IDragonProof) && DragonUtils.canDragonBreak(world.getBlockState(pos).getBlock())) {
+                        world.setBlockState(pos, Blocks.AIR.getDefaultState());
+                    }
+                }
+                for (BlockPos pos : BlockPos.getAllInBox(center.add(-2, -2, -2), center.add(2, 2, 2))) {
+                    if (world.rand.nextBoolean()) {
+                        if (!(world.getBlockState(pos).getBlock() instanceof IDragonProof) && DragonUtils.canDragonBreak(world.getBlockState(pos).getBlock())) {
+                            IBlockState transformState = transformBlockLightning(world.getBlockState(pos));
+                            if(transformState.getBlock() != world.getBlockState(pos).getBlock()){
+                                world.setBlockState(pos, transformState);
                             }
+                        }
+                    }
+                }
+                for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - 2, (double) center.getY() - 2, (double) center.getZ() - 2, (double) center.getX() + 2, (double) center.getY() + 2, (double) center.getZ() + 2))) {
+                    if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
+                        if (!IsImmune.toDragonLightning(entityliving)) {
+                            double d1 = destroyer.posX - entityliving.posX;
+                            double d0 = destroyer.posZ - entityliving.posZ;
+                        	entityliving.knockBack(entityliving, 0.3F, d1, d0);
+                        	entityliving.attackEntityFrom(IceAndFire.dragonLightning, Math.max(1, stage - 1) * 2F);
+                        }
+                    }
+                }
+            } else {
+                int radius = stage == 4 ? 2 : 3;
+                int j = radius + world.rand.nextInt(2);
+                int k = (radius + world.rand.nextInt(2));
+                int l = radius + world.rand.nextInt(2);
+                float f = (float) (j + k + l) * 0.333F + 0.5F;
+                for (BlockPos blockpos : BlockPos.getAllInBox(center.add(-j, -k, -l), center.add(j, k, l))) {
+                    if (blockpos.distanceSq(center) <= (double) (f * f)) {
+                        if (world.rand.nextFloat() > (float) blockpos.distanceSq(center) / (f * f) && !(world.getBlockState(blockpos).getBlock() instanceof IDragonProof) && DragonUtils.canDragonBreak(world.getBlockState(blockpos).getBlock())) {
+                            world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+                        }
+                    }
+                }
+                j++;
+                k++;
+                l++;
+                for (BlockPos blockpos : BlockPos.getAllInBox(center.add(-j, -k, -l), center.add(j, k, l))) {
+                    if (blockpos.distanceSq(center) <= (double) (f * f)) {
+                        if (!(world.getBlockState(blockpos).getBlock() instanceof IDragonProof) && DragonUtils.canDragonBreak(world.getBlockState(blockpos).getBlock())) {
+                            IBlockState transformState = transformBlockLightning(world.getBlockState(blockpos));
+                            if(transformState.getBlock() != world.getBlockState(blockpos).getBlock()){
+                                world.setBlockState(blockpos, transformState);
+                            }
+                        }
+                    }
+                }
+                for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB((double) center.getX() - j, (double) center.getY() - k, (double) center.getZ() - l, (double) center.getX() + j, (double) center.getY() + k, (double) center.getZ() + l))) {
+                    if (!destroyer.isOnSameTeam(entityliving) && !destroyer.isEntityEqual(entityliving) && destroyer.canEntityBeSeen(entityliving)) {
+                        if (!IsImmune.toDragonLightning(entityliving)) {
+                            double d1 = destroyer.posX - entityliving.posX;
+                            double d0 = destroyer.posZ - entityliving.posZ;
+                        	entityliving.knockBack(entityliving, 0.3F, d1, d0);
+                        	entityliving.attackEntityFrom(IceAndFire.dragonLightning, Math.max(1, stage - 1) * 2F);
                         }
                     }
                 }
@@ -317,11 +445,11 @@ public class IafDragonDestructionManager {
     public static IBlockState transformBlockFire(IBlockState in) {
         if (in.getMaterial() == Material.GRASS || in.getMaterial() == Material.CRAFTED_SNOW) {
             return IafBlockRegistry.charedGrass.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.GROUND && in.getBlock() == Blocks.DIRT) {
+        } else if (in.getBlock() == Blocks.DIRT) {
             return IafBlockRegistry.charedDirt.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.GROUND && in.getBlock() == Blocks.GRAVEL) {
+        } else if (in.getBlock() == Blocks.GRAVEL) {
             return IafBlockRegistry.charedGravel.getDefaultState().withProperty(BlockFallingReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.ROCK && (in.getBlock() == Blocks.COBBLESTONE || in.getBlock().getTranslationKey().contains("cobblestone"))) {
+        } else if (in.getBlock() == Blocks.COBBLESTONE || in.getBlock().getTranslationKey().contains("cobblestone")) {
             return IafBlockRegistry.charedCobblestone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
         } else if (in.getMaterial() == Material.ROCK && in.getBlock() != IafBlockRegistry.charedCobblestone) {
             return IafBlockRegistry.charedStone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
@@ -338,11 +466,11 @@ public class IafDragonDestructionManager {
     public static IBlockState transformBlockIce(IBlockState in) {
         if (in.getMaterial() == Material.GRASS || in.getMaterial() == Material.CRAFTED_SNOW) {
             return IafBlockRegistry.frozenGrass.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.GROUND && in.getBlock() == Blocks.DIRT || in.getMaterial() == Material.CRAFTED_SNOW) {
+        } else if (in.getBlock() == Blocks.DIRT || in.getMaterial() == Material.CRAFTED_SNOW) {
             return IafBlockRegistry.frozenDirt.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.GROUND && in.getBlock() == Blocks.GRAVEL) {
+        } else if (in.getBlock() == Blocks.GRAVEL) {
             return IafBlockRegistry.frozenGravel.getDefaultState().withProperty(BlockFallingReturningState.REVERTS, true);
-        } else if (in.getMaterial() == Material.ROCK && (in.getBlock() == Blocks.COBBLESTONE || in.getBlock().getTranslationKey().contains("cobblestone"))) {
+        } else if (in.getBlock() == Blocks.COBBLESTONE || in.getBlock().getTranslationKey().contains("cobblestone")) {
             return IafBlockRegistry.frozenCobblestone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
         } else if (in.getMaterial() == Material.ROCK && in.getBlock() != IafBlockRegistry.frozenCobblestone) {
             return IafBlockRegistry.frozenStone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
@@ -352,6 +480,26 @@ public class IafDragonDestructionManager {
             return IafBlockRegistry.frozenSplinters.getDefaultState();
         } else if (in.getMaterial() == Material.WATER) {
             return Blocks.ICE.getDefaultState();
+        } else if (in.getMaterial() == Material.LEAVES || in.getMaterial() == Material.PLANTS || in.getBlock() == Blocks.SNOW_LAYER) {
+            return Blocks.AIR.getDefaultState();
+        }
+        return in;
+    }
+    public static IBlockState transformBlockLightning(IBlockState in) {
+        if (in.getMaterial() == Material.GRASS || in.getMaterial() == Material.CRAFTED_SNOW) {
+            return IafBlockRegistry.crackledGrass.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
+        } else if (in.getBlock() == Blocks.DIRT) {
+            return IafBlockRegistry.crackledDirt.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
+        } else if (in.getBlock() == Blocks.GRAVEL) {
+            return IafBlockRegistry.crackledGravel.getDefaultState().withProperty(BlockFallingReturningState.REVERTS, true);
+        } else if (in.getBlock() == Blocks.COBBLESTONE || in.getBlock().getTranslationKey().contains("cobblestone")) {
+            return IafBlockRegistry.crackledCobblestone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
+        } else if (in.getMaterial() == Material.ROCK && in.getBlock() != IafBlockRegistry.crackledCobblestone) {
+            return IafBlockRegistry.crackledStone.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
+        } else if (in.getBlock() == Blocks.GRASS_PATH) {
+            return IafBlockRegistry.crackledGrassPath.getDefaultState().withProperty(BlockCharedPath.REVERTS, true);
+        } else if (in.getMaterial() == Material.WOOD) {
+            return IafBlockRegistry.ash.getDefaultState();
         } else if (in.getMaterial() == Material.LEAVES || in.getMaterial() == Material.PLANTS || in.getBlock() == Blocks.SNOW_LAYER) {
             return Blocks.AIR.getDefaultState();
         }

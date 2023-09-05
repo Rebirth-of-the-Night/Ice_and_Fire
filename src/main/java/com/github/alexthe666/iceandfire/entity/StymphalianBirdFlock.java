@@ -1,26 +1,25 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.ai.StymphalianBirdAIAirTarget;
-import net.minecraft.block.BlockObsidian;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-
-import javax.annotation.Nullable;
-import java.util.*;
 
 public class StymphalianBirdFlock {
     private EntityStymphalianBird leader;
     private ArrayList<EntityStymphalianBird> members = new ArrayList<>();
-    private BlockPos leaderTarget;
-    private BlockPos prevLeaderTarget;
     private Random random;
-    private int distance = 15;
-
+    
     private StymphalianBirdFlock() {
     }
 
@@ -29,7 +28,6 @@ public class StymphalianBirdFlock {
         flock.leader = bird;
         flock.members = new ArrayList<>();
         flock.members.add(bird);
-        flock.leaderTarget = bird.airTarget;
         flock.random = bird.getRNG();
         return flock;
     }
@@ -66,8 +64,6 @@ public class StymphalianBirdFlock {
             this.leader = members.get(random.nextInt(members.size()));
         }
         if (leader != null && !leader.isDead) {
-            this.prevLeaderTarget = this.leaderTarget;
-            this.leaderTarget = leader.airTarget;
         }
     }
 
@@ -85,7 +81,6 @@ public class StymphalianBirdFlock {
 
 
     public void setTarget(BlockPos target) {
-        this.leaderTarget = target;
         for (EntityStymphalianBird bird : members) {
             if (!isLeader(bird)) {
                 bird.airTarget = StymphalianBirdAIAirTarget.getNearbyAirTarget(bird);

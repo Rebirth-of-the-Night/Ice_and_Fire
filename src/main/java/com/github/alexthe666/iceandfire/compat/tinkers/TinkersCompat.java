@@ -29,6 +29,7 @@ public class TinkersCompat {
     public static final Material MATERIAL_JUNGLE_MYRMEX = new Material("jungle_myrmex", 0X267A72);
     public static final Material MATERIAL_DRAGONSTEEL_FIRE = new Material("dragonsteel_fire", 0XCCBBC4);
     public static final Material MATERIAL_DRAGONSTEEL_ICE = new Material("dragonsteel_ice", 0XBBE4FD);
+    public static final Material MATERIAL_DRAGONSTEEL_LIGHTNING = new Material("dragonsteel_lightning", 5317036);
     public static final Material MATERIAL_STYMPH_FEATHER = new Material("stymph_feather", 0X7D5B40);
     public static final Material MATERIAL_AMPHITHERE_FEATHER = new Material("amphithere_feather", 0X228760);
     public static final Material MATERIAL_WEEZER = new Material("weezer", 0X00AAE2, true);
@@ -40,6 +41,8 @@ public class TinkersCompat {
     public static final AbstractTrait BURN_II = new TraitBurn(2);
     public static final AbstractTrait FREEZE_I = new TraitFreeze(1);
     public static final AbstractTrait BURN_I = new TraitBurn(1);
+    public static final AbstractTrait LIGHTNING_I = new TraitThunder(1);
+    public static final AbstractTrait LIGHTNING_II = new TraitThunder(2);
     public static final AbstractTrait ANTIGRAVITY = new TraitAntigravity();
     public static final AbstractTrait ARROW_KNOCKBACK = new TraitArrowKnockback();
     public static final AbstractTrait IN_THE_GARAGE = new TraitInTheGarage();
@@ -48,8 +51,9 @@ public class TinkersCompat {
     private static final TinkersCompat INSTANCE = new TinkersCompat();
     public static FluidMolten MOLTEN_FIRE_DRAGONSTEEL;
     public static FluidMolten MOLTEN_ICE_DRAGONSTEEL;
+    public static FluidMolten MOLTEN_LIGHTNING_DRAGONSTEEL;
     private static boolean registered = false;
-
+    
     public static void register() {
         if (!registered) {
             registered = true;
@@ -128,11 +132,28 @@ public class TinkersCompat {
         TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_ICE, new BowMaterialStats(0.9f, 3.0F, 6F));
         MATERIAL_DRAGONSTEEL_ICE.addTrait(FREEZE_II, HEAD);
         MATERIAL_DRAGONSTEEL_ICE.addTrait(sharp);
+        
+        TinkerMaterials.materials.add(MATERIAL_DRAGONSTEEL_LIGHTNING);
+        TinkerRegistry.integrate(MATERIAL_DRAGONSTEEL_LIGHTNING, MOLTEN_LIGHTNING_DRAGONSTEEL, "LightningDragonsteel").toolforge().preInit();
+        MATERIAL_DRAGONSTEEL_LIGHTNING.addItem(IafItemRegistry.dragonsteel_lightning_ingot, 1, Material.VALUE_Ingot);
+        MATERIAL_DRAGONSTEEL_LIGHTNING.setRepresentativeItem(IafItemRegistry.dragonsteel_lightning_ingot);
+        MATERIAL_DRAGONSTEEL_LIGHTNING.setCraftable(false);
+        MATERIAL_DRAGONSTEEL_LIGHTNING.setCastable(true);
+        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_LIGHTNING,
+                new HeadMaterialStats(1500, 7.00f, (float) IceAndFire.CONFIG.dragonsteelBaseDamage - 8.0F, HarvestLevels.COBALT),
+                new HandleMaterialStats(0.4F, 400),
+                new ExtraMaterialStats(510));
+        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_LIGHTNING, new BowMaterialStats(0.9f, 3.0F, 6F));
+        MATERIAL_DRAGONSTEEL_LIGHTNING.addTrait(LIGHTNING_II, HEAD);
+        MATERIAL_DRAGONSTEEL_LIGHTNING.addTrait(sharp);
+        
         FREEZE_I.addItem(IafItemRegistry.ice_dragon_blood);
         FREEZE_I.addRecipeMatch(new RecipeMatch.ItemCombination(1, new ItemStack(IafItemRegistry.ice_dragon_blood)));
         BURN_I.addItem(IafItemRegistry.fire_dragon_blood);
         BURN_I.addRecipeMatch(new RecipeMatch.ItemCombination(1, new ItemStack(IafItemRegistry.fire_dragon_blood)));
-
+        LIGHTNING_I.addItem(IafItemRegistry.lightning_dragon_blood);
+        LIGHTNING_I.addRecipeMatch(new RecipeMatch.ItemCombination(1, new ItemStack(IafItemRegistry.lightning_dragon_blood)));
+        
         TinkerMaterials.materials.add(MATERIAL_STYMPH_FEATHER);
         TinkerRegistry.integrate(MATERIAL_STYMPH_FEATHER).preInit();
         MATERIAL_STYMPH_FEATHER.addItem(IafItemRegistry.stymphalian_bird_feather, 1, Material.VALUE_Ingot);
@@ -170,8 +191,11 @@ public class TinkersCompat {
         MOLTEN_FIRE_DRAGONSTEEL.setTemperature(769);
         MOLTEN_ICE_DRAGONSTEEL = fluidMetal("dragonsteel_ice", 0x8299A7);
         MOLTEN_ICE_DRAGONSTEEL.setTemperature(769);
+        MOLTEN_LIGHTNING_DRAGONSTEEL = fluidMetal("dragonsteel_lightning", 0X725691);
+        MOLTEN_LIGHTNING_DRAGONSTEEL.setTemperature(769);
         MATERIAL_DRAGONSTEEL_FIRE.setFluid(MOLTEN_FIRE_DRAGONSTEEL);
         MATERIAL_DRAGONSTEEL_ICE.setFluid(MOLTEN_ICE_DRAGONSTEEL);
+        MATERIAL_DRAGONSTEEL_LIGHTNING.setFluid(MOLTEN_LIGHTNING_DRAGONSTEEL);
     }
 
     public static void post() {

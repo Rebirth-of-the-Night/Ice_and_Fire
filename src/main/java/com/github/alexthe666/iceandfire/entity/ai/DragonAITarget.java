@@ -25,6 +25,9 @@ public class DragonAITarget<T extends EntityLivingBase> extends EntityAINearestA
         if(dragon.getCommand() == 1 || dragon.getCommand() == 2 || dragon.isSleeping()){
             return false;
         }
+        if(!dragon.isTamed() && dragon.lookingForRoostAIFlag){
+            return false;
+        }
         if (super.shouldExecute() && this.targetEntity != null && !this.targetEntity.getClass().equals(this.dragon.getClass())) {
             float dragonSize = Math.max(this.dragon.width, this.dragon.width * (dragon.getRenderSize() / 3));
             if (dragonSize >= this.targetEntity.width) {

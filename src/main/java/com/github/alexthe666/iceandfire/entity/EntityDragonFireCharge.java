@@ -2,9 +2,9 @@ package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.util.IsImmune;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.ProjectileHelper;
@@ -21,7 +21,6 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
 
     public EntityDragonFireCharge(World worldIn) {
         super(worldIn);
-
     }
 
     public EntityDragonFireCharge(World worldIn, double posX, double posY, double posZ, double accelX, double accelY, double accelZ) {
@@ -44,11 +43,6 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
         this.setSize(width, height);
     }
 
-    @Override
-    public boolean canBeCollidedWith() {
-        return false;
-    }
-
     public void onUpdate() {
         for (int i = 0; i < 4; ++i) {
             this.world.spawnParticle(EnumParticleTypes.FLAME, this.posX + ((this.rand.nextDouble() - 0.5D) * width), this.posY + ((this.rand.nextDouble() - 0.5D) * width), this.posZ + ((this.rand.nextDouble() - 0.5D) * width), 0.0D, 0.0D, 0.0D);
@@ -58,7 +52,7 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
         }
 
         if (this.world.isRemote || (this.shootingEntity == null || !this.shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
-            super.onUpdate();
+        	super.onUpdate();
 
             if (this.isFireballFiery()) {
                 this.setFire(1);
@@ -79,7 +73,6 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
 
             if (this.isInWater()) {
                 for (int i = 0; i < 4; ++i) {
-                    float f1 = 0.25F;
                     this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
                 }
 
@@ -103,9 +96,7 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
     protected void onImpact(RayTraceResult movingObject) {
 	    if (movingObject == null) return;
 	
-	    boolean flag = this.world.getGameRules().getBoolean("mobGriefing");
-
-        if (!this.world.isRemote) {
+	    if (!this.world.isRemote) {
 	        Entity entityHit = movingObject.entityHit;
 	        if (entityHit instanceof IDragonProjectile) {
                 return;
@@ -188,9 +179,4 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
     public boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
     }
-
-    public float getCollisionBorderSize() {
-        return 0F;
-    }
-
 }

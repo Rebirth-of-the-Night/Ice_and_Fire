@@ -20,7 +20,6 @@ import net.minecraft.world.World;
 import java.util.UUID;
 
 public class ItemMyrmexStaff extends Item {
-
     public ItemMyrmexStaff(boolean jungle) {
         this.setCreativeTab(IceAndFire.TAB_ITEMS);
         if (jungle) {
@@ -55,7 +54,7 @@ public class ItemMyrmexStaff extends Item {
         UUID id = itemStackIn.getTagCompound().getUniqueId("HiveUUID");
         if (!worldIn.isRemote) {
             MyrmexHive hive = MyrmexWorldData.get(worldIn).getHiveFromUUID(id);
-            MyrmexWorldData.get(worldIn).addHive(worldIn, new MyrmexHive());
+			MyrmexWorldData.addHive(worldIn, new MyrmexHive());
             if (hive != null) {
                 IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageGetMyrmexHive(hive));
             } else {

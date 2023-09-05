@@ -1,15 +1,18 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import java.util.Random;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.api.event.DragonFireEvent;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.message.MessageDragonSyncFire;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
+
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
@@ -18,14 +21,11 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
-
-import java.util.Random;
 
 public class EntityFireDragon extends EntityDragonBase {
 
@@ -37,7 +37,6 @@ public class EntityFireDragon extends EntityDragonBase {
     public static final ResourceLocation FEMALE_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/fire_dragon_female"));
     public static final ResourceLocation MALE_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/fire_dragon_male"));
     public static final ResourceLocation SKELETON_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/fire_dragon_skeleton"));
-    public static Animation ANIMATION_FIRECHARGE;
 
     public EntityFireDragon(World worldIn) {
         super(worldIn, DragonType.FIRE, 1, 1 + IceAndFire.CONFIG.dragonAttackDamage, IceAndFire.CONFIG.dragonHealth * 0.04, IceAndFire.CONFIG.dragonHealth, 0.15F, 0.4F);
@@ -138,6 +137,8 @@ public class EntityFireDragon extends EntityDragonBase {
                 case WING_BLAST:
                     this.setAnimation(ANIMATION_WINGBLAST);
                     break;
+			default:
+				break;
             }
         }
         return false;
@@ -184,6 +185,26 @@ public class EntityFireDragon extends EntityDragonBase {
             }
         } else {
             this.setBreathingFire(true);
+        }
+    }
+    
+    @Override
+    public void tryScorchTarget() {
+        EntityLivingBase entity = this.getAttackTarget();
+        if (entity != null) {
+            float distX = (float) (entity.posX - this.posX);
+            float distZ = (float) (entity.posZ - this.posZ);
+            if (this.isBreathingFire()) {
+                if (this.isActuallyBreathingFire()) {
+                    rotationYaw = renderYawOffset;
+                    if (this.ticksExisted % 5 == 0) {
+                        this.playSound(IafSoundRegistry.FIREDRAGON_BREATH, 4, 1);
+                    }
+                    stimulateFire(this.posX + distX * this.fireTicks / 40, entity.posY, this.posZ + distZ * this.fireTicks / 40, 1);
+                }
+            } else {
+                this.setBreathingFire(true);
+            }
         }
     }
 
@@ -336,7 +357,6 @@ public class EntityFireDragon extends EntityDragonBase {
         double d2 = burnX - headPos.x;
         double d3 = burnY - headPos.y;
         double d4 = burnZ - headPos.z;
-        float particleScale = MathHelper.clamp(this.getRenderSize() * 0.08F, 0.55F, 3F);
         double distance = Math.max(5 * this.getDistance(burnX, burnY, burnZ), 0);
         double conqueredDistance = burnProgress / 40D * distance;
         int increment = (int) Math.ceil(conqueredDistance / 100);
@@ -420,22 +440,13 @@ public class EntityFireDragon extends EntityDragonBase {
         return new ItemStack(IafItemRegistry.dragon_skull);
     }
 
-    public void tryScorchTarget() {
-        EntityLivingBase entity = this.getAttackTarget();
-        if (entity != null) {
-            float distX = (float) (entity.posX - this.posX);
-            float distZ = (float) (entity.posZ - this.posZ);
-            if (this.isBreathingFire()) {
-                if (this.isActuallyBreathingFire()) {
-                    rotationYaw = renderYawOffset;
-                    if (this.ticksExisted % 5 == 0) {
-                        this.playSound(IafSoundRegistry.FIREDRAGON_BREATH, 4, 1);
-                    }
-                    stimulateFire(this.posX + distX * this.fireTicks / 40, entity.posY, this.posZ + distZ * this.fireTicks / 40, 1);
-                }
-            } else {
-                this.setBreathingFire(true);
-            }
-        }
-    }
+	@Override
+	protected Item getHeartItem() {
+		return IafItemRegistry.fire_dragon_heart;
+	}
+
+	@Override
+	protected Item getBloodItem() {
+		return IafItemRegistry.fire_dragon_blood;
+	}
 }

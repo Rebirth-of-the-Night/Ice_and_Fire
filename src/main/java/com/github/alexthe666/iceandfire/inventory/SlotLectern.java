@@ -7,10 +7,10 @@ import net.minecraft.item.ItemStack;
 
 public class SlotLectern extends Slot {
     private EntityPlayer thePlayer;
-
+	
     @SuppressWarnings("unused")
     private int removeCount;
-
+	
     public SlotLectern(EntityPlayer player, IInventory inv, int slotIndex, int xPosition, int yPosition) {
         super(inv, slotIndex, xPosition, yPosition);
         this.thePlayer = player;
@@ -24,7 +24,7 @@ public class SlotLectern extends Slot {
     @Override
     public ItemStack decrStackSize(int amount) {
         if (this.getHasStack()) {
-            this.removeCount += Math.min(amount, this.getStack().getCount());
+            Math.min(amount, this.getStack().getCount());
         }
 
         return super.decrStackSize(amount);
@@ -43,7 +43,6 @@ public class SlotLectern extends Slot {
      */
     @Override
     protected void onCrafting(ItemStack stack, int amount) {
-        this.removeCount += amount;
         this.onCrafting(stack);
     }
 
@@ -53,9 +52,6 @@ public class SlotLectern extends Slot {
      */
     @Override
     protected void onCrafting(ItemStack stack) {
-        // thePlayer.addStat(StatList.objectCraftStats[Item.getIdFromItem(stack.getItem())],
-        // stack.stackSize);
-        this.removeCount = 0;
 
     }
 

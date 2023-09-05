@@ -26,30 +26,28 @@ import java.util.Map;
 public class RenderDragonBase extends RenderLiving<EntityDragonBase> {
 
     private final Map<String, ResourceLocation> LAYERED_TEXTURE_CACHE = Maps.newHashMap();
-    private final boolean fire;
+    private final int dragonType;
 
-    public RenderDragonBase(RenderManager renderManager, ModelBase model, boolean fire) {
-        super(renderManager, model, 0.8F);
+    public RenderDragonBase(RenderManager renderManager, ModelBase model, int dragonType) {
+        super(renderManager, model, 0.15F);
         this.addLayer(new LayerDragonEyes(this));
         this.addLayer(new LayerDragonRider(this, false));
         this.addLayer(new LayerDragonBanner(this));
-        this.addLayer(new LayerDragonArmor(this, fire));
-        this.fire = fire;
+        this.addLayer(new LayerDragonArmor(this, dragonType));
+        this.dragonType = dragonType;
     }
 
     public boolean shouldRender(EntityDragonBase dragon, ICamera camera, double camX, double camY, double camZ) {
-        return true;
-        //return super.shouldRender(dragon, camera, camX, camY, camZ) ||  dragon.shouldRender(camera)|| Minecraft.getMinecraft().player.isRidingOrBeingRiddenBy(dragon);
+        return super.shouldRender(dragon, camera, camX, camY, camZ) || dragon.shouldRender(camera) || Minecraft.getMinecraft().player.isRidingOrBeingRiddenBy(dragon);
     }
 
     @Override
     protected void preRenderCallback(EntityDragonBase entity, float f) {
         this.shadowSize = entity.getRenderSize() / 3;
-        GL11.glScalef(shadowSize, shadowSize, shadowSize);
         float f7 = entity.prevDragonPitch + (entity.getDragonPitch() - entity.prevDragonPitch) * f;
         GL11.glRotatef(f7, 1, 0, 0);
+        GL11.glScalef(shadowSize, shadowSize, shadowSize);
     }
-
 
     protected ResourceLocation getEntityTexture(EntityDragonBase entity) {
         String baseTexture = entity.getVariantName(entity.getVariant()) + " " + entity.getDragonStage() + entity.isModelDead() + entity.isMale() + entity.isSkeletal() + entity.isSleeping() + entity.isBlinking();
@@ -59,14 +57,15 @@ public class RenderDragonBase extends RenderLiving<EntityDragonBase> {
             List<String> tex = new ArrayList<>();
             tex.add(EnumDragonTextures.getTextureFromDragon(entity).toString());
             if (entity.isMale() && !entity.isSkeletal()) {
-                if (fire) {
+                if (dragonType == 0) {
                     tex.add(EnumDragonTextures.getDragonEnum(entity).FIRE_MALE_OVERLAY.toString());
-                } else {
+                } else if(dragonType == 1) {
                     tex.add(EnumDragonTextures.getDragonEnum(entity).ICE_MALE_OVERLAY.toString());
+                } else if(dragonType == 2) {
+                    tex.add(EnumDragonTextures.getDragonEnum(entity).LIGHTNING_MALE_OVERLAY.toString());	
                 }
-            }else{
+            }  else {
                 tex.add(EnumDragonTextures.Armor.EMPTY.FIRETEXTURE.toString());
-
             }
             ArrayLayeredTexture layeredBase = new ArrayLayeredTexture(tex);
             Minecraft.getMinecraft().getTextureManager().loadTexture(resourcelocation, layeredBase);

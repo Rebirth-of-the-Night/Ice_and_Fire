@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.block;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrassPath;
 import net.minecraft.block.SoundType;
@@ -17,31 +18,54 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
 import java.util.Random;
 
 public class BlockCharedPath extends BlockGrassPath {
     public static final PropertyBool REVERTS = PropertyBool.create("revert");
     public Item itemBlock;
-    boolean isFire;
+    public int dragonType;
 
     @SuppressWarnings("deprecation")
-    public BlockCharedPath(boolean isFire) {
+    public BlockCharedPath(int dragonType) {
         super();
-        this.isFire = isFire;
-        this.setTranslationKey(isFire ? "iceandfire.charedGrassPath" : "iceandfire.frozenGrassPath");
+        this.dragonType = dragonType;
+        this.setTranslationKey(getTransitionKeyFromType(dragonType));
         this.setHarvestLevel("shovel", 0);
         this.setHardness(0.6F);
-        this.setSoundType(isFire ? SoundType.GROUND : SoundType.GLASS);
+        this.setSoundType(dragonType != 1 ? SoundType.GROUND : SoundType.GLASS);
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
-        if (!isFire) {
+        if (dragonType != 1) {
             this.slipperiness = 0.98F;
         }
         this.setLightOpacity(0);
-        setRegistryName(IceAndFire.MODID, isFire ? "chared_grass_path" : "frozen_grass_path");
+        setRegistryName(IceAndFire.MODID, getNameFromType(dragonType));
         this.setDefaultState(this.blockState.getBaseState().withProperty(REVERTS, Boolean.FALSE));
         this.setTickRandomly(true);
     }
-
+    
+    public String getNameFromType(int dragonType){
+        switch (dragonType){
+            case 0:
+                return "chared_grass_path";
+            case 1:
+                return "frozen_grass_path";
+            case 2:
+                return "crackled_grass_path";
+        }
+        return "";
+    }
+    private static String getTransitionKeyFromType(int dragonType) {
+        switch (dragonType) {
+            case 0:
+                return "iceandfire.charedGrassPath";
+            case 1:
+                return "iceandfire.frozenGrassPath";
+            case 2:
+                return "iceandfire.crackledGrassPath";
+        }
+        return "";
+    }
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
         if (!worldIn.isRemote) {
             if (!worldIn.isAreaLoaded(pos, 3))
@@ -72,19 +96,29 @@ public class BlockCharedPath extends BlockGrassPath {
 
     @Nullable
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return isFire ? IafBlockRegistry.charedDirt.getItemDropped(IafBlockRegistry.charedDirt.getDefaultState(), rand, fortune) : IafBlockRegistry.frozenDirt.getItemDropped(IafBlockRegistry.frozenDirt.getDefaultState(), rand, fortune);
+        if (dragonType == 0) {
+        	return IafBlockRegistry.charedDirt.getItemDropped(IafBlockRegistry.charedDirt.getDefaultState(), rand, fortune);
+        } else if (dragonType == 1) {
+        return IafBlockRegistry.frozenDirt.getItemDropped(IafBlockRegistry.frozenDirt.getDefaultState(), rand, fortune);
+        } else {
+            return IafBlockRegistry.crackledDirt.getItemDropped(IafBlockRegistry.crackledDirt.getDefaultState(), rand, fortune);
+        } 
     }
-
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-
-        updateBlockState(worldIn, pos);
+        this.updateBlockState(worldIn, pos);
     }
 
     private void updateBlockState(World worldIn, BlockPos pos) {
         if (worldIn.getBlockState(pos.up()).getMaterial().isSolid()) {
-            worldIn.setBlockState(pos, isFire ? IafBlockRegistry.charedDirt.getDefaultState() : IafBlockRegistry.frozenDirt.getDefaultState());
+            if (dragonType == 0) {
+            	worldIn.setBlockState(pos, IafBlockRegistry.charedDirt.getDefaultState());
+            } else if (dragonType == 1) {
+            	worldIn.setBlockState(pos, IafBlockRegistry.frozenDirt.getDefaultState());
+            } else {
+            	worldIn.setBlockState(pos, IafBlockRegistry.crackledDirt.getDefaultState());
+            } 
         }
     }
 

@@ -92,7 +92,6 @@ public class ItemDeathwormGauntlet extends Item {
 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int unused, boolean unused2) {
-        boolean hitMob = false;
         if (stack.getTagCompound() == null) {
             stack.setTagCompound(new NBTTagCompound());
         } else {

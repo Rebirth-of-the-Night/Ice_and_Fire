@@ -17,13 +17,11 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 public class MapGenPixieVillage extends WorldGenerator {
-    private final int minTownSeparation;
     private int size;
     private int distance;
 
     public MapGenPixieVillage() {
         this.distance = 9;
-        this.minTownSeparation = 4;
         this.size = IceAndFire.CONFIG.pixieVillageSize;
     }
 

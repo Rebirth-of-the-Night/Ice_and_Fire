@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
 import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
+import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -43,8 +44,6 @@ public class ItemDragonHornLegacy extends Item {
         }
     }
 
-
-
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack stack = player.getHeldItem(hand);
@@ -77,6 +76,25 @@ public class ItemDragonHornLegacy extends Item {
             dragon.setFlying(false);
             dragon.setHovering(false);
             dragon.getNavigator().clearPath();
+            if (!worldIn.isRemote) {
+                worldIn.spawnEntity(dragon);
+            }
+            stack.setCount(0);
+            ItemStack hornItem = new ItemStack(IafItemRegistry.dragon_horn);
+            if (!player.inventory.addItemStackToInventory(hornItem)) {
+                player.dropItem(hornItem, false);
+            }
+        }
+        if (this == IafItemRegistry.dragon_horn_lightning_legacy) {
+            EntityLightningDragon dragon = new EntityLightningDragon(worldIn);
+            if (stack.getTagCompound() != null) {
+                dragon.readFromNBT(stack.getTagCompound());
+            }
+            dragon.setPosition(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+            dragon.setFlying(false);
+            dragon.setHovering(false);
+            dragon.getNavigator().clearPath();
+            stack.getTagCompound().setBoolean("Released", true);
             if (!worldIn.isRemote) {
                 worldIn.spawnEntity(dragon);
             }

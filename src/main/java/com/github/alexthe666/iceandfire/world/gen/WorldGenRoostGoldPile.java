@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.world.gen;
 
+import com.github.alexthe666.iceandfire.block.BlockCopperPile;
 import com.github.alexthe666.iceandfire.block.BlockGoldPile;
 import com.github.alexthe666.iceandfire.block.BlockSilverPile;
 import net.minecraft.block.Block;
@@ -42,7 +43,14 @@ public class WorldGenRoostGoldPile {
                             }
                         }
                     }
-
+                    if (block instanceof BlockCopperPile) {
+                        if (worldIn.isAirBlock(blockpos)) {
+                            worldIn.setBlockState(blockpos, block.getDefaultState().withProperty(BlockCopperPile.LAYERS, 1 + rand.nextInt(7)));
+                            if (worldIn.getBlockState(blockpos.down()).getBlock() instanceof BlockGoldPile) {
+                                worldIn.setBlockState(blockpos.down(), block.getDefaultState().withProperty(BlockCopperPile.LAYERS, 8));
+                            }
+                        }
+                    }
                 }
             }
         }

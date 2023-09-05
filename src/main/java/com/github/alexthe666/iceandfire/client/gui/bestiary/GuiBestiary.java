@@ -2,7 +2,6 @@ package com.github.alexthe666.iceandfire.client.gui.bestiary;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
-import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.enums.EnumBestiaryPages;
@@ -18,6 +17,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -43,8 +43,6 @@ public class GuiBestiary extends GuiScreen {
     private static final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/gui/bestiary/bestiary.png");
     private static final ResourceLocation DRAWINGS_0 = new ResourceLocation("iceandfire:textures/gui/bestiary/drawings_0.png");
     private static final ResourceLocation DRAWINGS_1 = new ResourceLocation("iceandfire:textures/gui/bestiary/drawings_1.png");
-    @SuppressWarnings("unused")
-    private static final ResourceLocation DRAWINGS_2 = new ResourceLocation("iceandfire:textures/gui/bestiary/drawings_2.png");
     private static final Map<String, ResourceLocation> PICTURE_LOCATION_CACHE = Maps.newHashMap();
     public List<EnumBestiaryPages> allPageTypes = new ArrayList<>();
     public EnumBestiaryPages pageType;
@@ -91,7 +89,7 @@ public class GuiBestiary extends GuiScreen {
             for (int i = 0; i < allPageTypes.size(); i++) {
                 int xIndex = i % -2;
                 int yIndex = i % 10;
-                IndexPageButton button = new IndexPageButton(2 + i, centerX + 15 + (xIndex * 200), centerY + 10 + (yIndex * 20) - (xIndex == 1 ? 20 : 0), StatCollector.translateToLocal("bestiary." + EnumBestiaryPages.values()[allPageTypes.get(i).ordinal()].toString().toLowerCase()));
+                IndexPageButton button = new IndexPageButton(2 + i, centerX + 15 + (xIndex * 200), centerY + 10 + (yIndex * 20) - (xIndex == 1 ? 20 : 0), I18n.format("bestiary." + EnumBestiaryPages.values()[allPageTypes.get(i).ordinal()].toString().toLowerCase()));
                 this.indexButtons.add(button);
                 this.buttonList.add(button);
             }
@@ -947,7 +945,6 @@ public class GuiBestiary extends GuiScreen {
                 }
                 break;
             default:
-                // TODO: Unimplemented :(
                 break;
         }
         writeFromTxt();
@@ -1076,7 +1073,7 @@ public class GuiBestiary extends GuiScreen {
         }
         GL11.glPushMatrix();
         GL11.glScalef(2, 2, 2);
-        font.drawString(StatCollector.translateToLocal("bestiary." + this.pageType.toString().toLowerCase()), 10, 2, 0X7A756A, false);
+        font.drawString(I18n.format("bestiary." + this.pageType.toString().toLowerCase()), 10, 2, 0X7A756A, false);
         GL11.glPopMatrix();
     }
 

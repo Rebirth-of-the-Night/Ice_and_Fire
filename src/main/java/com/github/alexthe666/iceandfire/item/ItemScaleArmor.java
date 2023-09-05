@@ -1,8 +1,10 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.entity.DragonType;
 import com.github.alexthe666.iceandfire.enums.EnumDragonArmor;
 import com.github.alexthe666.iceandfire.enums.EnumDragonEgg;
+
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -16,6 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
 import java.util.List;
 
 public class ItemScaleArmor extends ItemArmor implements IProtectAgainstDragonItem {
@@ -32,9 +35,18 @@ public class ItemScaleArmor extends ItemArmor implements IProtectAgainstDragonIt
 
     @SideOnly(Side.CLIENT)
     public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, net.minecraft.client.model.ModelBiped _default) {
-        return (ModelBiped) IceAndFire.PROXY.getArmorModel((armor_type.ordinal() < 3 ? (renderIndex == 2 ? 1 : 0) : (renderIndex == 2 ? 3 : 2)));
+        int dragonType = DragonType.getIntFromType(armor_type.eggType.dragonType);
+        if(dragonType == 0){
+            return (ModelBiped) IceAndFire.PROXY.getArmorModel((renderIndex == 2 ? 1 : 0));
+        }else if(dragonType == 1){
+            return (ModelBiped) IceAndFire.PROXY.getArmorModel((renderIndex == 2 ? 3 : 2));
+        }else if(dragonType == 2){
+            return (ModelBiped) IceAndFire.PROXY.getArmorModel((renderIndex == 2 ? 17 : 16));
+        }else{
+            return null;
+        }
     }
-
+    
     public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type) {
         return "iceandfire:textures/models/armor/" + armor_type.name() + (renderIndex == 2 ? "_legs.png" : ".png");
     }

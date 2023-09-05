@@ -23,7 +23,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-@SuppressWarnings("SuspiciousNameCombination")
 public class BlockIceSpikes extends BlockDirectional {
     protected static final double heightUpMin = 0.0;
     protected static final double heightUpMax = 0.6875;

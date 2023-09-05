@@ -2,10 +2,10 @@ package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.util.IsImmune;
+
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFireball;
@@ -23,7 +23,6 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
 
     public EntityDragonIceCharge(World worldIn) {
         super(worldIn);
-
     }
 
     public EntityDragonIceCharge(World worldIn, double posX, double posY, double posZ, double accelX, double accelY, double accelZ) {
@@ -47,11 +46,6 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
     }
 
     protected boolean isFireballFiery() {
-        return false;
-    }
-
-    @Override
-    public boolean canBeCollidedWith() {
         return false;
     }
 
@@ -83,7 +77,6 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
 
             if (this.isInWater()) {
                 for (int i = 0; i < 4; ++i) {
-                    float f1 = 0.25F;
                     this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
                 }
 
@@ -107,8 +100,6 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
     protected void onImpact(RayTraceResult movingObject) {
     	if (movingObject == null) return;
     	
-        boolean flag = this.world.getGameRules().getBoolean("mobGriefing");
-
         if (!this.world.isRemote) {
 	        Entity entityHit = movingObject.entityHit;
 	        if (entityHit instanceof IDragonProjectile) {
@@ -201,9 +192,4 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
     public boolean attackEntityFrom(DamageSource source, float amount) {
         return false;
     }
-
-    public float getCollisionBorderSize() {
-        return 0F;
-    }
-
 }

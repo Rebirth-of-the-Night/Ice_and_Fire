@@ -1,8 +1,14 @@
 package com.github.alexthe666.iceandfire.item;
 
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.world.DragonPosWorldData;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -24,10 +30,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.UUID;
 
 public class ItemSummoningCrystal extends Item {
 
@@ -66,12 +68,18 @@ public class ItemSummoningCrystal extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 
         boolean flag = false;
-        boolean ice = stack.getItem() == IafItemRegistry.summoning_crystal_ice;
+        String desc = "entity.firedragon.name";
+        if(stack.getItem() == IafItemRegistry.summoning_crystal_ice){
+            desc = "entity.icedragon.name";
+        }
+        if(stack.getItem() == IafItemRegistry.summoning_crystal_lightning){
+            desc = "entity.lightningdragon.name";
+        }
         if (stack.getTagCompound() != null) {
             for (String tagInfo : stack.getTagCompound().getKeySet()) {
                 if (tagInfo.contains("Dragon")) {
                     NBTTagCompound draginTag = stack.getTagCompound().getCompoundTag(tagInfo);
-                    String dragonName = I18n.format(ice ?  "entity.icedragon.name" : "entity.firedragon.name");
+                    String dragonName = I18n.format(desc);
                     if (!draginTag.getString("CustomName").isEmpty()) {
                         dragonName = draginTag.getString("CustomName");
                     }
@@ -83,9 +91,7 @@ public class ItemSummoningCrystal extends Item {
         if(!flag){
             tooltip.add(I18n.format("item.iceandfire.summoning_crystal.desc_0"));
             tooltip.add(I18n.format("item.iceandfire.summoning_crystal.desc_1"));
-
         }
-
     }
 
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
@@ -95,11 +101,9 @@ public class ItemSummoningCrystal extends Item {
         float yaw = player.rotationYaw;
         boolean displayError = false;
         if (stack.getItem() == this && hasDragon(stack)) {
-            // int dragonCount = 0;
             if (stack.getTagCompound() != null) {
                 for (String tagInfo : stack.getTagCompound().getKeySet()) {
                     if (tagInfo.contains("Dragon")) {
-                        // dragonCount++;
                         NBTTagCompound dragonTag = stack.getTagCompound().getCompoundTag(tagInfo);
                         UUID id = dragonTag.getUniqueId("DragonUUID");
                         if(id != null){
@@ -176,10 +180,10 @@ public class ItemSummoningCrystal extends Item {
         return EnumActionResult.PASS;
     }
 
-    public void summonEntity(Entity entity, World worldIn, BlockPos offsetPos, float yaw){
+    public void summonEntity(Entity entity, World worldIn, BlockPos offsetPos, float yaw) {
         entity.setLocationAndAngles(offsetPos.getX() + 0.5D, offsetPos.getY() + 0.5D, offsetPos.getZ() + 0.5D, yaw, 0);
         if(entity instanceof EntityDragonBase){
-            ((EntityDragonBase) entity).setCrystalBound(false);
+            ((EntityDragonBase)entity).setCrystalBound(false);
         }
         if(IceAndFire.CONFIG.chunkLoadSummonCrystal) {
             DragonPosWorldData data = DragonPosWorldData.get(worldIn);

@@ -6,15 +6,10 @@ import net.minecraft.world.World;
 import java.util.Random;
 
 public class WorldGenCavePillar {
-    private final boolean ice;
-
     public WorldGenCavePillar(boolean ice) {
-        this.ice = ice;
     }
 
     public boolean generate(World worldIn, Random rand, BlockPos position) {
-        int height = 3 + rand.nextInt(3);
-
         return true;
     }
 }

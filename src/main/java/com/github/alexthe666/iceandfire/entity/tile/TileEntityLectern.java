@@ -68,33 +68,6 @@ public class TileEntityLectern extends TileEntity implements ITickable, ISidedIn
         return this.stacks.get(index);
     }
 
-    @SuppressWarnings("unused")
-    private boolean canAddPage() {
-        if (this.stacks.get(0).isEmpty()) {
-            return false;
-        } else {
-            ItemStack itemstack = this.stacks.get(0).copy();
-
-            if (itemstack.isEmpty()) {
-                return false;
-            }
-            if (itemstack.getItem() != IafItemRegistry.bestiary) {
-                return false;
-            }
-
-            if (itemstack.getItem() == IafItemRegistry.bestiary) {
-                List<EnumBestiaryPages> list = EnumBestiaryPages.possiblePages(itemstack);
-                if (list == null || list.isEmpty()) {
-                    return false;
-                }
-            }
-            if (this.stacks.get(2).isEmpty())
-                return true;
-            int result = stacks.get(2).getCount() + itemstack.getCount();
-            return result <= getInventoryStackLimit() && result <= this.stacks.get(2).getMaxStackSize();
-        }
-    }
-
     private List<EnumBestiaryPages> getPossiblePages() {
         List<EnumBestiaryPages> list = EnumBestiaryPages.possiblePages(this.stacks.get(0));
         if (list != null && !list.isEmpty()) {

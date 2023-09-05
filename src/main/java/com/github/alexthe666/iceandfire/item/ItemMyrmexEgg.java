@@ -1,8 +1,9 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexEgg;
+
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,9 +68,9 @@ public class ItemMyrmexEgg extends Item implements ICustomRendered {
                 caste = "queen";
         }
         if (stack.getMetadata() == 4) {
-            tooltip.add(TextFormatting.LIGHT_PURPLE + StatCollector.translateToLocal("myrmex.caste_" + caste + ".name"));
+            tooltip.add(TextFormatting.LIGHT_PURPLE + I18n.format("myrmex.caste_" + caste + ".name"));
         } else {
-            tooltip.add(StatCollector.translateToLocal("myrmex.caste_" + caste + ".name"));
+            tooltip.add(I18n.format("myrmex.caste_" + caste + ".name"));
         }
     }
 

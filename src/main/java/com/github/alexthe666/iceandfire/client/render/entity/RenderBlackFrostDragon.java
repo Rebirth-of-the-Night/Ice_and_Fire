@@ -17,7 +17,7 @@ public class RenderBlackFrostDragon extends RenderLiving<EntityDragonBase> {
     public static final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/dread/black_frost.png");
     public static final ResourceLocation TEXTURE_EYES = new ResourceLocation("iceandfire:textures/models/dread/black_frost_eyes.png");
 
-    public RenderBlackFrostDragon(RenderManager renderManager, ModelBase model, boolean fire) {
+    public RenderBlackFrostDragon(RenderManager renderManager, ModelBase model) {
         super(renderManager, model, 0.8F);
         this.addLayer(new LayerGenericGlowing<>(this, TEXTURE_EYES));
         this.addLayer(new LayerDragonRider(this, true));

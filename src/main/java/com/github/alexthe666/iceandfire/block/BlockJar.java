@@ -89,7 +89,7 @@ public class BlockJar extends BlockContainer implements ICustomRendered {
         //this.checkFall(world, pos);
     }
 
-    @SuppressWarnings("unused")
+    /*
     private boolean checkFall(World worldIn, BlockPos pos) {
         if (!this.canPlaceBlockAt(worldIn, pos)) {
             worldIn.destroyBlock(pos, true);
@@ -99,6 +99,7 @@ public class BlockJar extends BlockContainer implements ICustomRendered {
             return true;
         }
     }
+    */
 
     public void dropPixie(World world, BlockPos pos) {
         if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityJar && ((TileEntityJar) world.getTileEntity(pos)).hasPixie) {

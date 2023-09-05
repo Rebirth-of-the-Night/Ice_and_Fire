@@ -55,7 +55,7 @@ public class EntityPixie extends EntityTameable {
     public boolean slowSpeed = false;
     public int ticksUntilHouseAI;
     private BlockPos housePos;
-    private PixieAIFlee aiFlee;
+    private PixieAIFlee<EntityPlayer> aiFlee;
     private PixieAISteal aiTempt;
 
     public EntityPixie(World worldIn) {
@@ -203,11 +203,11 @@ public class EntityPixie extends EntityTameable {
     protected void initEntityAI() {
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(1, new PixieAIFollowOwner(this, 0.4D, 2.0F, 4.0F));
-        this.tasks.addTask(1, new PixieAIPickupItem(this, false));
+        this.tasks.addTask(1, new PixieAIPickupItem<>(this, false));
 
         this.tasks.addTask(2, aiTempt = new PixieAISteal(this, 1.0D));
 
-        this.tasks.addTask(2, aiFlee = new PixieAIFlee(this, EntityPlayer.class, 10, new Predicate<EntityPlayer>() {
+        this.tasks.addTask(2, aiFlee = new PixieAIFlee<EntityPlayer>(this, EntityPlayer.class, 10, new Predicate<EntityPlayer>() {
             @Override
             public boolean apply(@Nullable EntityPlayer entity) {
                 return true;

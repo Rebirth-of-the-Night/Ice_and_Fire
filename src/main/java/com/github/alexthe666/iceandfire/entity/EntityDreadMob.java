@@ -1,8 +1,13 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
 import com.google.common.base.Optional;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -18,15 +23,8 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.server.management.PreYggdrasilConverter;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
-
-import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.UUID;
 
 public class EntityDreadMob extends EntityMob implements IDreadMob {
 
@@ -80,7 +78,7 @@ public class EntityDreadMob extends EntityMob implements IDreadMob {
 
 	@Nullable
 	public UUID getCommanderId() {
-		return (UUID) ((Optional) this.dataManager.get(COMMANDER_UNIQUE_ID)).orNull();
+		return (UUID) ((Optional<?>) this.dataManager.get(COMMANDER_UNIQUE_ID)).orNull();
 	}
 
 	public void setCommanderId(@Nullable UUID uuid) {

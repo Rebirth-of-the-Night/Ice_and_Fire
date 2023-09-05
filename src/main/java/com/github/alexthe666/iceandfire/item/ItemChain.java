@@ -1,13 +1,13 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.client.StatCollector;
 import com.github.alexthe666.iceandfire.entity.ChainEntityProperties;
 import com.github.alexthe666.iceandfire.entity.EntityChainTie;
 import com.github.alexthe666.iceandfire.util.IsImmune;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWall;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -62,11 +62,11 @@ public class ItemChain extends Item {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(StatCollector.translateToLocal("item.iceandfire.chain.desc_0"));
-        tooltip.add(StatCollector.translateToLocal("item.iceandfire.chain.desc_1"));
+        tooltip.add(I18n.format("item.iceandfire.chain.desc_0"));
+        tooltip.add(I18n.format("item.iceandfire.chain.desc_1"));
         if (!sticky) {
-            tooltip.add(TextFormatting.GREEN + StatCollector.translateToLocal("item.iceandfire.chain_sticky.desc_2"));
-            tooltip.add(TextFormatting.GREEN + StatCollector.translateToLocal("item.iceandfire.chain_sticky.desc_3"));
+            tooltip.add(TextFormatting.GREEN + I18n.format("item.iceandfire.chain_sticky.desc_2"));
+            tooltip.add(TextFormatting.GREEN + I18n.format("item.iceandfire.chain_sticky.desc_3"));
         }
     }
 

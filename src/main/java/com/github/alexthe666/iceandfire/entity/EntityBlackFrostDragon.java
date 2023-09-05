@@ -4,12 +4,14 @@ import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.entity.ai.*;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.ai.*;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,6 +24,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+
 import java.util.UUID;
 
 public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob {
@@ -67,7 +70,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
                 return entity instanceof EntityLivingBase && DragonUtils.canHostilesTarget(entity);
             }
         }));
-        this.targetTasks.addTask(5, new DragonAITargetItems(this, false));
+        this.targetTasks.addTask(5, new DragonAITargetItems<EntityItem>(this, false));
     }
 
     @Nullable
@@ -176,7 +179,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     }
     @Nullable
     public UUID getCommanderId() {
-        return (UUID) ((Optional) this.dataManager.get(COMMANDER_UNIQUE_ID)).orNull();
+        return (UUID) ((Optional<?>) this.dataManager.get(COMMANDER_UNIQUE_ID)).orNull();
     }
 
     public void setCommanderId(@Nullable UUID uuid) {
@@ -210,12 +213,20 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     }
 
     public Item getVariantScale(int variant) {
-        return IafItemRegistry.dragonscales_blue;
+        return null;
     }
 
     public Item getVariantEgg(int variant) {
-        return IafItemRegistry.dragonegg_blue;
+        return null;
     }
+
+	protected Item getHeartItem() {
+		return null;
+	}
+
+	protected Item getBloodItem() {
+		return null;
+	}
 
     public boolean isBreedingItem(@Nullable ItemStack stack) {
         return false;

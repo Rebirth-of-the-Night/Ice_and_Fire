@@ -17,7 +17,7 @@ public class DreadAITargetNonDread extends EntityAINearestAttackableTarget<Entit
     }
 
     protected boolean isSuitableTarget(@Nullable EntityLivingBase target, boolean includeInvincibles) {
-        if(super.isSuitableTarget(target, includeInvincibles)){
+        if(super.isSuitableTarget(target, includeInvincibles)) {
             if(target instanceof IDreadMob || !DragonUtils.isAlive(target)){
                 return false;
             }
@@ -25,6 +25,4 @@ public class DreadAITargetNonDread extends EntityAINearestAttackableTarget<Entit
         }
         return false;
     }
-
-
 }
