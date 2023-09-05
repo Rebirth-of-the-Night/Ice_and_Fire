@@ -14,7 +14,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class MyrmexAIForageForItems<T extends EntityItem> extends EntityAITarget {
+public class MyrmexAIForageForItems extends EntityAITarget {
     protected final DragonAITargetItems.Sorter theNearestAttackableTargetSorter;
     protected final Predicate<? super EntityItem> targetEntitySelector;
     public EntityMyrmexWorker myrmex;

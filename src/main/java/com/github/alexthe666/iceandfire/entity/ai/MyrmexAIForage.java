@@ -91,7 +91,7 @@ public class MyrmexAIForage extends EntityAIBase {
                 double distance = this.getDistance(this.targetBlock);
                 if (distance <= 6) {
                     NonNullList<ItemStack> drops = NonNullList.create();
-                    block.getBlock().getDrops(drops, this.myrmex.world, this.targetBlock, block, 0); // use the old method until it gets removed, for backward compatibility
+                    block.getBlock().getDrops(drops, this.myrmex.world, this.targetBlock, block, 0);
                     if (!drops.isEmpty()) {
                         this.myrmex.world.destroyBlock(this.targetBlock, false);
                         ItemStack heldStack = drops.get(0).copy();

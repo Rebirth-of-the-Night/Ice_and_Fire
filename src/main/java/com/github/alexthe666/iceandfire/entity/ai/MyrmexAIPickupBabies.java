@@ -13,10 +13,9 @@ import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.math.AxisAlignedBB;
 
-public class MyrmexAIPickupBabies<T extends EntityItem> extends EntityAITarget {
+public class MyrmexAIPickupBabies extends EntityAITarget {
     protected final DragonAITargetItems.Sorter theNearestAttackableTargetSorter;
     protected final Predicate<? super EntityLivingBase> targetEntitySelector;
     public EntityMyrmexWorker myrmex;

@@ -1,5 +1,6 @@
-package com.github.alexthe666.iceandfire.entity;
+package com.github.alexthe666.iceandfire.entity.ai;
 
+import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.player.EntityPlayer;
