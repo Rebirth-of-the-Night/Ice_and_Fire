@@ -174,7 +174,7 @@ public class IceAndFireConfig {
     public boolean explosiveDragonBreath = false;
     public float weezerTinkersDisarmChance = 0.2F;
     public boolean chunkLoadSummonCrystal = true;
-    public String villagerTradingItem = "iceandfire:sapphire_gem";
+    public String villagerTradingItem = "iceandfire:sapphire_gem"; // TODO make trading item configurable
 
     public void init(Configuration config) {
         this.customMainMenu = config.getBoolean("Custom main menu", "all", true, "Whether to display the dragon on the main menu or not");
