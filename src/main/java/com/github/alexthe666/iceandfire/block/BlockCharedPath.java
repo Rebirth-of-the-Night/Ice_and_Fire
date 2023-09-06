@@ -97,9 +97,9 @@ public class BlockCharedPath extends BlockGrassPath {
     @Nullable
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
         if (dragonType == 0) {
-        	return IafBlockRegistry.charedDirt.getItemDropped(IafBlockRegistry.charedDirt.getDefaultState(), rand, fortune);
+            return IafBlockRegistry.charedDirt.getItemDropped(IafBlockRegistry.charedDirt.getDefaultState(), rand, fortune);
         } else if (dragonType == 1) {
-        return IafBlockRegistry.frozenDirt.getItemDropped(IafBlockRegistry.frozenDirt.getDefaultState(), rand, fortune);
+            return IafBlockRegistry.frozenDirt.getItemDropped(IafBlockRegistry.frozenDirt.getDefaultState(), rand, fortune);
         } else {
             return IafBlockRegistry.crackledDirt.getItemDropped(IafBlockRegistry.crackledDirt.getDefaultState(), rand, fortune);
         } 
@@ -113,12 +113,12 @@ public class BlockCharedPath extends BlockGrassPath {
     private void updateBlockState(World worldIn, BlockPos pos) {
         if (worldIn.getBlockState(pos.up()).getMaterial().isSolid()) {
             if (dragonType == 0) {
-            	worldIn.setBlockState(pos, IafBlockRegistry.charedDirt.getDefaultState());
+                worldIn.setBlockState(pos, IafBlockRegistry.charedDirt.getDefaultState());
             } else if (dragonType == 1) {
-            	worldIn.setBlockState(pos, IafBlockRegistry.frozenDirt.getDefaultState());
+                worldIn.setBlockState(pos, IafBlockRegistry.frozenDirt.getDefaultState());
             } else {
-            	worldIn.setBlockState(pos, IafBlockRegistry.crackledDirt.getDefaultState());
-            } 
+                worldIn.setBlockState(pos, IafBlockRegistry.crackledDirt.getDefaultState());
+            }
         }
     }
 

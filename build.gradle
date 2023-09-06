@@ -38,13 +38,13 @@ repositories {
     maven {
         url = "http://maven.mcmoddev.com"
     }
-    maven {
-        name = "Mobius Repo"
-        url = "http://tehnut.info/maven"
-    }
+    // maven {
+    //     name = "Mobius Repo"
+    //     url = "http://tehnut.info/maven"
+    // }
     maven {
         name = "gegy1000"
-        url = "https://maven.gegy1000.net"
+        url = "https://maven.gegy.dev/releases"
     }
     maven {
         name "Jared"

@@ -3,12 +3,7 @@ package com.github.alexthe666.iceandfire.entity;
 import javax.annotation.Nullable;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIDefendHive;
-import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIFindHidingSpot;
-import com.github.alexthe666.iceandfire.entity.ai.MyrmexAILeaveHive;
-import com.github.alexthe666.iceandfire.entity.ai.MyrmexAILookAtTradePlayer;
-import com.github.alexthe666.iceandfire.entity.ai.MyrmexAITradePlayer;
-import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIWander;
+import com.github.alexthe666.iceandfire.entity.ai.*;
 import com.google.common.base.Predicate;
 
 import net.ilexiconn.llibrary.server.animation.Animation;
