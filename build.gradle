@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://files.minecraftforge.net/maven"
         }
         maven {
             name = "sonatype"
@@ -36,11 +36,11 @@ minecraft {
 repositories {
     mavenCentral()
     maven {
-        url = "http://maven.mcmoddev.com"
+        url = "https://maven.mcmoddev.com"
     }
     // maven {
     //     name = "Mobius Repo"
-    //     url = "http://tehnut.info/maven"
+    //     url = "https://tehnut.info/maven"
     // }
     maven {
         name = "gegy1000"
@@ -48,7 +48,7 @@ repositories {
     }
     maven {
         name "Jared"
-        url "http://maven.blamejared.com/"
+        url "https://maven.blamejared.com/"
     }
     maven { // mcjty
         name 'tterrag'
@@ -57,7 +57,7 @@ repositories {
     maven {
         // location of the maven that hosts JEI files
         name = "Progwml6 maven"
-        url = "http://dvs1.progwml6.com/files/maven"
+        url = "https://dvs1.progwml6.com/files/maven"
     }
     maven {
         url = "https://minecraft.curseforge.com/api/maven/"
