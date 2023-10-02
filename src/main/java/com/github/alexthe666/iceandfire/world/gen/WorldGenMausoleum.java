@@ -23,7 +23,7 @@ import java.util.Random;
 public class WorldGenMausoleum extends WorldGenerator {
 
     public EnumFacing facing;
-    private static final ResourceLocation STRUCTURE = new ResourceLocation(IceAndFire.MODID, "dread_mausoleum_forge");
+    private static final ResourceLocation STRUCTURE = new ResourceLocation(IceAndFire.MODID, "dread_mausoleum");
 
     public WorldGenMausoleum(EnumFacing facing) {
         super(false);

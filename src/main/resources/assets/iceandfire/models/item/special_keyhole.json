@@ -1,0 +1,6 @@
+{
+  "parent": "iceandfire:block/dreadwood_planks_lock",
+  "textures": {
+    "side": "iceandfire:blocks/special_keyhole"
+  }
+}

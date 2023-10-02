@@ -1,10 +1,12 @@
 package com.github.alexthe666.iceandfire;
 
+import com.github.alexthe666.iceandfire.command.CommandTreeBaseButOurs;
 import com.github.alexthe666.iceandfire.compat.CraftTweakerCompatBridge;
 import com.github.alexthe666.iceandfire.compat.OneProbeCompatBridge;
 import com.github.alexthe666.iceandfire.compat.ThaumcraftCompatBridge;
 import com.github.alexthe666.iceandfire.compat.TinkersCompatBridge;
 import com.github.alexthe666.iceandfire.entity.IafEntityRegistry;
+import com.github.alexthe666.iceandfire.event.WorldGenDreadDimension;
 import com.github.alexthe666.iceandfire.recipe.IafRecipeRegistry;
 import com.github.alexthe666.iceandfire.entity.IafVillagerRegistry;
 import com.github.alexthe666.iceandfire.world.IafWorldRegistry;
@@ -26,6 +28,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
@@ -127,6 +130,7 @@ public class IceAndFire {
         VillagerRegistry.instance().registerVillageCreationHandler(new VillageAnimalFarmCreator());
         PROXY.render();
         GameRegistry.registerWorldGenerator(new WorldGenEvents(), 0);
+        GameRegistry.registerWorldGenerator(new WorldGenDreadDimension(), 0);
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new com.github.alexthe666.iceandfire.client.GuiHandler());
         dragon = new DamageSource("dragon") {
             @Override
@@ -175,6 +179,7 @@ public class IceAndFire {
         PROXY.postRender();
         TinkersCompatBridge.loadTinkersPostInitCompat();
         IafRecipeRegistry.postInit();
+        ClientCommandHandler.instance.registerCommand(new CommandTreeBaseButOurs());
         logger.info("A brother bound to a love he must hide");
         logger.info("The younger's armor is worn in the mind");
         logger.info("A cold iron throne holds a boy barely grown");

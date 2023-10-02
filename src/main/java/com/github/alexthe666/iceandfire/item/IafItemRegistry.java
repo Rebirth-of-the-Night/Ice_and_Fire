@@ -10,6 +10,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -31,7 +32,7 @@ public class IafItemRegistry {
     public static ArmorMaterial dragonsteel_fire_armor = EnumHelper.addArmorMaterial("Dragonsteel Fire", "iceandfire:dragonsteel_fire", (int) (0.02D * IceAndFire.CONFIG.dragonsteelBaseDurability), new int[]{IceAndFire.CONFIG.dragonsteelBaseArmor - 6, IceAndFire.CONFIG.dragonsteelBaseArmor - 3, IceAndFire.CONFIG.dragonsteelBaseArmor, IceAndFire.CONFIG.dragonsteelBaseArmor - 5}, 30, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 6.0F);
     public static ArmorMaterial dragonsteel_ice_armor = EnumHelper.addArmorMaterial("Dragonsteel Ice", "iceandfire:dragonsteel_ice", (int) (0.02D * IceAndFire.CONFIG.dragonsteelBaseDurability), new int[]{IceAndFire.CONFIG.dragonsteelBaseArmor - 6, IceAndFire.CONFIG.dragonsteelBaseArmor - 3, IceAndFire.CONFIG.dragonsteelBaseArmor, IceAndFire.CONFIG.dragonsteelBaseArmor - 5}, 30, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 6.0F);
     public static ArmorMaterial dragonsteel_lightning_armor = EnumHelper.addArmorMaterial("Dragonsteel Lightning", "iceandfire:dragonsteel_lightning", (int) (0.02D * IceAndFire.CONFIG.dragonsteelBaseDurability), new int[]{IceAndFire.CONFIG.dragonsteelBaseArmor - 6, IceAndFire.CONFIG.dragonsteelBaseArmor - 3, IceAndFire.CONFIG.dragonsteelBaseArmor, IceAndFire.CONFIG.dragonsteelBaseArmor - 5}, 30, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 6.0F);
-	
+
     public static ToolMaterial silverTools = EnumHelper.addToolMaterial("Silver", 2, 460, 11.0F, 1.0F, 18);
     public static ToolMaterial copperTools = EnumHelper.addToolMaterial("Copper", 2, 300, 0.7F, 0.0F, 10);
     public static ToolMaterial boneTools = EnumHelper.addToolMaterial("Dragonbone", 4, 1660, 10.0F, 4.0F, 22);
@@ -50,7 +51,7 @@ public class IafItemRegistry {
     public static ToolMaterial dread_sword_tools = EnumHelper.addToolMaterial("DreadSword", 0, 100, 0.0F, 1F, 0);
     public static ToolMaterial dread_knight_sword_tools = EnumHelper.addToolMaterial("DreadKnightSword", 0, 1200, 0.0F, 13F, 10);
     public static ToolMaterial dread_queen_sword_tools = EnumHelper.addToolMaterial("DreadQueenSword", 0, IceAndFire.CONFIG.dragonsteelBaseDurability, 10.0F, (float) IceAndFire.CONFIG.dragonsteelBaseDamage, 10);
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":bestiary")
     public static Item bestiary = new ItemBestiary();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":manuscript")
@@ -142,7 +143,7 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonbone_bow")
     public static Item dragonbone_bow = new ItemDragonBow();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_skull")
-    public static Item dragon_skull = new ItemDragonSkull(); 
+    public static Item dragon_skull = new ItemDragonSkull();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonarmor_iron")
     public static Item dragon_armor_iron = new ItemDragonArmor(0, "dragonarmor_iron");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonarmor_gold")
@@ -155,7 +156,7 @@ public class IafItemRegistry {
     public static Item dragon_armor_dragonsteel_fire = new ItemDragonArmor(4, "dragonarmor_dragonsteel_fire");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonarmor_dragonsteel_ice")
     public static Item dragon_armor_dragonsteel_ice = new ItemDragonArmor(5, "dragonarmor_dragonsteel_ice");
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_meal")
     public static Item dragon_meal = new ItemGeneric("dragon_meal", "iceandfire.dragon_meal");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":sickly_dragon_meal")
@@ -433,7 +434,7 @@ public class IafItemRegistry {
     public static Item hydra_heart = new ItemHydraHeart();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":hydra_arrow")
     public static Item hydra_arrow = new ItemHydraArrow();
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_ingot")
     public static Item dragonsteel_lightning_ingot = new ItemGeneric("dragonsteel_lightning_ingot", "iceandfire.dragonsteel_lightning_ingot");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_sword")
@@ -453,10 +454,10 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_leggings")
     public static Item dragonsteel_lightning_leggings = new ItemDragonsteelArmor(dragonsteel_lightning_armor, 2, EntityEquipmentSlot.LEGS, "dragonsteel_lightning_leggings", "iceandfire.dragonsteel_lightning_leggings");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_boots")
-    public static Item dragonsteel_lightning_boots = new ItemDragonsteelArmor(dragonsteel_lightning_armor, 3, EntityEquipmentSlot.FEET, "dragonsteel_lightning_boots", "iceandfire.dragonsteel_lightning_boots"); 
+    public static Item dragonsteel_lightning_boots = new ItemDragonsteelArmor(dragonsteel_lightning_armor, 3, EntityEquipmentSlot.FEET, "dragonsteel_lightning_boots", "iceandfire.dragonsteel_lightning_boots");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonbone_sword_lightning")
     public static Item dragonbone_sword_lightning = new ItemAlchemySword(lightningBoneTools, "dragonbone_sword_lightning", "iceandfire.dragonbone_sword_lightning", 2);
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copper_ingot")
     public static Item copperIngot = new ItemGeneric("copper_ingot", "iceandfire.copperIngot");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copper_nugget")
@@ -479,12 +480,12 @@ public class IafItemRegistry {
     public static Item copper_leggings = new ItemCopperArmor(copperArmor, 2, EntityEquipmentSlot.LEGS, "armor_copper_metal_leggings", "iceandfire.copper_leggings");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copper_boots")
     public static Item copper_boots = new ItemCopperArmor(copperArmor, 3, EntityEquipmentSlot.FEET, "armor_copper_metal_boots", "iceandfire.copper_boots");
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonarmor_copper")
     public static Item dragon_armor_copper = new ItemDragonArmor(6, "dragonarmor_copper");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonarmor_dragonsteel_lightning")
     public static Item dragon_armor_dragonsteel_lightning = new ItemDragonArmor(7, "dragonarmor_dragonsteel_lightning");
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_horn_lightning")
     public static Item dragon_horn_lightning_legacy = new ItemDragonHornLegacy("lightning");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":summoning_crystal_lightning")
@@ -497,7 +498,7 @@ public class IafItemRegistry {
     public static Item lightning_dragon_blood = new ItemGeneric("lightning_dragon_blood", "iceandfire.lightning_dragon_blood");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":lightning_stew")
     public static Item lightning_stew = new ItemGeneric("lightning_stew", "iceandfire.lightning_stew");
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscales_electric")
     public static Item dragonscales_electric = new ItemDragonScales("dragonscales_electric", EnumDragonEgg.ELECTRIC);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscales_amythest")
@@ -506,7 +507,7 @@ public class IafItemRegistry {
     public static Item dragonscales_copper = new ItemDragonScales("dragonscales_copper", EnumDragonEgg.COPPER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscales_black")
     public static Item dragonscales_black = new ItemDragonScales("dragonscales_black", EnumDragonEgg.BLACK);
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonegg_electric")
     public static Item dragonegg_electric = new ItemDragonEgg("dragonegg_electric", EnumDragonEgg.ELECTRIC);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonegg_amythest")
@@ -515,10 +516,26 @@ public class IafItemRegistry {
     public static Item dragonegg_copper = new ItemDragonEgg("dragonegg_copper", EnumDragonEgg.COPPER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonegg_black")
     public static Item dragonegg_black = new ItemDragonEgg("dragonegg_black", EnumDragonEgg.BLACK);
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amythest_gem")
     public static Item amythestGem = new ItemGeneric("amythest_gem", "iceandfire.amythest_gem");
-    
+
+    //--- Keys ---//
+
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":tower_key")
+    public static Item tower_key = new ItemKey("tower_key", "iceandfire.tower_key", 0, TextFormatting.YELLOW);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":tower_access_key")
+    public static Item tower_access_key = new ItemKey("tower_access_key", "iceandfire.tower_access_key", 0, TextFormatting.GREEN);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":queen_key")
+    public static Item queen_key = new ItemKey("queen_key", "iceandfire.queen_key", 0, TextFormatting.RED);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":library_key")
+    public static Item library_key = new ItemKey("library_key", "iceandfire.library_key", 0, TextFormatting.WHITE);
+
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":special_key")
+    public static Item special_key = new ItemKey("special_key", "iceandfire.special_key", 0, TextFormatting.AQUA);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":treasury_key")
+    public static Item treasury_key = new ItemKey("treasury_key", "iceandfire.treasury_key", 0, TextFormatting.GOLD);
+
     static {
         EnumDragonArmor.initArmors();
         EnumSeaSerpent.initArmors();

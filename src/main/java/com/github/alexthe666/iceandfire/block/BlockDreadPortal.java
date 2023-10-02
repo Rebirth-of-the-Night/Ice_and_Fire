@@ -2,7 +2,11 @@ package com.github.alexthe666.iceandfire.block;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.DragonUtils;
+import com.github.alexthe666.iceandfire.entity.MiscEntityProperties;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDreadPortal;
+import com.github.alexthe666.iceandfire.world.dimension.TeleporterDreadLands;
+import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.MapColor;
@@ -10,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -45,7 +50,7 @@ public class BlockDreadPortal extends BlockContainer implements IDreadBlock {
 
     @Override
     public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-       /* if(entity.dimension != IceAndFire.CONFIG.dreadlandsDimensionId){
+        if(entity.dimension != IceAndFire.CONFIG.dreadlandsDimensionId){
             MiscEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(entity, MiscEntityProperties.class);
             if (properties != null) {
                 properties.lastEnteredDreadPortalX = pos.getX();
@@ -72,7 +77,7 @@ public class BlockDreadPortal extends BlockContainer implements IDreadBlock {
                 thePlayer.setPositionAndRotation(setPos.getX(), setPos.getY() + 0.5D, setPos.getZ(), 0, 0);
 
             }
-        }*/
+        }
     }
 
 

@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.block.BlockUtils;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -24,7 +25,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class DragonUtils {
-	public static BlockPos getBlockInViewEscort(EntityDragonBase dragon) {
+    public static BlockPos getBlockInViewEscort(EntityDragonBase dragon) {
         BlockPos escortPos = dragon.getEscortPosition();
         BlockPos ground = dragon.world.getHeight(escortPos);
         int distFromGround = escortPos.getY() - ground.getY();
@@ -358,13 +359,8 @@ public class DragonUtils {
         return true;
     }
 
-    public static boolean isDreadBlock(IBlockState state){
-        Block block = state.getBlock();
-        return block == IafBlockRegistry.dread_stone || block == IafBlockRegistry.dread_stone_bricks || block == IafBlockRegistry.dread_stone_bricks_chiseled ||
-                block == IafBlockRegistry.dread_stone_bricks_cracked || block == IafBlockRegistry.dread_stone_bricks_mossy || block == IafBlockRegistry.dread_stone_tile ||
-                block == IafBlockRegistry.dread_stone_face || block == IafBlockRegistry.dread_torch || block == IafBlockRegistry.dread_stone_bricks_stairs ||
-                block == IafBlockRegistry.dread_stone_bricks_double_slab || block == IafBlockRegistry.dread_stone_bricks_slab || block == IafBlockRegistry.dreadwood_log ||
-                block == IafBlockRegistry.dreadwood_planks || block == IafBlockRegistry.dreadwood_planks_lock || block == IafBlockRegistry.dread_portal ||
-                block == IafBlockRegistry.dread_spawner;
+    // TODO: 15.06.2022 organize
+    public static boolean isDreadBlock(IBlockState state) {
+        return BlockUtils.isDreadBlock(state);
     }
 }
