@@ -4,6 +4,7 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockCopperPile;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
+import com.github.alexthe666.iceandfire.entity.HomePosition;
 
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;
@@ -72,7 +73,7 @@ public class WorldGenLightningDragonCave extends WorldGenerator {
         dragon.setVariant(rand.nextInt(4));
         dragon.setPositionAndRotation(position.getX() + 0.5, position.getY() + 0.5, position.getZ() + 0.5, rand.nextFloat() * 360, 0);
         dragon.setSleeping(true);
-        dragon.homePos = position;
+        dragon.homePos = new HomePosition(position, worldIn);
         dragon.setHunger(50);
         worldIn.spawnEntity(dragon);
         return false;

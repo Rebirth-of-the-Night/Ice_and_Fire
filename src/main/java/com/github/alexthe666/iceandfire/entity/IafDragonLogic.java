@@ -128,7 +128,11 @@ public class IafDragonLogic {
             dragon.lookingForRoostAIFlag = false;
         }
         if (IceAndFire.CONFIG.doDragonsSleep && !dragon.isSleeping() && !dragon.isDaytime() && dragon.getPassengers().isEmpty()) {
-            if(dragon.hasHomePosition && dragon.getHomePosition() != null && dragon.getDistanceSquared(IAFMath.copyCentered(dragon.getHomePosition())) > dragon.width * 10){
+            if (dragon.hasHomePosition
+                && dragon.getHomePosition() != null
+                && DragonUtils.isInHomeDimension(dragon)
+                && dragon.getDistanceSquared(IAFMath.copyCentered(dragon.getHomePosition())) > dragon.width * 10
+                && dragon.getCommand() != 2 && dragon.getCommand() != 1){
                 dragon.lookingForRoostAIFlag = true;
             }else{
                 dragon.lookingForRoostAIFlag = false;

@@ -19,6 +19,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.*;
 import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -48,7 +49,8 @@ public class DragonUtils {
             BlockPos ground = dragon.world.getHeight(dragonPos);
             int distFromGround = (int) dragon.posY - ground.getY();
             for (int i = 0; i < 10; i++) {
-                BlockPos pos = new BlockPos(dragon.homePos.getX() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance, (distFromGround > 16 ? (int) Math.min(IceAndFire.CONFIG.maxDragonFlight, dragon.posY + dragon.getRNG().nextInt(16) - 8) : (int) dragon.posY + dragon.getRNG().nextInt(16) + 1), (dragon.homePos.getZ() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance));
+                BlockPos homePos = dragon.homePos.getPosition();
+                BlockPos pos = new BlockPos(homePos.getX() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance, (distFromGround > 16 ? (int) Math.min(IceAndFire.CONFIG.maxDragonFlight, dragon.posY + dragon.getRNG().nextInt(16) - 8) : (int) dragon.posY + dragon.getRNG().nextInt(16) + 1), (homePos.getZ() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance));
                 if (!dragon.isTargetBlocked(new Vec3d(pos)) && dragon.getDistanceSqToCenter(pos) > 6) {
                     return pos;
                 }
@@ -256,6 +258,14 @@ public class DragonUtils {
                 || className.contains("Rabbit") || className.contains("Peacock") || className.contains("Goat") || className.contains("Ferret")
                 || className.contains("Hedgehog") || className.contains("Peahen") || className.contains("Peafowl") || className.contains("Sow")
                 || className.contains("Hog") || className.contains("Hog");
+    }
+
+    public static int getDimensionID(World world) {
+        return world.provider.getDimension();
+    }
+
+    public static boolean isInHomeDimension(EntityDragonBase dragonBase) {
+        return (dragonBase.getHomeDimensionID() == null || getDimensionID(dragonBase.world) == (dragonBase.getHomeDimensionID()));
     }
 
     public static boolean canDragonBreak(Block block) {
