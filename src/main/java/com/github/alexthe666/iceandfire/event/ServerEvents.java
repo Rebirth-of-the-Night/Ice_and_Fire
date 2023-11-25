@@ -551,7 +551,7 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public static void onTick(TickEvent.PlayerTickEvent event) {
+    public void onTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             EntityPlayer player = event.player;
             if (!player.getEntityWorld().isRemote) {
