@@ -162,7 +162,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public int swimCycle;
     public boolean isDaytime;
     public int flightCycle;
-    public BlockPos homePos;
+    public HomePosition homePos;
     public boolean hasHomePosition = false;
     @SideOnly(Side.CLIENT)
     public IFChainBuffer roll_buffer;
@@ -250,6 +250,15 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         switchNavigator(0);
         randomizeAttacks();
         resetParts(1);
+    }
+
+    @Override
+    public BlockPos getHomePosition() {
+        return this.homePos == null ? super.getHomePosition() : this.homePos.getPosition();
+    }
+
+    public Integer getHomeDimensionID() {
+        return this.homePos == null ? null : this.homePos.getDimension();
     }
 
     @Override
@@ -633,9 +642,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         compound.setBoolean("Tackle", this.isTackling());
         compound.setBoolean("HasHomePosition", this.hasHomePosition);
         if (homePos != null && this.hasHomePosition) {
-            compound.setInteger("HomeAreaX", homePos.getX());
-            compound.setInteger("HomeAreaY", homePos.getY());
-            compound.setInteger("HomeAreaZ", homePos.getZ());
+            homePos.write(compound);
         }
         compound.setBoolean("AgingDisabled", this.isAgingDisabled());
         compound.setInteger("Command", this.getCommand());
@@ -676,7 +683,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         }
         this.hasHomePosition = compound.getBoolean("HasHomePosition");
         if (hasHomePosition && compound.getInteger("HomeAreaX") != 0 && compound.getInteger("HomeAreaY") != 0 && compound.getInteger("HomeAreaZ") != 0) {
-            homePos = new BlockPos(compound.getInteger("HomeAreaX"), compound.getInteger("HomeAreaY"), compound.getInteger("HomeAreaZ"));
+            homePos = new HomePosition(compound, this.world);
         }
         this.setTackling(compound.getBoolean("Tackle"));
         this.setAgingDisabled(compound.getBoolean("AgingDisabled"));
@@ -1106,9 +1113,10 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                                 this.hasHomePosition = false;
                                 player.sendStatusMessage(new TextComponentTranslation("dragon.command.remove_home"), true);
                             } else {
-                                this.homePos = new BlockPos(this);
+                                BlockPos pos = this.getPosition();
+                                this.homePos = new HomePosition(pos, this.world);
                                 this.hasHomePosition = true;
-                                player.sendStatusMessage(new TextComponentTranslation("dragon.command.new_home", homePos.getX(), homePos.getY(), homePos.getZ()), true);
+                                player.sendStatusMessage(new TextComponentTranslation("dragon.command.new_home", pos.getX(), pos.getY(), pos.getZ()), true);
                             }
                             return true;
                         } else {

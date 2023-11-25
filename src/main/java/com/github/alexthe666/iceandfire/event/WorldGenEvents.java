@@ -389,6 +389,7 @@ public class WorldGenEvents implements IWorldGenerator {
                     surface = degradeSurface(world, surface);
                     new WorldGenMausoleum(EnumFacing.byHorizontalIndex(random.nextInt(3))).generate(world, random, surface);
                     lastMausoleum = surface;
+                    //boolean leninWouldBeProud = true;
                 }
             }
         }

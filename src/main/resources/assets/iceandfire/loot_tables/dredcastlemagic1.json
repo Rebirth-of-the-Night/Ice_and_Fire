@@ -1,0 +1,251 @@
+{
+  "pools": [
+    {
+      "name": "dredcastlemagic1",
+      "rolls": {
+        "min": 1,
+        "max": 4
+      },
+      "entries": [
+        {
+          "type": "item",
+          "name": "iceandfire:dragon_ice",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 5
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:summoning_crystal_ice",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:frost_stew",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 2
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:gunpowder",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 5
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:rabbit_foot",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 8
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_carrot",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 5
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:speckled_melon",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 5
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:magma_cream",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 5
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:blaze_powder",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 10
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:dragon_breath",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 3
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:fermented_spider_eye",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 8
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:glass_bottle",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 30
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:book",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 5
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:shiny_scales",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 5
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:pixie_dust",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 12
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:ice_dragon_blood",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 10
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:pixie_wings",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 12
+              }
+            }
+          ],
+          "weight": 25
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,7 @@ package com.github.alexthe666.iceandfire.world.gen;
 
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
+import com.github.alexthe666.iceandfire.entity.HomePosition;
 import com.github.alexthe666.iceandfire.event.WorldGenEvents;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;
@@ -117,7 +118,7 @@ public class WorldGenFireDragonRoosts extends WorldGenerator {
             dragon.setHealth(dragon.getMaxHealth());
             dragon.setVariant(new Random().nextInt(4));
             dragon.setPositionAndRotation(position.getX() + 0.5, worldIn.getHeight(position).getY() + 1.5, position.getZ() + 0.5, rand.nextFloat() * 360, 0);
-            dragon.homePos = position;
+            dragon.homePos = new HomePosition(position, worldIn);
             dragon.hasHomePosition = true;
             dragon.setHunger(50);
             worldIn.spawnEntity(dragon);

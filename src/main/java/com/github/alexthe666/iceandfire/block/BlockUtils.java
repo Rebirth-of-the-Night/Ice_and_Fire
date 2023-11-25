@@ -8,7 +8,7 @@ public class BlockUtils {
     public static boolean isDreadBlock(IBlockState state){
         Block block = state.getBlock();
         //TODO what about dreadwood planks and dread stone tiles
-        return block instanceof IDreadBlock || block == IafBlockRegistry.dread_stone || block == IafBlockRegistry.dread_stone_bricks || block == IafBlockRegistry.dread_stone_bricks_chiseled || block == IafBlockRegistry.dread_stone_bricks_cracked || block == IafBlockRegistry.dread_stone_bricks_mossy || block == IafBlockRegistry.dread_stone_bricks_stairs;
+        return block instanceof IDreadBlock|| block == IafBlockRegistry.dread_stone_bricks_stairs;
     }
 
     public static boolean canSnowUpon(IBlockState state){

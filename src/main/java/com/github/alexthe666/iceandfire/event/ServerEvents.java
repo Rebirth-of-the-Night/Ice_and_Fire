@@ -48,6 +48,7 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.INpc;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.item.EntityEnderPearl;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.passive.AbstractHorse;
@@ -61,6 +62,7 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
@@ -68,6 +70,7 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemChorusFruit;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
@@ -79,6 +82,9 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorldEventListener;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -111,6 +117,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class ServerEvents {
 
@@ -228,6 +235,13 @@ public class ServerEvents {
                         event.setCanceled(true);
                     }
                 }
+            }
+        }
+
+        if (!event.getEntity().getEntityWorld().isRemote && event.getEntity() instanceof EntityEnderPearl) {
+            WorldServer w = (WorldServer) event.getEntity().getEntityWorld();
+            if (w.provider.getDimension() == IceAndFire.CONFIG.dreadlandsDimensionId) {
+                event.setCanceled(true);
             }
         }
     }
@@ -531,7 +545,28 @@ public class ServerEvents {
         if (event.getEntityLiving() instanceof EntityPlayer && event.getEntityLiving().rotationPitch > 87 && event.getEntityLiving().getRidingEntity() != null && event.getEntityLiving().getRidingEntity() instanceof EntityDragonBase) {
             ((EntityDragonBase) event.getEntityLiving().getRidingEntity()).processInteract((EntityPlayer) event.getEntityLiving(), event.getHand());
         }
+        if (event.getItemStack().getItem() instanceof ItemChorusFruit && event.getEntity().world.provider.getDimension() == IceAndFire.CONFIG.dreadlandsDimensionId) {
+            event.setCanceled(true);
+        }
     }
+
+    @SubscribeEvent
+    public static void onTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            EntityPlayer player = event.player;
+            if (!player.getEntityWorld().isRemote) {
+                if (player.ticksExisted % 2 == 0) {
+                    if ((player.capabilities.isFlying || player.isElytraFlying()) && !player.isCreative() && !player.isSpectator()) {
+                        player.capabilities.isFlying = false;
+                        player.setFlag(7, false);
+                        player.sendPlayerAbilities();
+                        player.sendStatusMessage(new TextComponentTranslation("tc.break.fly").setStyle(new Style().setColor(TextFormatting.DARK_AQUA)), true);
+                    }
+                }
+            }
+        }
+    }
+
 
     @SubscribeEvent
     public void onLivingHurt(LivingHurtEvent event) {

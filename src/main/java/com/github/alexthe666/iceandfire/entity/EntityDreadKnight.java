@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
 public class EntityDreadKnight extends EntityDreadMob implements IAnimatedEntity, IVillagerFear, IAnimalFear {
 
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dread_knight"));
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(EntityDreadThrall.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(EntityDreadKnight.class, DataSerializers.VARINT);
     public static Animation ANIMATION_SPAWN = Animation.create(40);
     private int animationTick;
     private Animation currentAnimation;

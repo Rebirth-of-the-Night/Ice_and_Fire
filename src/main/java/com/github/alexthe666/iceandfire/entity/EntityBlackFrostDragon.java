@@ -3,7 +3,6 @@ package com.github.alexthe666.iceandfire.entity;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.entity.ai.*;
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.entity.Entity;
@@ -11,7 +10,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,19 +40,35 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         this.dataManager.register(COMMANDER_UNIQUE_ID, Optional.absent());
     }
 
+    @Override
+    public IafDragonLogic createDragonLogic() {
+        return new IafDragonLogicButItIsCarver(this);
+    }
 
     @Override
     public void onLivingUpdate() {
-        super.onLivingUpdate();
         EntityDreadQueen queen = this.getRidingQueen();
-        if(queen != null && queen.getAttackTarget() != null){
-            this.setAttackTarget(queen.getAttackTarget());
+        if (queen != null) {
+            if (queen.getAttackTarget() != null)
+                this.setAttackTarget(queen.getAttackTarget());
+        } else {
+            this.setSleeping(true);
+            this.setHovering(false);
+            this.setFlying(false);
+            this.setSwimming(false);
         }
+        super.onLivingUpdate();
+
     }
+
     @Override
     protected void initEntityAI() {
-        this.tasks.addTask(0, new DreadAIDragonFindQueen(this));
-        this.tasks.addTask(1, this.aiSit = new EntityAISit(this));
+        this.tasks.addTask(0, new DreadAIDragonWaitForQueen(this));
+    }
+
+    public void doRoboty() {
+        this.logic = new IafDragonLogic(this);
+
         this.tasks.addTask(2, new DragonAIEscort(this, 1.35D));
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.5D, false));
         this.tasks.addTask(4, new AquaticAITempt(this, 1.0D, IafItemRegistry.frost_stew, false));
@@ -64,13 +78,8 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(4, new DreadAITargetNonDread(this, EntityLivingBase.class, false, new Predicate<Entity>() {
-            @Override
-            public boolean apply(@Nullable Entity entity) {
-                return entity instanceof EntityLivingBase && DragonUtils.canHostilesTarget(entity);
-            }
-        }));
-        this.targetTasks.addTask(5, new DragonAITargetItems<EntityItem>(this, false));
+        this.targetTasks.addTask(4, new DreadAITargetNonDread(this, EntityLivingBase.class, false, DragonUtils::canHostilesTarget));
+        this.targetTasks.addTask(5, new DragonAITargetItems<>(this, false));
     }
 
     @Nullable
@@ -116,10 +125,10 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
                 if (this.isModelDead()) {
                     passenger.dismountRidingEntity();
                 }
-                if(passenger instanceof EntityDreadQueen){
+                if (passenger instanceof EntityDreadQueen) {
                     passenger.rotationYaw = this.rotationYaw;
-                    ((EntityDreadQueen)passenger).renderYawOffset = rotationYaw;
-                }else{
+                    ((EntityDreadQueen) passenger).renderYawOffset = rotationYaw;
+                } else {
                     renderYawOffset = rotationYaw;
                     this.rotationYaw = passenger.rotationYaw;
                 }
@@ -169,14 +178,15 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         return this.getControllingPassenger() != null || getRidingQueen() != null;
     }
 
-    public EntityDreadQueen getRidingQueen(){
-        for(Entity passenger : this.getPassengers()){
-            if(passenger instanceof EntityDreadQueen){
+    public EntityDreadQueen getRidingQueen() {
+        for (Entity passenger : this.getPassengers()) {
+            if (passenger instanceof EntityDreadQueen) {
                 return (EntityDreadQueen) passenger;
             }
         }
         return null;
     }
+
     @Nullable
     public UUID getCommanderId() {
         return (UUID) ((Optional<?>) this.dataManager.get(COMMANDER_UNIQUE_ID)).orNull();
@@ -220,13 +230,13 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         return null;
     }
 
-	protected Item getHeartItem() {
-		return null;
-	}
+    protected Item getHeartItem() {
+        return null;
+    }
 
-	protected Item getBloodItem() {
-		return null;
-	}
+    protected Item getBloodItem() {
+        return null;
+    }
 
     public boolean isBreedingItem(@Nullable ItemStack stack) {
         return false;
@@ -280,7 +290,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         return false;
     }
 
-    protected float getFlightChancePerTick(){
-        return 1/15F;
+    protected float getFlightChancePerTick() {
+        return 1 / 15F;
     }
 }

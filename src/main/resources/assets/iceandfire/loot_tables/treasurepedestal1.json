@@ -1,0 +1,321 @@
+{
+  "pools": [
+    {
+      "name": "treasurepedestal1",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:skull",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            },
+            {
+              "function": "set_data",
+              "data": {
+                "min": 0,
+                "max": 5
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:elytra",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:siren_flute",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonbone_sword_fire",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonbone_sword_ice",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonbone_sword_lightning",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:fire_dragon_heart",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:ice_dragon_heart",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:lightning_dragon_heart",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:bestiary",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:hippogryph_talon",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:pixie_wand",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:cyclops_eye",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:cockatrice_eye",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:gorgon_head",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:hippocampus_slapper",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:hydra_heart",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonsteel_fire_helmet",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonsteel_fire_chestplate",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonsteel_fire_leggings",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonsteel_fire_boots",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonegg_electric",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonegg_red",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonegg_white",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragon_stick",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragon_horn",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonarmor_diamond",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": 1
+            },
+            {
+              "function": "set_data",
+              "data": {
+                "min": 0,
+                "max": 3
+              }
+            }
+          ],
+          "weight": 25
+        }
+      ]
+    }
+  ]
+}

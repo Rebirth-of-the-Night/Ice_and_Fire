@@ -26,7 +26,7 @@ public class DreadAIMountDragon extends EntityAIBase {
                 return false;
             } else {
                 for (EntityBlackFrostDragon entityirongolem : list) {
-                   if(!entityirongolem.isBeingRidden()){
+                   if(!entityirongolem.isBeingRidden() && entityirongolem.getHealth() > 0){
                        this.horse = entityirongolem;
                        break;
                    }

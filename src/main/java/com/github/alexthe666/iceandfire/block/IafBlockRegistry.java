@@ -1,13 +1,16 @@
 package com.github.alexthe666.iceandfire.block;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
+import com.github.alexthe666.iceandfire.block.carver.BlockGenericKeyhole;
 import com.github.alexthe666.iceandfire.entity.tile.*;
 import com.github.alexthe666.iceandfire.enums.EnumDragonEgg;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -157,9 +160,13 @@ public class IafBlockRegistry {
     public static Block dread_stone_face = new BlockDreadStoneFace();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_torch")
     public static Block dread_torch = new BlockDreadTorch();
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":tripwire")
+    public static Block tripwire = new BlockTripWire();
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":tripwire_dragon")
+    public static Block tripwire_dragon = new BlockTripWireDragon();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_stone_stairs")
     public static Block dread_stone_bricks_stairs = new BlockGenericStairs(dread_stone_bricks.getDefaultState(), "dread_stone_stairs").setHardness(20F);
-     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_stone_double_slab")
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_stone_double_slab")
     public static BlockGenericSlab dread_stone_bricks_double_slab = new BlockDreadStoneBrickSlab.Double("dread_stone_slab", 10.0F, 10000F, SoundType.STONE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_stone_slab")
     public static BlockGenericSlab dread_stone_bricks_slab = new BlockDreadStoneBrickSlab.Half("dread_stone_slab", 10.0F, 10000F, SoundType.STONE);
@@ -173,6 +180,13 @@ public class IafBlockRegistry {
     public static Block dread_portal = new BlockDreadPortal();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_spawner")
     public static Block dread_spawner = new BlockDreadSpawner();
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_single_spawner_lich")
+    public static Block dread_single_spawner_lich = new BlockDreadSingleMobSpawner("dread_single_spawner_lich");
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_single_spawner_queen")
+    public static Block dread_single_spawner_queen = new BlockDreadSingleMobSpawner("dread_single_spawner_queen");
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_single_spawner_dragon")
+    public static Block dread_single_spawner_dragon = new BlockDreadSingleMobSpawner("dread_single_spawner_dragon");
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":burnt_torch")
     public static Block burnt_torch = new BlockBurntTorch();
 
@@ -188,7 +202,7 @@ public class IafBlockRegistry {
     public static Block crackledGravel = new BlockFallingReturningState(Material.GROUND, "crackled_gravel", "iceandfire.crackledGravel", "shovel", 0, 0.6F, 0F, SoundType.GROUND);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":crackled_grass_path")
     public static Block crackledGrassPath = new BlockCharedPath(2);
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_lightning_brick")
     public static Block dragonforge_lightning_brick = new BlockDragonforgeBricks(2);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_lightning_input")
@@ -197,12 +211,12 @@ public class IafBlockRegistry {
     public static Block dragonforge_lightning_core = new BlockDragonforgeCore(2, true);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonforge_lightning_core")
     public static Block dragonforge_lightning_core_disabled = new BlockDragonforgeCore(2, false);
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copperpile")
-    public static Block copperPile = new BlockCopperPile();   
+    public static Block copperPile = new BlockCopperPile();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":lightning_lily")
     public static Block lightning_lily = new BlockElementalFlower("lightning_lily");
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_electric")
     public static Block dragonscale_electric = new BlockDragonScales("dragonscale_electric", EnumDragonEgg.ELECTRIC);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_amythest")
@@ -211,18 +225,63 @@ public class IafBlockRegistry {
     public static Block dragonscale_copper = new BlockDragonScales("dragonscale_copper", EnumDragonEgg.COPPER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_black")
     public static Block dragonscale_black = new BlockDragonScales("dragonscale_black", EnumDragonEgg.BLACK);
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copper_ore")
     public static Block copperOre = new BlockDragonOre(2, 3.0F, 5.0F, "iceandfire.copperOre", "copper_ore");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amythest_ore")
     public static Block amythestOre = new BlockDragonOre(2, 3.0F, 5.0F, "iceandfire.amythestOre", "amythest_ore");
-    
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copper_block")
     public static Block copperBlock = new BlockGeneric(Material.IRON, "copper_block", "iceandfire.copperBlock", "pickaxe", 0, 4.0F, 10.0F, SoundType.METAL);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amythest_block")
     public static Block amythestBlock = new BlockGeneric(Material.IRON, "amythest_block", "iceandfire.amythestBlock", "pickaxe", 2, 5.0F, 15.0F, SoundType.METAL);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_block")
     public static Block dragonsteel_lightning_block = new BlockGeneric(Material.IRON, "dragonsteel_lightning_block", "iceandfire.dragonsteel_lightning_block", "pickaxe", 3, 10.0F, 1000.0F, SoundType.METAL);
+
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":tower_keyhole")
+    public static Block tower_keyhole = new BlockGenericKeyhole("tower_keyhole") {
+        @Override
+        public boolean isValidKey(ItemStack stack) {
+            return stack.getItem() == IafItemRegistry.tower_key;
+        }
+    };
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":tower_access_keyhole")
+    public static Block tower_access_keyhole = new BlockGenericKeyhole("tower_access_keyhole") {
+        @Override
+        public boolean isValidKey(ItemStack stack) {
+            return stack.getItem() == IafItemRegistry.tower_access_key;
+        }
+    };
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":queen_keyhole")
+    public static Block queen_keyhole = new BlockGenericKeyhole("queen_keyhole") {
+        @Override
+        public boolean isValidKey(ItemStack stack) {
+            return stack.getItem() == IafItemRegistry.queen_key;
+        }
+    };
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":library_keyhole")
+    public static Block library_keyhole = new BlockGenericKeyhole("library_keyhole") {
+        @Override
+        public boolean isValidKey(ItemStack stack) {
+            return stack.getItem() == IafItemRegistry.library_key;
+        }
+    };
+
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":special_keyhole")
+    public static Block special_keyhole = new BlockGenericKeyhole("special_keyhole") {
+        @Override
+        public boolean isValidKey(ItemStack stack) {
+            return stack.getItem() == IafItemRegistry.special_key;
+        }
+    };
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":treasury_keyhole")
+    public static Block treasury_keyhole = new BlockGenericKeyhole("treasury_keyhole") {
+        @Override
+        public boolean isValidKey(ItemStack stack) {
+            return stack.getItem() == IafItemRegistry.treasury_key;
+        }
+    };
+
     static {
         GameRegistry.registerTileEntity(TileEntityDummyGorgonHead.class, new ResourceLocation(IceAndFire.MODID, "dummyGorgonHeadIdle"));
         GameRegistry.registerTileEntity(TileEntityDummyGorgonHeadActive.class, new ResourceLocation(IceAndFire.MODID, "dummyGorgonHeadActive"));

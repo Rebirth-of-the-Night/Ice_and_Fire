@@ -23,6 +23,7 @@ import com.github.alexthe666.iceandfire.client.render.entity.*;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonArmor;
 import com.github.alexthe666.iceandfire.client.render.tile.*;
 import com.github.alexthe666.iceandfire.client.render.entity.RenderHydra;
+import com.github.alexthe666.iceandfire.command.CommandTreeBaseButOurs;
 import com.github.alexthe666.iceandfire.compat.TinkersCompatBridge;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.event.ClientEvents;
@@ -47,6 +48,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -270,6 +272,7 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.setCustomStateMapper(IafBlockRegistry.dread_stone_face, (new StateMap.Builder()).ignore(BlockDreadStoneFace.PLAYER_PLACED).build());
         ModelLoader.setCustomStateMapper(IafBlockRegistry.dreadwood_planks, (new StateMap.Builder()).ignore(BlockDreadBase.PLAYER_PLACED).build());
         ModelLoader.setCustomStateMapper(IafBlockRegistry.dreadwood_planks_lock, (new StateMap.Builder()).ignore(BlockDreadWoodLock.PLAYER_PLACED).build());
+        ModelLoader.setCustomStateMapper(IafBlockRegistry.dread_single_spawner_lich, (new StateMap.Builder()).ignore(BlockDreadBase.PLAYER_PLACED).build());
         try {
             for (Field f : IafBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
@@ -356,6 +359,7 @@ public class ClientProxy extends CommonProxy {
         IafItemRegistry.deathworm_gauntlet_red.setTileEntityItemStackRenderer(TEISR);
         Item.getItemFromBlock(IafBlockRegistry.dread_portal).setTileEntityItemStackRenderer(TEISR);
 
+        ClientCommandHandler.instance.registerCommand(new CommandTreeBaseButOurs());
     }
 
     @SideOnly(Side.CLIENT)
@@ -428,7 +432,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityBlackFrostDragon.class, new RenderBlackFrostDragon(Minecraft.getMinecraft().getRenderManager(), ICE_DRAGON_MODEL));
         RenderingRegistry.registerEntityRenderingHandler(EntityDreadQueen.class, new RenderDreadQueen(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityDragonLightningBolt.class, new RenderDragonLightningBolt(Minecraft.getMinecraft().getRenderManager()));
-        
+        //TODO: Royal knight textures
+        RenderingRegistry.registerEntityRenderingHandler(EntityDreadKnightRoyal.class, new RenderDreadKnightRoyal(Minecraft.getMinecraft().getRenderManager()));
+
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPodium.class, new RenderPodium());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLectern.class, new RenderLectern());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEggInIce.class, new RenderEggInIce());

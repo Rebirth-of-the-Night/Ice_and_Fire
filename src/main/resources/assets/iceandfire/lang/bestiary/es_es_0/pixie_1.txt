@@ -1,4 +1,4 @@
-﻿Simplemente interactúa con una hada
+Simplemente interactúa con una hada
 sosteniendo un frasco para capturarla.
 
 Consumir polvo de hada resulta

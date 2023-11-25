@@ -1,0 +1,17 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "textures": {
+      "side": "iceandfire:blocks/tower_keyhole"
+    },
+    "model": "iceandfire:dreadwood_planks_lock",
+    "uvlock": true
+  },
+  "variants": {
+    "normal": [{}],
+    "player_placed": {
+      "true":  {},
+      "false": {}
+    }
+  }
+}

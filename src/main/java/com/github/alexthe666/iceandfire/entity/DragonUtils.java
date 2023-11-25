@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.block.BlockUtils;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -19,12 +20,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.*;
 import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class DragonUtils {
-	public static BlockPos getBlockInViewEscort(EntityDragonBase dragon) {
+    public static BlockPos getBlockInViewEscort(EntityDragonBase dragon) {
         BlockPos escortPos = dragon.getEscortPosition();
         BlockPos ground = dragon.world.getHeight(escortPos);
         int distFromGround = escortPos.getY() - ground.getY();
@@ -48,7 +50,8 @@ public class DragonUtils {
             BlockPos ground = dragon.world.getHeight(dragonPos);
             int distFromGround = (int) dragon.posY - ground.getY();
             for (int i = 0; i < 10; i++) {
-                BlockPos pos = new BlockPos(dragon.homePos.getX() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance, (distFromGround > 16 ? (int) Math.min(IceAndFire.CONFIG.maxDragonFlight, dragon.posY + dragon.getRNG().nextInt(16) - 8) : (int) dragon.posY + dragon.getRNG().nextInt(16) + 1), (dragon.homePos.getZ() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance));
+                BlockPos homePos = dragon.homePos.getPosition();
+                BlockPos pos = new BlockPos(homePos.getX() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance, (distFromGround > 16 ? (int) Math.min(IceAndFire.CONFIG.maxDragonFlight, dragon.posY + dragon.getRNG().nextInt(16) - 8) : (int) dragon.posY + dragon.getRNG().nextInt(16) + 1), (homePos.getZ() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance));
                 if (!dragon.isTargetBlocked(new Vec3d(pos)) && dragon.getDistanceSqToCenter(pos) > 6) {
                     return pos;
                 }
@@ -258,6 +261,14 @@ public class DragonUtils {
                 || className.contains("Hog") || className.contains("Hog");
     }
 
+    public static int getDimensionID(World world) {
+        return world.provider.getDimension();
+    }
+
+    public static boolean isInHomeDimension(EntityDragonBase dragonBase) {
+        return (dragonBase.getHomeDimensionID() == null || getDimensionID(dragonBase.world) == (dragonBase.getHomeDimensionID()));
+    }
+
     public static boolean canDragonBreak(Block block) {
         return block != Blocks.BARRIER &&
                 block != Blocks.OBSIDIAN &&
@@ -358,13 +369,8 @@ public class DragonUtils {
         return true;
     }
 
-    public static boolean isDreadBlock(IBlockState state){
-        Block block = state.getBlock();
-        return block == IafBlockRegistry.dread_stone || block == IafBlockRegistry.dread_stone_bricks || block == IafBlockRegistry.dread_stone_bricks_chiseled ||
-                block == IafBlockRegistry.dread_stone_bricks_cracked || block == IafBlockRegistry.dread_stone_bricks_mossy || block == IafBlockRegistry.dread_stone_tile ||
-                block == IafBlockRegistry.dread_stone_face || block == IafBlockRegistry.dread_torch || block == IafBlockRegistry.dread_stone_bricks_stairs ||
-                block == IafBlockRegistry.dread_stone_bricks_double_slab || block == IafBlockRegistry.dread_stone_bricks_slab || block == IafBlockRegistry.dreadwood_log ||
-                block == IafBlockRegistry.dreadwood_planks || block == IafBlockRegistry.dreadwood_planks_lock || block == IafBlockRegistry.dread_portal ||
-                block == IafBlockRegistry.dread_spawner;
+    // TODO: 15.06.2022 organize
+    public static boolean isDreadBlock(IBlockState state) {
+        return BlockUtils.isDreadBlock(state);
     }
 }

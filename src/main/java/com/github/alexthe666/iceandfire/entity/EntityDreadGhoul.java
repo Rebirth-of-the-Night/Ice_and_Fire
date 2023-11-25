@@ -192,6 +192,7 @@ public class EntityDreadGhoul extends EntityDreadMob implements IAnimatedEntity,
         IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
         this.setAnimation(ANIMATION_SPAWN);
         this.setVariant(rand.nextInt(3));
+        this.setScale(0.85F + rand.nextFloat() * 0.5F);
         return data;
     }
 

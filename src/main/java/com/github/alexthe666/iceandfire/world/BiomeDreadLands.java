@@ -3,17 +3,21 @@ package com.github.alexthe666.iceandfire.world;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockReturningState;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
+import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenDreadRuin;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenDreadSpike;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenDreadwoodTree;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class BiomeDreadLands extends Biome {
@@ -35,6 +39,14 @@ public class BiomeDreadLands extends Biome {
         this.spawnableCreatureList.clear();
         this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
+
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityDreadThrall.class,100,1,1));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityDreadGhoul.class,70,1,1));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityDreadBeast.class,60,1,1));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityDreadScuttler.class,70,1,1));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityDreadKnight.class,70,1,1));
+        this.spawnableMonsterList.add(new SpawnListEntry(EntityDreadLich.class,10,1,1));
+
         this.decorator.treesPerChunk = 1;
     }
 
@@ -134,4 +146,8 @@ public class BiomeDreadLands extends Biome {
         }
     }
 
+    @Override
+    public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
+        return super.getSpawnableList(creatureType);
+    }
 }

@@ -255,11 +255,12 @@ public class TileEntityDragonforge extends TileEntity implements ITickable, ISid
             itemstack = forgeRecipe.getOutput();
         }
         if (itemstack == ItemStack.EMPTY) {
-		    Block defaultOutput = IafBlockRegistry.ash;
             if (this.dragonType == 1) {
-                defaultOutput = IafBlockRegistry.dragon_ice;
+                itemstack = new ItemStack(IafBlockRegistry.dragon_ice);
             }
-            itemstack = new ItemStack(defaultOutput);
+            else {
+                itemstack = new ItemStack(IafBlockRegistry.ash);
+            }
         }
         return itemstack;
     }

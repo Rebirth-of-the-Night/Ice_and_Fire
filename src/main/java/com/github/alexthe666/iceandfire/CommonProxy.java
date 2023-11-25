@@ -157,6 +157,7 @@ public class CommonProxy {
         registerSpawnable(EntityEntryBuilder.<EntityBlackFrostDragon>create(), event, EntityBlackFrostDragon.class, "blackfrost", 57, 0XE0E6E6, 0X38373C);
         registerSpawnable(EntityEntryBuilder.<EntityDreadQueen>create(), event, EntityDreadQueen.class, "dread_queen", 58, 0XE0E6E6, 0X4A6C6E);
         registerUnspawnable(EntityEntryBuilder.<EntityDragonLightningBolt>create(), event, EntityDragonLightningBolt.class, "dragon_lightning_bolt", 59);
+        registerSpawnable(EntityEntryBuilder.<EntityDreadKnightRoyal>create(), event, EntityDreadKnightRoyal.class, "dread_knight_royal", 60, 0XE0E6E6, 0X4A6C6E);
     }
 
     public static <T extends Entity> void registerSpawnable(EntityEntryBuilder<T> builder, RegistryEvent.Register<EntityEntry> event, Class<T> entityClass, String name, int id, int mainColor, int subColor) {
@@ -277,8 +278,10 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerBiomes(RegistryEvent.Register<Biome> event) {
         event.getRegistry().register(IafWorldRegistry.GLACIER_BIOME);
+        event.getRegistry().register(IafWorldRegistry.DREADLANDS_BIOME);
         BiomeDictionary.addTypes(IafWorldRegistry.GLACIER_BIOME, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.WASTELAND);
-        //BiomeDictionary.addTypes(ModWorld.DREADLANDS_BIOME, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD, BiomeDictionary.Type.SPOOKY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.WASTELAND);
+        BiomeDictionary.addTypes(IafWorldRegistry.DREADLANDS_BIOME, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD, BiomeDictionary.Type.SPOOKY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.WASTELAND);
+
         if (IceAndFire.CONFIG.spawnGlaciers) {
             BiomeManager.addSpawnBiome(IafWorldRegistry.GLACIER_BIOME);
             BiomeManager.addBiome(BiomeManager.BiomeType.COOL, new BiomeManager.BiomeEntry(IafWorldRegistry.GLACIER_BIOME, IceAndFire.CONFIG.glacierSpawnChance));
