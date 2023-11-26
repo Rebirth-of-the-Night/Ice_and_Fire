@@ -23,6 +23,7 @@ import com.github.alexthe666.iceandfire.message.MessagePlayerHitMultipart;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.util.IsImmune;
 import com.github.alexthe666.iceandfire.util.ItemUtil;
+import com.github.alexthe666.iceandfire.world.gen.WorldGenCastle;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenFireDragonCave;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenIceDragonCave;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenLightningDragonCave;
@@ -115,6 +116,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.GetCollisionBoxesEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -555,7 +557,7 @@ public class ServerEvents {
         if (event.phase == TickEvent.Phase.END) {
             EntityPlayer player = event.player;
             if (!player.getEntityWorld().isRemote) {
-                if (player.ticksExisted % 2 == 0) {
+                if (player.ticksExisted % 2 == 0 && player.world.provider.getDimension() == IceAndFire.CONFIG.dreadlandsDimensionId) {
                     if ((player.capabilities.isFlying || player.isElytraFlying()) && !player.isCreative() && !player.isSpectator()) {
                         player.capabilities.isFlying = false;
                         player.setFlag(7, false);

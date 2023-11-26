@@ -27,7 +27,7 @@ public class TileEntityDreadSingleUseSpawnerDragon extends TileEntity implements
 			if (queen != null) {
 				EntityBlackFrostDragon blackFrost = new EntityBlackFrostDragon(world);
 				blackFrost.setHealth(500);
-				blackFrost.setOwnerId(new EntityDreadQueen(world).getUniqueID());
+				blackFrost.setOwnerId(queen.getUniqueID());
 				blackFrost.setPosition(pos.getX(), pos.getY(), pos.getZ());
 				blackFrost.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 				world.spawnEntity(blackFrost);

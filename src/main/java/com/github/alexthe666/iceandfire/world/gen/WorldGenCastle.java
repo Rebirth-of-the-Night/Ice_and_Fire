@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.world.gen;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityPodium;
 import com.github.alexthe666.iceandfire.world.gen.processor.DreadCastleProcessor;
 import net.minecraft.block.BlockLeaves;
@@ -75,6 +76,10 @@ public class WorldGenCastle extends WorldGenerator {
                     ResourceLocation res = new ResourceLocation(IceAndFire.MODID+":castle/castle" + "_" + i + "_" + j + "_" + k);
                     BlockPos pos = origin.add(x, y, z);
                     Template template = RES_LOC_TEMPLATE_MANAGER.getTemplate(null, res);
+
+                    for(int t = 0; t < totalW; t++)
+                        for(int u = 0; u < totalW; u++)
+                            worldIn.setBlockState(origin.add(t, -1, u), IafBlockRegistry.dread_stone.getDefaultState(), 2);
 
                     template.addBlocksToWorld(worldIn, pos, new DreadCastleProcessor(), new PlacementSettings(), 2);
                 }
