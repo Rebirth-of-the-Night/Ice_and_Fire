@@ -100,6 +100,7 @@ tile.iceandfire.treasury_keyhole.name=Treasury Keyhole
 tile.iceandfire.dread_single_spawner_lich.name=Single Lich Spawner
 tile.iceandfire.dread_single_spawner_queen.name=Dread Queen Spawner
 tile.iceandfire.dread_single_spawner_dragon.name=Black Frost Spawner
+tile.iceandfire.dread_single_spawner_ballista.name=Castle Ballista Spawner
 tile.iceandfire.tripwire.name=Castle Tripwire
 tile.iceandfire.tripwire_dragon.name=Castle Tripwire Dragon
 
@@ -456,6 +457,7 @@ entity.dread_lich.name=Dread Lich
 entity.dread_lich_skull.name=Dread Lich Skull
 entity.dread_knight.name=Dread Knight
 entity.dread_knight_royal.name=Dread Knight Royal
+entity.ballista.name=Castle Ballista
 entity.dread_horse.name=Dread Knight Horse
 entity.black_frost_dragon.name=Black Frost
 entity.dread_queen.name=Dread Queen

@@ -1,10 +1,5 @@
 package com.github.alexthe666.iceandfire.world.village;
 
-import static com.github.alexthe666.iceandfire.block.IafBlockRegistry.venerableStump;
-
-import java.util.List;
-import java.util.Random;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockPixieHouse;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
@@ -13,13 +8,7 @@ import com.github.alexthe666.iceandfire.entity.tile.TileEntityPixieHouse;
 import com.github.alexthe666.iceandfire.item.block.ItemBlockVenerableStump;
 import com.github.alexthe666.iceandfire.message.MessageUpdatePixieHouseModel;
 import com.google.common.collect.Lists;
-
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockNewLog;
-import net.minecraft.block.BlockOldLog;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockSandStone;
-import net.minecraft.block.BlockStairs;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
@@ -34,6 +23,11 @@ import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+
+import java.util.List;
+import java.util.Random;
+
+import static com.github.alexthe666.iceandfire.block.IafBlockRegistry.venerableStump;
 
 public class PixieVillagePieces {
 

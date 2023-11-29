@@ -1,7 +1,6 @@
 package com.github.alexthe666.iceandfire.compat;
 
 import com.github.alexthe666.iceandfire.compat.thaumcraft.ThaumcraftCompat;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 

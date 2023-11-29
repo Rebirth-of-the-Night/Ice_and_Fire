@@ -1,11 +1,10 @@
 package com.github.alexthe666.iceandfire.client.model.util;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
+import net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler;
+
 import java.io.IOException;
 import java.util.HashMap;
-
-import com.github.alexthe666.iceandfire.IceAndFire;
-
-import net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler;
 
 /**
  * A library containing all animations for all dragons. Contains methods for registering and retrieving models.

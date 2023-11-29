@@ -2,10 +2,10 @@ package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.client.IafKeybindRegistry;
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.entity.ai.*;
 import com.github.alexthe666.iceandfire.message.MessageDragonControl;
 import com.github.alexthe666.iceandfire.message.MessageHippogryphArmor;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.pathfinding.PathNavigateAmphibious;
 import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
 import net.ilexiconn.llibrary.client.model.tools.ChainBuffer;

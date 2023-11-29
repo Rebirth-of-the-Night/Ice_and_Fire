@@ -2,10 +2,8 @@ package com.github.alexthe666.iceandfire.client.render.tile;
 
 import com.github.alexthe666.iceandfire.client.model.ModelDragonEgg;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityEggInIce;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import org.lwjgl.opengl.GL11;
 
 public class RenderEggInIce extends TileEntitySpecialRenderer<TileEntityEggInIce> {
 

@@ -1,13 +1,8 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
 import com.google.common.base.Optional;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -27,6 +22,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
+
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class EntityDreadMob extends EntityMob implements IDreadMob {
 

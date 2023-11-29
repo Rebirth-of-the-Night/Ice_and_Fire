@@ -3,12 +3,12 @@ package com.github.alexthe666.iceandfire.block;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntityDreadQueen;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDreadSingleUseSpawner;
+import com.github.alexthe666.iceandfire.entity.tile.TileEntityDreadSingleUseSpawnerBallista;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDreadSingleUseSpawnerDragon;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
@@ -32,6 +32,7 @@ public class BlockDreadSingleMobSpawner extends Block implements IDreadBlock {
 		this.setRegistryName(IceAndFire.MODID, name);
 		GameRegistry.registerTileEntity(TileEntityDreadSingleUseSpawner.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single"));
 		GameRegistry.registerTileEntity(TileEntityDreadSingleUseSpawnerDragon.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single_dragon"));
+		GameRegistry.registerTileEntity(TileEntityDreadSingleUseSpawnerBallista.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single_ballista"));
 	}
 
 	@Override
@@ -93,6 +94,8 @@ public class BlockDreadSingleMobSpawner extends Block implements IDreadBlock {
 			return new TileEntityDreadSingleUseSpawner();
 		if(state.getBlock() == IafBlockRegistry.dread_single_spawner_dragon)
 			return new TileEntityDreadSingleUseSpawnerDragon();
+		if(state.getBlock() == IafBlockRegistry.dread_single_spawner_ballista)
+			return new TileEntityDreadSingleUseSpawnerBallista();
 		return null;
 	}
 

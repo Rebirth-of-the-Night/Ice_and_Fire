@@ -186,6 +186,8 @@ public class IafBlockRegistry {
     public static Block dread_single_spawner_queen = new BlockDreadSingleMobSpawner("dread_single_spawner_queen");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_single_spawner_dragon")
     public static Block dread_single_spawner_dragon = new BlockDreadSingleMobSpawner("dread_single_spawner_dragon");
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_single_spawner_ballista")
+    public static Block dread_single_spawner_ballista = new BlockDreadSingleMobSpawner("dread_single_spawner_ballista");
 
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":burnt_torch")
     public static Block burnt_torch = new BlockBurntTorch();

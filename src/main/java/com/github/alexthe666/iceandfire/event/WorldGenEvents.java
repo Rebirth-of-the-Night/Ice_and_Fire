@@ -1,27 +1,13 @@
 package com.github.alexthe666.iceandfire.event;
 
-import static com.github.alexthe666.iceandfire.IceAndFire.CONFIG;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
-import com.github.alexthe666.iceandfire.entity.EntityCyclops;
-import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
-import com.github.alexthe666.iceandfire.entity.EntityHippocampus;
-import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
-import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
-import com.github.alexthe666.iceandfire.entity.EntitySeaSerpent;
-import com.github.alexthe666.iceandfire.entity.EntityStymphalianBird;
+import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
 import com.github.alexthe666.iceandfire.world.gen.*;
 import com.github.alexthe666.iceandfire.world.village.MapGenPixieVillage;
 import com.github.alexthe666.iceandfire.world.village.MapGenSnowVillage;
-
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
@@ -40,6 +26,13 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.common.IWorldGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+
+import static com.github.alexthe666.iceandfire.IceAndFire.CONFIG;
 
 public class WorldGenEvents implements IWorldGenerator {
 

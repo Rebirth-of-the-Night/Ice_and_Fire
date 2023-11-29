@@ -1,10 +1,7 @@
 package com.github.alexthe666.iceandfire.event;
 
-import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.world.dimension.WorldProviderDreadLands;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenCastle;
-import com.github.alexthe666.iceandfire.world.gen.WorldGenMausoleum;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;

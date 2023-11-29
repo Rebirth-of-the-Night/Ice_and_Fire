@@ -1,11 +1,8 @@
 package com.github.alexthe666.iceandfire.util;
 
-import java.util.List;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.FrozenEntityProperties;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
-
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,6 +15,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.List;
 
 public class ItemUtil {
     public static boolean getIsRepairable(Item.ToolMaterial toolMaterial,ItemStack toRepair, ItemStack repair, boolean toReturn) {

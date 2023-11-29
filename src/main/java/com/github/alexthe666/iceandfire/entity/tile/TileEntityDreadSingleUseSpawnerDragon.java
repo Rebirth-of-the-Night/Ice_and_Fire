@@ -1,13 +1,10 @@
 package com.github.alexthe666.iceandfire.entity.tile;
 
 import com.github.alexthe666.iceandfire.entity.EntityBlackFrostDragon;
-import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityDreadQueen;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
-
-import java.util.List;
 
 public class TileEntityDreadSingleUseSpawnerDragon extends TileEntity implements ITickable {
 

@@ -3,7 +3,6 @@ package com.github.alexthe666.iceandfire.entity.ai;
 import com.github.alexthe666.iceandfire.entity.DragonUtils;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.util.IAFMath;
-
 import net.minecraft.entity.ai.EntityAIBase;
 
 public class DragonAIReturnToRoost extends EntityAIBase {

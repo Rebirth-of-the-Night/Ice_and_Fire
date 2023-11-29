@@ -19,6 +19,7 @@ import com.github.alexthe666.iceandfire.client.particle.*;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsAurora;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsSky;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsWeather;
+import com.github.alexthe666.iceandfire.client.render.RenderTurretCrossbowAdvanced;
 import com.github.alexthe666.iceandfire.client.render.entity.*;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonArmor;
 import com.github.alexthe666.iceandfire.client.render.tile.*;
@@ -53,6 +54,7 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -323,6 +325,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preRender() {
         TinkersCompatBridge.loadTinkersClientCompat();
+        OBJLoader.INSTANCE.addDomain("iceandfire".toLowerCase());
     }
 
     @SideOnly(Side.CLIENT)
@@ -432,8 +435,10 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityBlackFrostDragon.class, new RenderBlackFrostDragon(Minecraft.getMinecraft().getRenderManager(), ICE_DRAGON_MODEL));
         RenderingRegistry.registerEntityRenderingHandler(EntityDreadQueen.class, new RenderDreadQueen(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityDragonLightningBolt.class, new RenderDragonLightningBolt(Minecraft.getMinecraft().getRenderManager()));
-        //TODO: Royal knight textures
         RenderingRegistry.registerEntityRenderingHandler(EntityDreadKnightRoyal.class, new RenderDreadKnightRoyal(Minecraft.getMinecraft().getRenderManager()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityCastleBallista.class, new RenderTurretCrossbowAdvanced(Minecraft.getMinecraft().getRenderManager()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityBallistaArrow.class, new RenderIceCharge());
+
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPodium.class, new RenderPodium());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLectern.class, new RenderLectern());

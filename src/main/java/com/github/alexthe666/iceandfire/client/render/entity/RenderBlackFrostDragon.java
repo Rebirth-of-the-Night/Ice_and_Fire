@@ -1,6 +1,8 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
-import com.github.alexthe666.iceandfire.client.render.entity.layer.*;
+import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonBanner;
+import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonRider;
+import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerGenericGlowing;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.culling.ICamera;

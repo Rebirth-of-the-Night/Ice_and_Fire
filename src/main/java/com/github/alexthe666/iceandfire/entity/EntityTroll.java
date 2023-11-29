@@ -2,9 +2,9 @@ package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.api.event.GenericGriefEvent;
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.entity.ai.TrollAIFleeSun;
 import com.github.alexthe666.iceandfire.enums.EnumTroll;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;

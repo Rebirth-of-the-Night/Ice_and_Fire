@@ -1,17 +1,16 @@
 package com.github.alexthe666.iceandfire.client.model.animator;
 
-import java.util.List;
-
 import com.github.alexthe666.iceandfire.client.model.util.EnumDragonPoses;
 import com.github.alexthe666.iceandfire.client.model.util.IIceAndFireTabulaModelAnimator;
 import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
 import com.github.alexthe666.iceandfire.client.model.util.LegArticulator;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
-
 import net.ilexiconn.llibrary.LLibrary;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.MathHelper;
+
+import java.util.List;
 
 /*
  * Code directly taken and edited from 1.16 IaF, I own no rights over it.

@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
-import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.event.ServerEvents;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;

@@ -3,14 +3,12 @@ package com.github.alexthe666.iceandfire.world.gen.processor;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityPodium;
-import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -134,6 +132,9 @@ public class DreadCastleProcessor implements ITemplateProcessor {
             }
             if (blockInfoIn.blockState.getBlock() == Blocks.END_ROD) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.dread_single_spawner_dragon.getDefaultState(), null);
+            }
+            if (blockInfoIn.blockState.getBlock() == Blocks.PURPUR_BLOCK) {
+                return new Template.BlockInfo(pos, IafBlockRegistry.dread_single_spawner_ballista.getDefaultState(), null);
             }
             if (blockInfoIn.blockState.getBlock() == Blocks.NETHERRACK) {
                 if(worldIn.rand.nextInt(2) < 1)

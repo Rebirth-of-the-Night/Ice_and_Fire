@@ -1,5 +1,9 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
+import com.github.alexthe666.iceandfire.client.particle.LightningBoltData;
+import com.github.alexthe666.iceandfire.client.particle.LightningRender;
+import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
+import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -9,11 +13,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import com.github.alexthe666.iceandfire.client.particle.LightningBoltData;
-import com.github.alexthe666.iceandfire.client.particle.LightningRender;
-import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
-import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
 
 /*
  * Lightning bolt effect code is dragged from the 1.16 source code of IaF.

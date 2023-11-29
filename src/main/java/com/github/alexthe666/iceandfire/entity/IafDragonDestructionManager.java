@@ -2,14 +2,9 @@ package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.api.event.DragonFireDamageWorldEvent;
-import com.github.alexthe666.iceandfire.block.BlockCharedPath;
-import com.github.alexthe666.iceandfire.block.BlockFallingReturningState;
-import com.github.alexthe666.iceandfire.block.BlockReturningState;
-import com.github.alexthe666.iceandfire.block.IDragonProof;
-import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
+import com.github.alexthe666.iceandfire.block.*;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforgeInput;
 import com.github.alexthe666.iceandfire.util.IsImmune;
-
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;

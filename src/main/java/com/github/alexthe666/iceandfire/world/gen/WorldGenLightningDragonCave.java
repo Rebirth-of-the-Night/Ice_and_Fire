@@ -4,7 +4,6 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockCopperPile;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
-
 import com.github.alexthe666.iceandfire.entity.HomePosition;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;

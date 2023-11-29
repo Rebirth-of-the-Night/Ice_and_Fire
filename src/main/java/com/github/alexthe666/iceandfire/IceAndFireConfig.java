@@ -174,6 +174,7 @@ public class IceAndFireConfig {
     public boolean explosiveDragonBreath = false;
     public float weezerTinkersDisarmChance = 0.2F;
     public boolean chunkLoadSummonCrystal = true;
+    public int ballistaBaseDamage = 10;
     public String villagerTradingItem = "iceandfire:sapphire_gem"; // TODO make trading item configurable
 
     public void init(Configuration config) {

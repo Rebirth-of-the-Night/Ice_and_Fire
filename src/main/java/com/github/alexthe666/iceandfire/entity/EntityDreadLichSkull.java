@@ -1,9 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import java.util.List;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,6 +19,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class EntityDreadLichSkull extends EntityArrow {
 
