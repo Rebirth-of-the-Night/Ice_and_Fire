@@ -1,13 +1,12 @@
 package com.lycanitesmobs.client.obj;
 
-import javax.vecmath.Vector3f;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+
+import javax.vecmath.Vector3f;
 
 public class Mesh {
 

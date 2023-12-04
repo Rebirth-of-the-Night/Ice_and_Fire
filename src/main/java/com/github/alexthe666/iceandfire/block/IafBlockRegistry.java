@@ -2,6 +2,8 @@ package com.github.alexthe666.iceandfire.block;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.carver.BlockGenericKeyhole;
+import com.github.alexthe666.iceandfire.block.keletu.BlockGhostChest;
+import com.github.alexthe666.iceandfire.block.keletu.BlockGraveyardSoil;
 import com.github.alexthe666.iceandfire.entity.tile.*;
 import com.github.alexthe666.iceandfire.enums.EnumDragonEgg;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
@@ -284,6 +286,12 @@ public class IafBlockRegistry {
         }
     };
 
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":graveyard_soil")
+    public static Block graveyard_soil = new BlockGraveyardSoil();
+
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":ghost_chest")
+    public static Block ghost_chest = new BlockGhostChest();
+
     static {
         GameRegistry.registerTileEntity(TileEntityDummyGorgonHead.class, new ResourceLocation(IceAndFire.MODID, "dummyGorgonHeadIdle"));
         GameRegistry.registerTileEntity(TileEntityDummyGorgonHeadActive.class, new ResourceLocation(IceAndFire.MODID, "dummyGorgonHeadActive"));
@@ -291,6 +299,7 @@ public class IafBlockRegistry {
         GameRegistry.registerTileEntity(TileEntityDragonforge.class, new ResourceLocation(IceAndFire.MODID, "dragonforge"));
         GameRegistry.registerTileEntity(TileEntityDragonforgeInput.class, new ResourceLocation(IceAndFire.MODID, "dragonforgeInput"));
         GameRegistry.registerTileEntity(TileEntityDragonforgeBrick.class, new ResourceLocation(IceAndFire.MODID, "dragonforgeBrick"));
+        GameRegistry.registerTileEntity(TileEntityGhostChest.class, new ResourceLocation(IceAndFire.MODID, "ghostChest"));
     }
 
 }

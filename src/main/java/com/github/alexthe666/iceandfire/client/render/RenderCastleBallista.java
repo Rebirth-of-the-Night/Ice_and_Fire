@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nullable;
 
 
-public class RenderTurretCrossbowAdvanced extends RenderLiving<EntityCastleBallista>
+public class RenderCastleBallista extends RenderLiving<EntityCastleBallista>
 {
     private ObjModel model;
     private static ResourceLocation TURMODEL;
@@ -51,9 +51,9 @@ public class RenderTurretCrossbowAdvanced extends RenderLiving<EntityCastleBalli
         GlStateManager.popMatrix();
     }
 
-    public RenderTurretCrossbowAdvanced(RenderManager rm) {
+    public RenderCastleBallista(RenderManager rm) {
         super(rm, null, 1.0f);
-        model = (ObjModel) loadModel(RenderTurretCrossbowAdvanced.TURMODEL);
+        model = (ObjModel) loadModel(RenderCastleBallista.TURMODEL);
     }
 
     @Nullable

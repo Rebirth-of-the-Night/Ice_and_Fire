@@ -83,6 +83,7 @@ public class WorldGenCastle extends WorldGenerator {
 
     // TODO: 27.06.2022 implement a proper check
     public static boolean checkIfCanGenAt(World world, BlockPos middle, int x, int z) {
+        //return middle.getX() == x && middle.getZ() == z;
         return middle.getX() % x == 0 && middle.getZ() % z == 0;
     }
 }

@@ -74,7 +74,7 @@ public class BlockDreadSingleMobSpawner extends Block implements IDreadBlock {
 		super.breakBlock(worldIn, pos, state);
 		if(!worldIn.isRemote) {
 			EntityDreadQueen queen = new EntityDreadQueen(worldIn);
-			queen.setPosition(pos.getX(), pos.getY() + 3, pos.getZ());
+			queen.setPosition(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
 			queen.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
 
 			if (state.getBlock() == IafBlockRegistry.dread_single_spawner_queen) {

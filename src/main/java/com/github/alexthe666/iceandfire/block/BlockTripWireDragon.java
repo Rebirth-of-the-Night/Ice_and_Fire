@@ -9,10 +9,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -20,7 +18,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockTripWireDragon extends Block implements IDragonProof, IDreadBlock {
+public class BlockTripWireDragon extends Block implements IDragonProof {
     public BlockTripWireDragon() {
         super(Material.ROCK);
         this.setHardness(4F);
@@ -38,14 +36,15 @@ public class BlockTripWireDragon extends Block implements IDragonProof, IDreadBl
     private void deleteNearbyWire(World worldIn, BlockPos pos, BlockPos startPos) {
         if (pos.getDistance(startPos.getX(), startPos.getY(), startPos.getZ()) < 32) {
             if (worldIn.getBlockState(pos).getBlock() == this) {
-                worldIn.destroyBlock(pos, false);
-                for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+                worldIn.setBlockToAir(pos);
+                EnumFacing[] facing1 = new EnumFacing[]{EnumFacing.UP, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST};
+                for (EnumFacing facing : EnumFacing.VALUES) {
                     deleteNearbyWire(worldIn, pos.offset(facing), startPos);
                 }
             }
-            for(int i=0;i<10;i++)
-                if (worldIn.getBlockState(pos.add(0, i, 0)).getBlock() instanceof IDreadBlock) {
-                    worldIn.destroyBlock(pos.add(0, i, 0), false);
+           // for(int i=0;i<10;i++)
+                if (worldIn.getBlockState(pos.add(0, 1, 0)).getBlock() instanceof IDreadBlock) {
+                    worldIn.destroyBlock(pos.add(0, 1, 0), false);
                 }
         }
     }
@@ -54,9 +53,9 @@ public class BlockTripWireDragon extends Block implements IDragonProof, IDreadBl
         if(!(entityIn instanceof EntityDreadQueen) && !(entityIn instanceof EntityBlackFrostDragon) && !(entityIn instanceof EntityPlayer))
             return;
 
-        deleteNearbyWire(worldIn, pos, pos);
+        if(entityIn.ticksExisted %20 == 0)
+            deleteNearbyWire(worldIn, pos, pos);
 
-        worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_STONE_BREAK, SoundCategory.BLOCKS, 1, 2, false);
     }
 
     @Override

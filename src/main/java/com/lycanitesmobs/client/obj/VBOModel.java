@@ -1,14 +1,13 @@
 package com.lycanitesmobs.client.obj;
 
-import javax.vecmath.Vector2f;
-import javax.vecmath.Vector4f;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+
+import javax.vecmath.Vector2f;
+import javax.vecmath.Vector4f;
 
 public class VBOModel extends TessellatorModel
 {

@@ -1,15 +1,14 @@
 package com.lycanitesmobs.client.obj;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
+
+import javax.vecmath.Vector2f;
+import javax.vecmath.Vector3f;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import javax.vecmath.Vector2f;
-import javax.vecmath.Vector3f;
-
-import org.apache.commons.io.output.ByteArrayOutputStream;
 
 public class OBJLoader
 {

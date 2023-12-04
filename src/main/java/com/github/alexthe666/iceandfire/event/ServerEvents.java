@@ -10,6 +10,7 @@ import com.github.alexthe666.iceandfire.entity.ai.EntitySheepAIFollowCyclops;
 import com.github.alexthe666.iceandfire.entity.ai.VillagerAIFearUntamed;
 import com.github.alexthe666.iceandfire.item.*;
 import com.github.alexthe666.iceandfire.message.MessagePlayerHitMultipart;
+import com.github.alexthe666.iceandfire.message.MessageSwingArm;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.util.IsImmune;
 import com.github.alexthe666.iceandfire.util.ItemUtil;
@@ -82,6 +83,20 @@ public class ServerEvents {
         }
     };
     private final Random rand = new Random();
+
+    public static void onLeftClick(final EntityPlayer playerEntity, final ItemStack stack) {
+        if (stack.getItem() == IafItemRegistry.ghost_sword && !playerEntity.world.isRemote) {
+            ItemGhostSword.spawnGhostSwordEntity(stack, playerEntity);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
+        onLeftClick(event.getEntityPlayer(), event.getItemStack());
+        if (event.getWorld().isRemote) {
+            IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageSwingArm());
+        }
+    }
 
     private static void signalChickenAlarm(EntityLivingBase chicken, EntityLivingBase attacker) {
         float d0 = IceAndFire.CONFIG.cockatriceChickenSearchLength;
@@ -505,6 +520,8 @@ public class ServerEvents {
         }
         if (event.getItemStack().getItem() instanceof ItemChorusFruit && event.getEntity().world.provider.getDimension() == IceAndFire.CONFIG.dreadlandsDimensionId) {
             event.setCanceled(true);
+            event.getWorld().playSound(null, event.getPos(), SoundEvents.ENTITY_SHULKER_HURT, SoundCategory.PLAYERS, 1, 0);
+            event.getEntityPlayer().sendStatusMessage(new TextComponentTranslation("message.iceandfire.toocold").setStyle(new Style().setColor(TextFormatting.BLUE)), true);
         }
     }
 
@@ -515,10 +532,11 @@ public class ServerEvents {
             if (!player.getEntityWorld().isRemote) {
                 if (player.ticksExisted % 2 == 0 && player.world.provider.getDimension() == IceAndFire.CONFIG.dreadlandsDimensionId) {
                     if ((player.capabilities.isFlying || player.isElytraFlying()) && !player.isCreative() && !player.isSpectator()) {
-                        player.capabilities.isFlying = false;
-                        player.setFlag(7, false);
-                        player.sendPlayerAbilities();
-                        player.sendStatusMessage(new TextComponentTranslation("tc.break.fly").setStyle(new Style().setColor(TextFormatting.DARK_AQUA)), true);
+                        event.setCanceled(true);
+                        event.player.sendStatusMessage(new TextComponentTranslation("message.iceandfire.cantfly").setStyle(new Style().setColor(TextFormatting.BLUE)), true);
+                        FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(player, FrozenEntityProperties.class);
+                        if(frozenProps != null)
+                            frozenProps.setFrozenFor(300);
                     }
                 }
             }

@@ -29,12 +29,11 @@ public class WorldGenDreadDimension implements IWorldGenerator {
             BlockPos height = getHeight(world, new BlockPos(x, 0, z));
 
             if (BiomeDictionary.hasType(world.getBiome(height), BiomeDictionary.Type.COLD) && BiomeDictionary.hasType(world.getBiome(height), BiomeDictionary.Type.SNOWY)) {
-               // if (random.nextInt(1000) == 0) {
-                    BlockPos surface = world.getHeight(new BlockPos(x, 0, z));
-                    surface = degradeSurface(world, surface);
-                    new WorldGenCastle().generate(world, random, surface);
+                   BlockPos surface = world.getHeight(new BlockPos(x, 0, z));
+
+                surface = degradeSurface(world, surface);
+                new WorldGenCastle().generate(world, random, surface);
                     //lastMausoleum = surface;
-             //   }
             }
         }
 

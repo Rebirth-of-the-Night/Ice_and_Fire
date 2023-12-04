@@ -52,8 +52,8 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
         tasks.addTask(1, new EntityAIAttackRanged(this, 0.0, 20, 60, 120.0f));
         tasks.addTask(2, new EntityAIWatchTarget(this));
         targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityDragonBase.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityDragonBase.class, true));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
     }
 
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {

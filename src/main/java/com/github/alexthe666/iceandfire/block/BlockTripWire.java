@@ -7,10 +7,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -36,8 +34,8 @@ public class BlockTripWire extends Block implements IDragonProof, IDreadBlock {
 
     private void deleteNearbyWire(World worldIn, BlockPos pos, BlockPos startPos) {
         if (pos.getDistance(startPos.getX(), startPos.getY(), startPos.getZ()) < 32) {
-            if (worldIn.getBlockState(pos).getBlock() == IafBlockRegistry.tripwire || worldIn.getBlockState(pos).getBlock() == this) {
-                worldIn.destroyBlock(pos, false);
+            if (worldIn.getBlockState(pos).getBlock() == this) {
+                worldIn.setBlockToAir(pos);
                 for (EnumFacing facing : EnumFacing.values()) {
                     deleteNearbyWire(worldIn, pos.offset(facing), startPos);
                 }
@@ -55,11 +53,8 @@ public class BlockTripWire extends Block implements IDragonProof, IDreadBlock {
             return;
         //List<EntityPlayer> players = worldIn.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX()+1, pos.getY()+1, pos.getZ()+1).expand(6, 3, 6).expand(-6, -3, -6));
 
-        deleteNearbyWire(worldIn, pos, pos);
-
-        worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ENDERDRAGON_AMBIENT, SoundCategory.BLOCKS, 1, 1, false);
-        worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.BLOCKS, 1, 2, false);
-
+        if(entityIn.ticksExisted % 20 == 0)
+            deleteNearbyWire(worldIn, pos, pos);
     }
 
     @Override
