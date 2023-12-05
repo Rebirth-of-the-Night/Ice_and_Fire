@@ -1,7 +1,10 @@
 package com.github.alexthe666.iceandfire.world.gen;
 
 import com.github.alexthe666.iceandfire.entity.EntityHydra;
-import net.minecraft.block.*;
+import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockSkull;
+import net.minecraft.block.BlockTallGrass;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;

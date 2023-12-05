@@ -1,14 +1,14 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
-import com.github.alexthe666.iceandfire.entity.EntityDreadLich;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.monster.EntityMob;
 
 public class DreadLichAIStrife extends EntityAIBase {
 
-    private final EntityDreadLich entity;
+    private final EntityMob entity;
     private final double moveSpeedAmp;
     private final float maxAttackDistance;
     private int attackCooldown;
@@ -18,7 +18,7 @@ public class DreadLichAIStrife extends EntityAIBase {
     private boolean strafingBackwards;
     private int strafingTime = -1;
 
-    public DreadLichAIStrife(EntityDreadLich mob, double moveSpeedAmpIn, int attackCooldownIn, float maxAttackDistanceIn) {
+    public DreadLichAIStrife(EntityMob mob, double moveSpeedAmpIn, int attackCooldownIn, float maxAttackDistanceIn) {
         this.entity = mob;
         this.moveSpeedAmp = moveSpeedAmpIn;
         this.attackCooldown = attackCooldownIn;

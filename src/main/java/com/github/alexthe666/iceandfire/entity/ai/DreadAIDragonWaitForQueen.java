@@ -1,11 +1,8 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
-import com.github.alexthe666.iceandfire.entity.EntityDreadQueen;
 import com.github.alexthe666.iceandfire.entity.EntityBlackFrostDragon;
-import com.github.alexthe666.iceandfire.entity.IafDragonLogic;
+import com.github.alexthe666.iceandfire.entity.EntityDreadQueen;
 import net.minecraft.entity.ai.EntityAIBase;
-
-import java.util.List;
 
 public class DreadAIDragonWaitForQueen extends EntityAIBase {
     private final EntityBlackFrostDragon dragon;

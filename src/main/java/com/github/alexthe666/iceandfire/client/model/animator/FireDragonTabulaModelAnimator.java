@@ -1,13 +1,9 @@
 package com.github.alexthe666.iceandfire.client.model.animator;
 
-import java.util.Arrays;
-
-import com.github.alexthe666.iceandfire.client.model.util.DragonAnimationsLibrary;
-import com.github.alexthe666.iceandfire.client.model.util.EnumDragonAnimations;
-import com.github.alexthe666.iceandfire.client.model.util.EnumDragonModelTypes;
-import com.github.alexthe666.iceandfire.client.model.util.EnumDragonPoses;
-import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
+import com.github.alexthe666.iceandfire.client.model.util.*;
 import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
+
+import java.util.Arrays;
 
 /*
  * Code directly taken from 1.16 IaF, I own no rights over it.

@@ -1,12 +1,7 @@
 package com.github.alexthe666.iceandfire.item;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.util.ItemUtil;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,6 +9,9 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemModSword extends ItemSword implements IaFTool {
     private final Item.ToolMaterial toolMaterial;
@@ -44,21 +42,21 @@ public class ItemModSword extends ItemSword implements IaFTool {
     	case 0:
     		ItemUtil.getSilverComment(tooltip);
     		break;
-    	case 1:
+		case 1:
     		ItemUtil.getMyrmexComment(tooltip);
     		break;
     	case 2:
-    		ItemUtil.getMyrmexComment(tooltip, true);
-    		break;
-    	case 3: 
     		ItemUtil.getFireDragonsteelComment(tooltip);
     		break;
-    	case 4: 
+    	case 3:
     		ItemUtil.getIceDragonsteelComment(tooltip);
     		break;
-    	case 5:
+    	case 4:
     		ItemUtil.getLightningDragonsteelComment(tooltip);
     		break;
+		case 5:
+			ItemUtil.getMyrmexComment(tooltip, true);
+			break;
     	}
     }
 

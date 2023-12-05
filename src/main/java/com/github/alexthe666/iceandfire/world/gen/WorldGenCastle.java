@@ -1,12 +1,13 @@
 package com.github.alexthe666.iceandfire.world.gen;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
+import com.github.alexthe666.iceandfire.world.gen.processor.DreadCastleProcessor;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixesManager;
 import net.minecraft.util.math.BlockPos;
@@ -21,6 +22,7 @@ import java.util.Random;
 public class WorldGenCastle extends WorldGenerator {
 
     static final TemplateManager RES_LOC_TEMPLATE_MANAGER = new TemplateManager("Alex is a wanker", DataFixesManager.createFixer());
+
 
     public WorldGenCastle() {
         super(false);
@@ -44,15 +46,23 @@ public class WorldGenCastle extends WorldGenerator {
     }
 
     public boolean generate(World worldIn, Random rand, BlockPos position) {
+
+        if(!checkIfCanGenAt(worldIn, position, 1000, 1000))
+            return false;
+
         position = position.add(rand.nextInt(8) - 4, 1, rand.nextInt(8) - 4);
-        int totalW = 64, totalH = 64, totalD = 64; // TODO: 27.06.2022 change
+        int totalW = 274, totalH = 130, totalD = 274; // TODO: 27.06.2022 change
         int partW = 32, partH = 32, partD = 32;
+
+
+
 
         MinecraftServer server = worldIn.getMinecraftServer();
         BlockPos origin = getGround(position, worldIn);
 
         //IBlockState dirt = worldIn.getBlockState(origin.down(2));
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
+
 
         for (int x = 0, i = 0; x < totalW; x = Math.min(totalW, x + partW), i++)
             for (int y = 0, j = 0; y < totalH; y = Math.min(totalH, y + partH), j++)
@@ -61,14 +71,19 @@ public class WorldGenCastle extends WorldGenerator {
                     BlockPos pos = origin.add(x, y, z);
                     Template template = RES_LOC_TEMPLATE_MANAGER.getTemplate(null, res);
 
-                    template.addBlocksToWorld(worldIn, pos, new PlacementSettings(), 0);
+                    for(int t = 0; t < totalW; t++)
+                        for(int u = 0; u < totalW; u++)
+                            worldIn.setBlockState(origin.add(t, -1, u), IafBlockRegistry.dread_stone.getDefaultState(), 2);
+
+                    template.addBlocksToWorld(worldIn, pos, new DreadCastleProcessor(), new PlacementSettings(), 2);
                 }
 
         return true;
     }
 
     // TODO: 27.06.2022 implement a proper check
-    public boolean checkIfCanGenAt(World world, BlockPos middle, int x, int z, EnumFacing facing) {
-        return true;
+    public static boolean checkIfCanGenAt(World world, BlockPos middle, int x, int z) {
+        //return middle.getX() == x && middle.getZ() == z;
+        return middle.getX() % x == 0 && middle.getZ() % z == 0;
     }
 }

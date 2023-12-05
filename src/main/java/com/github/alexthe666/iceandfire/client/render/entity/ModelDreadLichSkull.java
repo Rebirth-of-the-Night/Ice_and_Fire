@@ -1,7 +1,6 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
 import com.github.alexthe666.iceandfire.client.model.util.HideableModelRenderer;
-
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
 import net.minecraft.entity.Entity;
 

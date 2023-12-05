@@ -1,11 +1,10 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
-import java.util.List;
-
 import com.github.alexthe666.iceandfire.entity.EntityBlackFrostDragon;
 import com.github.alexthe666.iceandfire.entity.EntityDreadQueen;
-
 import net.minecraft.entity.ai.EntityAIBase;
+
+import java.util.List;
 
 public class DreadAIMountDragon extends EntityAIBase {
     private final EntityDreadQueen knight;
@@ -26,7 +25,7 @@ public class DreadAIMountDragon extends EntityAIBase {
                 return false;
             } else {
                 for (EntityBlackFrostDragon entityirongolem : list) {
-                   if(!entityirongolem.isBeingRidden()){
+                   if(!entityirongolem.isBeingRidden() && entityirongolem.getHealth() > 0){
                        this.horse = entityirongolem;
                        break;
                    }

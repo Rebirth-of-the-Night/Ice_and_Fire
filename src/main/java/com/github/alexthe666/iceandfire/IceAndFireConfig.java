@@ -1,10 +1,10 @@
 package com.github.alexthe666.iceandfire;
 
+import net.minecraftforge.common.config.Configuration;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import net.minecraftforge.common.config.Configuration;
 
 public class IceAndFireConfig {
     public boolean customMainMenu = true;
@@ -174,6 +174,12 @@ public class IceAndFireConfig {
     public boolean explosiveDragonBreath = false;
     public float weezerTinkersDisarmChance = 0.2F;
     public boolean chunkLoadSummonCrystal = true;
+    public int ballistaBaseDamage = 10;
+    public double ghostMaxHealth;
+    public double ghostAttackStrength;
+    public boolean generateGraveyards = true;
+    public int generateGraveyardChance = 16;
+    public boolean ghostSpawnFromPlayerDeaths;
     public String villagerTradingItem = "iceandfire:sapphire_gem"; // TODO make trading item configurable
 
     public void init(Configuration config) {
@@ -362,5 +368,9 @@ public class IceAndFireConfig {
         this.generateHydraChance = config.getInt("Hydra Caves Gen Chance", "all", 200, 1, 10000, "One out of this number chance per chunk to generate a hydra cave.");
 
         this.chunkLoadSummonCrystal = config.getBoolean("Chunk Load Summon Crystal", "all", true, "True if the summon crystal can load chunks to find dragons.");
+
+        this.ghostMaxHealth = config.getFloat("Ghost Max Health", "all", 30F, 1.0F, 10000.0F, "Maximum ghost health.");
+        this.ghostAttackStrength = config.getFloat("Ghost Attack Strength", "all", 3F, 0.0F, 10000.0F, "Maximum ghost attack strength.");
+
     }
 }

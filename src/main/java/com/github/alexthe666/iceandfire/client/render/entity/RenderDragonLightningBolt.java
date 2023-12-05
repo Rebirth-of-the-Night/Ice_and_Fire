@@ -1,9 +1,6 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
-import java.util.Random;
-
 import com.github.alexthe666.iceandfire.entity.EntityDragonLightningBolt;
-
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -11,6 +8,8 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.Random;
 
 public class RenderDragonLightningBolt extends Render<EntityDragonLightningBolt> {
 	public RenderDragonLightningBolt(RenderManager renderManager) {
