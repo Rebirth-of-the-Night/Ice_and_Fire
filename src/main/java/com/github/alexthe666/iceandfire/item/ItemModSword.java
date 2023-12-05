@@ -42,21 +42,21 @@ public class ItemModSword extends ItemSword implements IaFTool {
     	case 0:
     		ItemUtil.getSilverComment(tooltip);
     		break;
-    	case 1:
+		case 1:
     		ItemUtil.getMyrmexComment(tooltip);
     		break;
     	case 2:
-    		ItemUtil.getMyrmexComment(tooltip, true);
-    		break;
-    	case 3: 
     		ItemUtil.getFireDragonsteelComment(tooltip);
     		break;
-    	case 4: 
+    	case 3:
     		ItemUtil.getIceDragonsteelComment(tooltip);
     		break;
-    	case 5:
+    	case 4:
     		ItemUtil.getLightningDragonsteelComment(tooltip);
     		break;
+		case 5:
+			ItemUtil.getMyrmexComment(tooltip, true);
+			break;
     	}
     }
 

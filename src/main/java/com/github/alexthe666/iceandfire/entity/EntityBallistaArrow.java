@@ -89,7 +89,7 @@ public class EntityBallistaArrow extends EntityThrowable
                 if(elb instanceof EntityDragonBase)
                     attackDamage *= 5;
 
-                elb.attackEntityFrom(DamageSource.causeIndirectMagicDamage(elb, shooter), attackDamage);
+                elb.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, shooter), attackDamage);
             }
             this.setDead();
         }

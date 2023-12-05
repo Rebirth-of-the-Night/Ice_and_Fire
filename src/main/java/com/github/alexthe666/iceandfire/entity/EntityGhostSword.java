@@ -20,7 +20,6 @@ public class EntityGhostSword extends EntityArrow
     public static final DataParameter<Integer> DISPOSE_TIME = EntityDataManager.createKey(EntityGhostSword.class, DataSerializers.VARINT);
 
     public Entity shooter;
-    public ItemStack revolver;
     int maxDisposeTime = 15;
 
     @Override
@@ -49,7 +48,6 @@ public class EntityGhostSword extends EntityArrow
     public EntityGhostSword(World worldIn, EntityLivingBase shooter, double dmg) {
         super(worldIn, shooter);
         this.setDamage(dmg);
-        revolver = shooter.getHeldItemMainhand();
         this.shooter = shooter;
 
         this.motionX *= -0.01F;
@@ -117,10 +115,7 @@ public class EntityGhostSword extends EntityArrow
             return;
 
         if (!this.world.isRemote && object.typeOfHit == RayTraceResult.Type.BLOCK) {
-            if (noClip)
-                return;
-            if (this.world.isBlockNormalCube(object.getBlockPos(), true))
-                this.setDead();
+            return;
         }
 
         if (object.typeOfHit == RayTraceResult.Type.ENTITY) {
@@ -131,7 +126,7 @@ public class EntityGhostSword extends EntityArrow
             if (e instanceof EntityLivingBase && e != this.shooter && !(e instanceof EntityGhostSword)) {
                 EntityLivingBase elb = (EntityLivingBase) e;
 
-                elb.attackEntityFrom(DamageSource.causeIndirectMagicDamage(elb, shooter), 5);
+                elb.attackEntityFrom(DamageSource.causeArrowDamage(this, shooter), 5);
 
                 this.setDead();
             }

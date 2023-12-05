@@ -59,6 +59,6 @@ public class ItemGhostSword extends ItemSword {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         tooltip.add(TextFormatting.GRAY + I18n.format("item.iceandfire.legendary_weapon.desc"));
-        tooltip.add(I18n.format(TextFormatting.GRAY + "item.iceandfire.ghost_sword.desc_0"));
+        tooltip.add(TextFormatting.GRAY + I18n.format("item.iceandfire.ghost_sword.desc_0"));
     }
 }

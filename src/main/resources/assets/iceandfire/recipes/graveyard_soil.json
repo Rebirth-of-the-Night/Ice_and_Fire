@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " E ",
+    "ECE",
+    " E "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:dirt",
+      "data": 1
+    },
+    "E": {
+      "item": "iceandfire:ectoplasm"
+    }
+  },
+  "result": {
+    "item": "iceandfire:graveyard_soil"
+  }
+}

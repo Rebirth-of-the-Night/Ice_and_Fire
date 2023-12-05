@@ -45,6 +45,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -203,6 +204,13 @@ public class ServerEvents {
                     if (shotEntity instanceof EntityTameable && ((EntityTameable) shotEntity).isTamed() && shotEntity.isOnSameTeam(shootingEntity)) {
                         event.setCanceled(true);
                     }
+                }
+            }
+
+            if (event.getRayTraceResult() != null && event.getRayTraceResult().typeOfHit == RayTraceResult.Type.ENTITY) {
+                RayTraceResult entityResult = event.getRayTraceResult();
+                if (entityResult.entityHit != null && entityResult.entityHit instanceof EntityGhost) {
+                    event.setCanceled(true);
                 }
             }
         }
@@ -468,6 +476,25 @@ public class ServerEvents {
         if (event.getEntityLiving().getUniqueID().equals(ServerEvents.ALEX_UUID)) {
             event.getEntityLiving().entityDropItem(new ItemStack(IafItemRegistry.weezer_blue_album), 1);
         }
+        if (event.getEntityLiving() instanceof EntityPlayer && IceAndFire.CONFIG.ghostSpawnFromPlayerDeaths) {
+            Entity attacker = event.getEntityLiving().getLastAttackedEntity();
+            if (attacker instanceof EntityPlayer && event.getEntityLiving().world.rand.nextInt(3) == 0) {
+                boolean flag = event.getSource() != null && (event.getSource() == DamageSource.FALL || event.getSource() == DamageSource.DROWN || event.getSource() == DamageSource.LAVA);
+                if (event.getEntityLiving().getActivePotionEffect(MobEffects.POISON) != null) {
+                    flag = true;
+                }
+                if (flag) {
+                    World world = event.getEntityLiving().world;
+                    EntityGhost ghost = new EntityGhost(world);
+                    ghost.setPosition(event.getEntityLiving().posX, event.getEntityLiving().posY, event.getEntityLiving().posZ);
+                    if (!world.isRemote) {
+                        ghost.onInitialSpawn(world.getDifficultyForLocation(event.getEntityLiving().getPosition()), null);
+                        world.spawnEntity(ghost);
+                    }
+                    ghost.setDaytimeMode(true);
+                }
+            }
+        }
     }
 
     @SubscribeEvent
@@ -566,18 +593,12 @@ public class ServerEvents {
     				}
     				break;
     			case 2:
-    				if(target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
-    					target.addPotionEffect(new PotionEffect(MobEffects.POISON, 200, 2));
-    					event.setAmount(amount + 4.0F);
-    				}
-    				break;
-    			case 3:
     				ItemUtil.hitWithFireDragonsteel(target, attacker);
     				break;
-    			case 4:
+    			case 3:
     				ItemUtil.hitWithIceDragonsteel(target, attacker);
     				break;
-    			case 5:
+    			case 4:
     		        if(!attacker.world.isRemote && attacker.swingProgress < 0.2 && !target.isDead) {
     		        	target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, attacker, target));
     		        	if(!IsImmune.toDragonLightning(target)) {
@@ -586,6 +607,12 @@ public class ServerEvents {
     		        }
     		        ItemUtil.knockbackWithDragonsteel(target, attacker);
     				break;
+                case 5:
+                        if(target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
+                            target.addPotionEffect(new PotionEffect(MobEffects.POISON, 200, 2));
+                            event.setAmount(amount + 4.0F);
+                        }
+                        break;
     			}
     		}
     		if(weapon instanceof ItemAlchemySword) {

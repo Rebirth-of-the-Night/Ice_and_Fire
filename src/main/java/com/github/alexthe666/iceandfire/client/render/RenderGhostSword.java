@@ -50,7 +50,7 @@ public class RenderGhostSword
 		//GlStateManager.translate(0.125, 0.125, 0.125);
 
 		GlStateManager.rotate(entity.prevRotationYaw + (entity.prevRotationYaw - entity.rotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
-		GlStateManager.rotate(entity.prevRotationPitch + (entity.prevRotationPitch - entity.rotationPitch) * partialTicks + 90.0F, 0.0F, 0.0F, 1.0F);
+		GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
 
 		GlStateManager.rotate((entity.ticksExisted + partialTicks) * 40F, 0.0F, 0.0F, 1.0F);
 

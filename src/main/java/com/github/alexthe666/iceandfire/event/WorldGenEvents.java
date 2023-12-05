@@ -59,6 +59,7 @@ public class WorldGenEvents implements IWorldGenerator {
     private BlockPos lastGorgonTemple = null;
     private BlockPos lastMausoleum = null;
     private BlockPos lastHydraCave = null;
+    private BlockPos lastGraveyard = null;
 
     public static BlockPos getHeight(World world, BlockPos pos) {
         return world.getHeight(pos);
@@ -97,6 +98,16 @@ public class WorldGenEvents implements IWorldGenerator {
                     surface = degradeSurface(world, surface);
                     new WorldGenGorgonTemple(EnumFacing.byHorizontalIndex(random.nextInt(3))).generate(world, random, surface);
                     lastGorgonTemple = surface;
+                }
+            }
+        }
+        if (IceAndFire.CONFIG.generateGraveyards && !isDimensionBlacklisted(world.provider.getDimension(), false) && (lastGraveyard == null || lastGraveyard.distanceSq(height) >= spawnCheck)) {
+            if (BiomeDictionary.hasType(world.getBiome(height), Type.PLAINS)) {
+                if (random.nextInt(IceAndFire.CONFIG.generateGraveyardChance + 1) == 0) {
+                    BlockPos surface = world.getHeight(new BlockPos(x, 0, z));
+                    surface = degradeSurface(world, surface);
+                    new WorldGenGraveyard(EnumFacing.byHorizontalIndex(random.nextInt(3))).generate(world, random, surface);
+                    lastGraveyard = surface;
                 }
             }
         }

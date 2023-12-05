@@ -177,8 +177,8 @@ public class IceAndFireConfig {
     public int ballistaBaseDamage = 10;
     public double ghostMaxHealth;
     public double ghostAttackStrength;
-    public boolean generateGraveyards;
-    public int generateGraveyardChance;
+    public boolean generateGraveyards = true;
+    public int generateGraveyardChance = 16;
     public boolean ghostSpawnFromPlayerDeaths;
     public String villagerTradingItem = "iceandfire:sapphire_gem"; // TODO make trading item configurable
 
