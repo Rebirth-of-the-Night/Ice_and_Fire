@@ -50,13 +50,13 @@ public class RenderGhostSword
 		//GlStateManager.translate(0.125, 0.125, 0.125);
 
 		GlStateManager.rotate(entity.prevRotationYaw + (entity.prevRotationYaw - entity.rotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
-		GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
+		GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks + 90F, 0.0F, 0.0F, 1.0F);
 
 		GlStateManager.rotate((entity.ticksExisted + partialTicks) * 40F, 0.0F, 0.0F, 1.0F);
 
 		//GlStateManager.translate(-0.125, -0.125, -0.125);
 
-		GlStateManager.rotate(-180, 0.0F, 1.0F, 0.0F);
+		//GlStateManager.rotate(-180, 0.0F, 1.0F, 0.0F);
 		GlStateManager.scale(2, 2, 2);
 
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

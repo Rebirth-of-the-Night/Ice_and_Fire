@@ -23,7 +23,7 @@ public class RenderCastleBallista extends RenderLiving<EntityCastleBallista>
 
     @Override
     public void doRender(EntityCastleBallista entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        bindTexture(getEntityTexture(entity));
+        bindTexture(new ResourceLocation("iceandfire", "textures/models/ballista.png"));
         GlStateManager.pushMatrix();
         GlStateManager.enableRescaleNormal();
         GlStateManager.translate(x, y, z);

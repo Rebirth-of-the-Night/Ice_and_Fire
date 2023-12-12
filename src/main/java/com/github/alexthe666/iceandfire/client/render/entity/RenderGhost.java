@@ -2,6 +2,7 @@ package com.github.alexthe666.iceandfire.client.render.entity;
 
 import com.github.alexthe666.iceandfire.client.model.ModelGhost;
 import com.github.alexthe666.iceandfire.entity.EntityGhost;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -47,6 +48,7 @@ public class RenderGhost extends RenderLiving<EntityGhost> {
     @Override
     public void preRenderCallback(EntityGhost EntityLivingIn, float partialTickTime) {
         this.shadowSize = 0;
+        GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
     }
 
     @Override

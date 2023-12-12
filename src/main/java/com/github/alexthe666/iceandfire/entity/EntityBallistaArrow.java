@@ -42,7 +42,7 @@ public class EntityBallistaArrow extends EntityThrowable
     public void onUpdate()
     {
         if(this.world instanceof WorldServer)
-            ((WorldServer) world).spawnParticle(EnumParticleTypes.FLAME, this.posX, this.posY, this.posZ, 1, 0, 0, 0, 0D);
+            ((WorldServer) world).spawnParticle(EnumParticleTypes.EXPLOSION_LARGE, this.posX, this.posY, this.posZ, 1, 0, 0, 0, 0D);
 
         if(this.ticksExisted >= 1000)
             this.setDead();
@@ -78,6 +78,14 @@ public class EntityBallistaArrow extends EntityThrowable
             Entity e = object.entityHit;
             if(e == shooter)
                 return;
+
+            if(e instanceof EntityMutlipartPart)
+            {
+                e = ((EntityMutlipartPart) e).getParent();
+
+                if(e.isDead)
+                    return;
+            }
 
             if(e instanceof EntityLivingBase && !(e instanceof IDreadMob))
             {

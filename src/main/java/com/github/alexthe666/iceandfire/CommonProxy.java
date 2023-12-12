@@ -160,7 +160,7 @@ public class CommonProxy {
         registerSpawnable(EntityEntryBuilder.create(), event, EntityDreadKnightRoyal.class, "dread_knight_royal", 60, 0XE0E6E6, 0X4A6C6E);
         registerUnspawnable(EntityEntryBuilder.create(), event, EntityCastleBallista.class, "ballista", 61);
         registerUnspawnable(EntityEntryBuilder.create(), event, EntityBallistaArrow.class, "ballista_arrow", 62);
-        registerSpawnable(EntityEntryBuilder.create(), event, EntityGhost.class, "ghost", 63, 0XD3D8D8, 0XD5B57D);
+        registerSpawnable(EntityEntryBuilder.create(), event, EntityGhost.class, "ghost", 63, 0XB9EDB8, 0X73B276);
         registerUnspawnable(EntityEntryBuilder.create(), event, EntityGhostSword.class, "ghost_sword", 64);
 
     }
