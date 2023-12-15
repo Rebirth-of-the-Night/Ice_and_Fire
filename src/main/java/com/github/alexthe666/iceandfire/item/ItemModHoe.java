@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.enums.EnumToolEffect;
 import com.github.alexthe666.iceandfire.util.ItemUtil;
 
 import net.minecraft.client.util.ITooltipFlag;
@@ -15,18 +16,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemModHoe extends ItemHoe implements IaFTool {
-    private final int toolID;
+    private final EnumToolEffect toolEffect;
 
     public ItemModHoe(ToolMaterial toolmaterial, String gameName, String name) {
-    	this(toolmaterial, gameName, name, -1);
+    	this(toolmaterial, gameName, name, EnumToolEffect.NONE);
     }
     
-    public ItemModHoe(ToolMaterial toolmaterial, String gameName, String name, int toolID) {
+    public ItemModHoe(ToolMaterial toolmaterial, String gameName, String name, EnumToolEffect toolEffect) {
         super(toolmaterial);
         this.setTranslationKey(name);
         this.setCreativeTab(IceAndFire.TAB_ITEMS);
         this.setRegistryName(IceAndFire.MODID, gameName);
-        this.toolID = toolID;
+        this.toolEffect = toolEffect;
     }
 
 	@Override
@@ -37,27 +38,32 @@ public class ItemModHoe extends ItemHoe implements IaFTool {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-    	switch(this.toolID) {
-    	case 0:
+    	switch(this.toolEffect) {
+    	case SILVER:
     		ItemUtil.getSilverComment(tooltip);
     		break;
-    	case 1:
+    	case MYRMEX:
     		ItemUtil.getMyrmexComment(tooltip);
     		break;
-    	case 2: 
+    	case MYRMEX_POISON:
+    		ItemUtil.getMyrmexComment(tooltip, true);
+    		break;
+    	case FIRE: 
     		ItemUtil.getFireDragonsteelComment(tooltip);
     		break;
-    	case 3: 
+    	case ICE: 
     		ItemUtil.getIceDragonsteelComment(tooltip);
     		break;
-    	case 4:
+    	case LIGHTNING:
     		ItemUtil.getLightningDragonsteelComment(tooltip);
     		break;
+		default:
+			break;
     	}
     }
-    
+
 	@Override
-	public int getToolMode() {
-		return Math.max(this.toolID, 1);
+	public EnumToolEffect getToolEffect() {
+		return this.toolEffect;
 	}
 }

@@ -18,6 +18,7 @@ import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.entity.ai.EntitySheepAIFollowCyclops;
 import com.github.alexthe666.iceandfire.entity.ai.VillagerAIFearUntamed;
+import com.github.alexthe666.iceandfire.enums.EnumToolEffect;
 import com.github.alexthe666.iceandfire.item.*;
 import com.github.alexthe666.iceandfire.message.MessagePlayerHitMultipart;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
@@ -542,31 +543,31 @@ public class ServerEvents {
     		Item weapon = attacker.getHeldItemMainhand().getItem();
     		float amount = event.getAmount();
     		
-    		if(weapon instanceof IaFTool) {
-    			switch(((IaFTool)weapon).getToolMode()) {
-    			case 0:
+    		if (weapon instanceof IaFTool) {
+    			switch(((IaFTool)weapon).getToolEffect()) {
+    			case SILVER:
     				if(target.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) {
     					event.setAmount(amount + 2.0F);
     				}
     				break;
-    			case 1:
+    			case MYRMEX:
     				if(target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
     					event.setAmount(amount + 4.0F);
     				}
     				break;
-    			case 2:
+    			case MYRMEX_POISON:
     				if(target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
     					target.addPotionEffect(new PotionEffect(MobEffects.POISON, 200, 2));
     					event.setAmount(amount + 4.0F);
     				}
     				break;
-    			case 3:
+    			case FIRE:
     				ItemUtil.hitWithFireDragonsteel(target, attacker);
     				break;
-    			case 4:
+    			case ICE:
     				ItemUtil.hitWithIceDragonsteel(target, attacker);
     				break;
-    			case 5:
+    			case LIGHTNING:
     		        if(!attacker.world.isRemote && attacker.swingProgress < 0.2 && !target.isDead) {
     		        	target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, attacker, target));
     		        	if(!IsImmune.toDragonLightning(target)) {
@@ -575,11 +576,13 @@ public class ServerEvents {
     		        }
     		        ItemUtil.knockbackWithDragonsteel(target, attacker);
     				break;
+                default:
+                    break;
     			}
     		}
-    		if(weapon instanceof ItemAlchemySword) {
-    			switch(((ItemAlchemySword)weapon).toolID) {
-    			case 0:
+    		if (weapon instanceof ItemAlchemySword) {
+    			switch(((ItemAlchemySword)weapon).getToolEffect()) {
+    			case FIRE:
     	            if (target instanceof EntityIceDragon) {
     	            	event.setAmount(amount + 8.0F);
     	            }
@@ -587,7 +590,7 @@ public class ServerEvents {
     		            target.setFire(5);
     	            }
     				break;
-    			case 1:
+    			case ICE:
     				if (target instanceof EntityFireDragon) {
     	                event.setAmount(amount + 8.0F);
     	            }
@@ -598,7 +601,7 @@ public class ServerEvents {
     		            target.addPotionEffect(new PotionEffect(MobEffects.MINING_FATIGUE, 100, 2));
     	            }
     				break;
-    			case 2:
+    			case LIGHTNING:
     				float newAmount = amount + (!IsImmune.toDragonLightning(target) ? (float)IceAndFire.CONFIG.dragonAttackDamageLightning * 2.0F : 0.0F);
     	            if (target instanceof EntityFireDragon || target instanceof EntityIceDragon) {
     	            	event.setAmount(newAmount + 4.0F);
@@ -608,6 +611,8 @@ public class ServerEvents {
     	            	event.setAmount(newAmount);
     	            }
     				break;
+                default:
+                    break;
     			}
     			ItemUtil.knockbackWithDragonsteel(target, attacker);
     		} else if(weapon instanceof ItemAmphithereMacuahuitl) {

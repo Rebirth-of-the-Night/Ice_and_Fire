@@ -5,6 +5,8 @@ import com.github.alexthe666.iceandfire.enums.EnumDragonArmor;
 import com.github.alexthe666.iceandfire.enums.EnumDragonEgg;
 import com.github.alexthe666.iceandfire.enums.EnumSeaSerpent;
 import com.github.alexthe666.iceandfire.enums.EnumSkullType;
+import com.github.alexthe666.iceandfire.enums.EnumToolEffect;
+
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -70,15 +72,15 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":silver_boots")
     public static Item silver_boots = new ItemSilverArmor(silverMetal, 3, EntityEquipmentSlot.FEET, "armor_silver_metal_boots", "iceandfire.silver_boots");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":silver_sword")
-    public static Item silver_sword = new ItemModSword(silverTools, "silver_sword", "iceandfire.silver_sword", 0);
+    public static Item silver_sword = new ItemModSword(silverTools, "silver_sword", "iceandfire.silver_sword", EnumToolEffect.SILVER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":silver_shovel")
-    public static Item silver_shovel = new ItemModShovel(silverTools, "silver_shovel", "iceandfire.silver_shovel", 0);
+    public static Item silver_shovel = new ItemModShovel(silverTools, "silver_shovel", "iceandfire.silver_shovel", EnumToolEffect.SILVER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":silver_pickaxe")
-    public static Item silver_pickaxe = new ItemModPickaxe(silverTools, "silver_pickaxe", "iceandfire.silver_pickaxe", 0);
+    public static Item silver_pickaxe = new ItemModPickaxe(silverTools, "silver_pickaxe", "iceandfire.silver_pickaxe", EnumToolEffect.SILVER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":silver_axe")
-    public static Item silver_axe = new ItemModAxe(silverTools, "silver_axe", "iceandfire.silver_axe", 0);
+    public static Item silver_axe = new ItemModAxe(silverTools, "silver_axe", "iceandfire.silver_axe", EnumToolEffect.SILVER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":silver_hoe")
-    public static Item silver_hoe = new ItemModHoe(silverTools, "silver_hoe", "iceandfire.silver_hoe", 0);
+    public static Item silver_hoe = new ItemModHoe(silverTools, "silver_hoe", "iceandfire.silver_hoe", EnumToolEffect.SILVER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":fire_stew")
     public static Item fire_stew = new ItemGeneric("fire_stew", "iceandfire.fire_stew");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":frost_stew")
@@ -134,9 +136,9 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonbone_hoe")
     public static Item dragonbone_hoe = new ItemModHoe(boneTools, "dragonbone_hoe", "iceandfire.dragonbone_hoe");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonbone_sword_fire")
-    public static Item dragonbone_sword_fire = new ItemAlchemySword(fireBoneTools, "dragonbone_sword_fire", "iceandfire.dragonbone_sword_fire", 0);
+    public static Item dragonbone_sword_fire = new ItemAlchemySword(fireBoneTools, "dragonbone_sword_fire", "iceandfire.dragonbone_sword_fire", EnumToolEffect.FIRE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonbone_sword_ice")
-    public static Item dragonbone_sword_ice = new ItemAlchemySword(iceBoneTools, "dragonbone_sword_ice", "iceandfire.dragonbone_sword_ice", 1);
+    public static Item dragonbone_sword_ice = new ItemAlchemySword(iceBoneTools, "dragonbone_sword_ice", "iceandfire.dragonbone_sword_ice", EnumToolEffect.ICE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonbone_arrow")
     public static Item dragonbone_arrow = new ItemGeneric("dragonbone_arrow", "iceandfire.dragonbone_arrow");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonbone_bow")
@@ -303,29 +305,29 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_stinger")
     public static Item myrmex_stinger = new ItemGeneric("myrmex_stinger", "iceandfire.myrmex_stinger");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_desert_sword")
-    public static Item myrmex_desert_sword = new ItemModSword(myrmexChitin, "myrmex_desert_sword", "iceandfire.myrmex_desert_sword", 1);
+    public static Item myrmex_desert_sword = new ItemModSword(myrmexChitin, "myrmex_desert_sword", "iceandfire.myrmex_desert_sword", EnumToolEffect.MYRMEX);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_desert_sword_venom")
-    public static Item myrmex_desert_sword_venom = new ItemModSword(myrmexChitin, "myrmex_desert_sword_venom", "iceandfire.myrmex_desert_sword_venom", 2);
+    public static Item myrmex_desert_sword_venom = new ItemModSword(myrmexChitin, "myrmex_desert_sword_venom", "iceandfire.myrmex_desert_sword_venom", EnumToolEffect.MYRMEX_POISON);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_desert_shovel")
-    public static Item myrmex_desert_shovel = new ItemModShovel(myrmexChitin, "myrmex_desert_shovel", "iceandfire.myrmex_desert_shovel", 1);
+    public static Item myrmex_desert_shovel = new ItemModShovel(myrmexChitin, "myrmex_desert_shovel", "iceandfire.myrmex_desert_shovel", EnumToolEffect.MYRMEX);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_desert_pickaxe")
-    public static Item myrmex_desert_pickaxe = new ItemModPickaxe(myrmexChitin, "myrmex_desert_pickaxe", "iceandfire.myrmex_desert_pickaxe", 1);
+    public static Item myrmex_desert_pickaxe = new ItemModPickaxe(myrmexChitin, "myrmex_desert_pickaxe", "iceandfire.myrmex_desert_pickaxe", EnumToolEffect.MYRMEX);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_desert_axe")
-    public static Item myrmex_desert_axe = new ItemModAxe(myrmexChitin, "myrmex_desert_axe", "iceandfire.myrmex_desert_axe", 1);
+    public static Item myrmex_desert_axe = new ItemModAxe(myrmexChitin, "myrmex_desert_axe", "iceandfire.myrmex_desert_axe", EnumToolEffect.MYRMEX);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_desert_hoe")
-    public static Item myrmex_desert_hoe = new ItemModHoe(myrmexChitin, "myrmex_desert_hoe", "iceandfire.myrmex_desert_hoe", 1);
+    public static Item myrmex_desert_hoe = new ItemModHoe(myrmexChitin, "myrmex_desert_hoe", "iceandfire.myrmex_desert_hoe", EnumToolEffect.MYRMEX);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_jungle_sword")
-    public static Item myrmex_jungle_sword = new ItemModSword(myrmexChitin, "myrmex_jungle_sword", "iceandfire.myrmex_jungle_sword", 1);
+    public static Item myrmex_jungle_sword = new ItemModSword(myrmexChitin, "myrmex_jungle_sword", "iceandfire.myrmex_jungle_sword", EnumToolEffect.MYRMEX);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_jungle_sword_venom")
-    public static Item myrmex_jungle_sword_venom = new ItemModSword(myrmexChitin, "myrmex_jungle_sword_venom", "iceandfire.myrmex_jungle_sword_venom", 2);
+    public static Item myrmex_jungle_sword_venom = new ItemModSword(myrmexChitin, "myrmex_jungle_sword_venom", "iceandfire.myrmex_jungle_sword_venom", EnumToolEffect.MYRMEX_POISON);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_jungle_shovel")
-    public static Item myrmex_jungle_shovel = new ItemModShovel(myrmexChitin, "myrmex_jungle_shovel", "iceandfire.myrmex_jungle_shovel", 1);
+    public static Item myrmex_jungle_shovel = new ItemModShovel(myrmexChitin, "myrmex_jungle_shovel", "iceandfire.myrmex_jungle_shovel", EnumToolEffect.MYRMEX);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_jungle_pickaxe")
-    public static Item myrmex_jungle_pickaxe = new ItemModPickaxe(myrmexChitin, "myrmex_jungle_pickaxe", "iceandfire.myrmex_jungle_pickaxe", 1);
+    public static Item myrmex_jungle_pickaxe = new ItemModPickaxe(myrmexChitin, "myrmex_jungle_pickaxe", "iceandfire.myrmex_jungle_pickaxe", EnumToolEffect.MYRMEX);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_jungle_axe")
-    public static Item myrmex_jungle_axe = new ItemModAxe(myrmexChitin, "myrmex_jungle_axe", "iceandfire.myrmex_jungle_axe", 1);
+    public static Item myrmex_jungle_axe = new ItemModAxe(myrmexChitin, "myrmex_jungle_axe", "iceandfire.myrmex_jungle_axe", EnumToolEffect.MYRMEX);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_jungle_hoe")
-    public static Item myrmex_jungle_hoe = new ItemModHoe(myrmexChitin, "myrmex_jungle_hoe", "iceandfire.myrmex_jungle_hoe", 1);
+    public static Item myrmex_jungle_hoe = new ItemModHoe(myrmexChitin, "myrmex_jungle_hoe", "iceandfire.myrmex_jungle_hoe", EnumToolEffect.MYRMEX);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_desert_staff")
     public static Item myrmex_desert_staff = new ItemMyrmexStaff(false);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_jungle_staff")
@@ -371,15 +373,15 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_ingot")
     public static Item dragonsteel_fire_ingot = new ItemGeneric("dragonsteel_fire_ingot", "iceandfire.dragonsteel_fire_ingot");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_sword")
-    public static Item dragonsteel_fire_sword = new ItemModSword(dragonsteel_fire_tools, "dragonsteel_fire_sword", "iceandfire.dragonsteel_fire_sword", 3);
+    public static Item dragonsteel_fire_sword = new ItemModSword(dragonsteel_fire_tools, "dragonsteel_fire_sword", "iceandfire.dragonsteel_fire_sword", EnumToolEffect.FIRE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_pickaxe")
-    public static Item dragonsteel_fire_pickaxe = new ItemModPickaxe(dragonsteel_fire_tools, "dragonsteel_fire_pickaxe", "iceandfire.dragonsteel_fire_pickaxe", 2);
+    public static Item dragonsteel_fire_pickaxe = new ItemModPickaxe(dragonsteel_fire_tools, "dragonsteel_fire_pickaxe", "iceandfire.dragonsteel_fire_pickaxe", EnumToolEffect.FIRE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_axe")
-    public static Item dragonsteel_fire_axe = new ItemModAxe(dragonsteel_fire_tools, "dragonsteel_fire_axe", "iceandfire.dragonsteel_fire_axe", 2);
+    public static Item dragonsteel_fire_axe = new ItemModAxe(dragonsteel_fire_tools, "dragonsteel_fire_axe", "iceandfire.dragonsteel_fire_axe", EnumToolEffect.FIRE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_shovel")
-    public static Item dragonsteel_fire_shovel = new ItemModShovel(dragonsteel_fire_tools, "dragonsteel_fire_shovel", "iceandfire.dragonsteel_fire_shovel", 2);
+    public static Item dragonsteel_fire_shovel = new ItemModShovel(dragonsteel_fire_tools, "dragonsteel_fire_shovel", "iceandfire.dragonsteel_fire_shovel", EnumToolEffect.FIRE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_hoe")
-    public static Item dragonsteel_fire_hoe = new ItemModHoe(dragonsteel_fire_tools, "dragonsteel_fire_hoe", "iceandfire.dragonsteel_fire_hoe", 2);
+    public static Item dragonsteel_fire_hoe = new ItemModHoe(dragonsteel_fire_tools, "dragonsteel_fire_hoe", "iceandfire.dragonsteel_fire_hoe", EnumToolEffect.FIRE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_helmet")
     public static Item dragonsteel_fire_helmet = new ItemDragonsteelArmor(dragonsteel_fire_armor, 0, EntityEquipmentSlot.HEAD, "dragonsteel_fire_helmet", "iceandfire.dragonsteel_fire_helmet");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_chestplate")
@@ -391,15 +393,15 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_ingot")
     public static Item dragonsteel_ice_ingot = new ItemGeneric("dragonsteel_ice_ingot", "iceandfire.dragonsteel_ice_ingot");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_sword")
-    public static Item dragonsteel_ice_sword = new ItemModSword(dragonsteel_ice_tools, "dragonsteel_ice_sword", "iceandfire.dragonsteel_ice_sword", 4);
+    public static Item dragonsteel_ice_sword = new ItemModSword(dragonsteel_ice_tools, "dragonsteel_ice_sword", "iceandfire.dragonsteel_ice_sword", EnumToolEffect.ICE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_pickaxe")
-    public static Item dragonsteel_ice_pickaxe = new ItemModPickaxe(dragonsteel_ice_tools, "dragonsteel_ice_pickaxe", "iceandfire.dragonsteel_ice_pickaxe", 3);
+    public static Item dragonsteel_ice_pickaxe = new ItemModPickaxe(dragonsteel_ice_tools, "dragonsteel_ice_pickaxe", "iceandfire.dragonsteel_ice_pickaxe", EnumToolEffect.ICE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_axe")
-    public static Item dragonsteel_ice_axe = new ItemModAxe(dragonsteel_ice_tools, "dragonsteel_ice_axe", "iceandfire.dragonsteel_ice_axe", 3);
+    public static Item dragonsteel_ice_axe = new ItemModAxe(dragonsteel_ice_tools, "dragonsteel_ice_axe", "iceandfire.dragonsteel_ice_axe", EnumToolEffect.ICE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_shovel")
-    public static Item dragonsteel_ice_shovel = new ItemModShovel(dragonsteel_ice_tools, "dragonsteel_ice_shovel", "iceandfire.dragonsteel_ice_shovel", 3);
+    public static Item dragonsteel_ice_shovel = new ItemModShovel(dragonsteel_ice_tools, "dragonsteel_ice_shovel", "iceandfire.dragonsteel_ice_shovel", EnumToolEffect.ICE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_hoe")
-    public static Item dragonsteel_ice_hoe = new ItemModHoe(dragonsteel_ice_tools, "dragonsteel_ice_hoe", "iceandfire.dragonsteel_ice_hoe", 3);
+    public static Item dragonsteel_ice_hoe = new ItemModHoe(dragonsteel_ice_tools, "dragonsteel_ice_hoe", "iceandfire.dragonsteel_ice_hoe", EnumToolEffect.ICE);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_helmet")
     public static Item dragonsteel_ice_helmet = new ItemDragonsteelArmor(dragonsteel_ice_armor, 0, EntityEquipmentSlot.HEAD, "dragonsteel_ice_helmet", "iceandfire.dragonsteel_ice_helmet");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_chestplate")
@@ -437,15 +439,15 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_ingot")
     public static Item dragonsteel_lightning_ingot = new ItemGeneric("dragonsteel_lightning_ingot", "iceandfire.dragonsteel_lightning_ingot");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_sword")
-    public static Item dragonsteel_lightning_sword = new ItemModSword(dragonsteel_lightning_tools, "dragonsteel_lightning_sword", "iceandfire.dragonsteel_lightning_sword", 5);
+    public static Item dragonsteel_lightning_sword = new ItemModSword(dragonsteel_lightning_tools, "dragonsteel_lightning_sword", "iceandfire.dragonsteel_lightning_sword", EnumToolEffect.LIGHTNING);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_pickaxe")
-    public static Item dragonsteel_lightning_pickaxe = new ItemModPickaxe(dragonsteel_lightning_tools, "dragonsteel_lightning_pickaxe", "iceandfire.dragonsteel_lightning_pickaxe", 4);
+    public static Item dragonsteel_lightning_pickaxe = new ItemModPickaxe(dragonsteel_lightning_tools, "dragonsteel_lightning_pickaxe", "iceandfire.dragonsteel_lightning_pickaxe", EnumToolEffect.LIGHTNING);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_axe")
-    public static Item dragonsteel_lightning_axe = new ItemModAxe(dragonsteel_lightning_tools, "dragonsteel_lightning_axe", "iceandfire.dragonsteel_lightning_axe", 4);
+    public static Item dragonsteel_lightning_axe = new ItemModAxe(dragonsteel_lightning_tools, "dragonsteel_lightning_axe", "iceandfire.dragonsteel_lightning_axe", EnumToolEffect.LIGHTNING);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_shovel")
-    public static Item dragonsteel_lightning_shovel = new ItemModShovel(dragonsteel_lightning_tools, "dragonsteel_lightning_shovel", "iceandfire.dragonsteel_lightning_shovel", 4);
+    public static Item dragonsteel_lightning_shovel = new ItemModShovel(dragonsteel_lightning_tools, "dragonsteel_lightning_shovel", "iceandfire.dragonsteel_lightning_shovel", EnumToolEffect.LIGHTNING);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_hoe")
-    public static Item dragonsteel_lightning_hoe = new ItemModHoe(dragonsteel_lightning_tools, "dragonsteel_lightning_hoe", "iceandfire.dragonsteel_lightning_hoe", 4);
+    public static Item dragonsteel_lightning_hoe = new ItemModHoe(dragonsteel_lightning_tools, "dragonsteel_lightning_hoe", "iceandfire.dragonsteel_lightning_hoe", EnumToolEffect.LIGHTNING);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_helmet")
     public static Item dragonsteel_lightning_helmet = new ItemDragonsteelArmor(dragonsteel_lightning_armor, 0, EntityEquipmentSlot.HEAD, "dragonsteel_lightning_helmet", "iceandfire.dragonsteel_lightning_helmet");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_chestplate")
@@ -455,7 +457,7 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_boots")
     public static Item dragonsteel_lightning_boots = new ItemDragonsteelArmor(dragonsteel_lightning_armor, 3, EntityEquipmentSlot.FEET, "dragonsteel_lightning_boots", "iceandfire.dragonsteel_lightning_boots"); 
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonbone_sword_lightning")
-    public static Item dragonbone_sword_lightning = new ItemAlchemySword(lightningBoneTools, "dragonbone_sword_lightning", "iceandfire.dragonbone_sword_lightning", 2);
+    public static Item dragonbone_sword_lightning = new ItemAlchemySword(lightningBoneTools, "dragonbone_sword_lightning", "iceandfire.dragonbone_sword_lightning", EnumToolEffect.LIGHTNING);
     
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copper_ingot")
     public static Item copperIngot = new ItemGeneric("copper_ingot", "iceandfire.copperIngot");
