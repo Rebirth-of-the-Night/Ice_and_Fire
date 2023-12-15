@@ -1,7 +1,5 @@
 package com.github.alexthe666.iceandfire.block.keletu;
 
-import javax.annotation.Nullable;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IBlockWithoutItem;
 import com.github.alexthe666.iceandfire.entity.tile.keletu.TileEntityDreadPiston;
@@ -14,6 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class BlockDreadPistonMoving extends BlockPistonMoving implements IBlockWithoutItem {
 

@@ -1,7 +1,5 @@
 package com.github.alexthe666.iceandfire.block.keletu;
 
-import java.util.List;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IBlockWithoutItem;
 import com.github.alexthe666.iceandfire.block.IDragonProof;
@@ -9,12 +7,7 @@ import com.github.alexthe666.iceandfire.block.IDreadBlock;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.tile.keletu.TileEntityDreadPiston;
 import com.google.common.collect.Lists;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockPistonBase;
-import net.minecraft.block.BlockPistonExtension;
-import net.minecraft.block.BlockSnow;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -24,6 +17,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 
 public class BlockDreadPistonBase extends BlockPistonBase implements IDreadBlock, IDragonProof, IBlockWithoutItem {
