@@ -12,86 +12,56 @@
   },
   "parent": "iceandfire:iceandfire/dragon_egg",
   "criteria": {
-  "iron": {
-    "trigger": "minecraft:inventory_changed",
-    "conditions": {
-      "items": [
-        {
-          "item": "iceandfire:dragonarmor_iron"
-        }
-      ]
-    }
-  },
-  "gold": {
-    "trigger": "minecraft:inventory_changed",
-    "conditions": {
-      "items": [
-        {
-          "item": "iceandfire:dragonarmor_gold"
-        }
-      ]
-    }
-  },
-  "diamond": {
-    "trigger": "minecraft:inventory_changed",
-    "conditions": {
-      "items": [
-        {
-          "item": "iceandfire:dragonarmor_diamond"
-        }
-      ]
-    }
-  },
-  "silver": {
-    "trigger": "minecraft:inventory_changed",
-    "conditions": {
-      "items": [
-        {
-          "item": "iceandfire:dragonarmor_silver"
-        }
-      ]
-    }
-  },
-  "electric": {
-    "trigger": "minecraft:inventory_changed",
-    "conditions": {
-      "items": [
-        {
-          "item": "iceandfire:dragonarmor_electric"
-        }
-      ]
-    }
-  },
-  "amythest": {
-    "trigger": "minecraft:inventory_changed",
-    "conditions": {
-      "items": [
-        {
-          "item": "iceandfire:dragonarmor_amythest"
-        }
-      ]
-    }
-  },
+    "iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "iceandfire:dragonarmor_iron"
+          }
+        ]
+      }
+    },
+    "gold": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "iceandfire:dragonarmor_gold"
+          }
+        ]
+      }
+    },
+    "diamond": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "iceandfire:dragonarmor_diamond"
+          }
+        ]
+      }
+    },
+    "silver": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "iceandfire:dragonarmor_silver"
+          }
+        ]
+      }
+    },
     "copper": {
-    "trigger": "minecraft:inventory_changed",
-    "conditions": {
-      "items": [
-        {
-          "item": "iceandfire:dragonarmor_copper"
-        }
-      ]
-    }
-  },
-  "black": {
-    "trigger": "minecraft:inventory_changed",
-    "conditions": {
-      "items": [
-        {
-          "item": "iceandfire:dragonarmor_black"
-        }
-      ]
-    }
-  },
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "iceandfire:dragonarmor_copper"
+          }
+        ]
+      }
+    },
     "dragonsteel_fire": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -129,13 +99,10 @@
       "gold",
       "diamond",
       "silver",
-	  "electric",
-	  "amythest",
-	  "copper",
-	  "black",
+	    "copper",
       "dragonsteel_fire",
       "dragonsteel_ice",
-	  "dragonsteel_lightning"
+	    "dragonsteel_lightning"
     ]
   ]
 }
