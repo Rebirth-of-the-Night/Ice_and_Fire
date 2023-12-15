@@ -559,7 +559,9 @@ public class ServerEvents {
             if (!player.getEntityWorld().isRemote) {
                 if (player.ticksExisted % 2 == 0 && player.world.provider.getDimension() == IceAndFire.CONFIG.dreadlandsDimensionId) {
                     if ((player.capabilities.isFlying || player.isElytraFlying()) && !player.isCreative() && !player.isSpectator()) {
-                        event.setCanceled(true);
+                        player.capabilities.isFlying = false;
+                        player.setFlag(7, false);
+                        player.sendPlayerAbilities();
                         event.player.sendStatusMessage(new TextComponentTranslation("message.iceandfire.cantfly").setStyle(new Style().setColor(TextFormatting.BLUE)), true);
                         FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(player, FrozenEntityProperties.class);
                         if(frozenProps != null)

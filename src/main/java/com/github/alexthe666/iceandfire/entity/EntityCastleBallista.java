@@ -42,6 +42,7 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
         attackCount = 0;
         setSize(1.5f, 3.00f);
         stepHeight = 0.0f;
+        isImmuneToFire = true;
     }
 
     protected boolean canDespawn() {

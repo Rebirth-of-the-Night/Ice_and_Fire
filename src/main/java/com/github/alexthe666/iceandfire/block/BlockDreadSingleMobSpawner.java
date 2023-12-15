@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockDreadSingleMobSpawner extends Block implements IDreadBlock {
+public class BlockDreadSingleMobSpawner extends Block implements IDreadBlock, IBlockWithoutItem {
 
 	public BlockDreadSingleMobSpawner(String name) {
 		super(Material.ROCK);

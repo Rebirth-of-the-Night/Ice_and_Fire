@@ -20,6 +20,8 @@ import com.github.alexthe666.iceandfire.command.CommandTreeBaseButOurs;
 import com.github.alexthe666.iceandfire.compat.TinkersCompatBridge;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.entity.tile.*;
+import com.github.alexthe666.iceandfire.entity.tile.keletu.TileEntityDreadPiston;
+import com.github.alexthe666.iceandfire.entity.tile.keletu.TileEntityDreadPistonRenderer;
 import com.github.alexthe666.iceandfire.enums.*;
 import com.github.alexthe666.iceandfire.event.ClientEvents;
 import com.github.alexthe666.iceandfire.item.ICustomRendered;
@@ -438,6 +440,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDreadPortal.class, new RenderDreadPortal());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGhostChest.class, new RenderGhostChest());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDreadSpawner.class, new RenderDreadSpawner());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDreadPiston.class, new TileEntityDreadPistonRenderer());
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 0, TileEntityPixieHouse.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 1, TileEntityPixieHouse.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 2, TileEntityPixieHouse.class);

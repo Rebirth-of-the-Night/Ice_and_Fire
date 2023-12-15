@@ -200,7 +200,7 @@ public class CommonProxy {
         try {
             for (Field f : IafBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
-                if (obj instanceof Block && !(obj instanceof BlockTripWire || obj instanceof BlockTripWireDragon || obj instanceof BlockDreadSingleMobSpawner)) {
+                if (obj instanceof Block && !(obj instanceof IBlockWithoutItem)) {
                     ItemBlock itemBlock;
                     if (obj == IafBlockRegistry.jar_pixie) {
                         itemBlock = ((BlockJar) obj).new ItemBlockJar((Block) obj);

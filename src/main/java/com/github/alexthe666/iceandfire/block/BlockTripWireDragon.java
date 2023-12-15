@@ -9,8 +9,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -18,7 +20,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockTripWireDragon extends Block implements IDragonProof {
+public class BlockTripWireDragon extends Block implements IDragonProof, IBlockWithoutItem {
     public BlockTripWireDragon() {
         super(Material.ROCK);
         this.setHardness(4F);
@@ -38,7 +40,7 @@ public class BlockTripWireDragon extends Block implements IDragonProof {
             if (worldIn.getBlockState(pos).getBlock() == this) {
                 worldIn.setBlockToAir(pos);
                 EnumFacing[] facing1 = new EnumFacing[]{EnumFacing.UP, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST};
-                for (EnumFacing facing : EnumFacing.VALUES) {
+                for (EnumFacing facing : facing1) {
                     deleteNearbyWire(worldIn, pos.offset(facing), startPos);
                 }
             }
@@ -53,8 +55,7 @@ public class BlockTripWireDragon extends Block implements IDragonProof {
         if(!(entityIn instanceof EntityDreadQueen) && !(entityIn instanceof EntityBlackFrostDragon) && !(entityIn instanceof EntityPlayer))
             return;
 
-        if(entityIn.ticksExisted %20 == 0)
-            deleteNearbyWire(worldIn, pos, pos);
+        deleteNearbyWire(worldIn, pos, pos);
 
     }
 

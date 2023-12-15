@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockTripWire extends Block implements IDragonProof, IDreadBlock {
+public class BlockTripWire extends Block implements IDragonProof, IDreadBlock, IBlockWithoutItem {
     public BlockTripWire() {
         super(Material.ROCK);
         this.setHardness(4F);
@@ -53,8 +53,7 @@ public class BlockTripWire extends Block implements IDragonProof, IDreadBlock {
             return;
         //List<EntityPlayer> players = worldIn.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX()+1, pos.getY()+1, pos.getZ()+1).expand(6, 3, 6).expand(-6, -3, -6));
 
-        if(entityIn.ticksExisted % 20 == 0)
-            deleteNearbyWire(worldIn, pos, pos);
+        deleteNearbyWire(worldIn, pos, pos);
     }
 
     @Override

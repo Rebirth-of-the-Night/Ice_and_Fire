@@ -1,8 +1,12 @@
 package com.github.alexthe666.iceandfire.world.gen.processor;
 
+import com.github.alexthe666.iceandfire.block.BlockDreadBase;
+import com.github.alexthe666.iceandfire.block.BlockDreadStoneFace;
+import com.github.alexthe666.iceandfire.block.IDreadBlock;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityPodium;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -53,8 +57,7 @@ public class DreadCastleProcessor implements ITemplateProcessor {
                 tag.removeTag("SpawnPotentials");
                 tag.setTag("SpawnData", spawnData.copy());
             }
-            Template.BlockInfo newInfo = new Template.BlockInfo(pos, IafBlockRegistry.dread_spawner.getDefaultState(), tag);
-            return newInfo;
+        return new Template.BlockInfo(pos, IafBlockRegistry.dread_spawner.getDefaultState(), tag);
     }
 
     protected Template.BlockInfo getLootTable(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn, ResourceLocation loot){
@@ -68,15 +71,41 @@ public class DreadCastleProcessor implements ITemplateProcessor {
     @Nullable
     @Override
     public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn) {
+        Block block = blockInfoIn.blockState.getBlock();
+
         if (worldIn.rand.nextFloat() <= integrity) {
-            if (blockInfoIn.blockState.getBlock() == IafBlockRegistry.dread_stone_bricks) {
-                IBlockState state = getRandomCrackedBlock(null, worldIn.rand);
-                return new Template.BlockInfo(pos, state, null);
+            if (block instanceof IDreadBlock) {
+
+                if(block == IafBlockRegistry.dread_stone_bricks){
+                    IBlockState state = getRandomCrackedBlock(null, worldIn.rand);
+                    return new Template.BlockInfo(pos, state, null);
+                }
+
+                if(block instanceof BlockDreadBase)
+                {
+                    return new Template.BlockInfo(pos, block.getDefaultState(), null);
+                }
+
+                if(block instanceof BlockDreadStoneFace) {
+                    return new Template.BlockInfo(pos, IafBlockRegistry.dread_stone_face.getStateFromMeta(4), null);
+                }
             }
-            if (blockInfoIn.blockState.getBlock() instanceof BlockChest) {
+            if (block == Blocks.PISTON) {
+                return new Template.BlockInfo(pos, IafBlockRegistry.dread_piston.getStateFromMeta(block.getMetaFromState(blockInfoIn.blockState)), null);
+            }
+            if (block == Blocks.STICKY_PISTON) {
+                return new Template.BlockInfo(pos, IafBlockRegistry.dread_sticky_piston.getStateFromMeta(block.getMetaFromState(blockInfoIn.blockState)), null);
+            }
+            if (block == Blocks.PISTON_HEAD) {
+                return new Template.BlockInfo(pos, IafBlockRegistry.dread_piston_head.getStateFromMeta(block.getMetaFromState(blockInfoIn.blockState)), null);
+            }
+            if (block == Blocks.PISTON_EXTENSION) {
+                return new Template.BlockInfo(pos, IafBlockRegistry.dread_piston_moving.getStateFromMeta(block.getMetaFromState(blockInfoIn.blockState)), null);
+            }
+            if (block instanceof BlockChest) {
                 return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_TRASH);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.CLAY) {NBTTagCompound tag = blockInfoIn.tileentityData == null ? new NBTTagCompound() : blockInfoIn.tileentityData;
+            if (block == Blocks.CLAY) {NBTTagCompound tag = blockInfoIn.tileentityData == null ? new NBTTagCompound() : blockInfoIn.tileentityData;
                 NBTTagCompound spawnData = new NBTTagCompound();
                 EntityDreadHorse horse = new EntityDreadHorse(worldIn);
                 horse.updatePassenger(new EntityDreadKnight(worldIn));
@@ -86,57 +115,56 @@ public class DreadCastleProcessor implements ITemplateProcessor {
                     tag.removeTag("SpawnPotentials");
                     tag.setTag("SpawnData", spawnData.copy());
                 }
-                Template.BlockInfo newInfo = new Template.BlockInfo(pos, IafBlockRegistry.dread_spawner.getDefaultState(), tag);
 
-                return newInfo;
+                return new Template.BlockInfo(pos, IafBlockRegistry.dread_spawner.getDefaultState(), tag);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.LAPIS_ORE) {
+            if (block == Blocks.LAPIS_ORE) {
                 return getSpawnedMob(worldIn, pos, blockInfoIn, EntityDreadThrall.class);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.DIAMOND_ORE) {
+            if (block == Blocks.DIAMOND_ORE) {
                 return getSpawnedMob(worldIn, pos, blockInfoIn, EntityDreadKnight.class);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.GOLD_ORE) {
+            if (block == Blocks.GOLD_ORE) {
                 Random rand = new Random(worldIn.getSeed() + pos.toLong());
                 return getSpawnedMob(worldIn, pos, blockInfoIn, getRandomMobForMobSpawner(rand));
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.ENDER_CHEST) {
+            if (block == Blocks.ENDER_CHEST) {
                 return getSpawnedMob(worldIn, pos, blockInfoIn, EntityDreadGhoul.class);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.END_PORTAL_FRAME) {
+            if (block == Blocks.END_PORTAL_FRAME) {
                 return getSpawnedMob(worldIn, pos, blockInfoIn, EntityDreadScuttler.class);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.MOSSY_COBBLESTONE) {
+            if (block == Blocks.MOSSY_COBBLESTONE) {
                 return getSpawnedMob(worldIn, pos, blockInfoIn, EntityDreadBeast.class);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.IRON_ORE) {
+            if (block == Blocks.IRON_ORE) {
                 if(worldIn.rand.nextInt(2) < 1)
                     return getSpawnedMob(worldIn, pos, blockInfoIn, EntityDreadBeast.class);
                 else
                     return new Template.BlockInfo(pos, Blocks.AIR.getDefaultState(), null);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.REDSTONE_ORE) {
+            if (block == Blocks.REDSTONE_ORE) {
                 return getSpawnedMob(worldIn, pos, blockInfoIn, EntityDreadKnightRoyal.class);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.LIT_PUMPKIN) {
+            if (block == Blocks.LIT_PUMPKIN) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.dread_single_spawner_lich.getDefaultState(), null);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.BRICK_BLOCK) {
+            if (block == Blocks.BRICK_BLOCK) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.tripwire.getDefaultState(), null);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.EMERALD_ORE) {
+            if (block == Blocks.EMERALD_ORE) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.tripwire_dragon.getDefaultState(), null);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.BEDROCK) {
+            if (block == Blocks.BEDROCK) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.dread_single_spawner_queen.getDefaultState(), null);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.END_ROD) {
+            if (block == Blocks.END_ROD) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.dread_single_spawner_dragon.getDefaultState(), null);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.PURPUR_BLOCK) {
+            if (block == Blocks.PURPUR_BLOCK) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.dread_single_spawner_ballista.getDefaultState(), null);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.NETHERRACK) {
+            if (block == Blocks.NETHERRACK) {
                 if(worldIn.rand.nextInt(2) < 1)
                     return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_NORMAL);
                 else
@@ -151,52 +179,52 @@ public class DreadCastleProcessor implements ITemplateProcessor {
             if (blockInfoIn.blockState == Blocks.SPONGE.getStateFromMeta(1)) {
                 return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_VALUABLE);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.NETHER_BRICK) {
+            if (block == Blocks.NETHER_BRICK) {
                 return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_QUEEN);
             }
-            if (blockInfoIn.blockState.getBlock() == IafBlockRegistry.sapphireOre) {
+            if (block == IafBlockRegistry.sapphireOre) {
                 return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_LIBRARY);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.MONSTER_EGG) {
+            if (block == Blocks.MONSTER_EGG) {
                 return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_TREASURE);
             }
             if (blockInfoIn.blockState == IafBlockRegistry.myrmex_resin_sticky.getStateFromMeta(1)) {
                 return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_MAGIC);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.MYCELIUM) {
+            if (block == Blocks.MYCELIUM) {
                 return getLootTable(worldIn, pos, blockInfoIn, LOOT_TOWER_KEY);
             }
-            if (blockInfoIn.blockState.getBlock() == IafBlockRegistry.myrmex_desert_resin_block) {
+            if (block == IafBlockRegistry.myrmex_desert_resin_block) {
                 return getLootTable(worldIn, pos, blockInfoIn, LOOT_ACCESS_KEY);
             }
-            if (blockInfoIn.blockState.getBlock() == IafBlockRegistry.myrmex_resin) {
+            if (block == IafBlockRegistry.myrmex_resin) {
                 return getLootTable(worldIn, pos, blockInfoIn, LOOT_QUEEN_KEY);
             }
-            if (blockInfoIn.blockState.getBlock() == IafBlockRegistry.jungle_myrmex_cocoon) {
+            if (block == IafBlockRegistry.jungle_myrmex_cocoon) {
                 return getLootTable(worldIn, pos, blockInfoIn, LOOT_LIBRARY_KEY);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.DIAMOND_BLOCK || blockInfoIn.blockState.getBlock() == Blocks.QUARTZ_ORE || blockInfoIn.blockState.getBlock() == Blocks.RED_NETHER_BRICK || blockInfoIn.blockState.getBlock() == Blocks.EMERALD_BLOCK) {
+            if (block == Blocks.DIAMOND_BLOCK || block == Blocks.QUARTZ_ORE || block == Blocks.RED_NETHER_BRICK || block == Blocks.EMERALD_BLOCK) {
                 return getLootTable(worldIn, pos, blockInfoIn, LOOT_SPECIAL_KEY);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.MELON_BLOCK) {
+            if (block == Blocks.MELON_BLOCK) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.tower_keyhole.getDefaultState(), null);
             }
             if (blockInfoIn.blockState == IafBlockRegistry.myrmex_resin_sticky.getStateFromMeta(0)) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.queen_keyhole.getDefaultState(), null);
             }
-            if (blockInfoIn.blockState.getBlock() == IafBlockRegistry.myrmex_jungle_resin_block) {
+            if (block == IafBlockRegistry.myrmex_jungle_resin_block) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.tower_access_keyhole.getDefaultState(), null);
             }
-            if (blockInfoIn.blockState.getBlock() == IafBlockRegistry.silverBlock) {
+            if (block == IafBlockRegistry.silverBlock) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.library_keyhole.getDefaultState(), null);
             }
-            if (blockInfoIn.blockState == Blocks.QUARTZ_BLOCK.getStateFromMeta(1) || blockInfoIn.blockState.getBlock() == Blocks.MAGMA || blockInfoIn.blockState.getBlock() == Blocks.LAPIS_BLOCK) {
+            if (blockInfoIn.blockState == Blocks.QUARTZ_BLOCK.getStateFromMeta(1) || block == Blocks.MAGMA || block == Blocks.LAPIS_BLOCK) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.special_keyhole.getDefaultState(), null);
             }
-            if (blockInfoIn.blockState.getBlock() == Blocks.CONCRETE_POWDER) {
+            if (block == Blocks.CONCRETE_POWDER) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.treasury_keyhole.getDefaultState(), null);
             }
-            if(blockInfoIn.blockState.getBlock() == Blocks.YELLOW_GLAZED_TERRACOTTA){
+            if(block == Blocks.YELLOW_GLAZED_TERRACOTTA){
                     TileEntityPodium tile = new TileEntityPodium();
                     LootTable table = worldIn.getLootTableManager().getLootTableFromLocation(DreadCastleProcessor.LOOT_TREASURY_PEDESTAL);
 
