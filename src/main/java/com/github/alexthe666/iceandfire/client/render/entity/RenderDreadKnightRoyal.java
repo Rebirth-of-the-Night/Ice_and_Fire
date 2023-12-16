@@ -48,7 +48,7 @@ public class RenderDreadKnightRoyal extends RenderLiving<EntityDreadKnightRoyal>
                 return TEXTURE_1;
             case 2:
                 return TEXTURE_2;
-                default:
+            default:
                 return TEXTURE_0;
         }
     }

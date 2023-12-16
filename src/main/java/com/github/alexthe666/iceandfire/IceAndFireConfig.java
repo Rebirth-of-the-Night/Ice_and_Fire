@@ -175,11 +175,12 @@ public class IceAndFireConfig {
     public float weezerTinkersDisarmChance = 0.2F;
     public boolean chunkLoadSummonCrystal = true;
     public int ballistaBaseDamage = 10;
-    public double ghostMaxHealth;
-    public double ghostAttackStrength;
+    public double ghostMaxHealth = 30;
+    public double ghostAttackStrength = 3F;
     public boolean generateGraveyards = true;
-    public int generateGraveyardChance = 16;
-    public boolean ghostSpawnFromPlayerDeaths;
+    public int generateGraveyardChance = 64;
+    public boolean ghostSpawnFromPlayerDeaths = true;
+    public int ghostSpawnChanceFromGraveyardSoil = 9;
     public String villagerTradingItem = "iceandfire:sapphire_gem"; // TODO make trading item configurable
 
     public void init(Configuration config) {
@@ -369,8 +370,18 @@ public class IceAndFireConfig {
 
         this.chunkLoadSummonCrystal = config.getBoolean("Chunk Load Summon Crystal", "all", true, "True if the summon crystal can load chunks to find dragons.");
 
+        //Ghost
         this.ghostMaxHealth = config.getFloat("Ghost Max Health", "all", 30F, 1.0F, 10000.0F, "Maximum ghost health.");
         this.ghostAttackStrength = config.getFloat("Ghost Attack Strength", "all", 3F, 0.0F, 10000.0F, "Maximum ghost attack strength.");
+        this.ghostSpawnFromPlayerDeaths = config.getBoolean("Player Death Spawns Ghost", "all", true, "True if allow spawn ghost when player death");
+        this.ghostSpawnChanceFromGraveyardSoil = config.getInt("Ghost Spawn Rate At Graveyard Soid", "all", 9, 1, 100, "Chance graveyard soil spawn a ghost, Higher number = more rare");
+
+        //Graveyard
+        this.generateGraveyards = config.getBoolean("Generate Graveyards", "all", true, "True if graveyards are allowed to generate");
+        this.generateGraveyardChance = config.getInt("Graveyards Gen Chance", "all", 64, 1, 10000, "One out of this number chance per chunk to generate a Graveyard.");
+
+        //Ballista
+        this.ballistaBaseDamage = config.getInt("Ballista Arrow Damage", "all", 10, 1, 100, "Maximum castle ballista arrow strength.");
 
     }
 }

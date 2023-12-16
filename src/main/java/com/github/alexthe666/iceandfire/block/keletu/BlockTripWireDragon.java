@@ -1,6 +1,11 @@
-package com.github.alexthe666.iceandfire.block;
+package com.github.alexthe666.iceandfire.block.keletu;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.block.IBlockWithoutItem;
+import com.github.alexthe666.iceandfire.block.IDragonProof;
+import com.github.alexthe666.iceandfire.block.IDreadBlock;
+import com.github.alexthe666.iceandfire.entity.EntityBlackFrostDragon;
+import com.github.alexthe666.iceandfire.entity.EntityDreadQueen;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -16,17 +21,16 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockTripWire extends Block implements IDragonProof, IDreadBlock, IBlockWithoutItem {
-    public BlockTripWire() {
+public class BlockTripWireDragon extends Block implements IDragonProof, IBlockWithoutItem {
+    public BlockTripWireDragon() {
         super(Material.ROCK);
         this.setHardness(4F);
         this.setResistance(1000F);
         this.setSoundType(SoundType.WOOD);
         this.setCreativeTab(IceAndFire.TAB_BLOCKS);
-        this.setTranslationKey("iceandfire." + "tripwire");
-        this.setRegistryName(IceAndFire.MODID, "tripwire");
+        this.setTranslationKey("iceandfire." + "tripwire_dragon");
+        this.setRegistryName(IceAndFire.MODID, "tripwire_dragon");
     }
-
 
     public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
         return new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
@@ -36,24 +40,24 @@ public class BlockTripWire extends Block implements IDragonProof, IDreadBlock, I
         if (pos.getDistance(startPos.getX(), startPos.getY(), startPos.getZ()) < 32) {
             if (worldIn.getBlockState(pos).getBlock() == this) {
                 worldIn.setBlockToAir(pos);
-                for (EnumFacing facing : EnumFacing.values()) {
+                EnumFacing[] facing1 = new EnumFacing[]{EnumFacing.UP, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST};
+                for (EnumFacing facing : facing1) {
                     deleteNearbyWire(worldIn, pos.offset(facing), startPos);
                 }
             }
-            for (int i = -64; i < 64; i++)
-                for (int k = -64; k < 64; k++)
-                    if (worldIn.getBlockState(new BlockPos(pos.getX() + i, pos.getY(), pos.getZ() + k)).getBlock() == IafBlockRegistry.dread_single_spawner_queen) {
-                        worldIn.destroyBlock(new BlockPos(pos.getX() + i, pos.getY(), pos.getZ() + k), false);
-                    }
+           // for(int i=0;i<10;i++)
+                if (worldIn.getBlockState(pos.add(0, 1, 0)).getBlock() instanceof IDreadBlock) {
+                    worldIn.destroyBlock(pos.add(0, 1, 0), false);
+                }
         }
     }
 
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-        if(!(entityIn instanceof EntityPlayer))
+        if(!(entityIn instanceof EntityDreadQueen) && !(entityIn instanceof EntityBlackFrostDragon) && !(entityIn instanceof EntityPlayer))
             return;
-        //List<EntityPlayer> players = worldIn.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX()+1, pos.getY()+1, pos.getZ()+1).expand(6, 3, 6).expand(-6, -3, -6));
 
         deleteNearbyWire(worldIn, pos, pos);
+
     }
 
     @Override

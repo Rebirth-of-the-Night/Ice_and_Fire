@@ -35,7 +35,7 @@ public class BlockGraveyardSoil extends Block {
         if (!worldIn.isRemote) {
             if (!worldIn.isAreaLoaded(pos, 3))
                 return;
-            if (!worldIn.isDaytime() && !worldIn.getBlockState(pos.up()).causesSuffocation() && rand.nextInt(9) == 0 && worldIn.getDifficulty() != EnumDifficulty.PEACEFUL) {
+            if (!worldIn.isDaytime() && !worldIn.getBlockState(pos.up()).causesSuffocation() && rand.nextInt(IceAndFire.CONFIG.ghostSpawnChanceFromGraveyardSoil) == 0 && worldIn.getDifficulty() != EnumDifficulty.PEACEFUL) {
                 int checkRange = 32;
                 int k = worldIn.getEntitiesWithinAABB(EntityGhost.class, (new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1)).grow(checkRange)).size();
                 if (k < 10) {
