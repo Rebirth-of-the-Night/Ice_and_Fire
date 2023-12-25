@@ -412,6 +412,7 @@ public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillager
             }
         }
 
+        //origin code
         /*
             public void tick() {
             if (this.action == Action.MOVE_TO) {

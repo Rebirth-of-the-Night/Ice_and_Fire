@@ -47,7 +47,7 @@ public class WorldGenCastle extends WorldGenerator {
 
     public boolean generate(World worldIn, Random rand, BlockPos position) {
 
-        //generate castle per 2000 block like chaos island
+        //generate castle ch 2000 blocks like chaos island
         if(!checkIfCanGenAt(worldIn, position, 1000, 1000))
             return false;
 

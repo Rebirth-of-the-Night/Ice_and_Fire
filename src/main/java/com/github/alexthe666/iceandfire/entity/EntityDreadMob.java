@@ -28,8 +28,6 @@ import java.util.UUID;
 
 public class EntityDreadMob extends EntityMob implements IDreadMob {
 
-	public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dread_queen"));
-
 	protected static final DataParameter<Optional<UUID>> COMMANDER_UNIQUE_ID = EntityDataManager.createKey(EntityDreadMob.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
 	public EntityDreadMob(World worldIn) {

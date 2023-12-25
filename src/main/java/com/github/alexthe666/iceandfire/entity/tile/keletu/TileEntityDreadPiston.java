@@ -20,11 +20,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class TileEntityDreadPiston extends TileEntityPiston {
-
-    public TileEntityDreadPiston()
-    {
-    }
-
     public TileEntityDreadPiston(IBlockState pistonStateIn, EnumFacing pistonFacingIn, boolean extendingIn, boolean shouldHeadBeRenderedIn)
     {
         super(pistonStateIn, pistonFacingIn, extendingIn, shouldHeadBeRenderedIn);
