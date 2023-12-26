@@ -2,7 +2,6 @@ package com.github.alexthe666.iceandfire.client.particle;
 
 import com.github.alexthe666.iceandfire.client.model.ModelGhost;
 import com.github.alexthe666.iceandfire.entity.EntityGhost;
-import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -50,13 +49,6 @@ public class ParticleGhostAppearance extends Particle {
             float f3 = 0.05F + 0.5F * MathHelper.sin(f1 * (float) Math.PI);
             GlStateManager.color(1.0F, 1.0F, 1.0F, f3);
             GlStateManager.translate(0.0F, 1.8F, 0.0F);
-            if (fromLeft) {
-                GlStateManager.rotate(150.0F * f1 - 60.0F + entityIn.rotationYaw, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(150.0F * f1 - 60.0F + entityIn.rotationPitch, 0.0F, 0.0F, 1.0F);
-            } else {
-                GlStateManager.rotate(150.0F * f1 - 60.0F + entityIn.rotationYaw, 0.0F, -1.0F, 0.0F);
-                GlStateManager.rotate(150.0F * f1 - 60.0F + entityIn.rotationPitch, 0.0F, 0.0F, -1.0F);
-            }
             GlStateManager.rotate(180.0F - entityIn.rotationYaw, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(60.0F - 150.0F * f1 - entityIn.rotationPitch, 0.0F, 1.0F, 0.0F);
             GlStateManager.translate(0.0F, -0.8F, -1.5F);
@@ -67,8 +59,6 @@ public class ParticleGhostAppearance extends Particle {
             this.entity.rotationYawHead = 0.0F;
             this.entity.prevRotationYaw = 0.0F;
             this.entity.prevRotationYawHead = 0.0F;
-
-            this.model.animate((IAnimatedEntity) this.entity, 0, 0, entity.ticksExisted + partialTicks, 0, 0, 0);
             rendermanager.renderEntity(this.entity, 0.0D, 0.0D, 0.0D, 0.0F, partialTicks, false);
             GlStateManager.popMatrix();
             GlStateManager.enableDepth();

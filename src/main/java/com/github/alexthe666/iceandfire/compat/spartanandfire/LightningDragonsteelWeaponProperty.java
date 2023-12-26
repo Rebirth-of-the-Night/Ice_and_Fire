@@ -15,7 +15,7 @@ public class LightningDragonsteelWeaponProperty extends WeaponPropertyWithCallba
     }
 
     public void onHitEntity(ToolMaterialEx material, ItemStack stack, EntityLivingBase target, EntityLivingBase attacker, Entity projectile) {
-        target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, attacker, target));
+        if(!attacker.world.isRemote && attacker.swingProgress < 0.2 && !target.isDead) target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, attacker, target));
         ItemUtil.knockbackWithDragonsteel(target, attacker);
     }
 }

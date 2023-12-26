@@ -1,0 +1,1 @@
+{"pattern": ["i", "p", "p"], "conditions": [], "type": "minecraft:crafting_shaped", "result": {"item": "iceandfire:pike_lightning_dragonsteel"}, "key": {"i": {"ore": "ingotLightningDragonsteel", "type": "forge:ore_dict"}, "p": {"item": "spartanfire:witherbone_pole", "data": 0}}}

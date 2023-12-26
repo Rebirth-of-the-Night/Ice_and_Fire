@@ -21,7 +21,7 @@ public class IceSwordWeaponProperty extends WeaponPropertyWithCallback {
         if (target instanceof EntityFireDragon || target instanceof EntityIceDragon) {
             target.attackEntityFrom(DamageSource.DROWN, 6.5F);
         }
-        target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, attacker, target));
+        if(!attacker.world.isRemote && attacker.swingProgress < 0.2 && !target.isDead) target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, attacker, target));
         ItemUtil.knockbackWithDragonsteel(target, attacker);
     }
 }
