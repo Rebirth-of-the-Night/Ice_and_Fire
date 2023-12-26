@@ -72,7 +72,7 @@ public class WorldGenGraveyard extends WorldGenerator {
         PlacementSettings settings = new PlacementSettings().setRotation(getRotationFromFacing(facing));
         BlockPos pos = height.offset(facing, template.getSize().getZ() / 2).offset(facing.rotateYCCW(), template.getSize().getX() / 2);
         if (checkIfCanGenAt(worldIn, pos, template.getSize().getX(), template.getSize().getZ(), facing)) {
-            template.addBlocksToWorld(worldIn, pos.down(6), new GraveyardProcessor(), settings, 2);
+            template.addBlocksToWorld(worldIn, pos.down(4), new GraveyardProcessor(), settings, 2);
         }
         return true;
     }

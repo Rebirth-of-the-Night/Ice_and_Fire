@@ -12,7 +12,10 @@ import com.github.alexthe666.iceandfire.client.model.animator.LightningDragonTab
 import com.github.alexthe666.iceandfire.client.model.animator.SeaSerpentTabulaModelAnimator;
 import com.github.alexthe666.iceandfire.client.model.util.*;
 import com.github.alexthe666.iceandfire.client.particle.*;
-import com.github.alexthe666.iceandfire.client.render.*;
+import com.github.alexthe666.iceandfire.client.render.RenderCastleBallista;
+import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsAurora;
+import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsSky;
+import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsWeather;
 import com.github.alexthe666.iceandfire.client.render.entity.*;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonArmor;
 import com.github.alexthe666.iceandfire.client.render.tile.*;
@@ -362,10 +365,10 @@ public class ClientProxy extends CommonProxy {
         DragonAnimationsLibrary.register(EnumDragonPoses.values(), EnumDragonModelTypes.values());
 
         try {
-            this.FIRE_DRAGON_MODEL = new IceAndFireTabulaModel<EntityFireDragon>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/firedragon_Ground"), new FireDragonTabulaModelAnimator());
-            this.ICE_DRAGON_MODEL = new IceAndFireTabulaModel<EntityIceDragon>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/icedragon/icedragon_Ground"), new IceDragonTabulaModelAnimator());
-            this.LIGHTNING_DRAGON_MODEL = new IceAndFireTabulaModel<EntityLightningDragon>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/lightningdragon/lightningdragon_Ground"), new LightningDragonTabulaModelAnimator());
-            this.SEA_SERPENT_MODEL = new IceAndFireTabulaModel<EntitySeaSerpent>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/seaserpent/seaserpent"), new SeaSerpentTabulaModelAnimator());
+            this.FIRE_DRAGON_MODEL = new IceAndFireTabulaModel<>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/firedragon_Ground"), new FireDragonTabulaModelAnimator());
+            this.ICE_DRAGON_MODEL = new IceAndFireTabulaModel<>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/icedragon/icedragon_Ground"), new IceDragonTabulaModelAnimator());
+            this.LIGHTNING_DRAGON_MODEL = new IceAndFireTabulaModel<>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/lightningdragon/lightningdragon_Ground"), new LightningDragonTabulaModelAnimator());
+            this.SEA_SERPENT_MODEL = new IceAndFireTabulaModel<>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/seaserpent/seaserpent"), new SeaSerpentTabulaModelAnimator());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -429,7 +432,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityCastleBallista.class, new RenderCastleBallista(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityBallistaArrow.class, new RenderIceCharge());
         RenderingRegistry.registerEntityRenderingHandler(EntityGhost.class, new RenderGhost(Minecraft.getMinecraft().getRenderManager()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityGhostSword.class, new RenderGhostSword(Minecraft.getMinecraft().getRenderManager()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityGhostSword.class, new RenderGhostSword<>(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
 
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPodium.class, new RenderPodium());

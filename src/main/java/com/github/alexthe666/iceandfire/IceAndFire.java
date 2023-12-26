@@ -1,9 +1,6 @@
 package com.github.alexthe666.iceandfire;
 
-import com.github.alexthe666.iceandfire.compat.CraftTweakerCompatBridge;
-import com.github.alexthe666.iceandfire.compat.OneProbeCompatBridge;
-import com.github.alexthe666.iceandfire.compat.ThaumcraftCompatBridge;
-import com.github.alexthe666.iceandfire.compat.TinkersCompatBridge;
+import com.github.alexthe666.iceandfire.compat.*;
 import com.github.alexthe666.iceandfire.entity.IafEntityRegistry;
 import com.github.alexthe666.iceandfire.entity.IafVillagerRegistry;
 import com.github.alexthe666.iceandfire.event.ServerEvents;
@@ -115,6 +112,7 @@ public class IceAndFire {
         OneProbeCompatBridge.loadPreInit();
         TinkersCompatBridge.loadTinkersCompat();
         CraftTweakerCompatBridge.loadTweakerCompat();
+        SAFCompatBridge.loadSpartanAndLightning();
         PROXY.preRender();
     }
 

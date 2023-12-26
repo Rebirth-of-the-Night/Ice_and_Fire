@@ -652,6 +652,12 @@ key.dragon_change_view=Change 3rd person camera for dragon
 tc.aspect.mythus=Mythological Creature, Legendary Being, Cryptid, Fearsome Critter
 tc.aspect.draco=Dragon
 
+material.spartanfire:lightning_dragonbone=Lightning Dragonbone
+material.spartanfire:lightning_dragonsteel=Lightning Dragonsteel
+
+tooltip.iceandfire:lightning_dragonbone=Strikes targets with lightning, deals extra damage to ice dragons and fire dragons
+tooltip.iceandfire:lightning_dragonsteel=Strikes targets with lightning
+
 advancements.iceandfire.root.title=Ice and Fire
 advancements.iceandfire.root.description=Enter a world of magical creatures
 advancements.iceandfire.bestiary.title=Book of Monsters
