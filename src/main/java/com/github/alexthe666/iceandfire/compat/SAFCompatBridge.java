@@ -1,6 +1,6 @@
 package com.github.alexthe666.iceandfire.compat;
 
-import com.github.alexthe666.iceandfire.compat.spartanandfire.ItemRegistrySFire;
+import com.github.alexthe666.iceandfire.compat.spartanandfire.ItemRegistryCompatSFire;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 
@@ -9,7 +9,7 @@ public class SAFCompatBridge {
 
     public static void loadSpartanAndLightning() {
         if (Loader.isModLoaded(SAF_MOD_ID)) {
-            MinecraftForge.EVENT_BUS.register(ItemRegistrySFire.class);
+            MinecraftForge.EVENT_BUS.register(ItemRegistryCompatSFire.class);
         }
     }
 

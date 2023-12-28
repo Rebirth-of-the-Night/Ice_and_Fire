@@ -11,9 +11,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 
-public class IceSwordWeaponProperty extends WeaponPropertyWithCallback {
+public class LightningSwordWeaponProperty extends WeaponPropertyWithCallback {
 
-    public IceSwordWeaponProperty(String propType, String propModId) {
+    public LightningSwordWeaponProperty(String propType, String propModId) {
         super(propType, propModId);
     }
 

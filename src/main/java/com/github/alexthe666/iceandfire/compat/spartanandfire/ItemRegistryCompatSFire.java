@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * Created by Jacob on 7/20/2018.
  */
-public class ItemRegistrySFire {
+public class ItemRegistryCompatSFire {
     public static final Set<IAFMatConverter> MATERIALS_TO_REGISTER = new LinkedHashSet<>();
 
     public static final String LIGHTNING_DRAGONBONE = "lightning_dragonbone";
@@ -39,7 +39,7 @@ public class ItemRegistrySFire {
         MATERIALS_TO_REGISTER.add(new IAFMatConverter(LIGHTNING_DRAGONBONE,
                 Utils.spartanMatFromToolMat(LIGHTNING_DRAGONBONE, IafItemRegistry.fireBoneTools,
                 9867904, 14999238, "ingotDragonbone"),
-                new IceSwordWeaponProperty(LIGHTNING_DRAGONBONE, IceAndFire.MODID)));
+                new LightningSwordWeaponProperty(LIGHTNING_DRAGONBONE, IceAndFire.MODID)));
         MATERIALS_TO_REGISTER.add(new IAFMatConverter(LIGHTNING_DRAGONSTEEL,
                 Utils.spartanMatFromToolMat(LIGHTNING_DRAGONSTEEL, IafItemRegistry.dragonsteel_ice_tools,
                         9867904, 14999238, "ingotLightningDragonsteel"),
