@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.client.model;
 
-import com.github.alexthe666.iceandfire.client.model.util.HideableModelRenderer;
 import com.github.alexthe666.iceandfire.entity.EntityGhost;
 import net.ilexiconn.llibrary.client.model.ModelAnimator;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
@@ -10,13 +9,12 @@ import net.minecraft.entity.Entity;
 
 public class ModelGhost extends ModelDragonBase {
 
-    public HideableModelRenderer head;
-    public HideableModelRenderer headware;
-    public HideableModelRenderer body;
-    public HideableModelRenderer armRight;
-    public HideableModelRenderer armLeft;
-    public HideableModelRenderer legRight;
-    public HideableModelRenderer legLeft;
+    public AdvancedModelRenderer head;
+    public AdvancedModelRenderer body;
+    public AdvancedModelRenderer armRight;
+    public AdvancedModelRenderer armLeft;
+    public AdvancedModelRenderer legRight;
+    public AdvancedModelRenderer legLeft;
     public AdvancedModelRenderer robe;
     public AdvancedModelRenderer mask;
     public AdvancedModelRenderer hood;
@@ -38,14 +36,14 @@ public class ModelGhost extends ModelDragonBase {
         this.sleeveRight = new AdvancedModelRenderer(this, 33, 35);
         this.sleeveRight.setRotationPoint(0.0F, -0.1F, 0.0F);
         this.sleeveRight.addBox(-2.2F, -2.0F, -2.0F, 3, 12, 4, modelScale);
-        this.body = new HideableModelRenderer(this, 16, 16);
+        this.body = new AdvancedModelRenderer(this, 16, 16);
         this.body.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.body.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, modelScale);
         this.robeLowerRight = new AdvancedModelRenderer(this, 48, 35);
         this.robeLowerRight.mirror = true;
         this.robeLowerRight.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.robeLowerRight.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, modelScale);
-        this.armLeft = new HideableModelRenderer(this, 40, 16);
+        this.armLeft = new AdvancedModelRenderer(this, 40, 16);
         this.armLeft.mirror = true;
         this.armLeft.setRotationPoint(5.0F, 2.0F, -0.0F);
         this.armLeft.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, modelScale);
@@ -57,24 +55,24 @@ public class ModelGhost extends ModelDragonBase {
         this.hood = new AdvancedModelRenderer(this, 60, 0);
         this.hood.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.hood.addBox(-4.5F, -8.6F, -4.5F, 9, 9, 9, modelScale);
-        this.legLeft = new HideableModelRenderer(this, 0, 16);
+        this.legLeft = new AdvancedModelRenderer(this, 0, 16);
         this.legLeft.mirror = true;
         this.legLeft.setRotationPoint(2.2F, 12.0F, 0.1F);
         this.legLeft.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, modelScale);
-        this.head = new HideableModelRenderer(this, 0, 0);
+        this.head = new AdvancedModelRenderer(this, 0, 0);
         this.head.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.head.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, modelScale);
         this.mask = new AdvancedModelRenderer(this, 40, 8);
         this.mask.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.mask.addBox(-4.0F, -8.6F, -4.4F, 8, 8, 0, modelScale);
-        this.armRight = new HideableModelRenderer(this, 40, 16);
+        this.armRight = new AdvancedModelRenderer(this, 40, 16);
         this.armRight.setRotationPoint(-5.0F, 2.0F, 0.0F);
         this.armRight.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, modelScale);
         this.setRotateAngle(armRight, -1.4570009181544104F, -0.10000736647217022F, 0.10000736647217022F);
         this.robe = new AdvancedModelRenderer(this, 4, 34);
         this.robe.setRotationPoint(0.0F, 0.1F, 0.0F);
         this.robe.addBox(-4.5F, 0.0F, -2.5F, 9, 12, 5, modelScale);
-        this.legRight = new HideableModelRenderer(this, 0, 16);
+        this.legRight = new AdvancedModelRenderer(this, 0, 16);
         this.legRight.setRotationPoint(-2.3F, 12.0F, 0.1F);
         this.legRight.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, modelScale);
         this.robeLowerLeft = new AdvancedModelRenderer(this, 48, 35);
