@@ -1,17 +1,12 @@
 package com.github.alexthe666.iceandfire.client.particle;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.util.vector.Vector4f;
+
+import java.util.*;
 
 /*
  * Lightning bolt effect code is dragged from the 1.16 source code of IaF.

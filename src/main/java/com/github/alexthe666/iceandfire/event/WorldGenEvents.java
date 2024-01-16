@@ -1,27 +1,13 @@
 package com.github.alexthe666.iceandfire.event;
 
-import static com.github.alexthe666.iceandfire.IceAndFire.CONFIG;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
-import com.github.alexthe666.iceandfire.entity.EntityCyclops;
-import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
-import com.github.alexthe666.iceandfire.entity.EntityHippocampus;
-import com.github.alexthe666.iceandfire.entity.EntityIceDragon;
-import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
-import com.github.alexthe666.iceandfire.entity.EntitySeaSerpent;
-import com.github.alexthe666.iceandfire.entity.EntityStymphalianBird;
+import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
 import com.github.alexthe666.iceandfire.world.gen.*;
 import com.github.alexthe666.iceandfire.world.village.MapGenPixieVillage;
 import com.github.alexthe666.iceandfire.world.village.MapGenSnowVillage;
-
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
@@ -40,6 +26,13 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.fml.common.IWorldGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+
+import static com.github.alexthe666.iceandfire.IceAndFire.CONFIG;
 
 public class WorldGenEvents implements IWorldGenerator {
 
@@ -66,6 +59,7 @@ public class WorldGenEvents implements IWorldGenerator {
     private BlockPos lastGorgonTemple = null;
     private BlockPos lastMausoleum = null;
     private BlockPos lastHydraCave = null;
+    private BlockPos lastGraveyard = null;
 
     public static BlockPos getHeight(World world, BlockPos pos) {
         return world.getHeight(pos);
@@ -104,6 +98,16 @@ public class WorldGenEvents implements IWorldGenerator {
                     surface = degradeSurface(world, surface);
                     new WorldGenGorgonTemple(EnumFacing.byHorizontalIndex(random.nextInt(3))).generate(world, random, surface);
                     lastGorgonTemple = surface;
+                }
+            }
+        }
+        if (IceAndFire.CONFIG.generateGraveyards && !isDimensionBlacklisted(world.provider.getDimension(), false) && (lastGraveyard == null || lastGraveyard.distanceSq(height) >= spawnCheck)) {
+            if (BiomeDictionary.hasType(world.getBiome(height), Type.PLAINS)) {
+                if (random.nextInt(IceAndFire.CONFIG.generateGraveyardChance + 1) == 0) {
+                    BlockPos surface = world.getHeight(new BlockPos(x, 0, z));
+                    surface = degradeSurface(world, surface);
+                    new WorldGenGraveyard(EnumFacing.byHorizontalIndex(random.nextInt(3))).generate(world, random, surface);
+                    lastGraveyard = surface;
                 }
             }
         }

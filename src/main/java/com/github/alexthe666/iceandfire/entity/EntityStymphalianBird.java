@@ -1,10 +1,10 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.entity.ai.StymphalianBirdAIAirTarget;
 import com.github.alexthe666.iceandfire.entity.ai.StymphalianBirdAIFlee;
 import com.github.alexthe666.iceandfire.entity.ai.StymphalianBirdAITarget;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;

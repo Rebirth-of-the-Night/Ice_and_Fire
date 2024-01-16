@@ -96,6 +96,17 @@ tile.iceandfire.queen_keyhole.name=Queen Quarters Keyhole
 tile.iceandfire.library_keyhole.name=Library Keyhole
 tile.iceandfire.special_keyhole.name=Outer Perimeter Keyhole
 tile.iceandfire.treasury_keyhole.name=Treasury Keyhole
+
+tile.iceandfire.dread_single_spawner_lich.name=Single Lich Spawner
+tile.iceandfire.dread_single_spawner_queen.name=Dread Queen Spawner
+tile.iceandfire.dread_single_spawner_dragon.name=Black Frost Spawner
+tile.iceandfire.dread_single_spawner_ballista.name=Castle Ballista Spawner
+tile.iceandfire.tripwire.name=Castle Tripwire
+tile.iceandfire.tripwire_dragon.name=Castle Tripwire Dragon
+
+tile.iceandfire.ghost_chest.name=Cursed Chest
+tile.iceandfire.graveyard_soil.name=Graveyard Soil
+
 item.iceandfire.bestiary.name=Bestiary
 item.iceandfire.manuscript.name=Manuscript
 item.iceandfire.sapphireGem.name=Sapphire
@@ -362,6 +373,8 @@ item.iceandfire.dread_queen_sword.name=Blade of the Dreaded Queen
 item.iceandfire.dread_queen_staff.name=Staff of the Dreaded Queen
 item.iceandfire.weezer_blue_album.name=Weezer
 item.iceandfire.weezer_blue_album.desc_0=Weezer
+item.iceandfire.cannoli.name=§6Cannoli§r
+item.iceandfire.cannoli.desc="You may encounter dragons or ruffians"
 item.iceandfire.dragon_debug_stick.name=Dragon Debug Stick
 item.iceandfire.dragon_debug_stick.desc_0=For developer use only...
 item.iceandfire.dread_shard.name=Dread Shard
@@ -383,6 +396,11 @@ item.iceandfire.queen_key.name=Queen Quarters Key
 item.iceandfire.library_key.name=Library Key
 item.iceandfire.special_key.name=Outer Perimeter Key
 item.iceandfire.treasury_key.name=Treasury Key
+item.iceandfire.ghost_sword.name=Phantasmal Blade
+item.iceandfire.ghost_sword.desc_0=Fires a spinning sword that travels through blocks
+item.iceandfire.ectoplasm.name=Ectoplasm
+item.iceandfire.ghost_ingot.name=Phantasmal Ingot
+item.iceandfire.ghost_ingot.desc_0=§6Rare drop§r
 
 entity.firedragon.name=Fire Dragon
 entity.icedragon.name=Ice Dragon
@@ -448,12 +466,16 @@ entity.dread_scuttler.name=Dread Scuttler
 entity.dread_lich.name=Dread Lich
 entity.dread_lich_skull.name=Dread Lich Skull
 entity.dread_knight.name=Dread Knight
+entity.dread_knight_royal.name=Royal Dread Knight
+entity.ballista.name=Castle Ballista
 entity.dread_horse.name=Dread Knight Horse
 entity.black_frost_dragon.name=Black Frost
 entity.dread_queen.name=Dread Queen
 entity.if_hydra.name=Hydra
 entity.hydra_breath.name=Hydra Breath
 entity.hydra_arrow.name=Hydra Arrow
+entity.ghost.name=Ghost
+entity.ghost_sword.name=Phantasmal Blade
 sea_serpent.blue=Blue
 sea_serpent.bronze=Bronze
 sea_serpent.deepblue=Deep Blue
@@ -606,7 +628,9 @@ message.iceandfire.dragonSitName= is now Staying.
 message.iceandfire.dragonSleepName= is now Sleeping.
 message.iceandfire.dragonGrown=This dragon has grown to Stage 
 message.iceandfire.dragonGrownEnd=!
-message.iceandfire.dragonGrownName= has grown to Stage 
+message.iceandfire.dragonGrownName= has grown to Stage
+message.iceandfire.toocold=I can't eat this in this dimension.
+message.iceandfire.cantfly=The storm forced you down.
 
 death.attack.dragon.player_0=was split in two by a dragon
 death.attack.dragon.player_1=was torn to shreds by a dragon
@@ -627,6 +651,12 @@ key.dragon_change_view=Change 3rd person camera for dragon
 
 tc.aspect.mythus=Mythological Creature, Legendary Being, Cryptid, Fearsome Critter
 tc.aspect.draco=Dragon
+
+material.spartanfire:lightning_dragonbone=Lightning Dragonbone
+material.spartanfire:lightning_dragonsteel=Lightning Dragonsteel
+
+tooltip.iceandfire:lightning_dragonbone=Strikes targets with lightning, deals extra damage to ice dragons and fire dragons
+tooltip.iceandfire:lightning_dragonsteel=Strikes targets with lightning
 
 advancements.iceandfire.root.title=Ice and Fire
 advancements.iceandfire.root.description=Enter a world of magical creatures

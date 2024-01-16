@@ -1,7 +1,6 @@
 package com.github.alexthe666.iceandfire.compat.tinkers;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;

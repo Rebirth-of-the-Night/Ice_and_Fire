@@ -51,6 +51,7 @@ public class IafItemRegistry {
     public static ToolMaterial dread_sword_tools = EnumHelper.addToolMaterial("DreadSword", 0, 100, 0.0F, 1F, 0);
     public static ToolMaterial dread_knight_sword_tools = EnumHelper.addToolMaterial("DreadKnightSword", 0, 1200, 0.0F, 13F, 10);
     public static ToolMaterial dread_queen_sword_tools = EnumHelper.addToolMaterial("DreadQueenSword", 0, IceAndFire.CONFIG.dragonsteelBaseDurability, 10.0F, (float) IceAndFire.CONFIG.dragonsteelBaseDamage, 10);
+    public static ToolMaterial ghost_sword_tool_material = EnumHelper.addToolMaterial("GhostSword", 2, 3000, 5, 10.0F, 25);
 
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":bestiary")
     public static Item bestiary = new ItemBestiary();
@@ -535,6 +536,14 @@ public class IafItemRegistry {
     public static Item special_key = new ItemKey("special_key", "iceandfire.special_key", 0, TextFormatting.AQUA);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":treasury_key")
     public static Item treasury_key = new ItemKey("treasury_key", "iceandfire.treasury_key", 0, TextFormatting.GOLD);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":ectoplasm")
+    public static Item ectoplasm = new ItemGeneric("ectoplasm", "iceandfire.ectoplasm");
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":ghost_ingot")
+    public static Item ghost_ingot = new ItemGeneric("ghost_ingot", "iceandfire.ghost_ingot", 1);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":ghost_sword")
+    public static Item ghost_sword = new ItemGhostSword();
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":cannoli")
+    public static Item cannoli = new ItemCannoli();
 
     static {
         EnumDragonArmor.initArmors();

@@ -1,17 +1,11 @@
 package com.github.alexthe666.iceandfire.entity.tile;
 
-import java.util.Random;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntityPixie;
 import com.github.alexthe666.iceandfire.message.MessageUpdatePixieHouse;
 import com.github.alexthe666.iceandfire.message.MessageUpdatePixieHouseModel;
 import com.github.alexthe666.iceandfire.message.MessageUpdatePixieJar;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
-
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,6 +17,10 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.common.capabilities.Capability;
+
+import javax.annotation.Nullable;
+import java.util.Random;
+import java.util.UUID;
 
 public class TileEntityJar extends TileEntity implements ITickable {
 

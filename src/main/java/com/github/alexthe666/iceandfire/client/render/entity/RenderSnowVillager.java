@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
-import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.entity.IafVillagerRegistry;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderManager;

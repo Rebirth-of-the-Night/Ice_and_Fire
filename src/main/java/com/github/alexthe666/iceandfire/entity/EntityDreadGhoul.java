@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.entity.ai.DreadAITargetNonDread;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
@@ -192,6 +192,7 @@ public class EntityDreadGhoul extends EntityDreadMob implements IAnimatedEntity,
         IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
         this.setAnimation(ANIMATION_SPAWN);
         this.setVariant(rand.nextInt(3));
+        this.setScale(0.85F + rand.nextFloat() * 0.5F);
         return data;
     }
 

@@ -1,12 +1,12 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.ilexiconn.llibrary.server.entity.EntityProperties;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MiscEntityProperties extends EntityProperties<EntityLivingBase> {
 

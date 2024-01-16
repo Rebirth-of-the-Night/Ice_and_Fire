@@ -1,7 +1,5 @@
 package com.github.alexthe666.iceandfire.entity.tile;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,6 +10,8 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.WeightedSpawnerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class TileEntityDreadSpawner extends TileEntity implements ITickable {
     private final DreadSpawnerBaseLogic spawnerLogic = new DreadSpawnerBaseLogic() {

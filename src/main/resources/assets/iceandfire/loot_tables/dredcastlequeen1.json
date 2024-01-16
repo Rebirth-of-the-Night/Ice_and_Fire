@@ -1,0 +1,321 @@
+{
+  "pools": [
+    {
+      "name": "dredcastlequeen1",
+      "rolls": {
+        "min": 3,
+        "max": 8
+      },
+      "entries": [
+        {
+          "type": "item",
+          "name": "minecraft:writable_book",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:book",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 5
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonbone",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 15
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonbone_arrow",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 8
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 10
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:chain",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragon_stick",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonscales_white",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 5,
+                "max": 10
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonscales_blue",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 5,
+                "max": 10
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:frost_lily",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 3
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:amythest_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 7
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:sapphire_gem",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 15
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:manuscript",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 5,
+                "max": 10
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:silver_ingot",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 15
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonarmor_iron",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            },
+            {
+              "function": "set_data",
+              "data": {
+                "min": 0,
+                "max": 3
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragonarmor_silver",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            },
+            {
+              "function": "set_data",
+              "data": {
+                "min": 0,
+                "max": 3
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:armor_white_helmet",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:armor_white_chestplate",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:armor_white_leggings",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:armor_white_boots",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ],
+          "weight": 25
+        },
+        {
+          "type": "item",
+          "name": "iceandfire:dragon_horn",
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 0,
+                "max": 1
+              }
+            }
+          ],
+          "weight": 25
+        }
+      ]
+    }
+  ]
+}

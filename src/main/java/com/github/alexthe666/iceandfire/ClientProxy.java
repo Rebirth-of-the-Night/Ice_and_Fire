@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire;
 
 import com.github.alexthe666.iceandfire.block.*;
+import com.github.alexthe666.iceandfire.client.IafKeybindRegistry;
 import com.github.alexthe666.iceandfire.client.gui.GuiMyrmexAddRoom;
 import com.github.alexthe666.iceandfire.client.gui.GuiMyrmexStaff;
 import com.github.alexthe666.iceandfire.client.gui.bestiary.GuiBestiary;
@@ -9,30 +10,25 @@ import com.github.alexthe666.iceandfire.client.model.animator.FireDragonTabulaMo
 import com.github.alexthe666.iceandfire.client.model.animator.IceDragonTabulaModelAnimator;
 import com.github.alexthe666.iceandfire.client.model.animator.LightningDragonTabulaModelAnimator;
 import com.github.alexthe666.iceandfire.client.model.animator.SeaSerpentTabulaModelAnimator;
-import com.github.alexthe666.iceandfire.client.model.util.DragonAnimationsLibrary;
-import com.github.alexthe666.iceandfire.client.model.util.EnumDragonAnimations;
-import com.github.alexthe666.iceandfire.client.model.util.EnumDragonModelTypes;
-import com.github.alexthe666.iceandfire.client.model.util.EnumDragonPoses;
-import com.github.alexthe666.iceandfire.client.model.util.EnumSeaSerpentAnimations;
-import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
+import com.github.alexthe666.iceandfire.client.model.util.*;
 import com.github.alexthe666.iceandfire.client.particle.*;
+import com.github.alexthe666.iceandfire.client.render.RenderCastleBallista;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsAurora;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsSky;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsWeather;
 import com.github.alexthe666.iceandfire.client.render.entity.*;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonArmor;
 import com.github.alexthe666.iceandfire.client.render.tile.*;
-import com.github.alexthe666.iceandfire.client.render.entity.RenderHydra;
+import com.github.alexthe666.iceandfire.command.CommandTreeBaseButOurs;
 import com.github.alexthe666.iceandfire.compat.TinkersCompatBridge;
-import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
-import com.github.alexthe666.iceandfire.event.ClientEvents;
-import com.github.alexthe666.iceandfire.item.IafItemRegistry;
-import com.github.alexthe666.iceandfire.client.IafKeybindRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.entity.tile.*;
+import com.github.alexthe666.iceandfire.entity.tile.keletu.TileEntityDreadPiston;
+import com.github.alexthe666.iceandfire.entity.tile.keletu.TileEntityDreadPistonRenderer;
 import com.github.alexthe666.iceandfire.enums.*;
+import com.github.alexthe666.iceandfire.event.ClientEvents;
 import com.github.alexthe666.iceandfire.item.ICustomRendered;
-
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -47,10 +43,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -58,7 +56,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -67,7 +64,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler.*;
+import static net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler.INSTANCE;
 
 @Mod.EventBusSubscriber
 @SuppressWarnings("deprecation")
@@ -270,6 +267,7 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.setCustomStateMapper(IafBlockRegistry.dread_stone_face, (new StateMap.Builder()).ignore(BlockDreadStoneFace.PLAYER_PLACED).build());
         ModelLoader.setCustomStateMapper(IafBlockRegistry.dreadwood_planks, (new StateMap.Builder()).ignore(BlockDreadBase.PLAYER_PLACED).build());
         ModelLoader.setCustomStateMapper(IafBlockRegistry.dreadwood_planks_lock, (new StateMap.Builder()).ignore(BlockDreadWoodLock.PLAYER_PLACED).build());
+        ModelLoader.setCustomStateMapper(IafBlockRegistry.dread_single_spawner_lich, (new StateMap.Builder()).ignore(BlockDreadBase.PLAYER_PLACED).build());
         try {
             for (Field f : IafBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
@@ -320,6 +318,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preRender() {
         TinkersCompatBridge.loadTinkersClientCompat();
+        OBJLoader.INSTANCE.addDomain("iceandfire".toLowerCase());
     }
 
     @SideOnly(Side.CLIENT)
@@ -356,6 +355,7 @@ public class ClientProxy extends CommonProxy {
         IafItemRegistry.deathworm_gauntlet_red.setTileEntityItemStackRenderer(TEISR);
         Item.getItemFromBlock(IafBlockRegistry.dread_portal).setTileEntityItemStackRenderer(TEISR);
 
+        ClientCommandHandler.instance.registerCommand(new CommandTreeBaseButOurs());
     }
 
     @SideOnly(Side.CLIENT)
@@ -365,10 +365,10 @@ public class ClientProxy extends CommonProxy {
         DragonAnimationsLibrary.register(EnumDragonPoses.values(), EnumDragonModelTypes.values());
 
         try {
-            this.FIRE_DRAGON_MODEL = new IceAndFireTabulaModel<EntityFireDragon>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/firedragon_Ground"), new FireDragonTabulaModelAnimator());
-            this.ICE_DRAGON_MODEL = new IceAndFireTabulaModel<EntityIceDragon>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/icedragon/icedragon_Ground"), new IceDragonTabulaModelAnimator());
-            this.LIGHTNING_DRAGON_MODEL = new IceAndFireTabulaModel<EntityLightningDragon>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/lightningdragon/lightningdragon_Ground"), new LightningDragonTabulaModelAnimator());
-            this.SEA_SERPENT_MODEL = new IceAndFireTabulaModel<EntitySeaSerpent>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/seaserpent/seaserpent"), new SeaSerpentTabulaModelAnimator());
+            this.FIRE_DRAGON_MODEL = new IceAndFireTabulaModel<>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/firedragon_Ground"), new FireDragonTabulaModelAnimator());
+            this.ICE_DRAGON_MODEL = new IceAndFireTabulaModel<>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/icedragon/icedragon_Ground"), new IceDragonTabulaModelAnimator());
+            this.LIGHTNING_DRAGON_MODEL = new IceAndFireTabulaModel<>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/lightningdragon/lightningdragon_Ground"), new LightningDragonTabulaModelAnimator());
+            this.SEA_SERPENT_MODEL = new IceAndFireTabulaModel<>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/seaserpent/seaserpent"), new SeaSerpentTabulaModelAnimator());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -428,20 +428,29 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityBlackFrostDragon.class, new RenderBlackFrostDragon(Minecraft.getMinecraft().getRenderManager(), ICE_DRAGON_MODEL));
         RenderingRegistry.registerEntityRenderingHandler(EntityDreadQueen.class, new RenderDreadQueen(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityDragonLightningBolt.class, new RenderDragonLightningBolt(Minecraft.getMinecraft().getRenderManager()));
-        
+        RenderingRegistry.registerEntityRenderingHandler(EntityDreadKnightRoyal.class, new RenderDreadKnightRoyal(Minecraft.getMinecraft().getRenderManager()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityCastleBallista.class, new RenderCastleBallista(Minecraft.getMinecraft().getRenderManager()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityBallistaArrow.class, new RenderIceCharge());
+        RenderingRegistry.registerEntityRenderingHandler(EntityGhost.class, new RenderGhost(Minecraft.getMinecraft().getRenderManager()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityGhostSword.class, new RenderGhostSword<>(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
+
+
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPodium.class, new RenderPodium());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLectern.class, new RenderLectern());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEggInIce.class, new RenderEggInIce());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPixieHouse.class, new RenderPixieHouse());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityJar.class, new RenderJar());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDreadPortal.class, new RenderDreadPortal());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGhostChest.class, new RenderGhostChest());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDreadSpawner.class, new RenderDreadSpawner());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDreadPiston.class, new TileEntityDreadPistonRenderer());
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 0, TileEntityPixieHouse.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 1, TileEntityPixieHouse.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 2, TileEntityPixieHouse.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 3, TileEntityPixieHouse.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 4, TileEntityPixieHouse.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 5, TileEntityPixieHouse.class);
+        ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.ghost_chest), 0, TileEntityGhostChest.class);
 
     }
 
@@ -499,6 +508,9 @@ public class ClientProxy extends CommonProxy {
         }
         if (name.equals("hydra")) {
             particle = new ParticleHydraBreath(world, x, y, z, (float) motX, (float) motY, (float) motZ);
+        }
+        if (name.equals("ghost_appearance")) {
+            particle = new ParticleGhostAppearance(world, x, y, z);
         }
         if (particle != null) {
             particleSpawner.spawnParticle(particle, false, false, false, x, y, z);

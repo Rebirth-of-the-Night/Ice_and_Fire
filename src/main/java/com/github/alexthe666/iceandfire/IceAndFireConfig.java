@@ -1,10 +1,10 @@
 package com.github.alexthe666.iceandfire;
 
+import net.minecraftforge.common.config.Configuration;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import net.minecraftforge.common.config.Configuration;
 
 public class IceAndFireConfig {
     public boolean customMainMenu = true;
@@ -27,7 +27,7 @@ public class IceAndFireConfig {
     public int dangerousWorldGenDistanceLimit = 200;
     public int[] dragonBlacklistedDimensions = new int[]{1, -1};
     public int[] dragonWhitelistedDimensions = new int[]{0};
-    public boolean useDimensionBlackList = true;
+    public boolean useDimensionBlackList = false;
     public int[] structureBlacklistedDimensions = new int[]{1, -1};
     public int[] structureWhitelistedDimensions = new int[]{0};
     public String[] blacklistedBreakBlocks = new String[0];
@@ -174,6 +174,13 @@ public class IceAndFireConfig {
     public boolean explosiveDragonBreath = false;
     public float weezerTinkersDisarmChance = 0.2F;
     public boolean chunkLoadSummonCrystal = true;
+    public int ballistaBaseDamage = 10;
+    public double ghostMaxHealth = 30;
+    public double ghostAttackStrength = 3F;
+    public boolean generateGraveyards = true;
+    public int generateGraveyardChance = 64;
+    public boolean ghostSpawnFromPlayerDeaths = true;
+    public int ghostSpawnChanceFromGraveyardSoil = 9;
     public String villagerTradingItem = "iceandfire:sapphire_gem"; // TODO make trading item configurable
 
     public void init(Configuration config) {
@@ -197,7 +204,7 @@ public class IceAndFireConfig {
         this.generateSnowVillages = config.getBoolean("Generate Snow Villages", "all", true, "Whether to generate snow villages or not");
         this.dragonBlacklistedDimensions = config.get("all", "Blacklisted Dragon Dimensions", new int[]{-1, 1}, "Dragons cannot spawn in these dimensions' IDs").getIntList();
         this.dragonWhitelistedDimensions = config.get("all", "Whitelisted Dragon Dimensions", new int[]{0}, "Dragons can only spawn in these dimensions' IDs").getIntList();
-        this.useDimensionBlackList = config.getBoolean("use Dimension Blacklist", "all", true, "true to use dimensional blacklist, false to use the whitelist.");
+        this.useDimensionBlackList = config.getBoolean("use Dimension Blacklist", "all", false, "true to use dimensional blacklist, false to use the whitelist.");
         this.structureBlacklistedDimensions = config.get("all", "Blacklisted Misc. Structure Dimensions", new int[]{-1, 1}, "Misc Structures(Cyclops caves, Gorgon temples, etc) cannot spawn in these dimensions' IDs").getIntList();
         this.structureWhitelistedDimensions = config.get("all", "Whitelisted Misc. Structure Dimensions", new int[]{0}, "Misc Structures(Cyclops caves, Gorgon temples, etc) can only spawn in these dimensions' IDs").getIntList();
         this.spawnGlaciers = config.getBoolean("Generate Glaciers", "all", true, "Whether to generate glacier biomes or not");
@@ -362,5 +369,19 @@ public class IceAndFireConfig {
         this.generateHydraChance = config.getInt("Hydra Caves Gen Chance", "all", 200, 1, 10000, "One out of this number chance per chunk to generate a hydra cave.");
 
         this.chunkLoadSummonCrystal = config.getBoolean("Chunk Load Summon Crystal", "all", true, "True if the summon crystal can load chunks to find dragons.");
+
+        //Ghost
+        this.ghostMaxHealth = config.getFloat("Ghost Max Health", "all", 30F, 1.0F, 10000.0F, "Maximum ghost health.");
+        this.ghostAttackStrength = config.getFloat("Ghost Attack Strength", "all", 3F, 0.0F, 10000.0F, "Maximum ghost attack strength.");
+        this.ghostSpawnFromPlayerDeaths = config.getBoolean("Player Death Spawns Ghost", "all", true, "True if allow spawn ghost when player death");
+        this.ghostSpawnChanceFromGraveyardSoil = config.getInt("Ghost Spawn Rate At Graveyard Soid", "all", 9, 1, 100, "Chance graveyard soil spawn a ghost, Higher number = more rare");
+
+        //Graveyard
+        this.generateGraveyards = config.getBoolean("Generate Graveyards", "all", true, "True if graveyards are allowed to generate");
+        this.generateGraveyardChance = config.getInt("Graveyards Gen Chance", "all", 128, 1, 10000, "One out of this number chance per chunk to generate a Graveyard.");
+
+        //Ballista
+        this.ballistaBaseDamage = config.getInt("Ballista Arrow Damage", "all", 10, 1, 100, "Maximum castle ballista arrow strength.");
+
     }
 }

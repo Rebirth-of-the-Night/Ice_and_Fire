@@ -1,18 +1,16 @@
 package com.github.alexthe666.iceandfire.item;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.util.ItemUtil;
-
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemModAxe extends ItemAxe implements IaFTool {
     private final int toolID;

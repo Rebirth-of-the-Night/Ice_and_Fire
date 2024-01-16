@@ -1,18 +1,16 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
-import javax.annotation.Nullable;
-
 import com.github.alexthe666.iceandfire.client.model.ModelDreadLich;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerGenericGlowing;
 import com.github.alexthe666.iceandfire.entity.EntityDreadLich;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import javax.annotation.Nullable;
 
 public class RenderDreadLich extends RenderLiving<EntityDreadLich> {
     public static final ResourceLocation TEXTURE_EYES = new ResourceLocation("iceandfire:textures/models/dread/dread_lich_eyes.png");

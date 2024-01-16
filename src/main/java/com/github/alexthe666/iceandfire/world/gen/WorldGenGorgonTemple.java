@@ -1,10 +1,7 @@
 package com.github.alexthe666.iceandfire.world.gen;
 
-import java.util.Random;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.world.gen.processor.DreadRuinProcessor;
-
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
@@ -19,6 +16,8 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
+
+import java.util.Random;
 
 public class WorldGenGorgonTemple extends WorldGenerator {
 

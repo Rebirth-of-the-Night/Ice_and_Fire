@@ -1,12 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.util.IsImmune;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.init.SoundEvents;
@@ -15,6 +10,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class EntityDragonLightningBolt extends EntityLightningBolt {
     /** Declares which state the lightning bolt is in. Whether it's in the air, hit the ground, etc. */

@@ -1,9 +1,9 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.entity.MiscEntityProperties;
 import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.google.common.base.Predicates;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.client.resources.I18n;
@@ -27,7 +27,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-
 import java.util.List;
 
 public class ItemSirenFlute extends Item {

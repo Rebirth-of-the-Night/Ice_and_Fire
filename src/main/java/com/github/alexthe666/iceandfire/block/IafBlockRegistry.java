@@ -2,7 +2,9 @@ package com.github.alexthe666.iceandfire.block;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.carver.BlockGenericKeyhole;
+import com.github.alexthe666.iceandfire.block.keletu.*;
 import com.github.alexthe666.iceandfire.entity.tile.*;
+import com.github.alexthe666.iceandfire.entity.tile.keletu.TileEntityDreadPiston;
 import com.github.alexthe666.iceandfire.enums.EnumDragonEgg;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
@@ -160,6 +162,10 @@ public class IafBlockRegistry {
     public static Block dread_stone_face = new BlockDreadStoneFace();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_torch")
     public static Block dread_torch = new BlockDreadTorch();
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":tripwire")
+    public static Block tripwire = new BlockTripWire();
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":tripwire_dragon")
+    public static Block tripwire_dragon = new BlockTripWireDragon();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_stone_stairs")
     public static Block dread_stone_bricks_stairs = new BlockGenericStairs(dread_stone_bricks.getDefaultState(), "dread_stone_stairs").setHardness(20F);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_stone_double_slab")
@@ -176,6 +182,23 @@ public class IafBlockRegistry {
     public static Block dread_portal = new BlockDreadPortal();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_spawner")
     public static Block dread_spawner = new BlockDreadSpawner();
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_single_spawner_lich")
+    public static Block dread_single_spawner_lich = new BlockDreadSingleMobSpawner("dread_single_spawner_lich");
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_single_spawner_queen")
+    public static Block dread_single_spawner_queen = new BlockDreadSingleMobSpawner("dread_single_spawner_queen");
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_single_spawner_dragon")
+    public static Block dread_single_spawner_dragon = new BlockDreadSingleMobSpawner("dread_single_spawner_dragon");
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_single_spawner_ballista")
+    public static Block dread_single_spawner_ballista = new BlockDreadSingleMobSpawner("dread_single_spawner_ballista");
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":piston_dread")
+    public static Block dread_piston = new BlockDreadPistonBase(false);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":piston_sticky_dread")
+    public static Block dread_sticky_piston = new BlockDreadPistonBase(true);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_piston_head")
+    public static Block dread_piston_head = new BlockDreadPistonExtension();
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_piston_moving")
+    public static Block dread_piston_moving = new BlockDreadPistonMoving();
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":burnt_torch")
     public static Block burnt_torch = new BlockBurntTorch();
 
@@ -271,6 +294,12 @@ public class IafBlockRegistry {
         }
     };
 
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":graveyard_soil")
+    public static Block graveyard_soil = new BlockGraveyardSoil();
+
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":ghost_chest")
+    public static Block ghost_chest = new BlockGhostChest();
+
     static {
         GameRegistry.registerTileEntity(TileEntityDummyGorgonHead.class, new ResourceLocation(IceAndFire.MODID, "dummyGorgonHeadIdle"));
         GameRegistry.registerTileEntity(TileEntityDummyGorgonHeadActive.class, new ResourceLocation(IceAndFire.MODID, "dummyGorgonHeadActive"));
@@ -278,6 +307,8 @@ public class IafBlockRegistry {
         GameRegistry.registerTileEntity(TileEntityDragonforge.class, new ResourceLocation(IceAndFire.MODID, "dragonforge"));
         GameRegistry.registerTileEntity(TileEntityDragonforgeInput.class, new ResourceLocation(IceAndFire.MODID, "dragonforgeInput"));
         GameRegistry.registerTileEntity(TileEntityDragonforgeBrick.class, new ResourceLocation(IceAndFire.MODID, "dragonforgeBrick"));
+        GameRegistry.registerTileEntity(TileEntityGhostChest.class, new ResourceLocation(IceAndFire.MODID, "ghostChest"));
+        GameRegistry.registerTileEntity(TileEntityDreadPiston.class, new ResourceLocation(IceAndFire.MODID, "dreadPiston"));
     }
 
 }

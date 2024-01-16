@@ -1,8 +1,8 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
+import com.github.alexthe666.iceandfire.entity.DragonUtils;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.util.IAFMath;
-
 import net.minecraft.entity.ai.EntityAIBase;
 
 public class DragonAIReturnToRoost extends EntityAIBase {
@@ -12,14 +12,20 @@ public class DragonAIReturnToRoost extends EntityAIBase {
         this.setMutexBits(1);
     }
 
-	@Override
-	public boolean shouldExecute() {
-		return this.dragon.canMove() && this.dragon.lookingForRoostAIFlag && (dragon.getAttackTarget() == null || !dragon.getAttackTarget().isEntityAlive()) && dragon.getDistanceSquared(IAFMath.copyCentered(dragon.getHomePosition())) > dragon.width * dragon.width;
-	}
-	
+    @Override
+    public boolean shouldExecute() {
+        return this.dragon.canMove() && this.dragon.lookingForRoostAIFlag
+                && (dragon.getAttackTarget() == null || !dragon.getAttackTarget().isEntityAlive())
+                && dragon.getHomePosition() != null
+                && DragonUtils.isInHomeDimension(dragon)
+                && dragon.getDistanceSquared(IAFMath.copyCentered(dragon.getHomePosition())) > dragon.width * dragon.width;
+    }
+
     @Override
     public void updateTask() {
-        this.dragon.getHomePosition();
+        if (this.dragon.getHomePosition() == null) {
+            return;
+        }
         double dist = Math.sqrt(dragon.getDistanceSquared(IAFMath.copyCentered(dragon.getHomePosition())));
         double xDist = Math.abs(dragon.posX - dragon.getHomePosition().getX() - 0.5F);
         double zDist = Math.abs(dragon.posZ - dragon.getHomePosition().getZ() - 0.5F);

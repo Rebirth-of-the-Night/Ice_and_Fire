@@ -1,8 +1,5 @@
 package com.github.alexthe666.iceandfire.event;
 
-import java.util.Map;
-import java.util.Random;
-
 import com.github.alexthe666.iceandfire.ClientProxy;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.client.IafKeybindRegistry;
@@ -15,18 +12,11 @@ import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerStoneEnt
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerStoneEntityCrack;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.util.IAFMath;
-
-import org.lwjgl.opengl.GL11;
-
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.EntityRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
@@ -49,6 +39,10 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.lwjgl.opengl.GL11;
+
+import java.util.Map;
+import java.util.Random;
 
 public class ClientEvents {
     private static final ResourceLocation SIREN_SHADER = new ResourceLocation("iceandfire:shaders/post/siren.json");

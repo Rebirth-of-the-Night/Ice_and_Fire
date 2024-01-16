@@ -2,7 +2,6 @@ package com.github.alexthe666.iceandfire.client.model.util;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntitySeaSerpent;
-
 import net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;

@@ -1,13 +1,8 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
-import javax.annotation.Nullable;
-
 import com.github.alexthe666.iceandfire.client.model.ModelDreadThrall;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerGenericGlowing;
 import com.github.alexthe666.iceandfire.entity.EntityDreadThrall;
-
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
@@ -16,6 +11,9 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
+
+import javax.annotation.Nullable;
 
 public class RenderDreadThrall extends RenderLiving<EntityDreadThrall> {
     public static final ResourceLocation TEXTURE = new ResourceLocation("iceandfire:textures/models/dread/dread_thrall.png");

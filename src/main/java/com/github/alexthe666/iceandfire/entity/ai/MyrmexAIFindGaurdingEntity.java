@@ -1,17 +1,15 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
-import java.util.Comparator;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexSoldier;
 import com.google.common.base.Predicate;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.util.math.AxisAlignedBB;
+
+import javax.annotation.Nullable;
+import java.util.Comparator;
+import java.util.List;
 
 public class MyrmexAIFindGaurdingEntity<T extends EntityMyrmexBase> extends EntityAITarget {
     protected final DragonAITargetItems.Sorter theNearestAttackableTargetSorter;

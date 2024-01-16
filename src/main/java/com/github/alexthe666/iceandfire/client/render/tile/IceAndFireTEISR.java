@@ -5,7 +5,6 @@ import com.github.alexthe666.iceandfire.client.render.item.RenderDeathWormGauntl
 import com.github.alexthe666.iceandfire.client.render.item.RenderTrollWeapon;
 import com.github.alexthe666.iceandfire.item.ItemDeathwormGauntlet;
 import com.github.alexthe666.iceandfire.item.ItemTrollWeapon;
-
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

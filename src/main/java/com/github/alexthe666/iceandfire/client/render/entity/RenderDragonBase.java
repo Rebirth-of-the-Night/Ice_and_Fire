@@ -1,9 +1,9 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
+import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonArmor;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonBanner;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonEyes;
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonRider;
-import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonArmor;
 import com.github.alexthe666.iceandfire.client.texture.ArrayLayeredTexture;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.enums.EnumDragonTextures;

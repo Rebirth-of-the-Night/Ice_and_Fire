@@ -1,11 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
 import com.google.common.base.Optional;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
@@ -18,6 +13,9 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class EntityDreadHorse extends EntitySkeletonHorse implements IDreadMob {
 

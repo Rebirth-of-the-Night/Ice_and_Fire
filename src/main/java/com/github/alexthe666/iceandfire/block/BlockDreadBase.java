@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.block;
 
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -48,6 +49,10 @@ public class BlockDreadBase extends BlockGeneric implements IDragonProof, IDread
 
     public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         return this.getDefaultState().withProperty(PLAYER_PLACED, true);
+    }
+
+    public EnumPushReaction getPushReaction(IBlockState state) {
+        return EnumPushReaction.NORMAL;
     }
 
 }

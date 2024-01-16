@@ -1,9 +1,6 @@
 package com.github.alexthe666.iceandfire.compat.tinkers;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import slimeknights.mantle.client.book.BookTransformer;
 import slimeknights.mantle.client.book.data.BookData;
 import slimeknights.mantle.client.book.data.PageData;
@@ -16,6 +13,8 @@ import slimeknights.tconstruct.library.book.content.ContentModifier;
 import slimeknights.tconstruct.library.book.content.ContentPageIconList;
 import slimeknights.tconstruct.library.materials.Material;
 import slimeknights.tconstruct.library.modifiers.IModifier;
+
+import java.util.List;
 
 public class IceAndFireBookTranformer extends BookTransformer {
 
