@@ -307,7 +307,7 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_desert_sword")
     public static Item myrmex_desert_sword = new ItemModSword(myrmexChitin, "myrmex_desert_sword", "iceandfire.myrmex_desert_sword", 1);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_desert_sword_venom")
-    public static Item myrmex_desert_sword_venom = new ItemModSword(myrmexChitin, "myrmex_desert_sword_venom", "iceandfire.myrmex_desert_sword_venom", 5);
+    public static Item myrmex_desert_sword_venom = new ItemModSword(myrmexChitin, "myrmex_desert_sword_venom", "iceandfire.myrmex_desert_sword_venom", 2);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_desert_shovel")
     public static Item myrmex_desert_shovel = new ItemModShovel(myrmexChitin, "myrmex_desert_shovel", "iceandfire.myrmex_desert_shovel", 1);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_desert_pickaxe")
@@ -319,7 +319,7 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_jungle_sword")
     public static Item myrmex_jungle_sword = new ItemModSword(myrmexChitin, "myrmex_jungle_sword", "iceandfire.myrmex_jungle_sword", 1);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_jungle_sword_venom")
-    public static Item myrmex_jungle_sword_venom = new ItemModSword(myrmexChitin, "myrmex_jungle_sword_venom", "iceandfire.myrmex_jungle_sword_venom", 5);
+    public static Item myrmex_jungle_sword_venom = new ItemModSword(myrmexChitin, "myrmex_jungle_sword_venom", "iceandfire.myrmex_jungle_sword_venom", 2);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_jungle_shovel")
     public static Item myrmex_jungle_shovel = new ItemModShovel(myrmexChitin, "myrmex_jungle_shovel", "iceandfire.myrmex_jungle_shovel", 1);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":myrmex_jungle_pickaxe")
@@ -373,7 +373,7 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_ingot")
     public static Item dragonsteel_fire_ingot = new ItemGeneric("dragonsteel_fire_ingot", "iceandfire.dragonsteel_fire_ingot");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_sword")
-    public static Item dragonsteel_fire_sword = new ItemModSword(dragonsteel_fire_tools, "dragonsteel_fire_sword", "iceandfire.dragonsteel_fire_sword", 2);
+    public static Item dragonsteel_fire_sword = new ItemModSword(dragonsteel_fire_tools, "dragonsteel_fire_sword", "iceandfire.dragonsteel_fire_sword", 3);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_pickaxe")
     public static Item dragonsteel_fire_pickaxe = new ItemModPickaxe(dragonsteel_fire_tools, "dragonsteel_fire_pickaxe", "iceandfire.dragonsteel_fire_pickaxe", 2);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_fire_axe")
@@ -393,7 +393,7 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_ingot")
     public static Item dragonsteel_ice_ingot = new ItemGeneric("dragonsteel_ice_ingot", "iceandfire.dragonsteel_ice_ingot");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_sword")
-    public static Item dragonsteel_ice_sword = new ItemModSword(dragonsteel_ice_tools, "dragonsteel_ice_sword", "iceandfire.dragonsteel_ice_sword", 3);
+    public static Item dragonsteel_ice_sword = new ItemModSword(dragonsteel_ice_tools, "dragonsteel_ice_sword", "iceandfire.dragonsteel_ice_sword", 4);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_pickaxe")
     public static Item dragonsteel_ice_pickaxe = new ItemModPickaxe(dragonsteel_ice_tools, "dragonsteel_ice_pickaxe", "iceandfire.dragonsteel_ice_pickaxe", 3);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_ice_axe")
@@ -439,7 +439,7 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_ingot")
     public static Item dragonsteel_lightning_ingot = new ItemGeneric("dragonsteel_lightning_ingot", "iceandfire.dragonsteel_lightning_ingot");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_sword")
-    public static Item dragonsteel_lightning_sword = new ItemModSword(dragonsteel_lightning_tools, "dragonsteel_lightning_sword", "iceandfire.dragonsteel_lightning_sword", 4);
+    public static Item dragonsteel_lightning_sword = new ItemModSword(dragonsteel_lightning_tools, "dragonsteel_lightning_sword", "iceandfire.dragonsteel_lightning_sword", 5);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_pickaxe")
     public static Item dragonsteel_lightning_pickaxe = new ItemModPickaxe(dragonsteel_lightning_tools, "dragonsteel_lightning_pickaxe", "iceandfire.dragonsteel_lightning_pickaxe", 4);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_axe")

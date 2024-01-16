@@ -595,12 +595,18 @@ public class ServerEvents {
     				}
     				break;
     			case 2:
-    				ItemUtil.hitWithFireDragonsteel(target, attacker);
+    				if(target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
+    					target.addPotionEffect(new PotionEffect(MobEffects.POISON, 200, 2));
+    					event.setAmount(amount + 4.0F);
+    				}
     				break;
     			case 3:
-    				ItemUtil.hitWithIceDragonsteel(target, attacker);
+    				ItemUtil.hitWithFireDragonsteel(target, attacker);
     				break;
     			case 4:
+    				ItemUtil.hitWithIceDragonsteel(target, attacker);
+    				break;
+    			case 5:
     		        if(!attacker.world.isRemote && attacker.swingProgress < 0.2 && !target.isDead) {
     		        	target.world.spawnEntity(new EntityDragonLightningBolt(target.world, target.posX, target.posY, target.posZ, attacker, target));
     		        	if(!IsImmune.toDragonLightning(target)) {
@@ -609,12 +615,6 @@ public class ServerEvents {
     		        }
     		        ItemUtil.knockbackWithDragonsteel(target, attacker);
     				break;
-                case 5:
-                        if(target.getCreatureAttribute() != EnumCreatureAttribute.ARTHROPOD || target instanceof EntityDeathWorm) {
-                            target.addPotionEffect(new PotionEffect(MobEffects.POISON, 200, 2));
-                            event.setAmount(amount + 4.0F);
-                        }
-                        break;
     			}
     		}
     		if(weapon instanceof ItemAlchemySword) {
