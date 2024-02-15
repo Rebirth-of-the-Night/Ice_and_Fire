@@ -52,7 +52,7 @@ public class WorldGenCastle extends WorldGenerator {
             return false;
 
         position = position.add(rand.nextInt(8) - 4, 1, rand.nextInt(8) - 4);
-        int totalW = 274, totalH = 130, totalD = 274; // TODO: 16.12.2023 change
+        int totalW = 280, totalH = 130, totalD = 280; // TODO: 16.12.2023 change
         int partW = 32, partH = 32, partD = 32;
 
 
