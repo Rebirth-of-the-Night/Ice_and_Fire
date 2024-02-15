@@ -17,6 +17,7 @@ public class IafEntityRegistry {
         EntityPropertiesHandler.INSTANCE.registerProperties(MiscEntityProperties.class);
         EntityPropertiesHandler.INSTANCE.registerProperties(FrozenEntityProperties.class);
         EntityPropertiesHandler.INSTANCE.registerProperties(SirenEntityProperties.class);
+        EntityPropertiesHandler.INSTANCE.registerProperties(GhostEntityProperties.class);
         EntityPropertiesHandler.INSTANCE.registerProperties(ChickenEntityProperties.class);
         EntityPropertiesHandler.INSTANCE.registerProperties(ChainEntityProperties.class);
         if (IceAndFire.CONFIG.spawnHippogryphs) {
