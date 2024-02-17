@@ -91,7 +91,7 @@ public class WorldGenEvents implements IWorldGenerator {
         int x = (chunkX * 16) + 8;
         int z = (chunkZ * 16) + 8;
         BlockPos height = getHeight(world, new BlockPos(x, 0, z));
-        if (IceAndFire.CONFIG.spawnGorgons && !isDimensionBlacklisted(world.provider.getDimension(), false) && (lastGorgonTemple == null || lastGorgonTemple.distanceSq(height) >= spawnCheck)) {
+        if (IceAndFire.CONFIG.spawnGorgons  && isFarEnoughFromSpawn(world, height) && !isDimensionBlacklisted(world.provider.getDimension(), false) && (lastGorgonTemple == null || lastGorgonTemple.distanceSq(height) >= spawnCheck)) {
             if (BiomeDictionary.hasType(world.getBiome(height), Type.BEACH)) {
                 if (random.nextInt(IceAndFire.CONFIG.spawnGorgonsChance + 1) == 0) {
                     BlockPos surface = world.getHeight(new BlockPos(x, 0, z));
@@ -101,7 +101,7 @@ public class WorldGenEvents implements IWorldGenerator {
                 }
             }
         }
-        if (IceAndFire.CONFIG.generateGraveyards && !isDimensionBlacklisted(world.provider.getDimension(), false) && (lastGraveyard == null || lastGraveyard.distanceSq(height) >= spawnCheck)) {
+        if (IceAndFire.CONFIG.generateGraveyards && isFarEnoughFromSpawn(world, height) && !isDimensionBlacklisted(world.provider.getDimension(), false) && (lastGraveyard == null || lastGraveyard.distanceSq(height) >= spawnCheck)) {
             if (BiomeDictionary.hasType(world.getBiome(height), Type.PLAINS)) {
                 if (random.nextInt(IceAndFire.CONFIG.generateGraveyardChance + 1) == 0) {
                     BlockPos surface = world.getHeight(new BlockPos(x, 0, z));

@@ -2,8 +2,14 @@ package com.github.alexthe666.iceandfire.client.particle;
 
 import com.github.alexthe666.iceandfire.client.model.ModelGhost;
 import com.github.alexthe666.iceandfire.entity.EntityGhost;
+import com.github.alexthe666.iceandfire.entity.EntitySiren;
+import com.github.alexthe666.iceandfire.entity.GhostEntityProperties;
+import com.github.alexthe666.iceandfire.entity.SirenEntityProperties;
+import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
+import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleMobAppearance;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -13,7 +19,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class ParticleGhostAppearance extends Particle {
+public class ParticleGhostAppearance extends ParticleMobAppearance {
     private final ModelGhost model = new ModelGhost(0.0F);
     private EntityLivingBase entity;
     private boolean fromLeft = false;
@@ -26,15 +32,19 @@ public class ParticleGhostAppearance extends Particle {
 
     public void onUpdate() {
         super.onUpdate();
-        if (this.entity == null)
-        {
-            this.entity = new EntityGhost(this.world);
-            fromLeft = world.rand.nextBoolean();
+        if (this.entity == null) {
+            GhostEntityProperties ghostProps = EntityPropertiesHandler.INSTANCE.getProperties(Minecraft.getMinecraft().player, GhostEntityProperties.class);
+            EntityGhost ghost = new EntityGhost(this.world);
+            if (ghostProps != null && ghostProps.getGhost(Minecraft.getMinecraft().player.world) != null) {
+                ghost = ghostProps.getGhost(Minecraft.getMinecraft().player.world);
+            }
+            this.entity = ghost;
         }
+        fromLeft = world.rand.nextBoolean();
     }
 
     public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-        if (this.entity != null) {
+        if (this.entity instanceof EntityGhost) {
             RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
             rendermanager.setRenderPosition(Particle.interpPosX, Particle.interpPosY, Particle.interpPosZ);
             // float f = 0.42553192F;

@@ -1,11 +1,14 @@
+//Code by KotlinProgrammer and MigranM
 package com.github.alexthe666.iceandfire.client.render.entity;
 
 import com.github.alexthe666.iceandfire.client.model.ModelGhost;
 import com.github.alexthe666.iceandfire.entity.EntityGhost;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import org.lwjgl.opengl.GL11;
 
 public class RenderGhost extends RenderLiving<EntityGhost> {
 
@@ -16,7 +19,7 @@ public class RenderGhost extends RenderLiving<EntityGhost> {
 
     public RenderGhost(RenderManager renderManager) {
         super(renderManager, new ModelGhost(0.0F), 0.55F);
-
+        preRenderProfileGhostClean();
     }
 
     public static ResourceLocation getGhostOverlayForType(int ghost) {
@@ -37,6 +40,21 @@ public class RenderGhost extends RenderLiving<EntityGhost> {
         return 0.0F;
     }
 
+    public void preRenderProfileGhostApply(EntityGhost entityIn, float partialTicks) {
+        float alphaForRender = getAlphaForRender(entityIn, partialTicks);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, entityIn.isDaytimeMode() ? alphaForRender : 0.55F);
+        GlStateManager.depthMask(false);
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.001F);
+    }
+
+    public void preRenderProfileGhostClean() {
+        GlStateManager.disableBlend();
+        GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
+        GlStateManager.depthMask(true);
+    }
+
     public float getAlphaForRender(EntityGhost entityIn, float partialTicks) {
         if (entityIn.isDaytimeMode()) {
             return MathHelper.clamp((101 - Math.min(entityIn.getDaytimeCounter(), 100)) / 100F, 0, 1);
@@ -45,9 +63,9 @@ public class RenderGhost extends RenderLiving<EntityGhost> {
     }
 
     @Override
-    public void preRenderCallback(EntityGhost EntityLivingIn, float partialTickTime) {
+    public void preRenderCallback(EntityGhost entityGhost, float partialTickTime) {
         this.shadowSize = 0;
-        // GlStateManager.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
+        preRenderProfileGhostApply(entityGhost, partialTickTime);
     }
 
     @Override

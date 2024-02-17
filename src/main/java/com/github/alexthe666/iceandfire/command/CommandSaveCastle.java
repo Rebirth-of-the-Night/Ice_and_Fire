@@ -31,7 +31,7 @@ public class CommandSaveCastle extends CommandBase {
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         server.sendMessage(new TextComponentString("it works"));
-        int totalW = 274, totalH = 130, totalD = 274;
+        int totalW = 280, totalH = 130, totalD = 280;
         int partW = 32, partH = 32, partD = 32;
         String author = "Carver";
         String name = "Castle";

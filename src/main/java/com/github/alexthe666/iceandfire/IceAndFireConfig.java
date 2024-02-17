@@ -178,7 +178,7 @@ public class IceAndFireConfig {
     public double ghostMaxHealth = 30;
     public double ghostAttackStrength = 3F;
     public boolean generateGraveyards = true;
-    public int generateGraveyardChance = 64;
+    public int generateGraveyardChance = 256;
     public boolean ghostSpawnFromPlayerDeaths = true;
     public int ghostSpawnChanceFromGraveyardSoil = 9;
     public String villagerTradingItem = "iceandfire:sapphire_gem"; // TODO make trading item configurable
@@ -378,7 +378,7 @@ public class IceAndFireConfig {
 
         //Graveyard
         this.generateGraveyards = config.getBoolean("Generate Graveyards", "all", true, "True if graveyards are allowed to generate");
-        this.generateGraveyardChance = config.getInt("Graveyards Gen Chance", "all", 128, 1, 10000, "One out of this number chance per chunk to generate a Graveyard.");
+        this.generateGraveyardChance = config.getInt("Graveyards Generate Chance", "all", 256, 1, 10000, "One out of this number chance per chunk to generate a Graveyard.");
 
         //Ballista
         this.ballistaBaseDamage = config.getInt("Ballista Arrow Damage", "all", 10, 1, 100, "Maximum castle ballista arrow strength.");
