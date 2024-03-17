@@ -64,8 +64,11 @@ public class ItemSirenFlute extends Item {
                                          EntityPropertiesHandler.INSTANCE.getProperties(entity, StoneEntityProperties.class) != null && 
                                          !EntityPropertiesHandler.INSTANCE.getProperties(entity, StoneEntityProperties.class).isStone
                                         )
-                                ) &&
-                                !IceAndFire.CONFIG.sirenFluteMobBlacklist.contains(EntityList.getKey(entity).toString());
+                                ) && (
+                                    EntityList.getKey(entity) == null ||
+                                        !IceAndFire.CONFIG.sirenFluteMobBlacklist
+                                                .contains(EntityList.getKey(entity).toString())
+                                );
                     }
                 )
         );
