@@ -36,7 +36,7 @@ minecraft {
 repositories {
     mavenCentral()
     maven {
-        url = "https://maven.mcmoddev.com"
+        url = "https://mmd.tophatcat.dev/"
     }
     // maven {
     //     name = "Mobius Repo"
