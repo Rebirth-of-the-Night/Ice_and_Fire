@@ -34,6 +34,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -47,7 +48,7 @@ import java.io.File;
 import java.util.Random;
 
 @Mod(modid = IceAndFire.MODID,
-        dependencies = "required-after:llibrary@[" + IceAndFire.LLIBRARY_VERSION + ",);after:thaumicadds",
+        dependencies = "required-after:llibrary@[" + IceAndFire.LLIBRARY_VERSION + ",)",
         version = IceAndFire.VERSION, name = IceAndFire.NAME, guiFactory = "com.github.alexthe666.iceandfire.client.gui.IceAndFireGuiFactory")
 public class IceAndFire {
 
@@ -182,5 +183,10 @@ public class IceAndFire {
         logger.info("A claim to the prize, a crown laced in lies");
         logger.info("You win or you die");
         logger.info("Damn season 8 really sucked didn't it");
+    }
+
+    @EventHandler
+    public void loadComplete(FMLLoadCompleteEvent event) {
+        ThaumcraftCompatBridge.finalizeThaumcraftCompat();
     }
 }

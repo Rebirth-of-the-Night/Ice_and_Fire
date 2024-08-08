@@ -10,11 +10,20 @@ import net.minecraftforge.fml.common.Loader;
  */
 public class ThaumcraftCompatBridge {
 
+    public static ThaumcraftCompat INSTANCE;
     private static final String TC_MOD_ID = "thaumcraft";
 
     public static void loadThaumcraftCompat() {
         if (Loader.isModLoaded(TC_MOD_ID)) {
-            MinecraftForge.EVENT_BUS.register(new ThaumcraftCompat());
+            INSTANCE = new ThaumcraftCompat();
+            MinecraftForge.EVENT_BUS.register(INSTANCE);
+        }
+    }
+
+    // Specifically for Thaumic Additions removing I&F's Draco aspect from the registry.
+    public static void finalizeThaumcraftCompat() {
+        if (Loader.isModLoaded(TC_MOD_ID)) {
+            INSTANCE.remapDraco();
         }
     }
 }
