@@ -95,7 +95,6 @@ public class ModelHydraBody extends ModelDragonBase {
         this.BodyUpper.render(f5);
     }
 
-    // TODO: Check hydra animations now that ModelAnimator is removed
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.resetToDefaultPose();
         setRotationAngles(f, f1, f2, f3, f4, f5, (EntityHydra) entity);
