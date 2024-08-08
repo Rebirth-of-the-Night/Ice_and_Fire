@@ -37,8 +37,7 @@ public class SeaSerpentTabulaModelAnimator extends IceAndFireTabulaModelAnimator
         if (properties != null && properties.isStone) {
             return;
         }
-        model.llibAnimator.update(entity);
-        animate(model, entity, limbSwing, limbSwingAmount, ageInTicks, rotationYaw, rotationPitch, scale);
+        animate(model, entity);
         int currentIndex = entity.swimCycle / 10;
         int prevIndex = currentIndex - 1;
         if (prevIndex < 0) {
@@ -97,7 +96,8 @@ public class SeaSerpentTabulaModelAnimator extends IceAndFireTabulaModelAnimator
         model.rotateAngleZ += progress * (rotZ - model.defaultRotationZ) / 20.0F;
     }
 
-    private void animate(IceAndFireTabulaModel<EntitySeaSerpent> model, EntitySeaSerpent entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
+    private void animate(IceAndFireTabulaModel<EntitySeaSerpent> model, EntitySeaSerpent entity) {
+        model.llibAnimator.update(entity);
         model.llibAnimator.setAnimation(EntitySeaSerpent.ANIMATION_SPEAK);
         model.llibAnimator.startKeyframe(5);
         this.rotate(model.llibAnimator, model.getCube("Jaw"), 25, 0, 0);
@@ -125,5 +125,6 @@ public class SeaSerpentTabulaModelAnimator extends IceAndFireTabulaModelAnimator
         moveToPose(model, EnumSeaSerpentAnimations.ROAR3.seaserpent_model);
         model.llibAnimator.endKeyframe();
         model.llibAnimator.resetKeyframe(10);
+        model.reset();
     }
 }

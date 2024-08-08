@@ -236,6 +236,7 @@ public class ModelDreadThrall extends AdvancedModelBase {
         rotate(animator, this.bipedRightArm, -180, 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(5);
+        animator.update(null);
     }
 
     private void rotate(ModelAnimator animator, AdvancedModelRenderer model, float x, float y, float z) {

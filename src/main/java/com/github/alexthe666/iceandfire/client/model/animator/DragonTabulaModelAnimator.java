@@ -50,7 +50,7 @@ public abstract class DragonTabulaModelAnimator<T extends EntityDragonBase> exte
         if (neckParts == null) {
             init(model);
         }
-        animate(model, entity, limbSwing, limbSwingAmount, ageInTicks, rotationYaw, rotationPitch, scale);
+        animate(model, entity);
 
         boolean walking = !entity.isHovering() && !entity.isFlying() && entity.hoverProgress <= 0 && entity.flyProgress <= 0;
         boolean swimming = entity.isInWater() && entity.swimProgress > 0;
@@ -269,7 +269,7 @@ public abstract class DragonTabulaModelAnimator<T extends EntityDragonBase> exte
 
     protected abstract IceAndFireTabulaModel<T> getModel(EnumDragonPoses pose);
 
-    protected void animate(IceAndFireTabulaModel<T> model, T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
+    protected void animate(IceAndFireTabulaModel<T> model, T entity) {
     	AdvancedModelRenderer modelCubeJaw = model.getCube("Jaw");
         AdvancedModelRenderer modelCubeBodyUpper = model.getCube("BodyUpper");
         model.llibAnimator.update(entity);
@@ -413,5 +413,6 @@ public abstract class DragonTabulaModelAnimator<T extends EntityDragonBase> exte
             model.llibAnimator.endKeyframe();
             model.llibAnimator.resetKeyframe(10);
         }
+        model.reset();
     }
 }
