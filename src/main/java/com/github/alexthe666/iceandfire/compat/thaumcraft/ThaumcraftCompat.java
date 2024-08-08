@@ -38,20 +38,20 @@ public class ThaumcraftCompat {
      * So we need to remap the reference and all our items to the new Draco aspect.
      */
     public void remapDraco() {
+        Aspect realDraco = Aspect.getAspect("draco");
         // Nothing overwrote our Draco aspect.
-        if (DRAGON.equals(Aspect.getAspect("draco"))) {
+        if (DRAGON.equals(realDraco)) {
             dracoItems.clear();
             return;
         }
         IceAndFire.logger.info("Detected a mod overwrote I&F's Draco aspect: remapping " + dracoItems.size() + " entries.");
-        Aspect draco = Aspect.getAspect("draco");
         while (!dracoItems.isEmpty()) {
             AspectList aspects = dracoItems.poll();
             int amount = aspects.getAmount(DRAGON);
             aspects.remove(DRAGON);
-            aspects.add(draco, amount);
+            aspects.add(realDraco, amount);
         }
-        DRAGON = draco;
+        DRAGON = realDraco;
     }
 
     private void registerItem(AspectRegistryEvent event, ItemStack stack, AspectList aspects) {
