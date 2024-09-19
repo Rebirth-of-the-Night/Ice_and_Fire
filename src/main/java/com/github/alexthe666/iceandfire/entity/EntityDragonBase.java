@@ -1122,7 +1122,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                                     player.sendStatusMessage(new TextComponentTranslation("dragon.command.new_home", pos.getX(), pos.getY(), pos.getZ()), true);
                                 }
                             }
-                        } else if (!world.isRemote){
+                        } else if (!world.isRemote) {
                             this.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, this.getSoundVolume(), this.getSoundPitch());
                             this.setCommand(this.getCommand() + 1);
                             if (this.getCommand() > 2) {
