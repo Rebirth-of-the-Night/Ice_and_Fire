@@ -1111,21 +1111,22 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                         if (player.isSneaking()) {
                             if (this.hasHomePosition) {
                                 this.hasHomePosition = false;
-                                player.sendStatusMessage(new TextComponentTranslation("dragon.command.remove_home"), true);
+                                if (!world.isRemote) {
+                                    player.sendStatusMessage(new TextComponentTranslation("dragon.command.remove_home"), true);
+                                }
                             } else {
                                 BlockPos pos = this.getPosition();
                                 this.homePos = new HomePosition(pos, this.world);
                                 this.hasHomePosition = true;
-                                player.sendStatusMessage(new TextComponentTranslation("dragon.command.new_home", pos.getX(), pos.getY(), pos.getZ()), true);
-                            }
-                            return true;
-                        } else {
-                            this.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, this.getSoundVolume(), this.getSoundPitch());
-                            if (!world.isRemote) {
-                                this.setCommand(this.getCommand() + 1);
-                                if (this.getCommand() > 2) {
-                                    this.setCommand(0);
+                                if (!world.isRemote) {
+                                    player.sendStatusMessage(new TextComponentTranslation("dragon.command.new_home", pos.getX(), pos.getY(), pos.getZ()), true);
                                 }
+                            }
+                        } else if (!world.isRemote){
+                            this.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, this.getSoundVolume(), this.getSoundPitch());
+                            this.setCommand(this.getCommand() + 1);
+                            if (this.getCommand() > 2) {
+                                this.setCommand(0);
                             }
                             String commandText = "stand";
                             if (this.getCommand() == 1) {
@@ -1135,8 +1136,8 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                                 commandText = "escort";
                             }
                             player.sendStatusMessage(new TextComponentTranslation("dragon.command." + commandText), true);
-                            return true;
                         }
+                        return true;
                     }
                 }
             }
