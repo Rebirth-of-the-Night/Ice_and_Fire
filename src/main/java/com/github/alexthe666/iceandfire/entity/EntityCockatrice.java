@@ -141,7 +141,7 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
     }
 
     private boolean canUseStareOn(Entity entity) {
-        return !IsImmune.toStone(entity) && (entity instanceof IBlacklistedFromStatues && ((IBlacklistedFromStatues) entity).canBeTurnedToStone()) && !ServerEvents.isAnimaniaFerret(entity);
+        return !IsImmune.toStone(entity) && (!(entity instanceof IBlacklistedFromStatues) || ((IBlacklistedFromStatues) entity).canBeTurnedToStone()) && !ServerEvents.isAnimaniaFerret(entity);
     }
 
     private void switchAI(boolean melee) {
