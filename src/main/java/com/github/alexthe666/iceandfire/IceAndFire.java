@@ -112,7 +112,6 @@ public class IceAndFire {
         ThaumcraftCompatBridge.loadThaumcraftCompat();
         LootFunctionManager.registerFunction(new CustomizeToDragon.Serializer());
         LootFunctionManager.registerFunction(new CustomizeToSeaSerpent.Serializer());
-        OneProbeCompatBridge.loadPreInit();
         TinkersCompatBridge.loadTinkersCompat();
         CraftTweakerCompatBridge.loadTweakerCompat();
         PROXY.preRender();
@@ -169,6 +168,7 @@ public class IceAndFire {
                 return new TextComponentString(entityLivingBaseIn.getDisplayName().getFormattedText() + " ").appendSibling(new TextComponentTranslation(s1, entityLivingBaseIn.getDisplayName()));
             }
         }.setDamageBypassesArmor();
+        OneProbeCompatBridge.loadInit();
     }
 
     @EventHandler

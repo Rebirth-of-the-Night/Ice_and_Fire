@@ -1,10 +1,21 @@
 package com.github.alexthe666.iceandfire.compat.theoneprobe;
 
-import mcjty.theoneprobe.TheOneProbe;
+import java.util.function.Function;
 
-public class IceAndFireOneProbeCompat {
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 
+import mcjty.theoneprobe.api.ITheOneProbe;
+
+public class IceAndFireOneProbeCompat implements Function<ITheOneProbe, Void>
+{
     public static void register() {
-        TheOneProbe.theOneProbeImp.registerEntityProvider(new DragonInfoProvider());
+        FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", IceAndFireOneProbeCompat.class.getName());
+    }
+
+    @Override
+    public Void apply(ITheOneProbe input)
+    {
+        input.registerEntityProvider(new DragonInfoProvider());
+        return null;
     }
 }

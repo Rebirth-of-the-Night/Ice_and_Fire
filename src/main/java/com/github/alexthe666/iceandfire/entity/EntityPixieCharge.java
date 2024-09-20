@@ -104,8 +104,8 @@ public class EntityPixieCharge extends EntityFireball {
                     this.entityDropItem(new ItemStack(IafItemRegistry.pixie_dust, 1), 0.45F);
                 }
             }
+            this.setDead();
         }
-        this.setDead();
     }
 
 
