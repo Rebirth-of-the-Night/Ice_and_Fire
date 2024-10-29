@@ -46,11 +46,7 @@ public class WorldGenCastle extends WorldGenerator {
     }
 
     public boolean generate(World worldIn, Random rand, BlockPos position) {
-
-        //generate castle ch 2000 blocks like chaos island
-        if(!checkIfCanGenAt(worldIn, position, 1000, 1000))
-            return false;
-
+        //position = new BlockPos(-530, 90, -366);
         position = position.add(rand.nextInt(8) - 4, 1, rand.nextInt(8) - 4);
         int totalW = 280, totalH = 130, totalD = 280; // TODO: 16.12.2023 change
         int partW = 32, partH = 32, partD = 32;
@@ -80,11 +76,5 @@ public class WorldGenCastle extends WorldGenerator {
                 }
 
         return true;
-    }
-
-    // TODO: 16.12.2023 add a temp generate method
-    public static boolean checkIfCanGenAt(World world, BlockPos middle, int x, int z) {
-        //return middle.getX() == x && middle.getZ() == z;
-        return middle.getX() % x == 0 && middle.getZ() % z == 0;
     }
 }

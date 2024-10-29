@@ -12,16 +12,15 @@ import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.Util;
 import slimeknights.tconstruct.library.fluid.FluidMolten;
 import slimeknights.tconstruct.library.materials.*;
+import static slimeknights.tconstruct.library.materials.MaterialTypes.HEAD;
+import static slimeknights.tconstruct.library.materials.MaterialTypes.SHAFT;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
 import slimeknights.tconstruct.library.utils.HarvestLevels;
 import slimeknights.tconstruct.smeltery.TinkerSmeltery;
 import slimeknights.tconstruct.tools.TinkerMaterials;
-import slimeknights.tconstruct.tools.traits.TraitBonusDamage;
-
-import static slimeknights.tconstruct.library.materials.MaterialTypes.HEAD;
-import static slimeknights.tconstruct.library.materials.MaterialTypes.SHAFT;
 import static slimeknights.tconstruct.tools.TinkerTraits.poisonous;
 import static slimeknights.tconstruct.tools.TinkerTraits.sharp;
+import slimeknights.tconstruct.tools.traits.TraitBonusDamage;
 
 public class TinkersCompat {
     public static final Material MATERIAL_DRAGONBONE = new Material("dragonbone", 0XB7B29D);

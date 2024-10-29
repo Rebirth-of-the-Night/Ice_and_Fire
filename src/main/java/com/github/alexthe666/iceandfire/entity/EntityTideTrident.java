@@ -14,7 +14,6 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -27,6 +26,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -35,13 +35,13 @@ import java.util.List;
 
 public class EntityTideTrident extends Entity implements IProjectile {
     @SuppressWarnings("unchecked")
-	private static final Predicate<Entity> ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, new Predicate<Entity>() {
+    private static final Predicate<Entity> ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, new Predicate<Entity>() {
         public boolean apply(@Nullable Entity p_apply_1_) {
             return p_apply_1_.canBeCollidedWith();
         }
     });
     private static final DataParameter<Byte> CRITICAL = EntityDataManager.createKey(EntityTideTrident.class, DataSerializers.BYTE);
-    public EntityArrow.PickupStatus pickupStatus;
+    public PickupStatus pickupStatus;
     public int arrowShake;
     public Entity shootingEntity;
     protected boolean inGround;
@@ -62,7 +62,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
         this.xTile = -1;
         this.yTile = -1;
         this.zTile = -1;
-        this.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
+        this.pickupStatus = PickupStatus.DISALLOWED;
         this.damage = 6.0D;
         this.setSize(0.85F, 0.5F);
         this.stack = new ItemStack(IafItemRegistry.tide_trident);
@@ -79,7 +79,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
         this.shootingEntity = shooter;
 
         if (shooter instanceof EntityPlayer && !((EntityPlayer) shooter).isCreative()) {
-            this.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
+            this.pickupStatus = PickupStatus.ALLOWED;
         }
     }
 
@@ -183,7 +183,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
         IBlockState iblockstate = this.world.getBlockState(blockpos);
         Block block = iblockstate.getBlock();
 
-        if (iblockstate.getMaterial() != Material.AIR) {
+        if (iblockstate.getMaterial() != Material.AIR && !this.noClip) {
             AxisAlignedBB axisalignedbb = iblockstate.getCollisionBoundingBox(this.world, blockpos);
 
             if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(blockpos).contains(new Vec3d(this.posX, this.posY, this.posZ))) {
@@ -195,7 +195,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
             --this.arrowShake;
         }
 
-        if (this.inGround) {
+        if (this.inGround && !this.noClip) {
             int j = block.getMetaFromState(iblockstate);
             if ((block != this.inTile || j != this.inData) && !this.world.collidesWithAnyBlock(this.getEntityBoundingBox().grow(0.05D))) {
                 this.inGround = false;
@@ -247,9 +247,15 @@ public class EntityTideTrident extends Entity implements IProjectile {
             this.posY += this.motionY;
             this.posZ += this.motionZ;
             float f4 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
+            if (noClip) {
+                this.rotationYaw = (float) (MathHelper.atan2(-this.motionX, -this.motionZ) * (180D / Math.PI));
+            } else {
+                this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
+            }
+            this.rotationPitch = (float) (MathHelper.atan2(this.motionY, f4) * (180D / Math.PI));
 
-            for (this.rotationPitch = (float) (MathHelper.atan2(this.motionY, f4) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
+            while (this.rotationPitch - this.prevRotationPitch < -180.0F) {
+                this.prevRotationPitch -= 360.0F;
             }
 
             while (this.rotationPitch - this.prevRotationPitch >= 180.0F) {
@@ -266,26 +272,26 @@ public class EntityTideTrident extends Entity implements IProjectile {
 
             this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
             this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-            float f1 = 0.99F;
 
             if (this.isInWater()) {
                 for (int i = 0; i < 4; ++i) {
                     this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
                 }
-
-                f1 = 0.99F;
             }
 
             if (this.isWet()) {
                 this.extinguish();
             }
 
-            this.motionX *= f1;
-            this.motionY *= f1;
-            this.motionZ *= f1;
+            if (!noClip) {
+                float f1 = 0.99F;
+                this.motionX *= f1;
+                this.motionY *= f1;
+                this.motionZ *= f1;
 
-            if (!this.hasNoGravity()) {
-                this.motionY -= 0.05000000074505806D;
+                if (!this.hasNoGravity()) {
+                    this.motionY -= 0.05000000074505806D;
+                }
             }
 
             this.setPosition(this.posX, this.posY, this.posZ);
@@ -300,6 +306,10 @@ public class EntityTideTrident extends Entity implements IProjectile {
         Entity entity = raytraceResultIn.entityHit;
 
         if (entity != null) {
+            if (this.noClip) {
+                return;
+            }
+
             float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
             int i = MathHelper.ceil((double) f * this.damage);
 
@@ -354,34 +364,42 @@ public class EntityTideTrident extends Entity implements IProjectile {
                 this.ticksInAir = 0;
 
                 if (!this.world.isRemote && this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ < 0.0010000000474974513D) {
-                    if (this.pickupStatus == EntityArrow.PickupStatus.ALLOWED) {
+                    if (this.pickupStatus == PickupStatus.ALLOWED) {
                         this.entityDropItem(this.getArrowStack(), 0.1F);
                     }
                     this.setDead();
                 }
             }
         } else {
-            BlockPos blockpos = raytraceResultIn.getBlockPos();
-            this.xTile = blockpos.getX();
-            this.yTile = blockpos.getY();
-            this.zTile = blockpos.getZ();
-            IBlockState iblockstate = this.world.getBlockState(blockpos);
-            this.inTile = iblockstate.getBlock();
-            this.inData = this.inTile.getMetaFromState(iblockstate);
-            this.motionX = (float) (raytraceResultIn.hitVec.x - this.posX);
-            this.motionY = (float) (raytraceResultIn.hitVec.y - this.posY);
-            this.motionZ = (float) (raytraceResultIn.hitVec.z - this.posZ);
-            float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-            this.posX -= this.motionX / (double) f2 * 0.05000000074505806D;
-            this.posY -= this.motionY / (double) f2 * 0.05000000074505806D;
-            this.posZ -= this.motionZ / (double) f2 * 0.05000000074505806D;
-            this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
-            this.inGround = true;
-            this.arrowShake = 7;
-            this.setIsCritical(false);
+            if (!this.noClip) {
+                if (raytraceResultIn.typeOfHit == RayTraceResult.Type.BLOCK) {
+                    if (!this.world.isRemote) {
+                        ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, 5, 0.1, 0.1, 0.1, 0.05, Block.getIdFromBlock(this.world.getBlockState(raytraceResultIn.getBlockPos()).getBlock()));
+                    }
+                }
 
-            if (iblockstate.getMaterial() != Material.AIR) {
-                this.inTile.onEntityCollision(this.world, blockpos, iblockstate, this);
+                BlockPos blockpos = raytraceResultIn.getBlockPos();
+                this.xTile = blockpos.getX();
+                this.yTile = blockpos.getY();
+                this.zTile = blockpos.getZ();
+                IBlockState iblockstate = this.world.getBlockState(blockpos);
+                this.inTile = iblockstate.getBlock();
+                this.inData = this.inTile.getMetaFromState(iblockstate);
+                this.motionX = (float) (raytraceResultIn.hitVec.x - this.posX);
+                this.motionY = (float) (raytraceResultIn.hitVec.y - this.posY);
+                this.motionZ = (float) (raytraceResultIn.hitVec.z - this.posZ);
+                float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+                this.posX -= this.motionX / (double) f2 * 0.05000000074505806D;
+                this.posY -= this.motionY / (double) f2 * 0.05000000074505806D;
+                this.posZ -= this.motionZ / (double) f2 * 0.05000000074505806D;
+                this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+                this.inGround = true;
+                this.arrowShake = 7;
+                this.setIsCritical(false);
+
+                if (iblockstate.getMaterial() != Material.AIR) {
+                    this.inTile.onEntityCollision(this.world, blockpos, iblockstate, this);
+                }
             }
         }
     }
@@ -468,9 +486,9 @@ public class EntityTideTrident extends Entity implements IProjectile {
         }
 
         if (compound.hasKey("pickup", 99)) {
-            this.pickupStatus = EntityArrow.PickupStatus.getByOrdinal(compound.getByte("pickup"));
+            this.pickupStatus = PickupStatus.getByOrdinal(compound.getByte("pickup"));
         } else if (compound.hasKey("player", 99)) {
-            this.pickupStatus = compound.getBoolean("player") ? EntityArrow.PickupStatus.ALLOWED : EntityArrow.PickupStatus.DISALLOWED;
+            this.pickupStatus = compound.getBoolean("player") ? PickupStatus.ALLOWED : PickupStatus.DISALLOWED;
         }
 
         this.setIsCritical(compound.getBoolean("crit"));
@@ -481,9 +499,9 @@ public class EntityTideTrident extends Entity implements IProjectile {
      */
     public void onCollideWithPlayer(EntityPlayer entityIn) {
         if (!this.world.isRemote && this.inGround && this.arrowShake <= 0) {
-            boolean flag = this.pickupStatus == EntityArrow.PickupStatus.ALLOWED || this.pickupStatus == EntityArrow.PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
+            boolean flag = this.pickupStatus == PickupStatus.ALLOWED || this.pickupStatus == PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
 
-            if (this.pickupStatus == EntityArrow.PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getArrowStack())) {
+            if (this.pickupStatus == PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getArrowStack())) {
                 flag = false;
             }
 

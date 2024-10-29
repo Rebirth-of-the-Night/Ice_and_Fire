@@ -93,7 +93,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
     public boolean attackDecision = false;
     private int animationTick;
     private Animation currentAnimation;
-    private EntityMutlipartPart[] segments = new EntityMutlipartPart[9];
+    private EntityMultipartPart[] segments = new EntityMultipartPart[9];
     private float lastScale;
     private boolean isLandNavigator;
     private SwimBehavior swimBehavior = SwimBehavior.WANDER;
@@ -229,12 +229,12 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
 
     public void resetParts(float scale) {
         clearParts();
-        segments = new EntityMutlipartPart[9];
+        segments = new EntityMultipartPart[9];
         for (int i = 0; i < segments.length; i++) {
             if (i > 3) {
-                segments[i] = new EntityMutlipartPart(this, (2F - ((i + 1) * 0.55F)) * scale, 0, 0, 0.5F * scale, 0.5F * scale, 1);
+                segments[i] = new EntityMultipartPart(this, (2F - ((i + 1) * 0.55F)) * scale, 0, 0, 0.5F * scale, 0.5F * scale, 1);
             } else {
-                segments[i] = new EntityMutlipartPart(this, (1.8F - (i * 0.5F)) * scale, 0, 0, 0.45F * scale, 0.4F * scale, 1);
+                segments[i] = new EntityMultipartPart(this, (1.8F - (i * 0.5F)) * scale, 0, 0, 0.45F * scale, 0.4F * scale, 1);
             }
         }
     }
@@ -722,7 +722,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
         } else {
             this.setSeaSerpentScale(1.5F + this.getRNG().nextFloat() * 4.0F);
         }
-        this.heal(this.getMaxHealth());
+        this.setHealth(this.getMaxHealth());
         return livingdata;
     }
 

@@ -1,11 +1,12 @@
 package com.github.alexthe666.iceandfire.compat.waila;
 
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
-import com.github.alexthe666.iceandfire.entity.EntityMutlipartPart;
+import com.github.alexthe666.iceandfire.entity.EntityMultipartPart;
 import com.google.common.base.Strings;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;
+import static mcp.mobius.waila.api.SpecialChars.getRenderString;
 import mcp.mobius.waila.config.FormattingConfig;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -16,8 +17,6 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-import static mcp.mobius.waila.api.SpecialChars.getRenderString;
-
 public class HUDHandlerMultipartMob implements IWailaEntityProvider {
     public static int nhearts = 20;
     public static float maxhpfortext = 40.0f;
@@ -27,7 +26,7 @@ public class HUDHandlerMultipartMob implements IWailaEntityProvider {
     @Override
     public List<String> getWailaHead(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config) {
         currenttip.clear();
-        EntityMutlipartPart part = (EntityMutlipartPart) entity;
+        EntityMultipartPart part = (EntityMultipartPart) entity;
         if (!Strings.isNullOrEmpty(FormattingConfig.entityFormat)) {
             try {
                 currenttip.add("\u00a7r" + String.format(FormattingConfig.entityFormat, part.getParent().getName()));
@@ -40,7 +39,7 @@ public class HUDHandlerMultipartMob implements IWailaEntityProvider {
     @Nonnull
     @Override
     public List<String> getWailaBody(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config) {
-        EntityMutlipartPart part = (EntityMutlipartPart) entity;
+        EntityMultipartPart part = (EntityMultipartPart) entity;
         if (config.getConfig("general.showhp") && part.getParent() != null) {
             nhearts = nhearts <= 0 ? 20 : nhearts;
             float health = part.getParent().getHealth() / 2.0f;
@@ -77,7 +76,7 @@ public class HUDHandlerMultipartMob implements IWailaEntityProvider {
     @Nonnull
     @Override
     public NBTTagCompound getNBTData(EntityPlayerMP player, Entity ent, NBTTagCompound tag, World world) {
-        if (ent instanceof EntityMutlipartPart)
+        if (ent instanceof EntityMultipartPart)
             ent.writeToNBT(tag);
         return tag;
     }

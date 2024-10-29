@@ -18,7 +18,7 @@ public class ItemModHoe extends ItemHoe implements IaFTool {
     public ItemModHoe(ToolMaterial toolmaterial, String gameName, String name) {
     	this(toolmaterial, gameName, name, -1);
     }
-    
+
     public ItemModHoe(ToolMaterial toolmaterial, String gameName, String name, int toolID) {
         super(toolmaterial);
         this.setTranslationKey(name);
@@ -42,18 +42,21 @@ public class ItemModHoe extends ItemHoe implements IaFTool {
     	case 1:
     		ItemUtil.getMyrmexComment(tooltip);
     		break;
-    	case 2: 
+    	case 2:
+    		ItemUtil.getMyrmexComment(tooltip, true);
+    		break;
+    	case 3:
     		ItemUtil.getFireDragonsteelComment(tooltip);
     		break;
-    	case 3: 
+    	case 4:
     		ItemUtil.getIceDragonsteelComment(tooltip);
     		break;
-    	case 4:
+    	case 5:
     		ItemUtil.getLightningDragonsteelComment(tooltip);
     		break;
     	}
     }
-    
+
 	@Override
 	public int getToolMode() {
 		return Math.max(this.toolID, 1);

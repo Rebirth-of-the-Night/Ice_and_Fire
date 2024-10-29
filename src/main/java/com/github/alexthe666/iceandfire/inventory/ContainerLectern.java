@@ -26,7 +26,7 @@ public class ContainerLectern extends SyncedFieldContainer {
         this.addSlotToContainer(new Slot(lecternInv, 0, 15, 47){
             @Override
             public boolean isItemValid(ItemStack stack) {
-                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() instanceof ItemBestiary;
+                return super.isItemValid(stack) && !stack.isEmpty() && stack.getItem() instanceof ItemBestiary && stack.getTagCompound() != null;
             }
         });
         this.addSlotToContainer(new Slot(lecternInv, 1, 35, 47){

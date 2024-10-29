@@ -24,7 +24,7 @@ public class IceAndFireConfig {
     public int dragonDenGoldAmount = 4;
     public boolean generateSnowVillages = true;
     public int generateSnowVillageChance = 100;
-    public int dangerousWorldGenDistanceLimit = 200;
+    public int dangerousWorldGenDistanceLimit = 800;
     public int[] dragonBlacklistedDimensions = new int[]{1, -1};
     public int[] dragonWhitelistedDimensions = new int[]{0};
     public boolean useDimensionBlackList = false;
@@ -210,7 +210,7 @@ public class IceAndFireConfig {
         this.spawnGlaciers = config.getBoolean("Generate Glaciers", "all", true, "Whether to generate glacier biomes or not");
         this.glacierSpawnChance = config.getInt("Glacier Spawn Weight", "all", 4, 1, 10000, "Glacier Spawn Weight. Higher number = more common");
         this.oreToStoneRatioForDragonCaves = config.getInt("Dragon Cave Ore Ratio", "all", 45, 1, 10000, "Ratio of Stone(this number) to Ores in Dragon Caves");
-        this.dangerousWorldGenDistanceLimit = config.getInt("Dangerous World Gen Distance From Spawn", "all", 200, 0, Integer.MAX_VALUE, "How many blocks away does dangerous(dragons, cyclops, etc.) world gen have to generate from spawn");
+        this.dangerousWorldGenDistanceLimit = config.getInt("Dangerous World Gen Distance From Spawn", "all", 800, 0, Integer.MAX_VALUE, "How many blocks away does dangerous(dragons, cyclops, etc.) world gen have to generate from spawn");
         this.spawnStructuresOnSuperflat = config.getBoolean("Generate All Structures on Superflat", "all", true, "Whether to generate structures or mobs on superflat worlds");
         this.dragonBlockBreakingDropChance = config.getFloat("Dragon Block Breaking Drop Chance", "all", 0.1F, 0.0F, 1.0F, "The percentage chance for a block to drop as an item when a dragon breaks it.");
         this.dragonEggTime = config.getInt("Dragon Egg Hatch Time", "all", 7200, 1, Integer.MAX_VALUE, "How long it takes(in ticks) for a dragon egg to hatch");

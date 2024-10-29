@@ -12,6 +12,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -21,13 +22,13 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
     private final int targetChance;
     protected EntityItem targetEntity;
     private boolean isIce = false;
-
     public DragonAITargetItems(EntityCreature creature, boolean checkSight) {
         this(creature, checkSight, false);
     }
 
     public DragonAITargetItems(EntityCreature creature, boolean checkSight, boolean onlyNearby) {
-        this(creature, 20, checkSight, onlyNearby, null);
+        this(creature, 20, checkSight, onlyNearby, (Predicate<? super EntityItem>) null);
+        isIce = creature instanceof EntityIceDragon;
     }
 
     public DragonAITargetItems(EntityCreature creature, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector) {
@@ -53,16 +54,16 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
             return false;
         }
 
-        if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(this.targetChance) != 0) {
+        if (this.targetChance > 0 && this.taskOwner.getRNG().nextInt(10) != 0) {
             return false;
         } else {
 
-            List<EntityItem> list = this.taskOwner.world.getEntitiesWithinAABB(EntityItem.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
+            List<EntityItem> list = this.taskOwner.world.<EntityItem>getEntitiesWithinAABB(EntityItem.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
 
             if (list.isEmpty()) {
                 return false;
             } else {
-                list.sort(this.theNearestAttackableTargetSorter);
+                Collections.sort(list, this.theNearestAttackableTargetSorter);
                 this.targetEntity = list.get(0);
                 return true;
             }
@@ -117,7 +118,7 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
         public int compare(Entity p_compare_1_, Entity p_compare_2_) {
             double d0 = this.theEntity.getDistanceSq(p_compare_1_);
             double d1 = this.theEntity.getDistanceSq(p_compare_2_);
-            return Double.compare(d0, d1);
+            return d0 < d1 ? -1 : (d0 > d1 ? 1 : 0);
         }
     }
 }

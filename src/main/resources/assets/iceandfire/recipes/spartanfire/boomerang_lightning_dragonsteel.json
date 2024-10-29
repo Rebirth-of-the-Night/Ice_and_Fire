@@ -1,1 +1,0 @@
-{"pattern": ["iww", "w  ", "w  "], "conditions": [], "type": "minecraft:crafting_shaped", "result": {"item": "iceandfire:boomerang_lightning_dragonsteel"}, "key": {"i": {"ore": "ingotLightningDragonsteel", "type": "forge:ore_dict"}, "w": {"ore": "plankWood", "type": "forge:ore_dict"}}}

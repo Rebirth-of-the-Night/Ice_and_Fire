@@ -50,8 +50,8 @@ public class GuiMyrmexStaff extends GuiScreen {
         }
         populateRoomMap();
         this.buttonList.add(new GuiButton(0, i + 124, j + 15, 120, 20, ClientProxy.getReferedClientHive().reproduces ? I18n.format("myrmex.message.disablebreeding") : I18n.format("myrmex.message.enablebreeding")));
-        this.buttonList.add(this.previousPage = new ChangePageButton(1, i + 5, j + 150, false, 0, this.jungle ? 2 : 1));
-        this.buttonList.add(this.nextPage = new ChangePageButton(2, i + 225, j + 150, true, 0, this.jungle ? 2 : 1));
+        this.buttonList.add(this.previousPage = new ChangePageButton(1, i + 5, j + 150, false, this.jungle ? 2 : 1));
+        this.buttonList.add(this.nextPage = new ChangePageButton(2, i + 225, j + 150, true, this.jungle ? 2 : 1));
         int totalRooms = allRoomPos.size();
         for (int rooms = 0; rooms < allRoomPos.size(); rooms++) {
             int yIndex = rooms % ROOMS_PER_PAGE;

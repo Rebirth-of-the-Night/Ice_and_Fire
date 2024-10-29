@@ -6,13 +6,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
-
-import static com.github.alexthe666.iceandfire.event.WorldGenEvents.degradeSurface;
-import static com.github.alexthe666.iceandfire.event.WorldGenEvents.getHeight;
 
 /**
  * @author Pabilo8
@@ -20,22 +16,18 @@ import static com.github.alexthe666.iceandfire.event.WorldGenEvents.getHeight;
  */
 public class WorldGenDreadDimension implements IWorldGenerator {
 
+    //X -132,
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+        BlockPos ANU_CASTLE_POS = new BlockPos(-63, world.getHeight(-63, -165) / 2, -165);
 
-        if (world.provider instanceof WorldProviderDreadLands) {
-            int x = (chunkX * 16) + 8;
-            int z = (chunkZ * 16) + 8;
-            BlockPos height = getHeight(world, new BlockPos(x, 0, z));
-
-            if (BiomeDictionary.hasType(world.getBiome(height), BiomeDictionary.Type.COLD) && BiomeDictionary.hasType(world.getBiome(height), BiomeDictionary.Type.SNOWY)) {
-                   BlockPos surface = world.getHeight(new BlockPos(x, 0, z));
-
-                surface = degradeSurface(world, surface);
-                new WorldGenCastle().generate(world, random, surface);
-                    //lastMausoleum = surface;
+        if (world.getChunk(chunkX, chunkZ) == world.getChunk(ANU_CASTLE_POS) && world.provider instanceof WorldProviderDreadLands) {
+            int counter = 0;
+            if (++counter == 1) {
+                new WorldGenCastle().generate(world, random, new BlockPos(-126, world.getHeight(-63, -165), -330));
             }
         }
+
 
     }
 }

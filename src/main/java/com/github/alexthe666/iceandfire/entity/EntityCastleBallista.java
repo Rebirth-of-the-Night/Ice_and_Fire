@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
@@ -9,6 +8,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -21,8 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 
 
-public class EntityCastleBallista extends EntityCreature implements IRangedAttackMob, IDreadMob
-{
+public class EntityCastleBallista extends EntityCreature implements IRangedAttackMob, IDreadMob {
     int loadProgressInt;
     boolean isLoadInProgress;
     float loadProgress;
@@ -30,7 +29,7 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
     public float loadProgressForRender;
     boolean attackedLastTick;
     int attackCount;
-    
+
     public EntityCastleBallista(World worldIn) {
         super(worldIn);
         loadProgressInt = 0;
@@ -58,11 +57,23 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
     }
 
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-        EntityBallistaArrow entityarrow = new EntityBallistaArrow(world, this);
 
-        entityarrow.shoot(this, this.rotationPitch, this.rotationYaw, 0F, 3F, 1.0F);
-        this.playSound(IafSoundRegistry.ICEDRAGON_BREATH, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.world.spawnEntity(entityarrow);
+
+        double d2 = this.getLookVec().x;
+        double d3 = this.getLookVec().y;
+        double d4 = this.getLookVec().z;
+        float inaccuracy = 1.0F;
+        d2 = d2 + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+        d3 = d3 + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+        d4 = d4 + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
+
+        EntityBallistaArrow entityarrow = new EntityBallistaArrow(world, this, d2, d3, d4);
+
+        this.playSound(SoundEvents.ENTITY_WITHER_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        entityarrow.setPosition(this.posX + this.getLookVec().x * 3, this.posY + this.getEyeHeight() + this.getLookVec().y * 3, this.posZ + this.getLookVec().z * 3);
+
+        if (!this.world.isRemote)
+            this.world.spawnEntity(entityarrow);
     }
 
     @SideOnly(Side.CLIENT)
@@ -72,18 +83,16 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
                 swingProgressInt = -1;
                 isSwingInProgress = true;
             }
-        }
-        else if (par1 == 17) {
+        } else if (par1 == 17) {
             if (!isLoadInProgress) {
                 loadProgressInt = -1;
                 isLoadInProgress = true;
             }
-        }
-        else {
+        } else {
             super.handleStatusUpdate(par1);
         }
     }
-    
+
     protected void updateArmSwingProgress() {
         if (isSwingInProgress) {
             ++swingProgressInt;
@@ -91,8 +100,7 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
                 swingProgressInt = 0;
                 isSwingInProgress = false;
             }
-        }
-        else {
+        } else {
             swingProgressInt = 0;
         }
         swingProgress = swingProgressInt / 6.0f;
@@ -102,37 +110,36 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
                 loadProgressInt = 0;
                 isLoadInProgress = false;
             }
-        }
-        else {
+        } else {
             loadProgressInt = 0;
         }
         loadProgress = loadProgressInt / 10.0f;
     }
-    
+
     public void onEntityUpdate() {
         prevLoadProgress = loadProgress;
         super.onEntityUpdate();
     }
-    
+
     @Override
     public boolean isOnSameTeam(Entity entityIn) {
         return entityIn instanceof IDreadMob || super.isOnSameTeam(entityIn);
     }
-    
+
     public float getEyeHeight() {
         return height * 0.66f;
     }
-    
+
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100.0);
         getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(120.0);
     }
-    
+
     public int getTotalArmorValue() {
         return 20;
     }
-    
+
     @Override
     public void onUpdate() {
         super.onUpdate();
@@ -150,43 +157,42 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
             if (BlockRailBase.isRailBlock(world, new BlockPos(k, l - 1, i1))) {
                 --l;
             }
-        }
-        else {
+        } else {
             updateArmSwingProgress();
         }
     }
-    
+
     public boolean canBePushed() {
         return true;
     }
-    
+
     public boolean canBeCollidedWith() {
         return true;
     }
-    
+
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         super.readEntityFromNBT(nbt);
     }
-    
+
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         super.writeEntityToNBT(nbt);
     }
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
-        rotationYaw += (float)(getRNG().nextGaussian() * 45.0);
-        rotationPitch += (float)(getRNG().nextGaussian() * 20.0);
+        rotationYaw += (float) (getRNG().nextGaussian() * 45.0);
+        rotationPitch += (float) (getRNG().nextGaussian() * 20.0);
         return super.attackEntityFrom(source, amount);
     }
-    
+
     public void knockBack(Entity p_70653_1_, float p_70653_2_, double p_70653_3_, double p_70653_5_) {
         super.knockBack(p_70653_1_, p_70653_2_, p_70653_3_ / 10.0, p_70653_5_ / 10.0);
         if (motionY > 0) {
             motionY = 0;
         }
     }
-    
+
     public void move(MoverType mt, double x, double y, double z) {
         super.move(mt, x / 20.0, y, z / 20.0);
     }
@@ -207,7 +213,7 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
     public int getVerticalFaceSpeed() {
         return 20;
     }
-    
+
     public void setSwingingArms(boolean swingingArms) {
     }
 
@@ -216,42 +222,41 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
         return null;
     }
 
-    protected class EntityAIWatchTarget extends EntityAIBase
-    {
+    protected class EntityAIWatchTarget extends EntityAIBase {
         protected EntityLiving theWatcher;
         protected Entity closestEntity;
         private int lookTime;
-        
+
         public EntityAIWatchTarget(EntityLiving p_i1631_1_) {
             theWatcher = p_i1631_1_;
             setMutexBits(2);
         }
-        
+
         public boolean shouldExecute() {
             if (theWatcher.getAttackTarget() != null) {
                 closestEntity = theWatcher.getAttackTarget();
             }
             return closestEntity != null;
         }
-        
+
         public boolean shouldContinueExecuting() {
             float d = (float) getTargetDistance();
             return closestEntity.isEntityAlive() && theWatcher.getDistanceSq(closestEntity) <= d * d && lookTime > 0;
         }
-        
+
         public void startExecuting() {
             lookTime = 40 + theWatcher.getRNG().nextInt(40);
         }
-        
+
         public void resetTask() {
             closestEntity = null;
         }
-        
+
         public void updateTask() {
             theWatcher.getLookHelper().setLookPosition(closestEntity.posX, closestEntity.posY + closestEntity.getEyeHeight(), closestEntity.posZ, 10.0f, (float) theWatcher.getVerticalFaceSpeed());
             --lookTime;
         }
-        
+
         protected double getTargetDistance() {
             IAttributeInstance iattributeinstance = theWatcher.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
             return (iattributeinstance == null) ? 16.0 : iattributeinstance.getAttributeValue();

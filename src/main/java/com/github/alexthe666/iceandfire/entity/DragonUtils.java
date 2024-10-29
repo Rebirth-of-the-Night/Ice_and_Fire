@@ -1,21 +1,19 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.block.BlockUtils;
+import com.github.alexthe666.iceandfire.block.*;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.INpc;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.*;
 import net.minecraft.world.EnumDifficulty;
@@ -25,19 +23,83 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class DragonUtils {
-    public static BlockPos getBlockInViewEscort(EntityDragonBase dragon) {
-        BlockPos escortPos = dragon.getEscortPosition();
-        BlockPos ground = dragon.world.getHeight(escortPos);
-        int distFromGround = escortPos.getY() - ground.getY();
-        for (int i = 0; i < 10; i++) {
-            BlockPos pos = new BlockPos(escortPos.getX() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance) - IceAndFire.CONFIG.dragonWanderFromHomeDistance / 2,
-                    (distFromGround > 16 ? escortPos.getY() : escortPos.getY() + 8 + dragon.getRNG().nextInt(16)),
-                    (escortPos.getZ() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance) - IceAndFire.CONFIG.dragonWanderFromHomeDistance / 2));
-            if (!dragon.isTargetBlocked(new Vec3d(pos)) && dragon.getDistanceSqToCenter(pos) > 6) {
-                return pos;
-            }
+
+    public static boolean canDismount(Entity entity) {
+        if (entity == null) {
+            return true;
         }
-        return null;
+        if (entity.isDead || (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).getHealth() <= 0.0f)) {
+            return true;
+        }
+        if (entity instanceof EntityDragonBase) {
+            EntityDragonBase dragon = (EntityDragonBase) entity;
+            return dragon.canDismount();
+        } else if (entity instanceof EntityCyclops) {
+            EntityCyclops cyclops = (EntityCyclops) entity;
+            return cyclops.canDismount();
+        }
+        return true;
+    }
+
+
+    public static boolean isOwner(Entity owner, Entity entity) {
+        if (!(entity instanceof IEntityOwnable)) {
+            return false;
+        }
+        Entity owner2 = ((IEntityOwnable) entity).getOwner();
+        if (owner == null || owner2 == null) {
+            return false;
+        }
+        return owner.isEntityEqual(((IEntityOwnable) entity).getOwner());
+    }
+
+    public static EntityEquipmentSlot getEquipmentSlotFromDragonInvSlot(int slot) {
+        switch(slot) {
+            default:
+                return EntityEquipmentSlot.HEAD;
+            case 1:
+                return EntityEquipmentSlot.CHEST;
+            case 2:
+                return EntityEquipmentSlot.LEGS;
+            case 3:
+                return EntityEquipmentSlot.FEET;
+        }
+    }
+
+    public static int getDragonInvSlotFromEquipmentSlot(EntityEquipmentSlot slot) {
+        switch(slot) {
+            default:
+                return 0;
+            case CHEST:
+                return 1;
+            case LEGS:
+                return 2;
+            case FEET:
+                return 3;
+        }
+    }
+
+    public static void destroyBlock(World world, BlockPos pos, IBlockState state) {
+        if (world.isRemote) {
+            return;
+        }
+
+        Block block = state.getBlock();
+        if (block.isAir(state, world, pos)) {
+            return;
+        }
+
+        //Integer effectChance = IceAndFire.CONFIG.get(block);
+        if (/*effectChance == null || */world.rand.nextInt(100) < 2) {
+            world.playEvent(2001, pos, Block.getStateId(state));
+        }
+
+        //Integer blockChance = IceAndFire.CONFIG.get(block);
+        if (/*/*blockChance == null || */world.rand.nextInt(100) < 2) {
+            block.dropBlockAsItem(world, pos, state, 0);
+        }
+
+        world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
     }
 
     public static BlockPos getBlockInTargetsViewGhost(EntityGhost ghost, EntityLivingBase target) {
@@ -281,27 +343,53 @@ public class DragonUtils {
         return (dragonBase.getHomeDimensionID() == null || getDimensionID(dragonBase.world) == (dragonBase.getHomeDimensionID()));
     }
 
-    public static boolean canDragonBreak(Block block) {
-        return block != Blocks.BARRIER &&
-                block != Blocks.OBSIDIAN &&
-                block != Blocks.END_STONE &&
-                block != Blocks.BEDROCK &&
-                block != Blocks.END_PORTAL &&
-                block != Blocks.END_PORTAL_FRAME &&
-                block != Blocks.COMMAND_BLOCK &&
-                block != Blocks.REPEATING_COMMAND_BLOCK &&
-                block != Blocks.CHAIN_COMMAND_BLOCK &&
-                block != Blocks.IRON_BARS &&
-                block != Blocks.END_GATEWAY &&
-                !isBlacklistedBlock(block);
+    public static boolean canDragonBreakBlock(World world, Block block, BlockPos pos) {
+        if (!canDragonBreak(block)) {
+            return false;
+        }
+        return world.isRemote/* || !ClaimItCompatBridge.isBlockInAnyClaim(world, pos)*/;
     }
 
-    public static boolean hasSameOwner(EntityTameable cockatrice, Entity entity) {
-        if (entity instanceof EntityTameable) {
-            EntityTameable tameable = (EntityTameable) entity;
-            return tameable.getOwnerId() != null && cockatrice.getOwnerId() != null && tameable.getOwnerId().equals(cockatrice.getOwnerId());
+    public static boolean isDragonBlock(Block block) {
+        if (block instanceof BlockDragonScales) {
+            return true;
         }
-        return false;
+        if (block instanceof BlockDragonBone) {
+            return true;
+        }
+        return block instanceof BlockDragonBoneWall;
+    }
+
+    public static boolean canDragonBreak(Block block) {
+        if (block.getTranslationKey().contains("grave")) {
+            return false;
+        }
+        if (isDreadBlock(block)) {
+            return false;
+        }
+        return block != net.minecraft.init.Blocks.BARRIER
+                && block != net.minecraft.init.Blocks.OBSIDIAN
+                && block != net.minecraft.init.Blocks.BEDROCK
+                && block != net.minecraft.init.Blocks.END_STONE
+                && block != net.minecraft.init.Blocks.END_PORTAL
+                && block != net.minecraft.init.Blocks.END_PORTAL_FRAME
+                && block != net.minecraft.init.Blocks.END_GATEWAY
+                && block != net.minecraft.init.Blocks.COMMAND_BLOCK
+                && block != net.minecraft.init.Blocks.REPEATING_COMMAND_BLOCK
+                && block != net.minecraft.init.Blocks.CHAIN_COMMAND_BLOCK
+                && block != net.minecraft.init.Blocks.IRON_BARS;
+    }
+
+    public static boolean hasSameOwner(Entity entity1, Entity entity2) {
+        if (!(entity1 instanceof IEntityOwnable && entity2 instanceof IEntityOwnable)) {
+            return false;
+        }
+        Entity owner = ((IEntityOwnable) entity1).getOwner();
+        Entity owner2 = ((IEntityOwnable) entity2).getOwner();
+        if (owner == null || owner2 == null) {
+            return false;
+        }
+        return owner.equals(owner2);
     }
 
     public static boolean isAlive(EntityLivingBase entity) {
@@ -354,14 +442,14 @@ public class DragonUtils {
         if (entity2 instanceof EntityTameable) {
             owner2 = ((EntityTameable) entity2).getOwner();
         }
-        if (entity1 instanceof EntityMutlipartPart) {
-            Entity multipart = ((EntityMutlipartPart) entity1).getParent();
+        if (entity1 instanceof EntityMultipartPart) {
+            Entity multipart = ((EntityMultipartPart) entity1).getParent();
             if (multipart != null && multipart instanceof EntityTameable) {
                 owner1 = ((EntityTameable) multipart).getOwner();
             }
         }
-        if (entity2 instanceof EntityMutlipartPart) {
-            Entity multipart = ((EntityMutlipartPart) entity2).getParent();
+        if (entity2 instanceof EntityMultipartPart) {
+            Entity multipart = ((EntityMultipartPart) entity2).getParent();
             if (multipart != null && multipart instanceof EntityTameable) {
                 owner2 = ((EntityTameable) multipart).getOwner();
             }
@@ -379,6 +467,10 @@ public class DragonUtils {
             }
         }
         return true;
+    }
+
+    public static boolean isDreadBlock(Block block) {
+        return block instanceof BlockDreadBase || block instanceof BlockDreadSpawner;
     }
 
     // TODO: 15.06.2022 organize

@@ -409,6 +409,7 @@ public class ModelAmphithere extends ModelDragonBase {
         this.rotate(animator, Jaw, 31, 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(5);
+        animator.update(null);
     }
 
     private void wingBlastPose() {

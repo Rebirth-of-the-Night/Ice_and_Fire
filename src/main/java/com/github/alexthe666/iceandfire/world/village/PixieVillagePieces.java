@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.world.village;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockPixieHouse;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
+import static com.github.alexthe666.iceandfire.block.IafBlockRegistry.venerableStump;
 import com.github.alexthe666.iceandfire.entity.EntityPixie;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityPixieHouse;
 import com.github.alexthe666.iceandfire.item.block.ItemBlockVenerableStump;
@@ -26,8 +27,6 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.List;
 import java.util.Random;
-
-import static com.github.alexthe666.iceandfire.block.IafBlockRegistry.venerableStump;
 
 public class PixieVillagePieces {
 

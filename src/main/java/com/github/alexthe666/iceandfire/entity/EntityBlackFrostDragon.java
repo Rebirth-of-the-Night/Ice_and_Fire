@@ -8,7 +8,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
 import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
@@ -42,14 +41,20 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     }
 
     @Override
-    public IafDragonLogic createDragonLogic() {
-        return new IafDragonLogicButItIsCarver(this);
-    }
-
-    @Override
     public void onLivingUpdate() {
         EntityDreadQueen queen = this.getRidingQueen();
         if (queen != null) {
+            if(this.canMove()
+                    && !this.isHovering()
+                    && !this.isFlying()
+                    && !this.isChild()
+            && this.posY < 255) {
+                this.setHovering(true);
+                this.setSleeping(false);
+                this.setSitting(false);
+                this.hoverTicks = 0;
+                this.flyTicks = 0;
+            }
             if (queen.getAttackTarget() != null)
                 this.setAttackTarget(queen.getAttackTarget());
         } else {
@@ -64,18 +69,19 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
 
     @Override
     protected void initEntityAI() {
-        this.tasks.addTask(0, new DreadAIDragonWaitForQueen(this));
+        //this.tasks.addTask(0, new DreadAIDragonWaitForQueen(this));
+        doRoboty();
     }
 
     public void doRoboty() {
-        this.logic = new IafDragonLogic(this);
-
-        this.tasks.addTask(2, new DragonAIEscort(this, 1.35D));
-        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.5D, false));
-        this.tasks.addTask(4, new AquaticAITempt(this, 1.0D, IafItemRegistry.frost_stew, false));
-        this.tasks.addTask(6, new DragonAIWander(this, 1.0D));
-        this.tasks.addTask(7, new DragonAIWatchClosest(this, EntityLivingBase.class, 6.0F));
-        this.tasks.addTask(7, new DragonAILookIdle(this));
+        //this.tasks.addTask(1, new BlackFrostAILeap(this));
+        this.tasks.addTask(2, new DragonAIAttackMelee(this, 1.5D, false));
+        this.tasks.addTask(3, new AquaticAITempt(this, 1.0D, IafItemRegistry.frost_stew, false));
+        this.tasks.addTask(4, new DragonAIAirTarget(this));
+        this.tasks.addTask(4, new DragonAIWaterTarget(this));
+        this.tasks.addTask(5, new DragonAIWander(this, 1.0D));
+        this.tasks.addTask(6, new DragonAIWatchClosest(this, EntityLivingBase.class, 6.0F));
+        this.tasks.addTask(6, new DragonAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
@@ -96,14 +102,13 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         return super.getControllingPassenger();
     }
 
-    @Override
-    public boolean canBeSteered() {
+    public boolean isPlayerControlled() {
         return false;
     }
 
     @Override
-    public boolean isAllowedToTriggerFlight() {
-        return this.hasFlightClearance() && !this.isSitting() && !this.isChild() && !this.isSleeping() && this.canMove() && this.onGround;
+    public boolean canBeSteered() {
+        return false;
     }
 
     public boolean canMove() {

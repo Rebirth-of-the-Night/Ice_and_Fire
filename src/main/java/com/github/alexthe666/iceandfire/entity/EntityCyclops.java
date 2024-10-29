@@ -399,4 +399,7 @@ public class EntityCyclops extends EntityMob implements IAnimatedEntity, IBlackl
         return false;
     }
 
+    public boolean canDismount() {
+        return currentAnimation != ANIMATION_EATPLAYER || animationTick >= 32;
+    }
 }

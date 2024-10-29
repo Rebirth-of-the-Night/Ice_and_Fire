@@ -1,7 +1,7 @@
 {
   "variants": {
     "normal": {
-      "model": "glass"
+      "model": "iceandfire:dread_spawner"
     }
   }
 }

@@ -1,6 +1,9 @@
 package com.github.alexthe666.iceandfire;
 
-import com.github.alexthe666.iceandfire.compat.*;
+import com.github.alexthe666.iceandfire.compat.CraftTweakerCompatBridge;
+import com.github.alexthe666.iceandfire.compat.OneProbeCompatBridge;
+import com.github.alexthe666.iceandfire.compat.ThaumcraftCompatBridge;
+import com.github.alexthe666.iceandfire.compat.TinkersCompatBridge;
 import com.github.alexthe666.iceandfire.entity.IafEntityRegistry;
 import com.github.alexthe666.iceandfire.entity.IafVillagerRegistry;
 import com.github.alexthe666.iceandfire.event.ServerEvents;
@@ -50,7 +53,7 @@ import java.util.Random;
 public class IceAndFire {
 
     public static final String MODID = "iceandfire";
-    public static final String VERSION = "1.9.1-1.3.0";
+    public static final String VERSION = "1.9.1-2.0.0";
     public static final String LLIBRARY_VERSION = "1.7.9";
     public static final String NAME = "Ice And Fire: RotN Edition";
     public static final Logger logger = LogManager.getLogger(NAME);
@@ -112,7 +115,6 @@ public class IceAndFire {
         OneProbeCompatBridge.loadPreInit();
         TinkersCompatBridge.loadTinkersCompat();
         CraftTweakerCompatBridge.loadTweakerCompat();
-        SAFCompatBridge.loadSpartanAndLightning();
         PROXY.preRender();
     }
 

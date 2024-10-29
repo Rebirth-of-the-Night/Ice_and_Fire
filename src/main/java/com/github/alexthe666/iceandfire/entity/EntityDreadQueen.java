@@ -28,7 +28,7 @@ import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
 
-public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity, IVillagerFear, IAnimalFear {
+public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity, IVillagerFear, IAnimalFear, IDreadMob {
 
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dread_queen"));
 

@@ -225,9 +225,9 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onPlayerAttackMob(AttackEntityEvent event) {
-        if (event.getTarget() instanceof EntityMutlipartPart && event.getEntity() instanceof EntityPlayer) {
+        if (event.getTarget() instanceof EntityMultipartPart && event.getEntity() instanceof EntityPlayer) {
             event.setCanceled(true);
-            EntityLivingBase parent = ((EntityMutlipartPart) event.getTarget()).getParent();
+            EntityLivingBase parent = ((EntityMultipartPart) event.getTarget()).getParent();
             ((EntityPlayer) event.getEntity()).attackTargetEntityWithCurrentItem(parent);
             int extraData = 0;
             if(event.getTarget() instanceof EntityHydraHead && parent instanceof EntityHydra){

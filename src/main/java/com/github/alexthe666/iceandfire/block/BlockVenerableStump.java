@@ -75,8 +75,7 @@ public class BlockVenerableStump extends Block {
     }
 
     @Nonnull
-    protected BlockStateContainer createBlockState()
-    {
+    protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, PART);
     }
 
@@ -120,7 +119,7 @@ public class BlockVenerableStump extends Block {
                         age = 15;
                     world.setBlockState(firePos, Blocks.FIRE.getDefaultState().withProperty(BlockFire.AGE, age), 2);
 
-                    if(net.minecraftforge.event.ForgeEventFactory.onNeighborNotify(world, firePos, world.getBlockState(firePos), java.util.EnumSet.allOf(EnumFacing.class), true).isCanceled())
+                    if (net.minecraftforge.event.ForgeEventFactory.onNeighborNotify(world, firePos, world.getBlockState(firePos), java.util.EnumSet.allOf(EnumFacing.class), true).isCanceled())
                         return;
 
                     world.neighborChanged(firePos.west(), Blocks.FIRE, firePos);
@@ -150,111 +149,111 @@ public class BlockVenerableStump extends Block {
     public enum StumpPart implements IStringSerializable {
         // --
         NORTH_WEST(
-            new Vec3i(-1, 0, -1),
-            new AxisAlignedBB(
-                3.0 / 16.0,
-                0.0 / 16.0,
-                3.0 / 16.0,
-                16.0 / 16.0,
-                14.0 / 16.0,
-                16.0 / 16.0
-            )
+                new Vec3i(-1, 0, -1),
+                new AxisAlignedBB(
+                        3.0 / 16.0,
+                        0.0 / 16.0,
+                        3.0 / 16.0,
+                        16.0 / 16.0,
+                        14.0 / 16.0,
+                        16.0 / 16.0
+                )
         ),
         // -0
         WEST(
-            new Vec3i(-1, 0, 0),
-            new AxisAlignedBB(
-                3.0 / 16.0,
-                0.0 / 16.0,
-                0.0 / 16.0,
-                16.0 / 16.0,
-                14.0 / 16.0,
-                16.0 / 16.0
-            )
+                new Vec3i(-1, 0, 0),
+                new AxisAlignedBB(
+                        3.0 / 16.0,
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        16.0 / 16.0,
+                        14.0 / 16.0,
+                        16.0 / 16.0
+                )
         ),
         // -+
         SOUTH_WEST(
-            new Vec3i(-1, 0, +1),
-            new AxisAlignedBB(
-                3.0 / 16.0,
-                0.0 / 16.0,
-                0.0 / 16.0,
-                16.0 / 16.0,
-                14.0 / 16.0,
-                13.0 / 16.0
-            )
+                new Vec3i(-1, 0, +1),
+                new AxisAlignedBB(
+                        3.0 / 16.0,
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        16.0 / 16.0,
+                        14.0 / 16.0,
+                        13.0 / 16.0
+                )
         ),
         // 0-
         NORTH(
-            new Vec3i(0, 0, -1),
-            new AxisAlignedBB(
-                0.0 / 16.0,
-                0.0 / 16.0,
-                3.0 / 16.0,
-                16.0 / 16.0,
-                14.0 / 16.0,
-                16.0 / 16.0
-            )
+                new Vec3i(0, 0, -1),
+                new AxisAlignedBB(
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        3.0 / 16.0,
+                        16.0 / 16.0,
+                        14.0 / 16.0,
+                        16.0 / 16.0
+                )
         ),
         // 00
         MIDDLE(
-            new Vec3i(0, 0, 0),
-            new AxisAlignedBB(
-                0.0 / 16.0,
-                0.0 / 16.0,
-                0.0 / 16.0,
-                16.0 / 16.0,
-                14.0 / 16.0,
-                16.0 / 16.0
-            )
+                new Vec3i(0, 0, 0),
+                new AxisAlignedBB(
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        16.0 / 16.0,
+                        14.0 / 16.0,
+                        16.0 / 16.0
+                )
         ),
         // 0+
         SOUTH(
-            new Vec3i(0, 0, +1),
-            new AxisAlignedBB(
-                0.0 / 16.0,
-                0.0 / 16.0,
-                0.0 / 16.0,
-                16.0 / 16.0,
-                14.0 / 16.0,
-                13.0 / 16.0
-            )
+                new Vec3i(0, 0, +1),
+                new AxisAlignedBB(
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        16.0 / 16.0,
+                        14.0 / 16.0,
+                        13.0 / 16.0
+                )
         ),
         // +-
         NORTH_EAST(
-            new Vec3i(+1, 0, -1),
-            new AxisAlignedBB(
-                0.0 / 16.0,
-                0.0 / 16.0,
-                3.0 / 16.0,
-                13.0 / 16.0,
-                14.0 / 16.0,
-                16.0 / 16.0
-            )
+                new Vec3i(+1, 0, -1),
+                new AxisAlignedBB(
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        3.0 / 16.0,
+                        13.0 / 16.0,
+                        14.0 / 16.0,
+                        16.0 / 16.0
+                )
         ),
         // +0
         EAST(
-            new Vec3i(+1, 0, 0),
-            new AxisAlignedBB(
-                0.0 / 16.0,
-                0.0 / 16.0,
-                0.0 / 16.0,
-                13.0 / 16.0,
-                14.0 / 16.0,
-                16.0 / 16.0
-            )
+                new Vec3i(+1, 0, 0),
+                new AxisAlignedBB(
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        13.0 / 16.0,
+                        14.0 / 16.0,
+                        16.0 / 16.0
+                )
         ),
         // ++
         SOUTH_EAST(
-            new Vec3i(+1, 0, +1),
-            new AxisAlignedBB(
-                0.0 / 16.0,
-                0.0 / 16.0,
-                0.0 / 16.0,
-                13.0 / 16.0,
-                14.0 / 16.0,
-                13.0 / 16.0
-            )
+                new Vec3i(+1, 0, +1),
+                new AxisAlignedBB(
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        0.0 / 16.0,
+                        13.0 / 16.0,
+                        14.0 / 16.0,
+                        13.0 / 16.0
+                )
         );
 
         private final Vec3i fromCenter;
