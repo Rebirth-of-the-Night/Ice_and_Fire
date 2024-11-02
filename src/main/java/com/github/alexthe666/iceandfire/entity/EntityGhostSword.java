@@ -32,13 +32,6 @@ public class EntityGhostSword extends EntityArrow
         }
     }
 
-    public float getAlpha(float partialTime)
-    {
-        if(maxDisposeTime == 0) return 0F;
-        int time = dataManager.get(DISPOSE_TIME);
-        return MathHelper.clamp(time - ticksExisted, 0, maxDisposeTime) / (float) maxDisposeTime;
-    }
-
     public EntityGhostSword(World w)
     {
         super(w);
@@ -83,7 +76,7 @@ public class EntityGhostSword extends EntityArrow
         noClip = true;
 
         float sqrt = MathHelper.sqrt((float) (this.motionX * this.motionX + this.motionZ * this.motionZ));
-        if ((sqrt < 0.1F) && this.ticksExisted > 200) {
+        if ((sqrt < 0.1F) && this.ticksExisted > 100) {
             this.setDead();
         }
         double d0 = 0;
