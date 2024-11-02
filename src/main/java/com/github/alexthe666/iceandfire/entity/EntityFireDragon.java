@@ -381,8 +381,8 @@ public class EntityFireDragon extends EntityDragonBase {
     private void shootFireAtMob(EntityLivingBase entity) {
         if (!this.usingGroundAttack) {
             if (this.getRNG().nextInt(5) == 0) {
-                if (this.getAnimation() != this.ANIMATION_FIRECHARGE) {
-                    this.setAnimation(this.ANIMATION_FIRECHARGE);
+                if (this.getAnimation() != ANIMATION_FIRECHARGE) {
+                    this.setAnimation(ANIMATION_FIRECHARGE);
                 } else if (this.getAnimationTick() == 20) {
                     rotationYaw = renderYawOffset;
                     Vec3d headPos = getHeadPosition();

@@ -172,7 +172,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public InventoryBasic dragonInventory;
     public String prevArmorResLoc = "0|0|0|0";
     public String armorResLoc = "0|0|0|0";
-    public IafDragonFlightManager flightManager;
     public boolean lookingForRoostAIFlag = false;
     protected boolean hasHadHornUse = false;
     protected int fireTicks;
@@ -213,7 +212,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             tail_buffer = new ChainBuffer();
         }
         legSolver = new LegSolverQuadruped(0.2F, 1.2F, 1.0F);
-        this.flightManager = new IafDragonFlightManager(this);
         this.ignoreFrustumCheck = true;
         resetParts(1);
     }
@@ -1902,9 +1900,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 this.setHovering(false);
             }
         }
-        if (!world.isRemote) {
-            this.flightManager.update();
-        }
         if (this.down() && (this.isFlying() || this.isHovering())) {
             this.motionY -= 0.4D;
         }
@@ -1935,6 +1930,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         if (this.isFlying() && !this.isHovering() && this.isPlayerControlled() && !this.onGround && Math.max(Math.abs(motionZ), Math.abs(motionX)) < 0.1F) {
             this.setHovering(true);
             this.setFlying(false);
+            this.hoverTicks = 0;
         } else if (this.isHovering() && !this.isFlying() && this.isPlayerControlled() && !this.onGround && Math.max(Math.abs(motionZ), Math.abs(motionX)) > 0.1F) {
             this.setFlying(true);
             this.setHovering(false);
@@ -1944,6 +1940,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         }
         if (!world.isRemote && this.spacebarTicks > 20 && this.isPlayerControlled() && !this.isFlying() && !this.isHovering()) {
             this.setHovering(true);
+            this.hoverTicks = 0;
         }
         if (world.isRemote && !this.isModelDead()) {
             roll_buffer.calculateChainFlapBuffer(50, 10, 4, this);
@@ -1954,14 +1951,17 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             this.setAttackTarget(null);
         }
         if (!this.world.isRemote) {
-            if (!this.isInWater() && !this.isSleeping() && this.onGround && !this.isFlying() && !this.isHovering() && this.getAttackTarget() == null && !this.isTimeToWake() && this.getRNG().nextInt(250) == 0 && this.getAttackTarget() == null && this.getPassengers().isEmpty()) {
-                this.setSleeping(true);
-            }
-            if (this.isSleeping() && (this.isFlying() || this.isHovering() || this.isInWater() || (this.world.canBlockSeeSky(new BlockPos(this)) && this.isTimeToWake() && !this.isTamed() || this.isTimeToWake() && this.isTamed()) || this.getAttackTarget() != null || !this.getPassengers().isEmpty())) {
-                this.setSleeping(false);
-            }
-            if (this.isSitting() && this.getControllingPassenger() != null) {
-                this.setSitting(false);
+            StoneEntityProperties capability = EntityPropertiesHandler.INSTANCE.getProperties(this, StoneEntityProperties.class);
+            if (capability != null && !capability.isStone) {
+                if (!this.isInWater() && !this.isSleeping() && this.onGround && !this.isFlying() && !this.isHovering() && this.getAttackTarget() == null && !this.isTimeToWake() && this.getRNG().nextInt(250) == 0 && this.getAttackTarget() == null && this.getPassengers().isEmpty()) {
+                    this.setSleeping(true);
+                }
+                if (this.isSleeping() && (this.isFlying() || this.isHovering() || this.isInWater() || (this.world.canBlockSeeSky(new BlockPos(this)) && this.isTimeToWake() && !this.isTamed() || this.isTimeToWake() && this.isTamed()) || this.getAttackTarget() != null || !this.getPassengers().isEmpty())) {
+                    this.setSleeping(false);
+                }
+                if (this.isSitting() && this.getControllingPassenger() != null) {
+                    this.setSitting(false);
+                }
             }
         }
         if (!world.isRemote && !this.isModelDead()) {
