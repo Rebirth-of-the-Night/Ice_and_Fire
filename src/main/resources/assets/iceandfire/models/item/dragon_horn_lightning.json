@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "iceandfire:items/dragon_horn_lightning"
+    "layer0": "iceandfire:items/dragon_horn"
   },
   "display": {
     "thirdperson_righthand": {
@@ -72,5 +72,27 @@
         0.88
       ]
     }
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "pulling": 1
+      },
+      "model": "iceandfire:item/dragon_horn_lightning_0"
+    },
+    {
+      "predicate": {
+        "pulling": 1,
+        "pull": 0.65
+      },
+      "model": "iceandfire:item/dragon_horn_lightning_1"
+    },
+    {
+      "predicate": {
+        "pulling": 1,
+        "pull": 0.9
+      },
+      "model": "iceandfire:item/dragon_horn_lightning_2"
+    }
+  ]
 }

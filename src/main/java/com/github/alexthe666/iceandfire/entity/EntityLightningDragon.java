@@ -264,7 +264,7 @@ public class EntityLightningDragon extends EntityDragonBase {
                 this.setBreathingFire(this.burningTarget != null);
             }
         }
-        if(!isBreathingFire()){
+        if (!isBreathingFire()) {
             this.setHasLightningTarget(false);
         }
     }
@@ -587,6 +587,11 @@ public class EntityLightningDragon extends EntityDragonBase {
 
     protected ItemStack getSkull() {
         return new ItemStack(IafItemRegistry.dragon_skull, 1, 2);
+    }
+
+    @Override
+    protected ItemStack getHorn() {
+        return new ItemStack(IafItemRegistry.dragon_horn_lightning);
     }
 
     @Override

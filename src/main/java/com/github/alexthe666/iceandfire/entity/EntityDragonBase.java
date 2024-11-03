@@ -173,7 +173,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public String prevArmorResLoc = "0|0|0|0";
     public String armorResLoc = "0|0|0|0";
     public boolean lookingForRoostAIFlag = false;
-    protected boolean hasHadHornUse = false;
     protected int fireTicks;
     private boolean isModelDead;
     private int animationTick;
@@ -994,9 +993,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if (stack.getItem() == IafItemRegistry.dragon_horn) {
-            return false;
-        }
         int lastDeathStage = this.getAgeInDays() / 5;
         if (this.isModelDead() && this.getDeathStage() < lastDeathStage && player.capabilities.allowEdit) {
             if (!world.isRemote && !stack.isEmpty() && stack.getItem() == Items.GLASS_BOTTLE && this.getDeathStage() < lastDeathStage / 2 && IceAndFire.CONFIG.dragonDropBlood) {
@@ -1141,9 +1137,9 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                         NBTTagCompound tag = new NBTTagCompound();
                         this.writeEntityToNBT(tag);
 
-                        //TODO
-                        stack.setTagCompound(tag);
-                        player.setHeldItem(hand, stack);
+                        ItemStack horn = getHorn();
+                        horn.setTagCompound(tag);
+                        player.setHeldItem(hand, horn);
                         this.setDead();
                         return true;
                     }
@@ -1152,7 +1148,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                         if (this.getDragonStage() < 2) {
                             this.startRiding(player, true);
                         }
-                        if (!hasHadHornUse && this.getDragonStage() > 2 && !player.isRiding()) {
+                        if (player.getHeldItemMainhand().getItem() != IafItemRegistry.dragon_horn && this.getDragonStage() > 2 && !player.isRiding()) {
                             player.startRiding(this, true);
                             if (world.isRemote) {
                                 IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageStartRidingMob(this.getEntityId(), true));
@@ -1219,6 +1215,8 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             return loot.get(0);
         }
     }
+
+    protected abstract ItemStack getHorn();
 
     public void eatFoodBonus(ItemStack stack) {
 
@@ -1875,9 +1873,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         this.setScaleForAge(true);
         if (world.isRemote) {
             this.updateClientControls();
-        }
-        if (this.hasHadHornUse) {
-            this.hasHadHornUse = false;
         }
         if (this.isModelDead()) {
             if(!world.isRemote && world.isAirBlock(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) && this.posY > -1){

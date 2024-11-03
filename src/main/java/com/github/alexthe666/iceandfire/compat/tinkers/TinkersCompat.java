@@ -48,9 +48,9 @@ public class TinkersCompat {
     public static final AbstractTrait SWEATER_SONG = new TraitSweaterSong();
     public static final AbstractTrait SURF_WAX_AMERICA = new TraitSurfWaxAmerica();
     private static final TinkersCompat INSTANCE = new TinkersCompat();
-    public static FluidMolten MOLTEN_FIRE_DRAGONSTEEL;
-    public static FluidMolten MOLTEN_ICE_DRAGONSTEEL;
-    public static FluidMolten MOLTEN_LIGHTNING_DRAGONSTEEL;
+    public static FluidMoltenIaf MOLTEN_FIRE_DRAGONSTEEL;
+    public static FluidMoltenIaf MOLTEN_ICE_DRAGONSTEEL;
+    public static FluidMoltenIaf MOLTEN_LIGHTNING_DRAGONSTEEL;
     private static boolean registered = false;
     
     public static void register() {
@@ -205,8 +205,8 @@ public class TinkersCompat {
         return TConstruct.pulseManager.isPulseLoaded(TinkerSmeltery.PulseId);
     }
 
-    private static FluidMolten fluidMetal(String name, int color) {
-        FluidMolten fluid = new FluidMolten(name, color);
+    private static FluidMoltenIaf fluidMetal(String name, int color) {
+        FluidMoltenIaf fluid = new FluidMoltenIaf(name, color);
         return registerFluid(fluid);
     }
 

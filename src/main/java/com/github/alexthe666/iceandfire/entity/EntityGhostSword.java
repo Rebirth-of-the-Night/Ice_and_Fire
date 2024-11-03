@@ -90,7 +90,7 @@ public class EntityGhostSword extends EntityArrow
             this.world.spawnParticle(EnumParticleTypes.END_ROD, x, y + 0.5D, z, d0, d1, d2);
         }
 
-        if(this.ticksExisted >= 200) //<- loop exit for primal
+        if(this.ticksExisted >= 100) //<- loop exit for primal
             this.setDead();
     }
 
