@@ -25,6 +25,7 @@ public class IafVillagerRegistry {
 
     public static final IafVillagerRegistry INSTANCE = new IafVillagerRegistry();
 
+    public VillagerRegistry.VillagerProfession scriber;
     public VillagerRegistry.VillagerProfession fisherman;
     public VillagerRegistry.VillagerProfession craftsman;
     public VillagerRegistry.VillagerProfession shaman;
@@ -40,7 +41,55 @@ public class IafVillagerRegistry {
     public VillagerRegistry.VillagerProfession jungleMyrmexQueen;
     public Map<Integer, VillagerRegistry.VillagerProfession> professions = Maps.newHashMap();
 
+    public static class MerchantOffer implements EntityVillager.ITradeList {
+
+        ItemStack offer;
+        ItemStack result;
+
+        public MerchantOffer(ItemStack offer, ItemStack result){
+            this.offer = offer;
+            this.result = result;
+        }
+
+        public void addMerchantRecipe(IMerchant merchant, MerchantRecipeList recipeList, Random random) {
+            recipeList.add(new MerchantRecipe(offer, result));
+        }
+    }
+
     public void init() {
+        scriber = new VillagerRegistry.VillagerProfession("iceandfire:scriber", "iceandfire:textures/models/scriber/scriber.png", "iceandfire:textures/models/scriber/zombie_scriber.png");
+        {
+            VillagerRegistry.VillagerCareer career = new VillagerRegistry.VillagerCareer(scriber, "scriber");
+            career.addTrade(1, new MerchantOffer(new ItemStack(Items.EMERALD, 1), new ItemStack(IafItemRegistry.manuscript, 4)));
+            career.addTrade(1, new MerchantOffer(new ItemStack(Blocks.BOOKSHELF, 3), new ItemStack(Items.EMERALD, 1)));
+            career.addTrade(2, new MerchantOffer(new ItemStack(IafItemRegistry.silverIngot, 5), new ItemStack(Items.EMERALD, 1)));
+            career.addTrade(2, new MerchantOffer(new ItemStack(IafBlockRegistry.fire_lily, 8), new ItemStack(Items.EMERALD, 1)));
+            career.addTrade(2, new MerchantOffer(new ItemStack(Items.EMERALD, 2), new ItemStack(IafBlockRegistry.dragon_ice_spikes, 7)));
+            career.addTrade(2, new MerchantOffer(new ItemStack(IafItemRegistry.sapphireGem), new ItemStack(Items.EMERALD, 2)));
+            career.addTrade(2, new MerchantOffer(new ItemStack(Items.EMERALD, 2), new ItemStack(IafBlockRegistry.jar_empty, 1)));
+            career.addTrade(2, new MerchantOffer(new ItemStack(Items.EMERALD, 2), new ItemStack(IafItemRegistry.myrmex_desert_resin, 1)));
+            career.addTrade(2, new MerchantOffer(new ItemStack(Items.EMERALD, 2), new ItemStack(IafItemRegistry.myrmex_jungle_resin, 1)));
+            career.addTrade(2, new MerchantOffer(new ItemStack(IafItemRegistry.amythestGem), new ItemStack(Items.EMERALD, 3)));
+            career.addTrade(3, new MerchantOffer(new ItemStack(IafItemRegistry.dragonbone, 6), new ItemStack(Items.EMERALD, 1)));
+            career.addTrade(3, new MerchantOffer(new ItemStack(IafItemRegistry.chain, 2), new ItemStack(Items.EMERALD, 3)));
+            career.addTrade(3, new MerchantOffer(new ItemStack(Items.EMERALD, 6), new ItemStack(IafItemRegistry.pixie_dust, 2)));
+            career.addTrade(3, new MerchantOffer(new ItemStack(Items.EMERALD, 8), new ItemStack(IafItemRegistry.lightning_dragon_flesh, 1)));
+            career.addTrade(4, new MerchantOffer(new ItemStack(Items.EMERALD, 10), new ItemStack(IafItemRegistry.dragonbone, 2)));
+            career.addTrade(4, new MerchantOffer(new ItemStack(Items.EMERALD, 4), new ItemStack(IafItemRegistry.shiny_scales, 1)));
+            career.addTrade(5, new MerchantOffer(new ItemStack(Items.EMERALD, 15), new ItemStack(IafItemRegistry.sea_serpent_fang, 3)));
+            career.addTrade(5, new MerchantOffer(new ItemStack(Items.EMERALD, 12), new ItemStack(IafItemRegistry.hydra_fang, 1)));
+            career.addTrade(1, new MerchantOffer(new ItemStack(Items.PAPER, 15), new ItemStack(Items.EMERALD, 2)));
+            career.addTrade(1, new MerchantOffer(new ItemStack(IafBlockRegistry.ash, 10), new ItemStack(Items.EMERALD, 1)));
+            career.addTrade(2, new MerchantOffer(new ItemStack(IafBlockRegistry.lightning_lily, 7), new ItemStack(Items.EMERALD, 3)));
+            career.addTrade(2, new MerchantOffer(new ItemStack(Items.EMERALD, 3), new ItemStack(IafBlockRegistry.frost_lily, 4)));
+            career.addTrade(3, new MerchantOffer(new ItemStack(Items.EMERALD, 6), new ItemStack(IafItemRegistry.fire_dragon_flesh, 2)));
+            career.addTrade(3, new MerchantOffer(new ItemStack(Items.EMERALD, 7), new ItemStack(IafItemRegistry.ice_dragon_flesh, 1)));
+            career.addTrade(4, new MerchantOffer(new ItemStack(IafItemRegistry.dread_shard, 5), new ItemStack(Items.EMERALD, 1)));
+            career.addTrade(4, new MerchantOffer(new ItemStack(Items.EMERALD, 8), new ItemStack(IafItemRegistry.stymphalian_bird_feather, 12)));
+            career.addTrade(4, new MerchantOffer(new ItemStack(Items.EMERALD, 4), new ItemStack(IafItemRegistry.troll_tusk, 12)));
+            career.addTrade(5, new MerchantOffer(new ItemStack(IafItemRegistry.ectoplasm, 6), new ItemStack(Items.EMERALD, 1)));
+            register(scriber, 3);
+        }
         fisherman = new VillagerRegistry.VillagerProfession("iceandfire:fisherman", "iceandfire:textures/models/snowvillager/fisherman.png", "minecraft:textures/entity/zombie_villager/zombie_farmer.png");
         {
             VillagerRegistry.VillagerCareer career = new VillagerRegistry.VillagerCareer(fisherman, "fisherman");

@@ -415,6 +415,7 @@ entity.snowvillager.name=Snow Villager
 entity.Villager.craftsman=Craftsman
 entity.Villager.fisherman=Fisherman
 entity.Villager.shaman=Shaman
+entity.Villager.scriber=Scriber
 entity.hippogryph.name=Hippogryph
 entity.hippogryph.black=Black Hippogryph
 entity.hippogryph.brown=Brown Hippogryph

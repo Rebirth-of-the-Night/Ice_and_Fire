@@ -13,12 +13,8 @@ import java.util.Random;
 
 public class ComponentAnimalFarm extends StructureVillagePieces.Village {
 
-    public ComponentAnimalFarm() {
-        super();
-    }
-
-    public ComponentAnimalFarm(StructureVillagePieces.Start startPiece, int p2, Random random, StructureBoundingBox structureBox, EnumFacing facing) {
-        super();
+    public ComponentAnimalFarm(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox structureBox, EnumFacing facing) {
+        super(start, type);
         this.setCoordBaseMode(facing);
         this.boundingBox = structureBox;
     }
@@ -32,14 +28,12 @@ public class ComponentAnimalFarm extends StructureVillagePieces.Village {
     public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
         if (this.averageGroundLvl < 0) {
             this.averageGroundLvl = this.getAverageGroundLevel(world, sbb);
-
             if (this.averageGroundLvl < 0) {
                 return true;
             }
-            this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.maxY + 7 - 1, 0);
+            this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.maxY + 4, 0);
         }
         BlockPos blockpos = new BlockPos(this.getXWithOffset(4, 4), this.getYWithOffset(0), this.getZWithOffset(4, 4));
         return new WorldGenAnimalFarm().generate(world, random, blockpos.up());
     }
-
 }

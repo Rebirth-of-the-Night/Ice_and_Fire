@@ -7,6 +7,7 @@ import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
 import com.github.alexthe666.iceandfire.world.gen.*;
+import com.github.alexthe666.iceandfire.world.gen.processor.GraveyardProcessor;
 import com.github.alexthe666.iceandfire.world.village.MapGenPixieVillage;
 import com.github.alexthe666.iceandfire.world.village.MapGenSnowVillage;
 import net.minecraft.block.BlockLiquid;
@@ -137,7 +138,7 @@ public class WorldGenEvents implements IWorldGenerator {
             BlockPos corner3 = height.add(template.getSize().getX(), -1, template.getSize().getZ());
             BlockPos corner4 = height.add(0, -1, template.getSize().getZ());
             if (world.getBlockState(center).isOpaqueCube() && world.getBlockState(corner1).isOpaqueCube() && world.getBlockState(corner2).isOpaqueCube() && world.getBlockState(corner3).isOpaqueCube() && world.getBlockState(corner4).isOpaqueCube()) {
-                template.addBlocksToWorldChunk(world, center, settings);
+                template.addBlocksToWorld(world, center, new GraveyardProcessor(), settings, 2);
             }
         }
         if (IceAndFire.CONFIG.generateSirenIslands && isFarEnoughFromSpawn(world, height) && BiomeDictionary.hasType(world.getBiome(height), Type.OCEAN) && !BiomeDictionary.hasType(world.getBiome(height), Type.COLD)

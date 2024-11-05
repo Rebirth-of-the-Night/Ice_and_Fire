@@ -10,7 +10,6 @@ import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.Util;
-import slimeknights.tconstruct.library.fluid.FluidMolten;
 import slimeknights.tconstruct.library.materials.*;
 import static slimeknights.tconstruct.library.materials.MaterialTypes.HEAD;
 import static slimeknights.tconstruct.library.materials.MaterialTypes.SHAFT;

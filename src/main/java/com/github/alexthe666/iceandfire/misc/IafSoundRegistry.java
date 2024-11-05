@@ -1,10 +1,9 @@
 package com.github.alexthe666.iceandfire.misc;
 
+import static com.github.alexthe666.iceandfire.IceAndFire.MODID;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import static com.github.alexthe666.iceandfire.IceAndFire.MODID;
 
 @GameRegistry.ObjectHolder(MODID)
 public final class IafSoundRegistry {

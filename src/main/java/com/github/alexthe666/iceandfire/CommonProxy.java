@@ -31,8 +31,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.lang.reflect.Field;
 
