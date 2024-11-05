@@ -57,7 +57,7 @@ public class IafVillagerRegistry {
     }
 
     public void init() {
-        scriber = new VillagerRegistry.VillagerProfession("iceandfire:scriber", "iceandfire:textures/models/scriber.png", "iceandfire:textures/models/scriber/zombie_scriber.png");
+        scriber = new VillagerRegistry.VillagerProfession("iceandfire:scriber", "iceandfire:textures/models/scriber/scriber.png", "iceandfire:textures/models/scriber/zombie_scriber.png");
         {
             VillagerRegistry.VillagerCareer career = new VillagerRegistry.VillagerCareer(scriber, "scriber");
             career.addTrade(1, new MerchantOffer(new ItemStack(Items.EMERALD, 1), new ItemStack(IafItemRegistry.manuscript, 4)));
