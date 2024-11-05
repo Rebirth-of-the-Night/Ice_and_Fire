@@ -41,7 +41,7 @@ public class ComponentScriberHouse extends StructureVillagePieces.Village {
         if (facing == EnumFacing.SOUTH) {
             genPos = genPos.offset(EnumFacing.WEST, 11).offset(EnumFacing.SOUTH, 2);
         }
-        this.spawnVillagers(world, sbb, 7, 1, 1, 1);
+        this.spawnVillagers(world, sbb, 7, 8, 1, 1);
         return new WorldGenScriberHouse(this, facing.rotateY()).generate(world, random, genPos);
     }
 
