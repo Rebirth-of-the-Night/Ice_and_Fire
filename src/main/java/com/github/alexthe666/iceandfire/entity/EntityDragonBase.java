@@ -1353,7 +1353,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 this.setSleeping(false);
                 this.setSitting(false);
                 this.hoverTicks = 0;
-                this.flyTicks = 0;
             }
             if (this.isFlying() && this.getAttackTarget() != null && this.usingGroundAttack && this.isDirectPathBetweenPoints(this.getPositionVector(), this.getAttackTarget().getPositionVector())) {
                 this.setTackling(true);
@@ -1404,9 +1403,8 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             if (flightCycle == 2) {
                 this.playSound(IafSoundRegistry.DRAGON_FLIGHT, this.getSoundVolume() * IceAndFire.CONFIG.dragonFlapNoiseDistance, getSoundPitch());
             }
-            if (this.isModelDead() && flightCycle != 0) {
-                flightCycle = 0;
-            }
+        } else if (this.isModelDead()) {
+            flightCycle = 0;
         }
 
         boolean sitting = isSitting() && !isModelDead() && !isSleeping() && !isHovering() && !isFlying();
@@ -1486,7 +1484,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                         }
                         this.setHovering(false);
                         this.hoverTicks = 0;
-                        this.flyTicks = 0;
                     }
                 }
             }
@@ -1517,7 +1514,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 this.setFlying(false);
                 this.setHovering(!this.onGround);
                 if (this.onGround) {
-                    flyTicks = 0;
+                    this.hoverTicks = 0;
                 }
             }
             if (this.isFlying()) {
@@ -1532,14 +1529,12 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 this.setSleeping(false);
                 this.setSitting(false);
                 this.hoverTicks = 0;
-                this.flyTicks = 0;
             }
             if (this.getAttackTarget() != null && this.getAttackTarget().posY + 5 < this.posY && !this.isFlying() && !this.isChild() && !this.isHovering() && this.canMove() && this.onGround) {
                 this.setHovering(true);
                 this.setSleeping(false);
                 this.setSitting(false);
                 this.hoverTicks = 0;
-                this.flyTicks = 0;
             }
             if (this.isInWater()
                     && this.getAttackTarget() != null
@@ -1553,7 +1548,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 this.setSleeping(false);
                 this.setSitting(false);
                 this.hoverTicks = 0;
-                this.flyTicks = 0;
             }
             if (getAttackTarget() != null && this.isPlayerControlled()) {
                 this.setAttackTarget(null);
@@ -2160,14 +2154,18 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     }
 
     public void flyTowardsTarget() {
-        if (airTarget != null && airTarget.getY() > IceAndFire.CONFIG.maxDragonFlight) {
-            airTarget = new BlockPos(airTarget.getX(), IceAndFire.CONFIG.maxDragonFlight, airTarget.getZ());
+        if (airTarget == null) {
+            return;
         }
-        if (airTarget != null && isTargetInAir() && this.isFlying() && this.getDistanceSquared(new Vec3d(airTarget.getX(), this.posY, airTarget.getZ())) > 3) {
+        int maximumDragonFlightHeight = DragonUtils.getMaximumFlightHeightForPos(world, new BlockPos(airTarget));
+        if (airTarget.getY() > maximumDragonFlightHeight) {
+            airTarget = new BlockPos(airTarget.getX(), maximumDragonFlightHeight, airTarget.getZ());
+        }
+        if (isTargetInAir() && this.isFlying() && this.getDistanceSquared(new Vec3d(airTarget.getX(), this.posY, airTarget.getZ())) > 3) {
             double y = this.usingGroundAttack ? airTarget.getY() : this.posY;
 
             double targetX = airTarget.getX() + 0.5D - posX;
-            double targetY = Math.min(y, IceAndFire.CONFIG.maxDragonFlight) + 1D - posY;
+            double targetY = Math.min(y, maximumDragonFlightHeight) + 1D - posY;
             double targetZ = airTarget.getZ() + 0.5D - posZ;
             motionX += (Math.signum(targetX) * 0.5D - motionX) * 0.100000000372529 * getFlySpeed();
             motionY += (Math.signum(targetY) * 0.5D - motionY) * 0.100000000372529 * getFlySpeed();
@@ -2188,7 +2186,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             if (!isFlying()) {
                 this.setFlying(true);
                 this.setHovering(false);
-                flyTicks = 0;
                 hoverTicks = 0;
             }
             if (this.getDistanceSquared(new Vec3d(airTarget.getX(), this.posY, airTarget.getZ())) < 3 && this.doesWantToLand()) {

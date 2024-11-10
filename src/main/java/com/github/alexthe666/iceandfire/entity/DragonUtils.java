@@ -460,6 +460,12 @@ public class DragonUtils {
         return def;
     }
 
+    public static int getMaximumFlightHeightForPos(World world, BlockPos pos) {
+        int allowableHeightFromGround = IceAndFire.CONFIG.maxDragonFlight - world.getSeaLevel();
+        BlockPos groundPos = world.getHeight(pos);
+        return Math.max(IceAndFire.CONFIG.maxDragonFlight, groundPos.getY() + allowableHeightFromGround);
+    }
+
     public static boolean canDropFromDragonBlockBreak(IBlockState state) {
         for (String name : IceAndFire.CONFIG.noDropBreakBlocks) {
             if (name.equalsIgnoreCase(state.getBlock().getRegistryName().toString())) {
