@@ -15,6 +15,9 @@ import java.util.Random;
 
 public class ComponentScriberHouse extends StructureVillagePieces.Village {
 
+    public ComponentScriberHouse() {
+    }
+
     public ComponentScriberHouse(StructureVillagePieces.Start startPiece, int p2, Random random, StructureBoundingBox structureBox, EnumFacing facing) {
         super(startPiece, p2);
         this.setCoordBaseMode(facing);
@@ -46,8 +49,7 @@ public class ComponentScriberHouse extends StructureVillagePieces.Village {
     }
 
     @Override
-    protected VillagerRegistry.VillagerProfession chooseForgeProfession(int count, VillagerRegistry.VillagerProfession prof)
-    {
+    protected VillagerRegistry.VillagerProfession chooseForgeProfession(int count, VillagerRegistry.VillagerProfession prof) {
         return IafVillagerRegistry.INSTANCE.scriber;
     }
 

@@ -49,11 +49,6 @@ public class EntityIceDragon extends EntityDragonBase {
     public static final ResourceLocation MALE_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/ice_dragon_male"));
     public static final ResourceLocation SKELETON_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dragon/ice_dragon_skeleton"));
     private static final DataParameter<Boolean> SWIMMING = EntityDataManager.createKey(EntityIceDragon.class, DataSerializers.BOOLEAN);
-
-    public boolean isSwimming;
-    public float swimProgress;
-    public int ticksSwimming;
-    public int swimCycle;
     public BlockPos waterTarget;
 
     public EntityIceDragon(World worldIn) {

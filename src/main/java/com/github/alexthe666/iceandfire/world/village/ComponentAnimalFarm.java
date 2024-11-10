@@ -13,6 +13,9 @@ import java.util.Random;
 
 public class ComponentAnimalFarm extends StructureVillagePieces.Village {
 
+    public ComponentAnimalFarm() {
+    }
+
     public ComponentAnimalFarm(StructureVillagePieces.Start start, int type, Random rand, StructureBoundingBox structureBox, EnumFacing facing) {
         super(start, type);
         this.setCoordBaseMode(facing);
