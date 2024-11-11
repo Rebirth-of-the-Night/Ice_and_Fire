@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.compat.waila;
 
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
-import com.github.alexthe666.iceandfire.entity.EntityMultipartPart;
+import com.github.alexthe666.iceandfire.entity.EntityMutlipartPart;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;
@@ -35,7 +35,7 @@ public class HUDHandlerDragon implements IWailaEntityProvider {
     @Nonnull
     @Override
     public NBTTagCompound getNBTData(EntityPlayerMP player, Entity ent, NBTTagCompound tag, World world) {
-        if (ent instanceof EntityMultipartPart)
+        if (ent instanceof EntityMutlipartPart)
             ent.writeToNBT(tag);
         return tag;
     }

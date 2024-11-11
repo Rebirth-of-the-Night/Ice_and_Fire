@@ -71,7 +71,7 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
     private boolean willExplode = false;
     private int ticksTillExplosion = 60;
     private Animation currentAnimation;
-    private EntityMultipartPart[] segments = new EntityMultipartPart[6];
+    private EntityMutlipartPart[] segments = new EntityMutlipartPart[6];
     private boolean isSandNavigator;
     private final EntityLookHelper lookHelper;
     private int growthCounter = 0;
@@ -143,9 +143,9 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
 
     public void initSegments(float scale) {
         this.setScaleForAge(false);
-        segments = new EntityMultipartPart[11];
+        segments = new EntityMutlipartPart[11];
         for (int i = 0; i < segments.length; i++) {
-            segments[i] = new EntityMultipartPart(this, (-0.8F - (i * 0.8F)) * scale, 0, 0, 0.7F * scale, 0.7F * scale, 1);
+            segments[i] = new EntityMutlipartPart(this, (-0.8F - (i * 0.8F)) * scale, 0, 0, 0.7F * scale, 0.7F * scale, 1);
         }
     }
 

@@ -442,14 +442,14 @@ public class DragonUtils {
         if (entity2 instanceof EntityTameable) {
             owner2 = ((EntityTameable) entity2).getOwner();
         }
-        if (entity1 instanceof EntityMultipartPart) {
-            Entity multipart = ((EntityMultipartPart) entity1).getParent();
+        if (entity1 instanceof EntityMutlipartPart) {
+            Entity multipart = ((EntityMutlipartPart) entity1).getParent();
             if (multipart != null && multipart instanceof EntityTameable) {
                 owner1 = ((EntityTameable) multipart).getOwner();
             }
         }
-        if (entity2 instanceof EntityMultipartPart) {
-            Entity multipart = ((EntityMultipartPart) entity2).getParent();
+        if (entity2 instanceof EntityMutlipartPart) {
+            Entity multipart = ((EntityMutlipartPart) entity2).getParent();
             if (multipart != null && multipart instanceof EntityTameable) {
                 owner2 = ((EntityTameable) multipart).getOwner();
             }

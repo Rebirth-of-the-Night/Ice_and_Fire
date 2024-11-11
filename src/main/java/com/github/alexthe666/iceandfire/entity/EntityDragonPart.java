@@ -2,7 +2,7 @@ package com.github.alexthe666.iceandfire.entity;
 
 import net.minecraft.util.DamageSource;
 
-public class EntityDragonPart extends EntityMultipartPart {
+public class EntityDragonPart extends EntityMutlipartPart {
 
     private final EntityDragonBase dragon;
 

@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.compat.waila;
 
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
-import com.github.alexthe666.iceandfire.entity.EntityMultipartPart;
+import com.github.alexthe666.iceandfire.entity.EntityMutlipartPart;
 import com.google.common.base.Strings;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
@@ -26,7 +26,7 @@ public class HUDHandlerMultipartMob implements IWailaEntityProvider {
     @Override
     public List<String> getWailaHead(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config) {
         currenttip.clear();
-        EntityMultipartPart part = (EntityMultipartPart) entity;
+        EntityMutlipartPart part = (EntityMutlipartPart) entity;
         if (!Strings.isNullOrEmpty(FormattingConfig.entityFormat)) {
             try {
                 currenttip.add("\u00a7r" + String.format(FormattingConfig.entityFormat, part.getParent().getName()));
@@ -39,7 +39,7 @@ public class HUDHandlerMultipartMob implements IWailaEntityProvider {
     @Nonnull
     @Override
     public List<String> getWailaBody(Entity entity, List<String> currenttip, IWailaEntityAccessor accessor, IWailaConfigHandler config) {
-        EntityMultipartPart part = (EntityMultipartPart) entity;
+        EntityMutlipartPart part = (EntityMutlipartPart) entity;
         if (config.getConfig("general.showhp") && part.getParent() != null) {
             nhearts = nhearts <= 0 ? 20 : nhearts;
             float health = part.getParent().getHealth() / 2.0f;
@@ -76,7 +76,7 @@ public class HUDHandlerMultipartMob implements IWailaEntityProvider {
     @Nonnull
     @Override
     public NBTTagCompound getNBTData(EntityPlayerMP player, Entity ent, NBTTagCompound tag, World world) {
-        if (ent instanceof EntityMultipartPart)
+        if (ent instanceof EntityMutlipartPart)
             ent.writeToNBT(tag);
         return tag;
     }

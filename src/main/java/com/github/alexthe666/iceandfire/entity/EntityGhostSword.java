@@ -117,8 +117,8 @@ public class EntityGhostSword extends EntityArrow {
 
                 this.setDead();
             }
-            if (e instanceof EntityMultipartPart) {
-                EntityMultipartPart elb = (EntityMultipartPart) e;
+            if (e instanceof EntityMutlipartPart) {
+                EntityMutlipartPart elb = (EntityMutlipartPart) e;
                 elb.getParent().attackEntityFrom(DamageSource.causeArrowDamage(this, shooter), 5);
 
                 this.setDead();

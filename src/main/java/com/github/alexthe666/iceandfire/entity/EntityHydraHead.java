@@ -3,7 +3,7 @@ package com.github.alexthe666.iceandfire.entity;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import net.minecraft.util.DamageSource;
 
-public class EntityHydraHead extends EntityMultipartPart {
+public class EntityHydraHead extends EntityMutlipartPart {
     public int headIndex;
     public EntityHydra hydra;
     private final boolean neck;

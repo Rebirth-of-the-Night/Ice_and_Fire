@@ -9,9 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 
-public class EntityMultipartPart extends PartEntity {
+public class EntityMutlipartPart extends PartEntity {
 
-    public EntityMultipartPart(EntityLiving parent, float radius, float angleYaw, float offsetY, float sizeX, float sizeY, float damageMultiplier) {
+    public EntityMutlipartPart(EntityLiving parent, float radius, float angleYaw, float offsetY, float sizeX, float sizeY, float damageMultiplier) {
         super(parent, radius, angleYaw, offsetY, sizeX, sizeY, damageMultiplier);
     }
 
