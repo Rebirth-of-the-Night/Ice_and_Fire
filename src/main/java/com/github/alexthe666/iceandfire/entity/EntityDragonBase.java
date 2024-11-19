@@ -1680,7 +1680,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
 
     public boolean doesWantToLand() {
         StoneEntityProperties capability = EntityPropertiesHandler.INSTANCE.getProperties(this, StoneEntityProperties.class);
-        return this.flyTicks > 6000 || down() || flyTicks > 40 && this.flyProgress == 0 || capability != null && capability.isStone;
+        return this.flyTicks > 6000 || down() || flyTicks > 40 && this.flyProgress == 0 || capability != null && capability.isStone || this.isChained() && flyTicks > 100;
     }
 
     public abstract String getVariantName(int variant);
