@@ -36,13 +36,13 @@ public class ComponentScriberHouse extends StructureVillagePieces.Village {
             if (this.averageGroundLvl < 0) {
                 return false;
             }
-            this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.maxY + 7, 0);
+            this.boundingBox.offset(0, this.averageGroundLvl - this.boundingBox.maxY + 4, 0);
         }
-        BlockPos blockpos = new BlockPos(this.getXWithOffset(11, -1), this.getYWithOffset(0), this.getZWithOffset(11, -1));
+        BlockPos blockpos = new BlockPos(this.getXWithOffset(13, -1), this.getYWithOffset(0), this.getZWithOffset(13, -1));
         EnumFacing facing = this.getCoordBaseMode().getOpposite();
         BlockPos genPos = blockpos.up();
         if (facing == EnumFacing.SOUTH) {
-            genPos = genPos.offset(EnumFacing.WEST, 11).offset(EnumFacing.SOUTH, 2);
+            genPos = genPos.offset(EnumFacing.WEST, 11).offset(EnumFacing.NORTH, 2);
         }
         this.spawnVillagers(world, sbb, 7, 8, 1, 1);
         return new WorldGenScriberHouse(this, facing.rotateY()).generate(world, random, genPos);
