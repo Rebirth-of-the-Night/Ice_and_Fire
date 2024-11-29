@@ -1126,9 +1126,9 @@ tile.iceandfire.copperpile.name=铜堆
 tile.iceandfire.copperOre.name=铜矿石
 tile.iceandfire.copperBlock.name=铜块
 
-item.iceandfire.amythest_gem.name=紫水晶
-tile.iceandfire.amythestOre.name=紫水晶矿石
-tile.iceandfire.amythestBlock.name=紫水晶块
+item.iceandfire.amethyst_gem.name=紫水晶
+tile.iceandfire.amethystOre.name=紫水晶矿石
+tile.iceandfire.amethystBlock.name=紫水晶块
 
 tile.iceandfire.lightning_lily.name=雷霆百合
 tile.iceandfire.dragonsteel_lightning_block.name=龙霆钢块
@@ -1149,7 +1149,7 @@ dragon_sword_lightning.hurt1=+4 冰龙和火龙克制
 dragon_sword_lightning.hurt2=电击目标
 
 dragon.electric=铁蓝
-dragon.amythest=晶紫
+dragon.amethyst=晶紫
 dragon.copper=铜橙
 dragon.black=夜黑
 

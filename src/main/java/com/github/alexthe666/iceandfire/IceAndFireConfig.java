@@ -13,7 +13,7 @@ public class IceAndFireConfig {
     public boolean generateSilverOre = true;
     public boolean generateSapphireOre = true;
     public boolean generateCopperOre = true;
-    public boolean generateAmythestOre = true;
+    public boolean generateAmethystOre = true;
     public boolean generateDragonSkeletons = true;
     public int generateDragonSkeletonChance = 300;
     public int worldGenDistance = 300;
@@ -191,7 +191,7 @@ public class IceAndFireConfig {
         this.logCascadingWorldGen = config.getBoolean("Log Cascading World Gen", "all", false, "Whether to log cascading world gen lag. We hope to fix all cascading lag in the future, but the server console spam is over the top.");
         this.worldGenDistance = config.getInt("World Gen Distance", "all", 150, 0, Integer.MAX_VALUE, "How far apart dragon dens, cyclops caves, gorgon temples etc should spawn apart from eachother (this is kept seperate for each type: a dragon roost can still spawn next to a myrmex hive)");
         this.generateSapphireOre = config.getBoolean("Generate Sapphire Ore", "all", true, "Whether to generate sapphire ore or not");
-        this.generateAmythestOre = config.getBoolean("Generate Amythest Ore", "all", true, "Whether to generate amythest ore or not");
+        this.generateAmethystOre = config.getBoolean("Generate Amethyst Ore", "all", true, "Whether to generate amethyst ore or not");
         this.generateDragonSkeletons = config.getBoolean("Generate Dragon Skeletons", "all", true, "Whether to generate dragon skeletons or not");
         this.generateDragonSkeletonChance = config.getInt("Generate Dragon Skeleton Chance", "all", 300, 1, 10000, "1 out of this number chance per chunk for generation");
         this.generateDragonDens = config.getBoolean("Generate Dragon Caves", "all", true, "Whether to generate dragon caves or not");

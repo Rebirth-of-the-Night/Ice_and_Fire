@@ -223,8 +223,8 @@ public class IafBlockRegistry {
 
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_electric")
     public static Block dragonscale_electric = new BlockDragonScales("dragonscale_electric", EnumDragonEgg.ELECTRIC);
-    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_amythest")
-    public static Block dragonscale_amythest = new BlockDragonScales("dragonscale_amythest", EnumDragonEgg.AMYTHEST);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_amethyst")
+    public static Block dragonscale_amethyst = new BlockDragonScales("dragonscale_amethyst", EnumDragonEgg.AMETHYST);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_copper")
     public static Block dragonscale_copper = new BlockDragonScales("dragonscale_copper", EnumDragonEgg.COPPER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscale_black")
@@ -232,13 +232,13 @@ public class IafBlockRegistry {
 
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copper_ore")
     public static Block copperOre = new BlockDragonOre(2, 3.0F, 5.0F, "iceandfire.copperOre", "copper_ore");
-    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amythest_ore")
-    public static Block amythestOre = new BlockDragonOre(2, 3.0F, 5.0F, "iceandfire.amythestOre", "amythest_ore");
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amethyst_ore")
+    public static Block amethystOre = new BlockDragonOre(2, 3.0F, 5.0F, "iceandfire.amethystOre", "amethyst_ore");
 
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":copper_block")
     public static Block copperBlock = new BlockGeneric(Material.IRON, "copper_block", "iceandfire.copperBlock", "pickaxe", 0, 4.0F, 10.0F, SoundType.METAL);
-    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amythest_block")
-    public static Block amythestBlock = new BlockGeneric(Material.IRON, "amythest_block", "iceandfire.amythestBlock", "pickaxe", 2, 5.0F, 15.0F, SoundType.METAL);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amethyst_block")
+    public static Block amethystBlock = new BlockGeneric(Material.IRON, "amethyst_block", "iceandfire.amethystBlock", "pickaxe", 2, 5.0F, 15.0F, SoundType.METAL);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonsteel_lightning_block")
     public static Block dragonsteel_lightning_block = new BlockGeneric(Material.IRON, "dragonsteel_lightning_block", "iceandfire.dragonsteel_lightning_block", "pickaxe", 3, 10.0F, 1000.0F, SoundType.METAL);
 

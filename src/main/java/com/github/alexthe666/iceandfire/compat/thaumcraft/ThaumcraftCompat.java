@@ -30,7 +30,7 @@ public class ThaumcraftCompat {
     public void aspectRegistrationEvent(AspectRegistryEvent evt) {
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.bestiary), new AspectList().add(ThaumcraftCompat.DRAGON, 2).add(ThaumcraftCompat.MYTHICAL, 5).add(Aspect.BEAST, 6).add(Aspect.MAGIC, 2).add(Aspect.MIND, 4).add(Aspect.WATER, 2).add(Aspect.AIR, 1));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.manuscript), new AspectList().add(ThaumcraftCompat.MYTHICAL, 5).add(Aspect.PLANT, 3).add(Aspect.MIND, 2).add(Aspect.WATER, 2).add(Aspect.AIR, 1));
-        evt.register.registerObjectTag(new ItemStack(IafItemRegistry.amythestGem), new AspectList().add(Aspect.CRYSTAL, 15).add(Aspect.DESIRE, 10));
+        evt.register.registerObjectTag(new ItemStack(IafItemRegistry.amethystGem), new AspectList().add(Aspect.CRYSTAL, 15).add(Aspect.DESIRE, 10));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.sapphireGem), new AspectList().add(Aspect.CRYSTAL, 15).add(Aspect.DESIRE, 10));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.fire_stew), new AspectList().add(Aspect.FIRE, 8).add(ThaumcraftCompat.DRAGON, 5));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.frost_stew), new AspectList().add(Aspect.COLD, 8).add(ThaumcraftCompat.DRAGON, 5));
@@ -44,7 +44,7 @@ public class ThaumcraftCompat {
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonegg_white), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.COLD, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonegg_sapphire), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.COLD, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonegg_electric), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.ENTROPY, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6));
-        evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonegg_amythest), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.ENTROPY, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6));
+        evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonegg_amethyst), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.ENTROPY, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonegg_copper), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.ENTROPY, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonegg_black), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.ENTROPY, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonscales_red), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.FIRE, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6).add(Aspect.PROTECT, 7));
@@ -56,7 +56,7 @@ public class ThaumcraftCompat {
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonscales_white), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.COLD, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6).add(Aspect.PROTECT, 7));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonscales_sapphire), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.COLD, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6).add(Aspect.PROTECT, 7));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonscales_electric), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.ENTROPY, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6).add(Aspect.PROTECT, 7));
-        evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonscales_amythest), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.ENTROPY, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6).add(Aspect.PROTECT, 7));
+        evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonscales_amethyst), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.ENTROPY, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6).add(Aspect.PROTECT, 7));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonscales_copper), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.ENTROPY, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6).add(Aspect.PROTECT, 7));
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonscales_black), new AspectList().add(ThaumcraftCompat.DRAGON, 5).add(Aspect.ENTROPY, 5).add(Aspect.DESIRE, 20).add(Aspect.BEAST, 6).add(Aspect.PROTECT, 7));  
         evt.register.registerObjectTag(new ItemStack(IafItemRegistry.dragonbone), new AspectList().add(Aspect.DEATH, 5).add(ThaumcraftCompat.DRAGON, 5).add(Aspect.MAGIC, 2));
@@ -127,7 +127,7 @@ public class ThaumcraftCompat {
         evt.register.registerObjectTag(new ItemStack(IafBlockRegistry.fire_lily), new AspectList().add(Aspect.FIRE, 5).add(Aspect.PLANT, 7).add(ThaumcraftCompat.DRAGON, 2));
         evt.register.registerObjectTag(new ItemStack(IafBlockRegistry.frost_lily), new AspectList().add(Aspect.COLD, 5).add(Aspect.PLANT, 7).add(ThaumcraftCompat.DRAGON, 2));
         evt.register.registerObjectTag(new ItemStack(IafBlockRegistry.lightning_lily), new AspectList().add(Aspect.ENTROPY, 5).add(Aspect.PLANT, 7).add(ThaumcraftCompat.DRAGON, 2));
-        evt.register.registerObjectTag(new ItemStack(IafBlockRegistry.amythestOre), new AspectList().add(Aspect.CRYSTAL, 15).add(Aspect.DESIRE, 10).add(Aspect.EARTH, 5));
+        evt.register.registerObjectTag(new ItemStack(IafBlockRegistry.amethystOre), new AspectList().add(Aspect.CRYSTAL, 15).add(Aspect.DESIRE, 10).add(Aspect.EARTH, 5));
         evt.register.registerObjectTag(new ItemStack(IafBlockRegistry.sapphireOre), new AspectList().add(Aspect.CRYSTAL, 15).add(Aspect.DESIRE, 10).add(Aspect.EARTH, 5));
         evt.register.registerObjectTag(new ItemStack(IafBlockRegistry.charedDirt), new AspectList().add(Aspect.EARTH, 5).add(Aspect.FIRE, 2));
         evt.register.registerObjectTag(new ItemStack(IafBlockRegistry.charedGrass), new AspectList().add(Aspect.EARTH, 5).add(Aspect.PLANT, 2).add(Aspect.FIRE, 2));

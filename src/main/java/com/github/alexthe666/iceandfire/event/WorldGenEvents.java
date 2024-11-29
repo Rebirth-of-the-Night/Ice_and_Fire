@@ -352,7 +352,7 @@ public class WorldGenEvents implements IWorldGenerator {
                 }
             }
         }
-        if (IceAndFire.CONFIG.generateAmythestOre) {
+        if (IceAndFire.CONFIG.generateAmethystOre) {
             if (BiomeDictionary.hasType(world.getBiome(height), Type.SAVANNA)) {
                 int count = 3 + random.nextInt(6);
                 for (int sapphireAmount = 0; sapphireAmount < count; sapphireAmount++) {
@@ -362,7 +362,7 @@ public class WorldGenEvents implements IWorldGenerator {
                     BlockPos pos = new BlockPos(xOre, oreHeight, zOre);
                     IBlockState state = world.getBlockState(pos);
                     if (state.getBlock().isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.STONE))) {
-                        world.setBlockState(pos, IafBlockRegistry.amythestOre.getDefaultState());
+                        world.setBlockState(pos, IafBlockRegistry.amethystOre.getDefaultState());
                     }
                 }
             }

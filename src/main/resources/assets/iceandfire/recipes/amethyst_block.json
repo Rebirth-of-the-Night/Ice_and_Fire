@@ -3,43 +3,43 @@
   "ingredients": [
     {
       "type": "forge:ore_dict",
-      "ore": "gemAmythest"
+      "ore": "gemAmethyst"
     },
     {
       "type": "forge:ore_dict",
-      "ore": "gemAmythest"
+      "ore": "gemAmethyst"
     },
     {
       "type": "forge:ore_dict",
-      "ore": "gemAmythest"
+      "ore": "gemAmethyst"
     },
     {
       "type": "forge:ore_dict",
-      "ore": "gemAmythest"
+      "ore": "gemAmethyst"
     },
     {
       "type": "forge:ore_dict",
-      "ore": "gemAmythest"
+      "ore": "gemAmethyst"
     },
     {
       "type": "forge:ore_dict",
-      "ore": "gemAmythest"
+      "ore": "gemAmethyst"
     },
     {
       "type": "forge:ore_dict",
-      "ore": "gemAmythest"
+      "ore": "gemAmethyst"
     },
     {
       "type": "forge:ore_dict",
-      "ore": "gemAmythest"
+      "ore": "gemAmethyst"
     },
     {
       "type": "forge:ore_dict",
-      "ore": "gemAmythest"
+      "ore": "gemAmethyst"
     }
   ],
   "result": {
-    "item": "iceandfire:amythest_block",
+    "item": "iceandfire:amethyst_block",
     "data": 0,
     "count": 1
   }

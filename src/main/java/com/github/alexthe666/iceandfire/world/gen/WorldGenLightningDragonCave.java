@@ -134,7 +134,7 @@ public class WorldGenLightningDragonCave extends WorldGenerator {
                             worldIn.setBlockState(blockpos, Blocks.DIAMOND_ORE.getDefaultState(), 3);
                         }
                         if (chance > 90 && chance < 1000) {
-                            worldIn.setBlockState(blockpos, IceAndFire.CONFIG.generateAmythestOre ? IafBlockRegistry.amythestOre.getDefaultState() : Blocks.EMERALD_ORE.getDefaultState(), 3);
+                            worldIn.setBlockState(blockpos, IceAndFire.CONFIG.generateAmethystOre ? IafBlockRegistry.amethystOre.getDefaultState() : Blocks.EMERALD_ORE.getDefaultState(), 3);
                         }
                     } else {
                         worldIn.setBlockState(blockpos, rand.nextBoolean() ? IafBlockRegistry.crackledCobblestone.getDefaultState() : IafBlockRegistry.crackledStone.getDefaultState());

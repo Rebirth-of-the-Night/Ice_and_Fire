@@ -98,7 +98,7 @@ public class EntityLightningDragon extends EntityDragonBase {
             default:
                 return "electric_";
             case 1:
-                return "amythest_";
+                return "amethyst_";
             case 2:
                 return "copper_";
             case 3:
@@ -111,7 +111,7 @@ public class EntityLightningDragon extends EntityDragonBase {
             default:
                 return IafItemRegistry.dragonscales_electric;
             case 1:
-                return IafItemRegistry.dragonscales_amythest;
+                return IafItemRegistry.dragonscales_amethyst;
             case 2:
                 return IafItemRegistry.dragonscales_copper;
             case 3:
@@ -124,7 +124,7 @@ public class EntityLightningDragon extends EntityDragonBase {
             default:
                 return IafItemRegistry.dragonegg_electric;
             case 1:
-                return IafItemRegistry.dragonegg_amythest;
+                return IafItemRegistry.dragonegg_amethyst;
             case 2:
                 return IafItemRegistry.dragonegg_copper;
             case 3:
@@ -410,7 +410,7 @@ public class EntityLightningDragon extends EntityDragonBase {
     @Override
     protected void initEntityAI() {
         this.tasks.addTask(1, this.aiSit = new EntityAISit(this));
-        this.tasks.addTask(2, new EntityAISwimming(this));
+        this.tasks.addTask(2, new DragonAISwim(this));
         this.tasks.addTask(2, new DragonAIMate(this, 1.0D));
         this.tasks.addTask(3, new DragonAIAttackMelee(this, 1.5D, false));
         this.tasks.addTask(4, new AquaticAITempt(this, 1.0D, IafItemRegistry.lightning_stew, false));

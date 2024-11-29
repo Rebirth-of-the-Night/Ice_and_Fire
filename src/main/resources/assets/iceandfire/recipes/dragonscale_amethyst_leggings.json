@@ -1,17 +1,18 @@
 {
   "type": "forge:ore_shaped",
   "pattern": [
+    "SSS",
     "S S",
     "S S"
   ],
   "key": {
     "S": {
-      "item": "iceandfire:dragonscales_amythest",
+      "item": "iceandfire:dragonscales_amethyst",
       "data": 0
     }
   },
   "result": {
-    "item": "iceandfire:armor_amythest_boots",
+    "item": "iceandfire:armor_amethyst_leggings",
     "data": 0
   }
 }

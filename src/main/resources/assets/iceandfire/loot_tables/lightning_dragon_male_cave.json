@@ -35,7 +35,7 @@
         },
         {
           "type": "item",
-          "name": "iceandfire:amythest_gem",
+          "name": "iceandfire:amethyst_gem",
           "functions": [
             {
               "function": "set_count",

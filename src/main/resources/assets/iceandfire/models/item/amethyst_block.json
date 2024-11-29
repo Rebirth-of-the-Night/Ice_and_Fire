@@ -1,5 +1,5 @@
 {
-  "parent": "iceandfire:block/amythest_ore",
+  "parent": "iceandfire:block/amethyst_block",
   "display": {
     "thirdperson": {
       "rotation": [
@@ -20,3 +20,4 @@
     }
   }
 }
+

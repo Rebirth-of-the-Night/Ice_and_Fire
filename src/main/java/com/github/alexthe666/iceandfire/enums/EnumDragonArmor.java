@@ -21,7 +21,7 @@ public enum EnumDragonArmor {
     armor_sapphire(14, EnumDragonEgg.SAPPHIRE),
     armor_silver(15, EnumDragonEgg.SILVER),
     armor_electric(12, EnumDragonEgg.ELECTRIC),
-    armor_amythest(13, EnumDragonEgg.AMYTHEST),
+    armor_amethyst(13, EnumDragonEgg.AMETHYST),
     armor_copper(14, EnumDragonEgg.COPPER),
     armor_black(15, EnumDragonEgg.BLACK);
 
@@ -81,8 +81,8 @@ public enum EnumDragonArmor {
                 return IafItemRegistry.dragonscales_silver;
             case armor_electric:
                 return IafItemRegistry.dragonscales_electric;
-            case armor_amythest:
-                return IafItemRegistry.dragonscales_amythest;
+            case armor_amethyst:
+                return IafItemRegistry.dragonscales_amethyst;
             case armor_copper:
                 return IafItemRegistry.dragonscales_copper;
             case armor_black:

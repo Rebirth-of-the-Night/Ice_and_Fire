@@ -2,12 +2,12 @@
   "type": "forge:ore_shapeless",
   "ingredients": [
     {
-      "item": "iceandfire:dragonscale_amythest",
+      "item": "iceandfire:dragonscale_amethyst",
       "data": 0
     }
   ],
   "result": {
-    "item": "iceandfire:dragonscales_amythest",
+    "item": "iceandfire:dragonscales_amethyst",
     "data": 0,
     "count": 9
   }

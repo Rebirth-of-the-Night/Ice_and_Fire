@@ -152,9 +152,9 @@ public class IafRecipeRegistry {
         OreDictionary.registerOre("gemSapphire", IafItemRegistry.sapphireGem);
         OreDictionary.registerOre("oreSapphire", IafBlockRegistry.sapphireOre);
         OreDictionary.registerOre("blockSapphire", IafBlockRegistry.sapphireBlock);
-        OreDictionary.registerOre("gemAmythest", IafItemRegistry.amythestGem);
-        OreDictionary.registerOre("oreAmythest", IafBlockRegistry.amythestOre);
-        OreDictionary.registerOre("blockAmythest", IafBlockRegistry.amythestBlock);  
+        OreDictionary.registerOre("gemAmethyst", IafItemRegistry.amethystGem);
+        OreDictionary.registerOre("oreAmethyst", IafBlockRegistry.amethystOre);
+        OreDictionary.registerOre("blockAmethyst", IafBlockRegistry.amethystBlock);
         OreDictionary.registerOre("boneWither", IafItemRegistry.witherbone);
         OreDictionary.registerOre("fireDragonScaleBlock", IafBlockRegistry.dragonscale_red);
         OreDictionary.registerOre("fireDragonScaleBlock", IafBlockRegistry.dragonscale_bronze);
@@ -165,7 +165,7 @@ public class IafRecipeRegistry {
         OreDictionary.registerOre("iceDragonScaleBlock", IafBlockRegistry.dragonscale_sapphire);
         OreDictionary.registerOre("iceDragonScaleBlock", IafBlockRegistry.dragonscale_silver);
         OreDictionary.registerOre("lightningDragonScaleBlock", IafBlockRegistry.dragonscale_electric);
-        OreDictionary.registerOre("lightningDragonScaleBlock", IafBlockRegistry.dragonscale_amythest);
+        OreDictionary.registerOre("lightningDragonScaleBlock", IafBlockRegistry.dragonscale_amethyst);
         OreDictionary.registerOre("lightningDragonScaleBlock", IafBlockRegistry.dragonscale_copper);
         OreDictionary.registerOre("lightningDragonScaleBlock", IafBlockRegistry.dragonscale_black);
         OreDictionary.registerOre("woolBlock", new ItemStack(Blocks.WOOL, 1, OreDictionary.WILDCARD_VALUE));
@@ -249,7 +249,7 @@ public class IafRecipeRegistry {
         GameRegistry.addSmelting(IafBlockRegistry.silverOre, new ItemStack(IafItemRegistry.silverIngot), 1);
         GameRegistry.addSmelting(IafBlockRegistry.copperOre, new ItemStack(IafItemRegistry.copperIngot), 1);
         GameRegistry.addSmelting(IafBlockRegistry.sapphireOre, new ItemStack(IafItemRegistry.sapphireGem), 1);
-        GameRegistry.addSmelting(IafBlockRegistry.amythestOre, new ItemStack(IafItemRegistry.amythestGem), 1);
+        GameRegistry.addSmelting(IafBlockRegistry.amethystOre, new ItemStack(IafItemRegistry.amethystGem), 1);
         GameRegistry.addSmelting(IafBlockRegistry.myrmex_desert_resin_block, new ItemStack(IafBlockRegistry.myrmex_desert_resin_glass), 1);
         GameRegistry.addSmelting(IafBlockRegistry.myrmex_jungle_resin_block, new ItemStack(IafBlockRegistry.myrmex_jungle_resin_glass), 1);
         GameRegistry.addSmelting(IafBlockRegistry.frozenDirt, new ItemStack(Blocks.DIRT), 0.1F);

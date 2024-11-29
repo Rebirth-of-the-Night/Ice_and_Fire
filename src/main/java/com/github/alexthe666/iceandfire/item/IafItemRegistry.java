@@ -502,8 +502,8 @@ public class IafItemRegistry {
 
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscales_electric")
     public static Item dragonscales_electric = new ItemDragonScales("dragonscales_electric", EnumDragonEgg.ELECTRIC);
-    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscales_amythest")
-    public static Item dragonscales_amythest = new ItemDragonScales("dragonscales_amythest", EnumDragonEgg.AMYTHEST);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscales_amethyst")
+    public static Item dragonscales_amethyst = new ItemDragonScales("dragonscales_amethyst", EnumDragonEgg.AMETHYST);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscales_copper")
     public static Item dragonscales_copper = new ItemDragonScales("dragonscales_copper", EnumDragonEgg.COPPER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonscales_black")
@@ -511,15 +511,15 @@ public class IafItemRegistry {
 
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonegg_electric")
     public static Item dragonegg_electric = new ItemDragonEgg("dragonegg_electric", EnumDragonEgg.ELECTRIC);
-    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonegg_amythest")
-    public static Item dragonegg_amythest = new ItemDragonEgg("dragonegg_amythest", EnumDragonEgg.AMYTHEST);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonegg_amethyst")
+    public static Item dragonegg_amethyst = new ItemDragonEgg("dragonegg_amethyst", EnumDragonEgg.AMETHYST);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonegg_copper")
     public static Item dragonegg_copper = new ItemDragonEgg("dragonegg_copper", EnumDragonEgg.COPPER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonegg_black")
     public static Item dragonegg_black = new ItemDragonEgg("dragonegg_black", EnumDragonEgg.BLACK);
 
-    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amythest_gem")
-    public static Item amythestGem = new ItemGeneric("amythest_gem", "iceandfire.amythest_gem");
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amethyst_gem")
+    public static Item amethystGem = new ItemGeneric("amethyst_gem", "iceandfire.amethyst_gem");
 
     //--- Keys ---//
 
