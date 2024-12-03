@@ -179,11 +179,11 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_stick")
     public static Item dragon_stick = new ItemDragonStaff();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_horn_fire")
-    public static Item dragon_horn_fire = new ItemDragonHornActive("dragon_horn_fire");
+    public static Item dragon_horn_fire_legacy = new ItemDragonHornLegacy("fire");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_horn_ice")
-    public static Item dragon_horn_ice = new ItemDragonHornActive("dragon_horn_ice");
+    public static Item dragon_horn_ice_legacy = new ItemDragonHornLegacy("ice");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_horn")
-    public static Item dragon_horn = new ItemDragonHornStatic();
+    public static Item dragon_horn = new ItemDragonHorn();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_flute")
     public static Item dragon_flute = new ItemDragonFlute();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":summoning_crystal_fire")
@@ -488,7 +488,7 @@ public class IafItemRegistry {
     public static Item dragon_armor_dragonsteel_lightning = new ItemDragonArmor(7, "dragonarmor_dragonsteel_lightning");
 
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_horn_lightning")
-    public static Item dragon_horn_lightning = new ItemDragonHornActive("dragon_horn_lightning");
+    public static Item dragon_horn_lightning_legacy = new ItemDragonHornLegacy("lightning");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":summoning_crystal_lightning")
     public static Item summoning_crystal_lightning = new ItemSummoningCrystal("lightning");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":lightning_dragon_flesh")

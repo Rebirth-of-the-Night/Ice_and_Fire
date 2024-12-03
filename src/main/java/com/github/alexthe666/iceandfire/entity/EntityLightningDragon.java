@@ -590,11 +590,6 @@ public class EntityLightningDragon extends EntityDragonBase {
     }
 
     @Override
-    protected ItemStack getHorn() {
-        return new ItemStack(IafItemRegistry.dragon_horn_lightning);
-    }
-
-    @Override
     protected Item getHeartItem() {
         return IafItemRegistry.lightning_dragon_heart;
     }

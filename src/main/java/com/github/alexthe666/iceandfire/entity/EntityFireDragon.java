@@ -206,11 +206,6 @@ public class EntityFireDragon extends EntityDragonBase {
         return IafItemRegistry.summoning_crystal_fire;
     }
 
-    @Override
-    protected ItemStack getHorn() {
-        return new ItemStack(IafItemRegistry.dragon_horn_fire);
-    }
-
     public boolean canBeSteered() {
         return true;
     }

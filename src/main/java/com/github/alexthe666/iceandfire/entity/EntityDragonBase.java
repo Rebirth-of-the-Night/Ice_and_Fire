@@ -993,6 +993,9 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
+        if (stack.getItem() == IafItemRegistry.dragon_horn) {
+            return false;
+        }
         int lastDeathStage = this.getAgeInDays() / 5;
         if (this.isModelDead() && this.getDeathStage() < lastDeathStage && player.capabilities.allowEdit) {
             if (!world.isRemote && !stack.isEmpty() && stack.getItem() == Items.GLASS_BOTTLE && this.getDeathStage() < lastDeathStage / 2 && IceAndFire.CONFIG.dragonDropBlood) {
@@ -1137,9 +1140,9 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                         NBTTagCompound tag = new NBTTagCompound();
                         this.writeEntityToNBT(tag);
 
-                        ItemStack horn = getHorn();
-                        horn.setTagCompound(tag);
-                        player.setHeldItem(hand, horn);
+                        //TODO
+                        stack.setTagCompound(tag);
+                        player.setHeldItem(hand, stack);
                         this.setDead();
                         return true;
                     }
@@ -1215,8 +1218,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             return loot.get(0);
         }
     }
-
-    protected abstract ItemStack getHorn();
 
     public void eatFoodBonus(ItemStack stack) {
 

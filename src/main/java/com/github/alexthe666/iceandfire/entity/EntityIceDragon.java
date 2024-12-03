@@ -632,12 +632,6 @@ public class EntityIceDragon extends EntityDragonBase {
         return IafItemRegistry.ice_dragon_heart;
     }
 
-
-    @Override
-    protected ItemStack getHorn() {
-        return new ItemStack(IafItemRegistry.dragon_horn_ice);
-    }
-
     @Override
     protected Item getBloodItem() {
         return IafItemRegistry.ice_dragon_blood;
