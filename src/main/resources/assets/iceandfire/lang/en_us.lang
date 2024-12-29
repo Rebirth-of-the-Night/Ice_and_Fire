@@ -640,6 +640,8 @@ message.iceandfire.dragonGrownEnd=!
 message.iceandfire.dragonGrownName= has grown to Stage
 message.iceandfire.toocold=I can't eat this in this dimension.
 message.iceandfire.cantfly=The storm forced you down.
+message.iceandfire.dread_castle_protected=You must defeat dread queen at first
+message.iceandfire.dread_castle_defeated=As the queen falls, the castle's protection fades away...
 
 death.attack.dragon.player_0=was split in two by a dragon
 death.attack.dragon.player_1=was torn to shreds by a dragon

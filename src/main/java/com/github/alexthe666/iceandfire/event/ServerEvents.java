@@ -14,6 +14,7 @@ import com.github.alexthe666.iceandfire.message.MessageSwingArm;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.github.alexthe666.iceandfire.util.IsImmune;
 import com.github.alexthe666.iceandfire.util.ItemUtil;
+import com.github.alexthe666.iceandfire.world.dimension.WorldProviderDreadLands;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenFireDragonCave;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenIceDragonCave;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenLightningDragonCave;
@@ -119,6 +120,13 @@ public class ServerEvents {
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onWorldUnload(WorldEvent.Unload event) {
+        if (event.getWorld().provider instanceof WorldProviderDreadLands) {
+            WorldGenDreadDimension.clearGenerationCache();
         }
     }
 

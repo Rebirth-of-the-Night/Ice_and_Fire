@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.world.dimension;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.event.WorldGenDreadDimension;
 import com.github.alexthe666.iceandfire.world.IafWorldRegistry;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -17,6 +18,7 @@ public class WorldProviderDreadLands extends WorldProvider {
 
     @Override
     public void init() {
+        WorldGenDreadDimension.clearGenerationCache();
         this.hasSkyLight = true;
         this.biomeProvider = new BiomeProviderSingle(IafWorldRegistry.DREADLANDS_BIOME);
         this.nether = false;
