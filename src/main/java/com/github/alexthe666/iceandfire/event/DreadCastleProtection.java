@@ -95,13 +95,14 @@ public class DreadCastleProtection {
         }
     }
 
-    public static boolean isInCastleArea(BlockPos pos) {
+    public static boolean isInCastleArea(World world, BlockPos pos) {
         AxisAlignedBB castleBounds = new AxisAlignedBB(
                 CASTLE_CORNER,
                 CASTLE_CORNER.add(CASTLE_WIDTH, CASTLE_HEIGHT, CASTLE_DEPTH)
         );
 
-        return castleBounds.contains(
+        return world.provider.getDimension() == IceAndFire.CONFIG.dreadlandsDimensionId &&
+                castleBounds.contains(
                 new Vec3d(pos.getX() + 0.5D,
                 pos.getY() + 0.5D,
                 pos.getZ() + 0.5D)
@@ -109,7 +110,7 @@ public class DreadCastleProtection {
     }
 
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
-        if (!isInCastleArea(event.getPos())) {
+        if (!isInCastleArea(event.getWorld(), event.getPos())) {
             return;
         }
 
@@ -140,7 +141,7 @@ public class DreadCastleProtection {
         EntityPlayer player = (EntityPlayer) event.getEntity();
         BlockPos pos = event.getPos();
 
-        if (isInCastleArea(pos) && !player.capabilities.isCreativeMode) {
+        if (isInCastleArea(event.getWorld(), pos) && !player.capabilities.isCreativeMode) {
             event.setCanceled(true);
             player.sendStatusMessage(
                     new TextComponentTranslation("message.iceandfire.dread_castle_protected"),
