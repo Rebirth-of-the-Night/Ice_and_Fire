@@ -6,6 +6,7 @@ import com.google.common.base.Strings;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaEntityAccessor;
 import mcp.mobius.waila.api.IWailaEntityProvider;
+import static mcp.mobius.waila.api.SpecialChars.getRenderString;
 import mcp.mobius.waila.config.FormattingConfig;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -15,8 +16,6 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-
-import static mcp.mobius.waila.api.SpecialChars.getRenderString;
 
 public class HUDHandlerMultipartMob implements IWailaEntityProvider {
     public static int nhearts = 20;

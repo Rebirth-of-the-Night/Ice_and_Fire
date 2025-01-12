@@ -1,1 +1,0 @@
-{"pattern": ["iii", "isi", " h "], "conditions": [], "type": "minecraft:crafting_shaped", "result": {"item": "iceandfire:battleaxe_lightning_dragonsteel"}, "key": {"i": {"ore": "ingotLightningDragonsteel", "type": "forge:ore_dict"}, "h": {"item": "spartanfire:witherbone_handle", "data": 0}, "s": {"ore": "stickWood", "type": "forge:ore_dict"}}}

@@ -15,32 +15,21 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class EntityGhostSword extends EntityArrow
-{
+public class EntityGhostSword extends EntityArrow {
     public static final DataParameter<Integer> DISPOSE_TIME = EntityDataManager.createKey(EntityGhostSword.class, DataSerializers.VARINT);
 
     public Entity shooter;
     int maxDisposeTime = 15;
 
     @Override
-    public void notifyDataManagerChange(DataParameter<?> key)
-    {
+    public void notifyDataManagerChange(DataParameter<?> key) {
         super.notifyDataManagerChange(key);
-        if(key == DISPOSE_TIME)
-        {
+        if (key == DISPOSE_TIME) {
             maxDisposeTime = Math.min(dataManager.get(DISPOSE_TIME) - ticksExisted, 15);
         }
     }
 
-    public float getAlpha(float partialTime)
-    {
-        if(maxDisposeTime == 0) return 0F;
-        int time = dataManager.get(DISPOSE_TIME);
-        return MathHelper.clamp(time - ticksExisted, 0, maxDisposeTime) / (float) maxDisposeTime;
-    }
-
-    public EntityGhostSword(World w)
-    {
+    public EntityGhostSword(World w) {
         super(w);
         this.setDamage(9F);
     }
@@ -77,13 +66,12 @@ public class EntityGhostSword extends EntityArrow
         return d0 * d0 + d1 * d1 + d2 * d2;
     }
 
-    public void onUpdate()
-    {
+    public void onUpdate() {
         super.onUpdate();
         noClip = true;
 
         float sqrt = MathHelper.sqrt((float) (this.motionX * this.motionX + this.motionZ * this.motionZ));
-        if ((sqrt < 0.1F) && this.ticksExisted > 200) {
+        if ((sqrt < 0.1F) && this.ticksExisted > 100) {
             this.setDead();
         }
         double d0 = 0;
@@ -97,12 +85,11 @@ public class EntityGhostSword extends EntityArrow
             this.world.spawnParticle(EnumParticleTypes.END_ROD, x, y + 0.5D, z, d0, d1, d2);
         }
 
-        if(this.ticksExisted >= 200) //<- loop exit for primal
+        if (this.ticksExisted >= 100) //<- loop exit for primal
             this.setDead();
     }
 
-    public boolean hasNoGravity()
-    {
+    public boolean hasNoGravity() {
         return true;
     }
 
@@ -123,10 +110,16 @@ public class EntityGhostSword extends EntityArrow
             if (e == shooter)
                 return;
 
-            if (e instanceof EntityLivingBase && e != this.shooter && !(e instanceof EntityGhostSword)) {
+            if (e instanceof EntityLivingBase) {
                 EntityLivingBase elb = (EntityLivingBase) e;
 
                 elb.attackEntityFrom(DamageSource.causeArrowDamage(this, shooter), 5);
+
+                this.setDead();
+            }
+            if (e instanceof EntityMutlipartPart) {
+                EntityMutlipartPart elb = (EntityMutlipartPart) e;
+                elb.getParent().attackEntityFrom(DamageSource.causeArrowDamage(this, shooter), 5);
 
                 this.setDead();
             }

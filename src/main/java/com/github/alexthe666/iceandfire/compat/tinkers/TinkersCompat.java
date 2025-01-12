@@ -10,18 +10,16 @@ import slimeknights.mantle.util.RecipeMatch;
 import slimeknights.tconstruct.TConstruct;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.Util;
-import slimeknights.tconstruct.library.fluid.FluidMolten;
 import slimeknights.tconstruct.library.materials.*;
+import static slimeknights.tconstruct.library.materials.MaterialTypes.HEAD;
+import static slimeknights.tconstruct.library.materials.MaterialTypes.SHAFT;
 import slimeknights.tconstruct.library.traits.AbstractTrait;
 import slimeknights.tconstruct.library.utils.HarvestLevels;
 import slimeknights.tconstruct.smeltery.TinkerSmeltery;
 import slimeknights.tconstruct.tools.TinkerMaterials;
-import slimeknights.tconstruct.tools.traits.TraitBonusDamage;
-
-import static slimeknights.tconstruct.library.materials.MaterialTypes.HEAD;
-import static slimeknights.tconstruct.library.materials.MaterialTypes.SHAFT;
 import static slimeknights.tconstruct.tools.TinkerTraits.poisonous;
 import static slimeknights.tconstruct.tools.TinkerTraits.sharp;
+import slimeknights.tconstruct.tools.traits.TraitBonusDamage;
 
 public class TinkersCompat {
     public static final Material MATERIAL_DRAGONBONE = new Material("dragonbone", 0XB7B29D);
@@ -49,9 +47,9 @@ public class TinkersCompat {
     public static final AbstractTrait SWEATER_SONG = new TraitSweaterSong();
     public static final AbstractTrait SURF_WAX_AMERICA = new TraitSurfWaxAmerica();
     private static final TinkersCompat INSTANCE = new TinkersCompat();
-    public static FluidMolten MOLTEN_FIRE_DRAGONSTEEL;
-    public static FluidMolten MOLTEN_ICE_DRAGONSTEEL;
-    public static FluidMolten MOLTEN_LIGHTNING_DRAGONSTEEL;
+    public static FluidMoltenIaf MOLTEN_FIRE_DRAGONSTEEL;
+    public static FluidMoltenIaf MOLTEN_ICE_DRAGONSTEEL;
+    public static FluidMoltenIaf MOLTEN_LIGHTNING_DRAGONSTEEL;
     private static boolean registered = false;
     
     public static void register() {
@@ -206,8 +204,8 @@ public class TinkersCompat {
         return TConstruct.pulseManager.isPulseLoaded(TinkerSmeltery.PulseId);
     }
 
-    private static FluidMolten fluidMetal(String name, int color) {
-        FluidMolten fluid = new FluidMolten(name, color);
+    private static FluidMoltenIaf fluidMetal(String name, int color) {
+        FluidMoltenIaf fluid = new FluidMoltenIaf(name, color);
         return registerFluid(fluid);
     }
 

@@ -4,10 +4,7 @@ import com.github.alexthe666.iceandfire.item.ItemBestiary;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public enum EnumBestiaryPages {
 
@@ -16,6 +13,8 @@ public enum EnumBestiaryPages {
     FIREDRAGONEGG(1),
     ICEDRAGON(4),
     ICEDRAGONEGG(1),
+    LIGHTNINGDRAGON(5),
+    LIGHTNINGDRAGONEGG(1),
     TAMEDDRAGONS(3),
     MATERIALS(2),
     ALCHEMY(1),
@@ -35,7 +34,10 @@ public enum EnumBestiaryPages {
     AMPHITHERE(2),
     SEASERPENT(2),
     HYDRA(2),
-    DREAD_MOBS(1);
+    GHOST(1),
+    DREAD_MOBS(1),
+    DREADLAND(1),
+    DREADLAND_FORTRESS(1);
 
     public int pages;
 
@@ -71,10 +73,7 @@ public enum EnumBestiaryPages {
     }
 
     public static boolean hasAllPages(ItemStack book) {
-        List<EnumBestiaryPages> allPages = new ArrayList<>();
-        for (int i = 0; i < EnumBestiaryPages.values().length; i++) {
-            allPages.add(EnumBestiaryPages.values()[i]);
-        }
+        List<EnumBestiaryPages> allPages = new ArrayList<>(Arrays.asList(EnumBestiaryPages.values()));
         List<EnumBestiaryPages> pages = containedPages(EnumBestiaryPages.toList(book.getTagCompound().getIntArray("Pages")));
         for (EnumBestiaryPages page : allPages) {
             return !pages.contains(page);
@@ -108,10 +107,7 @@ public enum EnumBestiaryPages {
     public static List<EnumBestiaryPages> possiblePages(ItemStack book) {
         if (book.getItem() instanceof ItemBestiary) {
             NBTTagCompound tag = book.getTagCompound();
-            List<EnumBestiaryPages> allPages = new ArrayList<>();
-            for (EnumBestiaryPages page : EnumBestiaryPages.values()) {
-                allPages.add(page);
-            }
+            List<EnumBestiaryPages> allPages = new ArrayList<>(Arrays.asList(EnumBestiaryPages.values()));
             List<EnumBestiaryPages> containedPages = containedPages(toList(tag.getIntArray("Pages")));
             List<EnumBestiaryPages> possiblePages = new ArrayList<>();
 	        for (EnumBestiaryPages page : allPages) {

@@ -100,8 +100,8 @@ public class ModelPixie extends ModelDragonBase {
         AdvancedModelRenderer[] LEFT_WINGS = new AdvancedModelRenderer[]{Left_Wing, Left_Wing2};
         AdvancedModelRenderer[] RIGHT_WINGS = new AdvancedModelRenderer[]{Right_Wing, Right_Wing2};
 
-        this.Left_Leg.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.0F * f1 * 0.5F / 1;
-        this.Right_Leg.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.0F * f1 * 0.5F / 1;
+        this.Left_Leg.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * f1 * 0.5F;
+        this.Right_Leg.rotateAngleX = MathHelper.cos(f * 0.6662F) * f1 * 0.5F;
 
         float f12 = f1;
         if (f12 < 0.0F) {
@@ -123,8 +123,8 @@ public class ModelPixie extends ModelDragonBase {
             this.Right_Leg.rotateAngleX += (float) Math.toRadians(-10);
             this.Head.rotateAngleX += (float) Math.toRadians(-10);
         } else {
-            this.Right_Arm.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 1.0F * f1 * 0.5F / 1;
-            this.Left_Arm.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.0F * f1 * 0.5F / 1;
+            this.Right_Arm.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * f1 * 0.5F;
+            this.Left_Arm.rotateAngleX = MathHelper.cos(f * 0.6662F) * f1 * 0.5F;
         }
 
         if (entity.isSitting()) {

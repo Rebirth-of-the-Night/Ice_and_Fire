@@ -86,7 +86,7 @@
       },
       "model": "iceandfire:item/dragon_horn_ice"
     },
-	{
+    {
       "predicate": {
         "iceorfire": 0.75
       },

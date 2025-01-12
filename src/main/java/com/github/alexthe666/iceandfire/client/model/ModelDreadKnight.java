@@ -232,6 +232,7 @@ public class ModelDreadKnight extends ModelDragonBase {
         rotate(animator, this.armRight, -180, 0, 0);
         animator.endKeyframe();
         animator.resetKeyframe(5);
+        animator.update(null);
     }
 
     public void postRenderArm(float scale, EnumHandSide side) {

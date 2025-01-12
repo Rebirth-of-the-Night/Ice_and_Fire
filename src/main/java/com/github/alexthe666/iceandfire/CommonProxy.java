@@ -31,8 +31,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
-import net.minecraftforge.fml.common.registry.VillagerRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
 
 import java.lang.reflect.Field;
 
@@ -55,26 +53,6 @@ public class CommonProxy {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-    }
-    
-    @SubscribeEvent
-    public static void registerVillagers(RegistryEvent.Register<VillagerRegistry.VillagerProfession> event) {
-        IForgeRegistry<VillagerRegistry.VillagerProfession> professionRegistry = event.getRegistry();
-        IafVillagerRegistry villagerRegistry = IafVillagerRegistry.INSTANCE;
-        villagerRegistry.init();
-        professionRegistry.register(villagerRegistry.fisherman);
-        professionRegistry.register(villagerRegistry.craftsman);
-        professionRegistry.register(villagerRegistry.shaman);
-        // professionRegistry.register(villagerRegistry.desertMyrmexWorker);
-        // professionRegistry.register(villagerRegistry.jungleMyrmexWorker);
-        // professionRegistry.register(villagerRegistry.desertMyrmexSoldier);
-        // professionRegistry.register(villagerRegistry.jungleMyrmexSoldier);
-        // professionRegistry.register(villagerRegistry.desertMyrmexSentinel);
-        // professionRegistry.register(villagerRegistry.jungleMyrmexSentinel);
-        // professionRegistry.register(villagerRegistry.desertMyrmexRoyal);
-        // professionRegistry.register(villagerRegistry.jungleMyrmexRoyal);
-        // professionRegistry.register(villagerRegistry.desertMyrmexQueen);
-        // professionRegistry.register(villagerRegistry.jungleMyrmexQueen);
     }
 
     @SubscribeEvent
@@ -162,7 +140,7 @@ public class CommonProxy {
         registerUnspawnable(EntityEntryBuilder.create(), event, EntityBallistaArrow.class, "ballista_arrow", 62);
         registerSpawnable(EntityEntryBuilder.create(), event, EntityGhost.class, "ghost", 63, 0XB9EDB8, 0X73B276);
         registerUnspawnable(EntityEntryBuilder.create(), event, EntityGhostSword.class, "ghost_sword", 64);
-
+        registerSpawnable(EntityEntryBuilder.create(), event, EntityAutomatonFlying.class, "automaton_flying", 65, 0, 0);
     }
 
     public static <T extends Entity> void registerSpawnable(EntityEntryBuilder<T> builder, RegistryEvent.Register<EntityEntry> event, Class<T> entityClass, String name, int id, int mainColor, int subColor) {
@@ -200,7 +178,7 @@ public class CommonProxy {
         try {
             for (Field f : IafBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
-                if (obj instanceof Block && !(obj instanceof IBlockWithoutItem)) {
+                if (obj instanceof Block) {
                     ItemBlock itemBlock;
                     if (obj == IafBlockRegistry.jar_pixie) {
                         itemBlock = ((BlockJar) obj).new ItemBlockJar((Block) obj);
@@ -211,7 +189,7 @@ public class CommonProxy {
                     } else if (obj instanceof BlockMyrmexResin) {
                         itemBlock = new ItemBlockMyrmexResin((Block) obj);
                     } else if (obj instanceof BlockGenericSlab) {
-                        itemBlock = ((BlockGenericSlab)obj).getItemBlock();
+                        itemBlock = ((BlockGenericSlab) obj).getItemBlock();
                     } else if (obj instanceof BlockVenerableStump) {
                         itemBlock = new ItemBlockVenerableStump((Block) obj);
                     } else {
@@ -357,7 +335,8 @@ public class CommonProxy {
     public void setPreviousViewType(int view) {
     }
 
-    public void updateDragonArmorRender(String clear){}
+    public void updateDragonArmorRender(String clear) {
+    }
 
     public boolean shouldSeeBestiaryContents() {
         return true;

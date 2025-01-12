@@ -1,7 +1,5 @@
 package com.github.alexthe666.iceandfire.world.gen.processor;
 
-import com.github.alexthe666.iceandfire.block.BlockDreadBase;
-import com.github.alexthe666.iceandfire.block.BlockDreadStoneFace;
 import com.github.alexthe666.iceandfire.block.IDreadBlock;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
@@ -48,19 +46,19 @@ public class DreadCastleProcessor implements ITemplateProcessor {
     public DreadCastleProcessor() {
     }
 
-    protected Template.BlockInfo getSpawnedMob(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn, Class<? extends Entity> entity){
-            NBTTagCompound tag = blockInfoIn.tileentityData == null ? new NBTTagCompound() : blockInfoIn.tileentityData;
-            NBTTagCompound spawnData = new NBTTagCompound();
-            ResourceLocation spawnerMobId = EntityList.getKey(entity);
-            if(spawnerMobId != null){
-                spawnData.setString("id", spawnerMobId.toString());
-                tag.removeTag("SpawnPotentials");
-                tag.setTag("SpawnData", spawnData.copy());
-            }
+    protected Template.BlockInfo getSpawnedMob(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn, Class<? extends Entity> entity) {
+        NBTTagCompound tag = blockInfoIn.tileentityData == null ? new NBTTagCompound() : blockInfoIn.tileentityData;
+        NBTTagCompound spawnData = new NBTTagCompound();
+        ResourceLocation spawnerMobId = EntityList.getKey(entity);
+        if (spawnerMobId != null) {
+            spawnData.setString("id", spawnerMobId.toString());
+            tag.removeTag("SpawnPotentials");
+            tag.setTag("SpawnData", spawnData.copy());
+        }
         return new Template.BlockInfo(pos, IafBlockRegistry.dread_spawner.getDefaultState(), tag);
     }
 
-    protected Template.BlockInfo getLootTable(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn, ResourceLocation loot){
+    protected Template.BlockInfo getLootTable(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn, ResourceLocation loot) {
         Random rand = new Random(worldIn.getSeed() + pos.toLong());
         NBTTagCompound tag = blockInfoIn.tileentityData == null ? new NBTTagCompound() : blockInfoIn.tileentityData;
         tag.setString("LootTable", loot.toString());
@@ -75,42 +73,21 @@ public class DreadCastleProcessor implements ITemplateProcessor {
 
         if (worldIn.rand.nextFloat() <= integrity) {
             if (block instanceof IDreadBlock) {
-
-                if(block == IafBlockRegistry.dread_stone_bricks){
+                if (block == IafBlockRegistry.dread_stone_bricks) {
                     IBlockState state = getRandomCrackedBlock(null, worldIn.rand);
                     return new Template.BlockInfo(pos, state, null);
                 }
-
-                if(block instanceof BlockDreadBase)
-                {
-                    return new Template.BlockInfo(pos, block.getDefaultState(), null);
-                }
-
-                if(block instanceof BlockDreadStoneFace) {
-                    return new Template.BlockInfo(pos, IafBlockRegistry.dread_stone_face.getStateFromMeta(4), null);
-                }
-            }
-            if (block == Blocks.PISTON) {
-                return new Template.BlockInfo(pos, IafBlockRegistry.dread_piston.getStateFromMeta(block.getMetaFromState(blockInfoIn.blockState)), null);
-            }
-            if (block == Blocks.STICKY_PISTON) {
-                return new Template.BlockInfo(pos, IafBlockRegistry.dread_sticky_piston.getStateFromMeta(block.getMetaFromState(blockInfoIn.blockState)), null);
-            }
-            if (block == Blocks.PISTON_HEAD) {
-                return new Template.BlockInfo(pos, IafBlockRegistry.dread_piston_head.getStateFromMeta(block.getMetaFromState(blockInfoIn.blockState)), null);
-            }
-            if (block == Blocks.PISTON_EXTENSION) {
-                return new Template.BlockInfo(pos, IafBlockRegistry.dread_piston_moving.getStateFromMeta(block.getMetaFromState(blockInfoIn.blockState)), null);
             }
             if (block instanceof BlockChest) {
                 return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_TRASH);
             }
-            if (block == Blocks.CLAY) {NBTTagCompound tag = blockInfoIn.tileentityData == null ? new NBTTagCompound() : blockInfoIn.tileentityData;
+            if (block == Blocks.CLAY) {
+                NBTTagCompound tag = blockInfoIn.tileentityData == null ? new NBTTagCompound() : blockInfoIn.tileentityData;
                 NBTTagCompound spawnData = new NBTTagCompound();
                 EntityDreadHorse horse = new EntityDreadHorse(worldIn);
                 horse.updatePassenger(new EntityDreadKnight(worldIn));
                 ResourceLocation spawnerMobId = EntityList.getKey(horse);
-                if(spawnerMobId != null){
+                if (spawnerMobId != null) {
                     spawnData.setString("id", spawnerMobId.toString());
                     tag.removeTag("SpawnPotentials");
                     tag.setTag("SpawnData", spawnData.copy());
@@ -138,7 +115,7 @@ public class DreadCastleProcessor implements ITemplateProcessor {
                 return getSpawnedMob(worldIn, pos, blockInfoIn, EntityDreadBeast.class);
             }
             if (block == Blocks.IRON_ORE) {
-                if(worldIn.rand.nextInt(2) < 1)
+                if (worldIn.rand.nextInt(2) < 1)
                     return getSpawnedMob(worldIn, pos, blockInfoIn, EntityDreadBeast.class);
                 else
                     return new Template.BlockInfo(pos, Blocks.AIR.getDefaultState(), null);
@@ -149,11 +126,8 @@ public class DreadCastleProcessor implements ITemplateProcessor {
             if (block == Blocks.LIT_PUMPKIN) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.dread_single_spawner_lich.getDefaultState(), null);
             }
-            if (block == Blocks.BRICK_BLOCK) {
-                return new Template.BlockInfo(pos, IafBlockRegistry.tripwire.getDefaultState(), null);
-            }
             if (block == Blocks.EMERALD_ORE) {
-                return new Template.BlockInfo(pos, IafBlockRegistry.tripwire_dragon.getDefaultState(), null);
+                return new Template.BlockInfo(pos, IafBlockRegistry.cracked_dreadstone.getDefaultState(), null);
             }
             if (block == Blocks.BEDROCK) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.dread_single_spawner_queen.getDefaultState(), null);
@@ -165,7 +139,7 @@ public class DreadCastleProcessor implements ITemplateProcessor {
                 return new Template.BlockInfo(pos, IafBlockRegistry.dread_single_spawner_ballista.getDefaultState(), null);
             }
             if (block == Blocks.NETHERRACK) {
-                if(worldIn.rand.nextInt(2) < 1)
+                if (worldIn.rand.nextInt(2) < 1)
                     return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_NORMAL);
                 else
                     return new Template.BlockInfo(pos, Blocks.AIR.getDefaultState(), null);
@@ -224,13 +198,13 @@ public class DreadCastleProcessor implements ITemplateProcessor {
             if (block == Blocks.CONCRETE_POWDER) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.treasury_keyhole.getDefaultState(), null);
             }
-            if(block == Blocks.YELLOW_GLAZED_TERRACOTTA){
-                    TileEntityPodium tile = new TileEntityPodium();
-                    LootTable table = worldIn.getLootTableManager().getLootTableFromLocation(DreadCastleProcessor.LOOT_TREASURY_PEDESTAL);
+            if (block == Blocks.YELLOW_GLAZED_TERRACOTTA) {
+                TileEntityPodium tile = new TileEntityPodium();
+                LootTable table = worldIn.getLootTableManager().getLootTableFromLocation(DreadCastleProcessor.LOOT_TREASURY_PEDESTAL);
 
-                    LootContext context = new LootContext.Builder((WorldServer) worldIn).build();
-                    // imagine using IInventory in 2020
-                    tile.setInventorySlotContents(0, table.generateLootForPools(worldIn.rand, context).get(0));
+                LootContext context = new LootContext.Builder((WorldServer) worldIn).build();
+                // imagine using IInventory in 2020
+                tile.setInventorySlotContents(0, table.generateLootForPools(worldIn.rand, context).get(0));
                 return new Template.BlockInfo(pos, IafBlockRegistry.podium.getStateFromMeta(1), tile.getUpdateTag());
             }
             return blockInfoIn;
@@ -241,13 +215,13 @@ public class DreadCastleProcessor implements ITemplateProcessor {
 
     private Class<? extends Entity> getRandomMobForMobSpawner(Random random) {
         float rand = random.nextFloat();
-        if(rand < 0.3D){
+        if (rand < 0.3D) {
             return EntityDreadThrall.class;
-        }else if(rand < 0.5D){
+        } else if (rand < 0.5D) {
             return EntityDreadGhoul.class;
-        }else if(rand < 0.7D){
+        } else if (rand < 0.7D) {
             return EntityDreadBeast.class;
-        }else if(rand < 0.85D){
+        } else if (rand < 0.85D) {
             return EntityDreadScuttler.class;
         }
         return EntityDreadKnight.class;

@@ -722,7 +722,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
         } else {
             this.setSeaSerpentScale(1.5F + this.getRNG().nextFloat() * 4.0F);
         }
-        this.heal(this.getMaxHealth());
+        this.setHealth(this.getMaxHealth());
         return livingdata;
     }
 

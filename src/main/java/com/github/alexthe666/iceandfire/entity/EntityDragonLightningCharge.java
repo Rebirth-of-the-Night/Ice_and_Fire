@@ -100,14 +100,13 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
                 }
                 if (entityHit == null || entityHit != shootingEntity) {
                     EntityDragonBase dragon = (EntityDragonBase) shootingEntity;
-                    if (entityHit instanceof EntityTameable && ((EntityDragonBase) shootingEntity).isOwner(((EntityDragonBase) shootingEntity)
-		                    .getOwner())) {
+                    if (entityHit instanceof EntityTameable && ((EntityDragonBase) shootingEntity).isOwner(((EntityDragonBase) shootingEntity).getOwner())) {
                         return;
                     }
                     if (IceAndFire.CONFIG.dragonGriefing != 2) {
                         IafDragonDestructionManager.destroyAreaLightningCharge(world, new BlockPos(posX, posY, posZ), dragon);
                     }
-	                dragon.randomizeAttacks();
+	                dragon.usingGroundAttack = shootingEntity.getRNG().nextBoolean();
                     this.setDead();
                 }
                 if (entityHit != null && !entityHit.isEntityEqual(shootingEntity)) {
@@ -117,12 +116,12 @@ public class EntityDragonLightningCharge extends EntityFireball implements IDrag
                     }
 	                entityHit.attackEntityFrom(IceAndFire.dragonLightning, 10.0F);
 	                if (entityHit instanceof EntityLivingBase && ((EntityLivingBase) entityHit).getHealth() == 0) {
-	                    ((EntityDragonBase) shootingEntity).randomizeAttacks();
+	                    ((EntityDragonBase) shootingEntity).usingGroundAttack = shootingEntity.getRNG().nextBoolean();
 	                }
 	                if (entityHit instanceof EntityLivingBase && !IsImmune.toDragonLightning(entityHit)) {
                         double x = shootingEntity.posX - entityHit.posX;
                         double z = shootingEntity.posZ - entityHit.posZ;
-		                ((EntityLivingBase)entityHit).knockBack(((EntityLivingBase)entityHit), 0.3F, x, z);
+		                ((EntityLivingBase)entityHit).knockBack(entityHit, 0.3F, x, z);
 	                }
 	                this.applyEnchantments(shootingEntity, entityHit);
 	                IafDragonDestructionManager.destroyAreaLightningCharge(world, new BlockPos(posX, posY, posZ), ((EntityDragonBase) shootingEntity));

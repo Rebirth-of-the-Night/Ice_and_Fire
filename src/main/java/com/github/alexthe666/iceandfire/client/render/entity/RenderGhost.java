@@ -42,7 +42,7 @@ public class RenderGhost extends RenderLiving<EntityGhost> {
 
     public void preRenderProfileGhostApply(EntityGhost entityIn, float partialTicks) {
         float alphaForRender = getAlphaForRender(entityIn, partialTicks);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, entityIn.isDaytimeMode() ? alphaForRender : 0.55F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F,/* entityIn.isDaytimeMode() ? */alphaForRender/* : 0.55F*/);
         GlStateManager.depthMask(false);
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -58,8 +58,8 @@ public class RenderGhost extends RenderLiving<EntityGhost> {
     public float getAlphaForRender(EntityGhost entityIn, float partialTicks) {
         if (entityIn.isDaytimeMode()) {
             return MathHelper.clamp((101 - Math.min(entityIn.getDaytimeCounter(), 100)) / 100F, 0, 1);
-        }
-        return MathHelper.clamp((MathHelper.sin((entityIn.ticksExisted + partialTicks) * 0.1F) + 1F) * 0.5F + 0.1F, 0F, 1F);
+        } else
+            return Math.max(MathHelper.clamp((MathHelper.sin((entityIn.ticksExisted + partialTicks) * 0.1F) + 1F) * 0.5F + 0.1F, 0F, 1F), 0.55F);
     }
 
     @Override

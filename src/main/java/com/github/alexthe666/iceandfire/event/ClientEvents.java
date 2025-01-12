@@ -220,6 +220,19 @@ public class ClientEvents {
                 IceAndFire.PROXY.setDragon3rdPersonView(currentView);
             }
 
+            GhostEntityProperties ghostProps = EntityPropertiesHandler.INSTANCE.getProperties(event.getEntityLiving(), GhostEntityProperties.class);
+            if (player.world.isRemote && ghostProps != null) {
+                EntityGhost ghost = ghostProps.getGhost(event.getEntityLiving().world);
+                if (ghost != null) {
+                    if (ghost.getAnimation() == EntityGhost.ANIMATION_SCARE && ghost.getAnimationTick() == 3 && !ghost.isHauntedShoppingList()) {
+                        if (player.world.isRemote && rand.nextInt(3) == 0) {
+                            //ghost.playSound(IafSoundRegistry.GHOST_JUMPSCARE, ghost.getSoundVolume(), ghost.getSoundPitch());
+                            IceAndFire.PROXY.spawnParticle("ghost_appearance", ghost.posX, ghost.posY, ghost.posZ, 0, 0, 0);
+                        }
+                    }
+                }
+            }
+
             SirenEntityProperties sirenProps = EntityPropertiesHandler.INSTANCE.getProperties(event.getEntityLiving(), SirenEntityProperties.class);
             if (player.world.isRemote && sirenProps != null) {
                 EntityRenderer renderer = Minecraft.getMinecraft().entityRenderer;
@@ -462,6 +475,21 @@ public class ClientEvents {
 
     @SubscribeEvent
     public void onEntityMount(EntityMountEvent event) {
+        if (event.getEntityMounting() instanceof  EntityPlayer) {
+            if (event.isDismounting()) {
+                if (!DragonUtils.canDismount(event.getEntityBeingMounted())) {
+                    event.setCanceled(true);
+                    return;
+                }
+            } else {
+                Entity previousRidingEntity = event.getEntityMounting().getRidingEntity();
+                if (!DragonUtils.canDismount(previousRidingEntity)) {
+                    event.setCanceled(true);
+                    return;
+                }
+            }
+        }
+
         if (IceAndFire.CONFIG.dragonAuto3rdPerson) {
             if (event.getEntityBeingMounted() instanceof EntityDragonBase && event.getWorldObj().isRemote && event.getEntityMounting() == Minecraft.getMinecraft().player) {
                 EntityDragonBase dragon = (EntityDragonBase)event.getEntityBeingMounted();

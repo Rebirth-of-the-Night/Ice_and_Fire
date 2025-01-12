@@ -42,13 +42,16 @@ public class ItemModShovel extends ItemSpade implements IaFTool {
     	case 1:
     		ItemUtil.getMyrmexComment(tooltip);
     		break;
-    	case 2: 
+    	case 2:
+    		ItemUtil.getMyrmexComment(tooltip, true);
+    		break;
+    	case 3:
     		ItemUtil.getFireDragonsteelComment(tooltip);
     		break;
-    	case 3: 
+    	case 4:
     		ItemUtil.getIceDragonsteelComment(tooltip);
     		break;
-    	case 4:
+    	case 5:
     		ItemUtil.getLightningDragonsteelComment(tooltip);
     		break;
     	}

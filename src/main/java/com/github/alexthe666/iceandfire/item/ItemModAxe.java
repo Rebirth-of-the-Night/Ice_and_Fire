@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ItemModAxe extends ItemAxe implements IaFTool {
     private final int toolID;
-    
+
     public ItemModAxe(ToolMaterial toolmaterial, String gameName, String name) {
     	this(toolmaterial, gameName, name, -1);
     }
@@ -27,11 +27,11 @@ public class ItemModAxe extends ItemAxe implements IaFTool {
         this.setRegistryName(IceAndFire.MODID, gameName);
         this.toolID = toolID;
     }
-    
+
     private static boolean getDragonMaterial(ToolMaterial toolMaterial) {
     	return toolMaterial == IafItemRegistry.dragonsteel_fire_tools || toolMaterial == IafItemRegistry.dragonsteel_ice_tools || toolMaterial == IafItemRegistry.dragonsteel_lightning_tools;
     }
-     
+
 	@Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
     	return ItemUtil.getIsRepairable(toolMaterial, toRepair, repair, super.getIsRepairable(toRepair, repair));
@@ -47,13 +47,16 @@ public class ItemModAxe extends ItemAxe implements IaFTool {
     	case 1:
     		ItemUtil.getMyrmexComment(tooltip);
     		break;
-    	case 2: 
+    	case 2:
+    		ItemUtil.getMyrmexComment(tooltip, true);
+    		break;
+    	case 3:
     		ItemUtil.getFireDragonsteelComment(tooltip);
     		break;
-    	case 3: 
+    	case 4:
     		ItemUtil.getIceDragonsteelComment(tooltip);
     		break;
-    	case 4:
+    	case 5:
     		ItemUtil.getLightningDragonsteelComment(tooltip);
     		break;
     	}

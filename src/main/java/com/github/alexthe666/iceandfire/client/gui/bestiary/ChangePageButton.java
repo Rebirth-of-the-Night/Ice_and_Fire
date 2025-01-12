@@ -14,7 +14,7 @@ public class ChangePageButton extends GuiButton {
 
     private final int color;
 
-    public ChangePageButton(int id, int x, int y, boolean right, int bookpage, int color) {
+    public ChangePageButton(int id, int x, int y, boolean right, int color) {
         super(id, x, y, 23, 10, "");
         this.right = right;
         this.color = color;

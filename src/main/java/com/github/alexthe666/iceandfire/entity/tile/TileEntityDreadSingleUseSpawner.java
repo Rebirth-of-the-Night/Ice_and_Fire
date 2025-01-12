@@ -16,10 +16,7 @@ public class TileEntityDreadSingleUseSpawner extends TileEntity implements ITick
 	}
 
 	public boolean isActivated() {
-		return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
-				activatingRangeFromPlayer, true) != null &&
-				!world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D,
-						activatingRangeFromPlayer, true).capabilities.isCreativeMode;
+		return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, activatingRangeFromPlayer, true) != null;
 	}
 
 	@Override

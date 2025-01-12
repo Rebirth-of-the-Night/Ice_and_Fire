@@ -1,18 +1,16 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 public class DragonAIWander extends EntityAIBase {
-    private final EntityDragonBase dragon;
+    private EntityDragonBase dragon;
     private double xPosition;
     private double yPosition;
     private double zPosition;
-    private final double speed;
+    private double speed;
     private int executionChance;
     private boolean mustUpdate;
 
@@ -32,10 +30,10 @@ public class DragonAIWander extends EntityAIBase {
         if (!dragon.canMove()) {
             return false;
         }
-        if (dragon.getControllingPassenger() != null) {
+        if (dragon.isPlayerControlled()) {
             return false;
         }
-        if (dragon.isFlying() || dragon.isHovering()) {
+        if (dragon.isFlying() || dragon.isHovering() || !dragon.onGround) {
             return false;
         }
         if (!this.mustUpdate) {
@@ -43,24 +41,17 @@ public class DragonAIWander extends EntityAIBase {
                 return false;
             }
         }
-        Vec3d vec3d;
-        while (true) {
-            vec3d = RandomPositionGenerator.findRandomTarget(this.dragon, 10, 7);
-            if (vec3d == null) return false;
+        Vec3d vec3d = RandomPositionGenerator.findRandomTarget(this.dragon, 10, 7);
+        if (vec3d == null) {
+            return false;
+        } else {
+            this.xPosition = vec3d.x;
+            this.yPosition = vec3d.y;
+            this.zPosition = vec3d.z;
+            this.mustUpdate = false;
 
-            BlockPos pos = new BlockPos(vec3d);
-            Material material = dragon.world.getBlockState(pos).getMaterial();
-            Material materialBelow = dragon.world.getBlockState(pos.down()).getMaterial();
-            Material materialBelowBelow = dragon.world.getBlockState(pos.down(2)).getMaterial();
-
-            if (!(material.isLiquid() || materialBelow.isLiquid() || materialBelowBelow.isLiquid())) break;
+            return true;
         }
-        this.xPosition = vec3d.x;
-        this.yPosition = vec3d.y;
-        this.zPosition = vec3d.z;
-        this.mustUpdate = false;
-
-        return true;
     }
 
     @Override
@@ -71,13 +62,5 @@ public class DragonAIWander extends EntityAIBase {
     @Override
     public void startExecuting() {
         this.dragon.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
-    }
-
-    public void makeUpdate() {
-        this.mustUpdate = true;
-    }
-
-    public void setExecutionChance(int newchance) {
-        this.executionChance = newchance;
     }
 }

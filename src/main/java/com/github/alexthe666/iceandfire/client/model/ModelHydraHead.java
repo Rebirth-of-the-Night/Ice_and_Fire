@@ -3,7 +3,6 @@ package com.github.alexthe666.iceandfire.client.model;
 import com.github.alexthe666.iceandfire.entity.EntityGorgon;
 import com.github.alexthe666.iceandfire.entity.EntityHydra;
 import net.ilexiconn.llibrary.LLibrary;
-import net.ilexiconn.llibrary.client.model.ModelAnimator;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
@@ -23,7 +22,6 @@ public class ModelHydraHead extends ModelDragonBase {
     public AdvancedModelRenderer TeethL1;
     public AdvancedModelRenderer TeethR1;
     public AdvancedModelRenderer TeethTL1;
-    private final ModelAnimator animator;
     private int headIndex = 0;
 
     public ModelHydraHead(int headIndex) {
@@ -100,7 +98,6 @@ public class ModelHydraHead extends ModelDragonBase {
         this.Neck4.addChild(this.neckSpike1);
         this.TeethTR1.addChild(this.TeethTL1);
         this.Head1.addChild(this.UpperJaw1);
-        animator = ModelAnimator.create();
         this.updateDefaultPose();
     }
 
@@ -114,7 +111,6 @@ public class ModelHydraHead extends ModelDragonBase {
     public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.resetToDefaultPose();
         setRotationAngles(f, f1, f2, f3, f4, f5, (EntityHydra) entity);
-        animator.update(entity);
     }
 
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, EntityHydra entity) {

@@ -12,7 +12,6 @@ import com.github.alexthe666.iceandfire.client.model.animator.LightningDragonTab
 import com.github.alexthe666.iceandfire.client.model.animator.SeaSerpentTabulaModelAnimator;
 import com.github.alexthe666.iceandfire.client.model.util.*;
 import com.github.alexthe666.iceandfire.client.particle.*;
-import com.github.alexthe666.iceandfire.client.render.RenderCastleBallista;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsAurora;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsSky;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsWeather;
@@ -23,15 +22,15 @@ import com.github.alexthe666.iceandfire.command.CommandTreeBaseButOurs;
 import com.github.alexthe666.iceandfire.compat.TinkersCompatBridge;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.entity.tile.*;
-import com.github.alexthe666.iceandfire.entity.tile.keletu.TileEntityDreadPiston;
-import com.github.alexthe666.iceandfire.entity.tile.keletu.TileEntityDreadPistonRenderer;
 import com.github.alexthe666.iceandfire.enums.*;
 import com.github.alexthe666.iceandfire.event.ClientEvents;
 import com.github.alexthe666.iceandfire.item.ICustomRendered;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+import static net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler.INSTANCE;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -64,8 +63,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static net.ilexiconn.llibrary.client.model.tabula.TabulaModelHandler.INSTANCE;
-
 @Mod.EventBusSubscriber
 @SuppressWarnings("deprecation")
 public class ClientProxy extends CommonProxy {
@@ -92,11 +89,11 @@ public class ClientProxy extends CommonProxy {
     private static final ModelSilverArmor SILVER_ARMOR_MODEL_LEGS = new ModelSilverArmor(0.2F);
     private static final ModelCopperArmor COPPER_ARMOR_MODEL = new ModelCopperArmor(0.5F);
     private static final ModelCopperArmor COPPER_ARMOR_MODEL_LEGS = new ModelCopperArmor(0.2F);
-    
+
     @SideOnly(Side.CLIENT)
     private static final IceAndFireTEISR TEISR = new IceAndFireTEISR();
     public static List<UUID> currentDragonRiders = new ArrayList<>();
-    public  IceAndFireTabulaModel<EntityFireDragon> FIRE_DRAGON_MODEL;
+    public IceAndFireTabulaModel<EntityFireDragon> FIRE_DRAGON_MODEL;
     public IceAndFireTabulaModel<EntityIceDragon> ICE_DRAGON_MODEL;
     public IceAndFireTabulaModel<EntityLightningDragon> LIGHTNING_DRAGON_MODEL;
     public IceAndFireTabulaModel<EntitySeaSerpent> SEA_SERPENT_MODEL;
@@ -190,7 +187,7 @@ public class ClientProxy extends CommonProxy {
         ModelBakery.registerItemVariants(IafItemRegistry.deathworm_egg, new ResourceLocation("iceandfire:deathworm_egg"), new ResourceLocation("iceandfire:deathworm_egg_giant"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.deathworm_egg, 0, new ModelResourceLocation("iceandfire:deathworm_egg", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.deathworm_egg, 1, new ModelResourceLocation("iceandfire:deathworm_egg_giant", "inventory"));
-        
+
         for (EnumDragonArmor armor : EnumDragonArmor.values()) {
             renderDragonArmors(armor);
         }
@@ -324,10 +321,10 @@ public class ClientProxy extends CommonProxy {
     @SideOnly(Side.CLIENT)
     @Override
     public void render() {
-        try{
+        try {
             this.bestiaryFontRenderer = new FontRenderer(Minecraft.getMinecraft().gameSettings, new ResourceLocation("iceandfire:textures/font/bestiary.png"), Minecraft.getMinecraft().renderEngine, false);
             ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this.bestiaryFontRenderer);
-        }catch(Exception e){
+        } catch (Exception e) {
             this.bestiaryFontRenderer = Minecraft.getMinecraft().fontRenderer;
         }
         this.particleSpawner = new IceAndFireParticleSpawner();
@@ -430,10 +427,10 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityDragonLightningBolt.class, new RenderDragonLightningBolt(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityDreadKnightRoyal.class, new RenderDreadKnightRoyal(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityCastleBallista.class, new RenderCastleBallista(Minecraft.getMinecraft().getRenderManager()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityBallistaArrow.class, new RenderIceCharge());
+        RenderingRegistry.registerEntityRenderingHandler(EntityBallistaArrow.class, new RenderBallistaArrow(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityGhost.class, new RenderGhost(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostSword.class, new RenderGhostSword<>(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
-
+        RenderingRegistry.registerEntityRenderingHandler(EntityAutomatonFlying.class, new RenderAutomatonFlying(Minecraft.getMinecraft().getRenderManager()));
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPodium.class, new RenderPodium());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLectern.class, new RenderLectern());
@@ -443,7 +440,6 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDreadPortal.class, new RenderDreadPortal());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGhostChest.class, new RenderGhostChest());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDreadSpawner.class, new RenderDreadSpawner());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDreadPiston.class, new TileEntityDreadPistonRenderer());
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 0, TileEntityPixieHouse.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 1, TileEntityPixieHouse.class);
         ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 2, TileEntityPixieHouse.class);
@@ -478,7 +474,7 @@ public class ClientProxy extends CommonProxy {
         if (world == null) {
             return;
         }
-        net.minecraft.client.particle.Particle particle = null;
+        Particle particle = null;
         if (name.equals("dragonfire")) {
             particle = new ParticleDragonFlame(world, x, y, z, motX, motY, motZ, size);
         }
@@ -547,9 +543,9 @@ public class ClientProxy extends CommonProxy {
             case 3:
                 return ICE_DRAGON_SCALE_ARMOR_MODEL_LEGS;
             case 16:
-            	return LIGHTNING_DRAGON_SCALE_ARMOR_MODEL;
+                return LIGHTNING_DRAGON_SCALE_ARMOR_MODEL;
             case 17:
-            	return LIGHTNING_DRAGON_SCALE_ARMOR_MODEL_LEGS;
+                return LIGHTNING_DRAGON_SCALE_ARMOR_MODEL_LEGS;
             case 4:
                 return DEATHWORM_ARMOR_MODEL;
             case 5:
@@ -571,9 +567,9 @@ public class ClientProxy extends CommonProxy {
             case 13:
                 return DRAGONSTEEL_ICE_ARMOR_MODEL_LEGS;
             case 18:
-            	return DRAGONSTEEL_LIGHTNING_ARMOR_MODEL;
+                return DRAGONSTEEL_LIGHTNING_ARMOR_MODEL;
             case 19:
-            	return DRAGONSTEEL_LIGHTNING_ARMOR_MODEL_LEGS;
+                return DRAGONSTEEL_LIGHTNING_ARMOR_MODEL_LEGS;
             case 14:
                 return SILVER_ARMOR_MODEL;
             case 15:
@@ -599,13 +595,13 @@ public class ClientProxy extends CommonProxy {
     }
 
     public Object getDreadlandsRender(int i) {
-        if(i == 0){
+        if (i == 0) {
             return dreadlandsSkyRenderer;
         }
-        if(i == 1){
+        if (i == 1) {
             return dreadlandsWeatherRenderer;
         }
-        if(i == 2){
+        if (i == 2) {
             return dreadlandsAuroraRender;
         }
         return null;
@@ -619,7 +615,7 @@ public class ClientProxy extends CommonProxy {
         previousViewType = view;
     }
 
-    public void updateDragonArmorRender(String clear){
+    public void updateDragonArmorRender(String clear) {
         LayerDragonArmor.clearCache(clear);
     }
 

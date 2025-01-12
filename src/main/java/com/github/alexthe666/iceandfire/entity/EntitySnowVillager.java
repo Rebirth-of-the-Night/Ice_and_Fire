@@ -9,23 +9,24 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.scoreboard.ScorePlayerTeam;
-import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
+import java.lang.reflect.Field;
 
 public class EntitySnowVillager extends EntityVillager {
 
+    private static Field FIELD_BABY;
+    private static Field FIELD_PROFESSION;
+    private static Field FIELD_CAREER;
+
+    private String professionName;
     private net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession prof;
 
     public EntitySnowVillager(World worldIn) {
@@ -37,8 +38,8 @@ public class EntitySnowVillager extends EntityVillager {
     }
 
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
-        StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(this, StoneEntityProperties.class);
-        if (properties != null && properties.isStone) {
+        StoneEntityProperties capability = EntityPropertiesHandler.INSTANCE.getProperties(this, StoneEntityProperties.class);
+        if (capability != null && capability.isStone) {
             return false;
         }
         return super.processInteract(player, hand);
@@ -48,7 +49,36 @@ public class EntitySnowVillager extends EntityVillager {
         if (professionId > 2) {
             professionId = 2;
         }
-        this.dataManager.set(PROFESSION, professionId);
+        this.dataManager.set(PROFESSION(), professionId);
+
+    }
+
+    private DataParameter<Boolean> BABY() {
+        try {
+            if(FIELD_BABY == null) {
+                FIELD_BABY = ObfuscationReflectionHelper.findField(EntityAgeable.class, "field_184751_bv");
+                FIELD_BABY.setAccessible(true);
+            }
+            return (DataParameter<Boolean>)FIELD_BABY.get(this);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private DataParameter<Integer> PROFESSION() {
+        try {
+            if(FIELD_PROFESSION == null) {
+                FIELD_PROFESSION = ObfuscationReflectionHelper.findField(EntityVillager.class, "field_184752_bw");
+                FIELD_PROFESSION.setAccessible(true);
+            }
+            return (DataParameter<Integer>)FIELD_PROFESSION.get(this);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -65,21 +95,25 @@ public class EntitySnowVillager extends EntityVillager {
                 this.activeItemStackUseCount = 0;
             }
         }
-
-        if (Objects.equals(BABY, key)) {
+//field_184751_bv
+        if (BABY().equals(key)) {
             this.setScaleForAge(this.isChild());
         }
+//field_184752_bw
+
     }
 
+    @Override
     public void onDeath(DamageSource cause) {
-        if (cause.getTrueSource() != null && cause.getTrueSource() instanceof EntityZombie && (this.world.getDifficulty() == EnumDifficulty.NORMAL || this.world.getDifficulty() == EnumDifficulty.HARD)) {
-            return;
+        if (cause.getTrueSource() != null && cause.getTrueSource() instanceof EntityZombie
+                && (this.world.getDifficulty() == EnumDifficulty.NORMAL || this.world.getDifficulty() == EnumDifficulty.HARD)) {
         } else {
             super.onDeath(cause);
         }
     }
 
     @SuppressWarnings("deprecation")
+    @Override
     public void setProfession(net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession prof) {
         if (IafVillagerRegistry.INSTANCE.professions.containsValue(prof)) {
             this.setProfession(net.minecraftforge.fml.common.registry.VillagerRegistry.getId(prof));
@@ -90,33 +124,8 @@ public class EntitySnowVillager extends EntityVillager {
 
     public EntityVillager createChild(EntityAgeable ageable) {
         EntitySnowVillager entityvillager = new EntitySnowVillager(this.world);
-        entityvillager.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entityvillager)), null);
+        entityvillager.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entityvillager)), (IEntityLivingData) null);
         return entityvillager;
-    }
-
-    public ITextComponent getDisplayName() {
-        Team team = this.getTeam();
-        String s = this.getCustomNameTag();
-
-        if (s != null && !s.isEmpty()) {
-            TextComponentString textcomponentstring = new TextComponentString(ScorePlayerTeam.formatPlayerName(team, s));
-            textcomponentstring.getStyle().setHoverEvent(this.getHoverEvent());
-            textcomponentstring.getStyle().setInsertion(this.getCachedUniqueIdString());
-            return textcomponentstring;
-        } else {
-            String s1 = this.getProfessionForge().getCareer(0).getName();
-            {
-                ITextComponent itextcomponent = new TextComponentTranslation("entity.Villager." + s1);
-                itextcomponent.getStyle().setHoverEvent(this.getHoverEvent());
-                itextcomponent.getStyle().setInsertion(this.getCachedUniqueIdString());
-
-                if (team != null) {
-                    itextcomponent.getStyle().setColor(team.getColor());
-                }
-
-                return itextcomponent;
-            }
-        }
     }
 
     public net.minecraftforge.fml.common.registry.VillagerRegistry.VillagerProfession getProfessionForge() {
@@ -124,15 +133,25 @@ public class EntitySnowVillager extends EntityVillager {
             String p = this.getEntityData().getString("ProfessionName");
             if (p.isEmpty()) {
                 this.prof = IafVillagerRegistry.INSTANCE.professions.get(this.getRNG().nextInt(3));
+
             } else {
                 this.prof = IafVillagerRegistry.INSTANCE.professions.get(intFromProfesion(p));
             }
-            
-            this.careerId = 1;
+            try {
+                if(FIELD_CAREER == null) {
+                    FIELD_CAREER = ObfuscationReflectionHelper.findField(EntityVillager.class, "field_175563_bv");
+                    FIELD_CAREER.setAccessible(true);
+                }
+                FIELD_CAREER.set(this, 1);
+            }
+            catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
         return this.prof;
     }
 
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.setProfession(compound.getInteger("Profession"));
@@ -146,6 +165,7 @@ public class EntitySnowVillager extends EntityVillager {
 
     }
 
+    @Override
     public IEntityLivingData finalizeMobSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData data, boolean forgeCheck) {
         this.prof = IafVillagerRegistry.INSTANCE.professions.get(this.getRNG().nextInt(3));
         return data;
@@ -165,4 +185,8 @@ public class EntitySnowVillager extends EntityVillager {
         return 0;
     }
 
+    @Override
+    protected boolean canDespawn() {
+        return false;
+    }
 }

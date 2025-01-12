@@ -10,6 +10,7 @@ import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
+import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityBoat;
@@ -29,11 +30,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 
 public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillagerFear, IAnimalFear, IHumanoid, IBlacklistedFromStatues {
@@ -57,10 +60,18 @@ public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillager
         this.moveHelper = new MoveHelper(this);
     }
 
+    @Override
+    protected int getExperiencePoints(EntityPlayer player) {
+        if (this.wasFromChest()) {
+            return 0;
+        } else {
+            return super.getExperiencePoints(player);
+        }
+    }
 
-   protected ResourceLocation getLootTable() {
-       return this.wasFromChest() ? LootTableList.EMPTY : LOOT;
-   }
+    protected ResourceLocation getLootTable() {
+        return this.wasFromChest() ? LootTableList.EMPTY : LOOT;
+    }
 
     @Nullable
     protected SoundEvent getAmbientSound() {
@@ -92,14 +103,8 @@ public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillager
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(1D);
     }
 
-    //todo
-    //@Override
-    //public void updateAttributes() {
-    //    return bakeAttributes();
-    //}
-
     public boolean isPotionApplicable(PotionEffect potioneffectIn) {
-        return potioneffectIn.getPotion() != MobEffects.POISON  && potioneffectIn.getPotion() != MobEffects.WITHER && super.isPotionApplicable(potioneffectIn);
+        return potioneffectIn.getPotion() != MobEffects.POISON && potioneffectIn.getPotion() != MobEffects.WITHER && super.isPotionApplicable(potioneffectIn);
     }
 
     public boolean isEntityInvulnerable(DamageSource source) {
@@ -160,14 +165,7 @@ public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillager
         this.tasks.addTask(2, new EntityAIRestrictSunFlying(this));
         this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
         this.tasks.addTask(3, new GhostAICharge(this));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F, 1.0F) {
-            public boolean shouldContinueExecuting() {
-                if (this.closestEntity != null && this.closestEntity instanceof EntityPlayer && ((EntityPlayer) this.closestEntity).isCreative()) {
-                    return false;
-                }
-                return super.shouldContinueExecuting();
-            }
-        });
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F, 1.0F));
         this.tasks.addTask(5, new EntityAIWanderAvoidWaterFlying(this, 0.6D) {
             public boolean shouldExecute() {
                 executionChance = 60;
@@ -190,50 +188,56 @@ public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillager
         }));
     }
 
+    @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
         this.noClip = true;
-        if(!world.isRemote){
+        if (!world.isRemote) {
             boolean day = isInDaylight() && !this.wasFromChest();
-            if(day){
-                if(!this.isDaytimeMode()){
+            if (day) {
+                if (!this.isDaytimeMode()) {
                     this.setAnimation(ANIMATION_SCARE);
                 }
                 this.setDaytimeMode(true);
-            }else{
+            } else {
                 this.setDaytimeMode(false);
                 this.setDaytimeCounter(0);
             }
-            if(isDaytimeMode()){
+            if (isDaytimeMode()) {
                 this.setMoveForward(0);
                 this.setMoveVertical(0);
                 this.setMoveStrafing(0);
                 this.setDaytimeCounter(this.getDaytimeCounter() + 1);
-                if(getDaytimeCounter() >= 100){
+                if (getDaytimeCounter() >= 100) {
                     this.setInvisible(true);
                 }
-            }else{
+            } else {
                 this.setInvisible(this.isPotionActive(MobEffects.INVISIBILITY));
                 this.setDaytimeCounter(0);
+                if (isAIDisabled())
+                    this.setNoAI(false);
             }
-        }else{
-            if(this.getAnimation() == ANIMATION_SCARE &&
-                    this.getAnimationTick() == 3 &&
-                    !this.isHauntedShoppingList() &&
-                    rand.nextInt(3) == 0){
-                this.playSound(IafSoundRegistry.GHOST_JUMPSCARE, this.getSoundVolume(), this.getSoundPitch());
-                if(world.isRemote){
-                    IceAndFire.PROXY.spawnParticle("ghost_appearance", this.posX, this.posY, this.posZ, 0, 0, 0);
+        }
+        if (!world.isRemote && !EntityGorgon.isStoneMob(this)) {
+            updateGhost();
+        }
+        if (this.getAnimation() == ANIMATION_HIT && this.getAttackTarget() != null && this.getDistance(this.getAttackTarget()) < 1.4D && this.getAnimationTick() == 5) {
+            this.playSound(IafSoundRegistry.GHOST_ATTACK, this.getSoundVolume(), this.getSoundPitch());
+            this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), (float) this.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
+        }
+        AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    public void updateGhost() {
+        if (this.ticksExisted % 20 == 0) {
+            List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(50, 12, 50));
+            for (EntityLivingBase entity : entities) {
+                GhostEntityProperties ghostProps = EntityPropertiesHandler.INSTANCE.getProperties(entity, GhostEntityProperties.class);
+                if (ghostProps != null && ghostProps.getGhost(world) == null) {
+                    ghostProps.ghostID = this.getEntityId();
                 }
             }
         }
-        if(this.getAnimation() == ANIMATION_HIT && this.getAttackTarget() != null){
-            if(this.getDistance(this.getAttackTarget()) < 1.4D && this.getAnimationTick() >= 4 && this.getAnimationTick() < 6) {
-                this.playSound(IafSoundRegistry.GHOST_ATTACK, this.getSoundVolume(), this.getSoundPitch());
-                this.attackEntityAsMob(this.getAttackTarget());
-            }
-        }
-        AnimationHandler.INSTANCE.updateAnimations(this);
     }
 
     public boolean isAIDisabled() {
@@ -247,17 +251,19 @@ public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillager
     protected boolean isInDaylight() {
         if (this.world.isDaytime() && !this.world.isRemote) {
             float f = this.getBrightness();
-            BlockPos blockpos = this.getRidingEntity() instanceof EntityBoat ? (new BlockPos(this.posX, (double)Math.round(this.posY), this.posZ)).up() : new BlockPos(this.posX, (double)Math.round(this.posY + 4), this.posZ);
+            BlockPos blockpos = this.getRidingEntity() instanceof EntityBoat ? (new BlockPos(this.posX, (double) Math.round(this.posY), this.posZ)).up() : new BlockPos(this.posX, (double) Math.round(this.posY + 4), this.posZ);
             return f > 0.5F && this.world.canSeeSky(blockpos);
         }
 
         return false;
     }
 
+    @Override
     public boolean hasNoGravity() {
         return true;
     }
 
+    @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         if (!itemstack.isEmpty() && itemstack.getItem() == IafItemRegistry.manuscript && !this.isHauntedShoppingList()) {
@@ -273,7 +279,6 @@ public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillager
 
     @Override
     public void travel(float strafe, float vertical, float forward) {
-        float f4;
         if (this.isDaytimeMode()) {
             super.travel(0, 0, 0);
             return;
@@ -322,20 +327,20 @@ public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillager
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
         this.setColor(compound.getInteger("Color"));
         this.setDaytimeMode(compound.getBoolean("DaytimeMode"));
         this.setDaytimeCounter(compound.getInteger("DaytimeCounter"));
         this.setFromChest(compound.getBoolean("FromChest"));
-        super.readEntityFromNBT(compound);
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
         compound.setInteger("Color", this.getColor());
         compound.setBoolean("DaytimeMode", this.isDaytimeMode());
         compound.setInteger("DaytimeCounter", this.getDaytimeCounter());
         compound.setBoolean("FromChest", this.wasFromChest());
-        super.writeEntityToNBT(compound);
     }
 
     public boolean isHauntedShoppingList() {
@@ -381,40 +386,40 @@ public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillager
             this.ghost = ghost;
         }
 
-        public void onUpdateMoveHelper() {
-            if (this.action == EntityMoveHelper.Action.MOVE_TO) {
-                double d0 = this.posX - EntityGhost.this.posX;
-                double d1 = this.posY - EntityGhost.this.posY;
-                double d2 = this.posZ - EntityGhost.this.posZ;
-                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
-                d3 = MathHelper.sqrt(d3);
-
-                if (d3 < EntityGhost.this.getEntityBoundingBox().getAverageEdgeLength()) {
-                    this.action = EntityMoveHelper.Action.WAIT;
-                    EntityGhost.this.motionX *= 0.5D;
-                    EntityGhost.this.motionY *= 0.5D;
-                    EntityGhost.this.motionZ *= 0.5D;
-                } else {
-                    EntityGhost.this.motionX += d0 / d3 * 0.05D * this.speed;
-                    EntityGhost.this.motionY += d1 / d3 * 0.05D * this.speed;
-                    EntityGhost.this.motionZ += d2 / d3 * 0.05D * this.speed;
-
-                    if (EntityGhost.this.getAttackTarget() == null) {
-                        EntityGhost.this.rotationYaw = -((float) MathHelper.atan2(EntityGhost.this.motionX, EntityGhost.this.motionZ)) * (180F / (float) Math.PI);
-                        EntityGhost.this.renderYawOffset = EntityGhost.this.rotationYaw;
-                    } else {
-                        double d4 = EntityGhost.this.getAttackTarget().posX - EntityGhost.this.posX;
-                        double d5 = EntityGhost.this.getAttackTarget().posZ - EntityGhost.this.posZ;
-                        EntityGhost.this.rotationYaw = -((float) MathHelper.atan2(d4, d5)) * (180F / (float) Math.PI);
-                        EntityGhost.this.renderYawOffset = EntityGhost.this.rotationYaw;
-                    }
-                }
-            }
-        }
+        //public void onUpdateMoveHelper() {
+        //    if (this.action == EntityMoveHelper.Action.MOVE_TO) {
+        //        double d0 = this.posX - EntityGhost.this.posX;
+        //        double d1 = this.posY - EntityGhost.this.posY;
+        //        double d2 = this.posZ - EntityGhost.this.posZ;
+        //        double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+        //        d3 = MathHelper.sqrt(d3);
+//
+        //        if (d3 < EntityGhost.this.getEntityBoundingBox().getAverageEdgeLength()) {
+        //            this.action = EntityMoveHelper.Action.WAIT;
+        //            EntityGhost.this.motionX *= 0.5D;
+        //            EntityGhost.this.motionY *= 0.5D;
+        //            EntityGhost.this.motionZ *= 0.5D;
+        //        } else {
+        //            EntityGhost.this.motionX += d0 / d3 * 0.05D * this.speed;
+        //            EntityGhost.this.motionY += d1 / d3 * 0.05D * this.speed;
+        //            EntityGhost.this.motionZ += d2 / d3 * 0.05D * this.speed;
+//
+        //            if (EntityGhost.this.getAttackTarget() == null) {
+        //                EntityGhost.this.rotationYaw = -((float) MathHelper.atan2(EntityGhost.this.motionX, EntityGhost.this.motionZ)) * (180F / (float) Math.PI);
+        //                EntityGhost.this.renderYawOffset = EntityGhost.this.rotationYaw;
+        //            } else {
+        //                double d4 = EntityGhost.this.getAttackTarget().posX - EntityGhost.this.posX;
+        //                double d5 = EntityGhost.this.getAttackTarget().posZ - EntityGhost.this.posZ;
+        //                EntityGhost.this.rotationYaw = -((float) MathHelper.atan2(d4, d5)) * (180F / (float) Math.PI);
+        //                EntityGhost.this.renderYawOffset = EntityGhost.this.rotationYaw;
+        //            }
+        //        }
+        //    }
+        //}
 
         //origin code
-        /*
-            public void tick() {
+        @Override
+        public void onUpdateMoveHelper() {
             if (this.action == Action.MOVE_TO) {
                 Vec3d vec3d = new Vec3d(this.getX() - ghost.posX, this.getY() - ghost.posY, this.getZ() - ghost.posZ);
                 double d0 = vec3d.length();
@@ -440,6 +445,6 @@ public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillager
                     }
                 }
             }
-        }*/
+        }
     }
 }

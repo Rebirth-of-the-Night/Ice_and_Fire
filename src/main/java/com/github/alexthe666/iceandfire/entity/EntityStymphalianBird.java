@@ -47,11 +47,7 @@ import java.util.UUID;
 public class EntityStymphalianBird extends EntityCreature implements IAnimatedEntity, IMob, IVillagerFear, IAnimalFear {
 
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("iceandfire", "stymphalian_bird"));
-    protected static final Predicate<Entity> STYMPHALIAN_PREDICATE = new Predicate<Entity>() {
-        public boolean apply(@Nullable Entity entity) {
-            return entity instanceof EntityStymphalianBird;
-        }
-    };
+    protected static final Predicate<Entity> STYMPHALIAN_PREDICATE = entity -> entity instanceof EntityStymphalianBird;
     private static final int FLIGHT_CHANCE_PER_TICK = 100;
     private static final DataParameter<Optional<UUID>> VICTOR_ENTITY = EntityDataManager.createKey(EntityStymphalianBird.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     private static final DataParameter<Boolean> FLYING = EntityDataManager.createKey(EntityStymphalianBird.class, DataSerializers.BOOLEAN);

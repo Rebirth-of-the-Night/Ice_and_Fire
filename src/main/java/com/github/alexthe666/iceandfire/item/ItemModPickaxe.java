@@ -14,11 +14,11 @@ import java.util.List;
 
 public class ItemModPickaxe extends ItemPickaxe implements IaFTool {
     private final int toolID;
-	
+
 	public ItemModPickaxe(ToolMaterial toolmaterial, String gameName, String name) {
 		this(toolmaterial, gameName, name, -1);
 	}
-	
+
 	public ItemModPickaxe(ToolMaterial toolmaterial, String gameName, String name, int toolID) {
 		super(toolmaterial);
 		this.setTranslationKey(name);
@@ -42,13 +42,16 @@ public class ItemModPickaxe extends ItemPickaxe implements IaFTool {
     	case 1:
     		ItemUtil.getMyrmexComment(tooltip);
     		break;
-    	case 2: 
+    	case 2:
+    		ItemUtil.getMyrmexComment(tooltip, true);
+    		break;
+    	case 3:
     		ItemUtil.getFireDragonsteelComment(tooltip);
     		break;
-    	case 3: 
+    	case 4:
     		ItemUtil.getIceDragonsteelComment(tooltip);
     		break;
-    	case 4:
+    	case 5:
     		ItemUtil.getLightningDragonsteelComment(tooltip);
     		break;
     	}

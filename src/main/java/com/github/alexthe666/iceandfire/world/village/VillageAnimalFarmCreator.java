@@ -12,7 +12,7 @@ public class VillageAnimalFarmCreator implements VillagerRegistry.IVillageCreati
 
     @Override
     public StructureVillagePieces.PieceWeight getVillagePieceWeight(Random random, int i) {
-        return new StructureVillagePieces.PieceWeight(ComponentAnimalFarm.class, 50, i + random.nextInt(1));
+        return new StructureVillagePieces.PieceWeight(ComponentAnimalFarm.class, 10, i + random.nextInt(2));
     }
 
     @Override
@@ -24,5 +24,4 @@ public class VillageAnimalFarmCreator implements VillagerRegistry.IVillageCreati
     public StructureVillagePieces.Village buildComponent(StructureVillagePieces.PieceWeight villagePiece, StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int p1, int p2, int p3, EnumFacing facing, int p5) {
         return ComponentAnimalFarm.buildComponent(startPiece, pieces, random, p1, p2, p3, facing, p5);
     }
-
 }

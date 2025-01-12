@@ -102,12 +102,12 @@
                 ]
             }
         },
-		"amythest": {
+		"amethyst": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "iceandfire:dragonegg_amythest"
+                        "item": "iceandfire:dragonegg_amethyst"
                     }
                 ]
             }
@@ -144,7 +144,7 @@
             "sapphire",
             "silver",
 			"electric",
-			"amythest",
+			"amethyst",
 			"copper",
 			"black"
         ]
