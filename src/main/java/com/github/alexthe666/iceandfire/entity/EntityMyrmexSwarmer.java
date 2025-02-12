@@ -49,9 +49,10 @@ public class EntityMyrmexSwarmer extends EntityMyrmexRoyal {
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(IceAndFire.CONFIG.myrmexBaseAttackStrength - 1.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(5);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue((float) IceAndFire.CONFIG.myrmexSwarmerAttackStrength);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(IceAndFire.CONFIG.myrmexSwarmerMaxHealth);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(Math.min(2048, IceAndFire.CONFIG.myrmexSwarmerTargetSearchLength));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(IceAndFire.CONFIG.myrmexSwarmerArmor);
     }
 
 

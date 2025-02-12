@@ -34,7 +34,7 @@ public class ItemTideTrident extends Item {
         this.setTranslationKey("iceandfire.tide_trident");
         this.setRegistryName(IceAndFire.MODID, "tide_trident");
         this.maxStackSize = 1;
-        this.setMaxDamage(400);
+        this.setMaxDamage(IceAndFire.CONFIG.tideTridentDurability);
     }
 
     public static float getArrowVelocity(int i) {

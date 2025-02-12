@@ -31,7 +31,7 @@ public class ItemStymphalianFeatherBundle extends Item {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
         ItemStack itemStackIn = player.getHeldItem(hand);
         player.setActiveHand(hand);
-        player.getCooldownTracker().setCooldown(this, 15);
+        player.getCooldownTracker().setCooldown(this, IceAndFire.CONFIG.stymphalianBirdFeatherBundleCooldown);
         player.playSound(SoundEvents.ENTITY_EGG_THROW, 1, 1);
         float rotation = player.rotationYawHead;
         for (int i = 0; i < 8; i++) {

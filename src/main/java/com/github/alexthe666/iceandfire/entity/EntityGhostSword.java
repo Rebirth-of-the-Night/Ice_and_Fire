@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -113,13 +114,13 @@ public class EntityGhostSword extends EntityArrow {
             if (e instanceof EntityLivingBase) {
                 EntityLivingBase elb = (EntityLivingBase) e;
 
-                elb.attackEntityFrom(DamageSource.causeArrowDamage(this, shooter), 5);
+                elb.attackEntityFrom(DamageSource.causeArrowDamage(this, shooter), (float) IceAndFire.CONFIG.phantasmalBladeProjectileBaseDamage);
 
                 this.setDead();
             }
             if (e instanceof EntityMutlipartPart) {
                 EntityMutlipartPart elb = (EntityMutlipartPart) e;
-                elb.getParent().attackEntityFrom(DamageSource.causeArrowDamage(this, shooter), 5);
+                elb.getParent().attackEntityFrom(DamageSource.causeArrowDamage(this, shooter), (float) IceAndFire.CONFIG.phantasmalBladeProjectileBaseDamage);
 
                 this.setDead();
             }

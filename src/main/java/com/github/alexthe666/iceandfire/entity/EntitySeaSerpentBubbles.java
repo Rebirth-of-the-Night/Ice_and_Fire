@@ -114,7 +114,7 @@ public class EntitySeaSerpentBubbles extends EntityFireball implements IDragonPr
     protected void onImpact(RayTraceResult result) {
         if (result == null) return;
         if (result.entityHit != null && !result.entityHit.isEntityEqual(this.shootingEntity)) {
-            result.entityHit.attackEntityFrom(DamageSource.causeMobDamage(this.shootingEntity), 1F);
+            result.entityHit.attackEntityFrom(DamageSource.causeMobDamage(this.shootingEntity), IceAndFire.CONFIG.seaSerpentBubbleAttackStrength);
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1F, this.rand.nextFloat());
             this.setDead();
         }

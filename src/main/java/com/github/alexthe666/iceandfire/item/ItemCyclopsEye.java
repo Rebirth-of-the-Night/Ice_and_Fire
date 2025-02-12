@@ -28,7 +28,7 @@ public class ItemCyclopsEye extends Item {
         this.setTranslationKey("iceandfire.cyclops_eye");
         this.setRegistryName(IceAndFire.MODID, "cyclops_eye");
         this.maxStackSize = 1;
-        this.setMaxDamage(500);
+        this.setMaxDamage(IceAndFire.CONFIG.cyclopsEyeDurability);
     }
 
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {

@@ -427,8 +427,9 @@ public class EntitySiren extends EntityMob implements IAnimatedEntity, IVillager
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue((float) IceAndFire.CONFIG.sirenAttackStrength);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(IceAndFire.CONFIG.sirenMaxHealth);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(IceAndFire.CONFIG.sirenArmor);
     }
 
     @Override

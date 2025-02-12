@@ -67,11 +67,11 @@ public class EntityDreadLich extends EntityDreadMob implements IAnimatedEntity, 
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(50.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(IceAndFire.CONFIG.dreadLichMaxHealth);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(Math.min(2048, IceAndFire.CONFIG.dreadLichTargetSearchLength));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(IceAndFire.CONFIG.dreadLichArmor);
     }
 
     @Override
@@ -245,7 +245,7 @@ public class EntityDreadLich extends EntityDreadMob implements IAnimatedEntity, 
         if (fireCooldown == 0 && !flag) {
             this.swingArm(EnumHand.MAIN_HAND);
             this.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, this.getSoundVolume(), this.getSoundPitch());
-            EntityDreadLichSkull skull = new EntityDreadLichSkull(world, this, 6);
+            EntityDreadLichSkull skull = new EntityDreadLichSkull(world, this, IceAndFire.CONFIG.dreadLichSkullAttackStength);
             double d0 = target.posX - this.posX;
             double d1 = target.getEntityBoundingBox().minY + (double) (target.height * 2) - skull.posY;
             double d2 = target.posZ - this.posZ;

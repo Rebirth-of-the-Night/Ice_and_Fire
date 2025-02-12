@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
@@ -132,12 +133,9 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100.0);
-        getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(120.0);
-    }
-
-    public int getTotalArmorValue() {
-        return 20;
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(IceAndFire.CONFIG.ballistaMaxHealth);
+        getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(Math.min(2048, IceAndFire.CONFIG.ballistaTargetSearchLength));
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(IceAndFire.CONFIG.ballistaArmor);
     }
 
     @Override

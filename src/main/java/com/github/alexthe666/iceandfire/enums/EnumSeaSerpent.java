@@ -45,7 +45,7 @@ public enum EnumSeaSerpent {
 
     public static void initArmors() {
         for (EnumSeaSerpent color : EnumSeaSerpent.values()) {
-            color.armorMaterial = EnumHelper.addArmorMaterial("SeaSerpentScales" + color.resourceName, "iceandfire:sea_serpent_scales_" + color.resourceName, 30, new int[]{4, 8, 7, 4}, 25, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, 2.5F);
+            color.armorMaterial = EnumHelper.addArmorMaterial("SeaSerpentScales" + color.resourceName, "iceandfire:sea_serpent_scales_" + color.resourceName, IceAndFire.CONFIG.tideGuardianArmorBaseDurability, new int[]{IceAndFire.CONFIG.tideGuardianArmorBoots, IceAndFire.CONFIG.tideGuardianArmorLeggings, IceAndFire.CONFIG.tideGuardianArmorChestplate, IceAndFire.CONFIG.tideGuardianArmorHelmet}, IceAndFire.CONFIG.tideGuardianArmorEnchantability, SoundEvents.ITEM_ARMOR_EQUIP_GOLD, IceAndFire.CONFIG.tideGuardianArmorToughness);
             color.scale = new ItemSeaSerpentScales(color.resourceName, color.color);
             color.helmet = new ItemSeaSerpentArmor(color, color.armorMaterial, 0, EntityEquipmentSlot.HEAD).setTranslationKey("iceandfire.sea_serpent_helmet");
             color.chestplate = new ItemSeaSerpentArmor(color, color.armorMaterial, 1, EntityEquipmentSlot.CHEST).setTranslationKey("iceandfire.sea_serpent_chestplate");

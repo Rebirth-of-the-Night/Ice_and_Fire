@@ -100,7 +100,8 @@ public class EntityPixie extends EntityTameable {
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10);
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(IceAndFire.CONFIG.pixieMaxHealth);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(IceAndFire.CONFIG.pixieArmor);
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {

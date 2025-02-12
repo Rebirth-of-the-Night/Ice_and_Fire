@@ -40,7 +40,7 @@ public class ItemMyrmexSwarm extends Item {
         playerIn.swingArm(hand);
         if (!playerIn.capabilities.isCreativeMode) {
             itemStackIn.shrink(1);
-            playerIn.getCooldownTracker().setCooldown(this, 20);
+            playerIn.getCooldownTracker().setCooldown(this, IceAndFire.CONFIG.myrmexSwarmCooldownCreative);
         }
         for (int i = 0; i < 5; i++) {
             EntityMyrmexSwarmer myrmex = new EntityMyrmexSwarmer(worldIn);
@@ -52,7 +52,7 @@ public class ItemMyrmexSwarm extends Item {
                 worldIn.spawnEntity(myrmex);
             }
         }
-        playerIn.getCooldownTracker().setCooldown(this, 1800);
+        playerIn.getCooldownTracker().setCooldown(this, IceAndFire.CONFIG.myrmexSwarmCooldown);
         return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
     }
 

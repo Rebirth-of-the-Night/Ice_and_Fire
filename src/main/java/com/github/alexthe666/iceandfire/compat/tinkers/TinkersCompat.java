@@ -70,14 +70,14 @@ public class TinkersCompat {
         MATERIAL_DRAGONBONE.setCraftable(true);
         MATERIAL_DRAGONBONE.setCastable(false);
         TinkerRegistry.addMaterialStats(MATERIAL_DRAGONBONE,
-                new HeadMaterialStats(300, 3.00f, 6.00f, HarvestLevels.OBSIDIAN),
-                new HandleMaterialStats(1.3F, 130),
-                new ExtraMaterialStats(200));
-        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONBONE, new BowMaterialStats(0.6f, 1.2f, 4F));
+                new HeadMaterialStats(IceAndFire.CONFIG.tinkersCompatDragonboneToolHeadDurability, (float) IceAndFire.CONFIG.tinkersCompatDragonboneToolHeadEfficiency, (float) IceAndFire.CONFIG.tinkersCompatDragonboneToolHeadBaseDamage, HarvestLevels.OBSIDIAN),
+                new HandleMaterialStats((float) IceAndFire.CONFIG.tinkersCompatDragonboneToolHandleModifier, IceAndFire.CONFIG.tinkersCompatDragonboneToolHandleDurability),
+                new ExtraMaterialStats(IceAndFire.CONFIG.tinkersCompatDragonboneExtraMaterialDurability));
+        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONBONE, new BowMaterialStats((float) IceAndFire.CONFIG.tinkersCompatDragonboneBowDrawSpeed, (float) IceAndFire.CONFIG.tinkersCompatDragonboneBowRangeMultiplier, (float) IceAndFire.CONFIG.tinkersCompatDragonboneBowBaseDamage));
         MATERIAL_DRAGONBONE.addTrait(SPLINTERING_II, HEAD);
         MATERIAL_DRAGONBONE.addTrait(SPLINTERS_II, SHAFT);
         MATERIAL_DRAGONBONE.addTrait(FRACTURED_II);
-        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONBONE, new ArrowShaftMaterialStats(1.3f, 2));
+        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONBONE, new ArrowShaftMaterialStats((float) IceAndFire.CONFIG.tinkersCompatDragonboneArrowShaftModifier, IceAndFire.CONFIG.tinkersCompatDragonboneArrowShaftBonusAmmo));
         TinkerMaterials.materials.add(MATERIAL_DESERT_MYRMEX);
         TinkerRegistry.integrate(MATERIAL_DESERT_MYRMEX).preInit();
         MATERIAL_DESERT_MYRMEX.addItem(IafItemRegistry.myrmex_desert_chitin, 1, Material.VALUE_Ingot);
@@ -85,10 +85,10 @@ public class TinkersCompat {
         MATERIAL_DESERT_MYRMEX.setCraftable(true);
         MATERIAL_DESERT_MYRMEX.setCastable(false);
         TinkerRegistry.addMaterialStats(MATERIAL_DESERT_MYRMEX,
-                new HeadMaterialStats(400, 4.00f, 5.50f, HarvestLevels.DIAMOND),
-                new HandleMaterialStats(0.7F, 300),
-                new ExtraMaterialStats(150));
-        TinkerRegistry.addMaterialStats(MATERIAL_DESERT_MYRMEX, new BowMaterialStats(0.5f, 0.7F, 2F));
+                new HeadMaterialStats(IceAndFire.CONFIG.tinkersCompatMyrmexChitinToolHeadDurability, (float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinToolHeadEfficiency, (float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinToolHeadBaseDamage, HarvestLevels.DIAMOND),
+                new HandleMaterialStats((float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinToolHandleModifier, IceAndFire.CONFIG.tinkersCompatMyrmexChitinToolHandleDurability),
+                new ExtraMaterialStats(IceAndFire.CONFIG.tinkersCompatMyrmexChitinExtraMaterialDurability));
+        TinkerRegistry.addMaterialStats(MATERIAL_DESERT_MYRMEX, new BowMaterialStats((float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinBowDrawSpeed, (float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinBowRangeMultiplier, (float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinBowBaseDamage));
         MATERIAL_DESERT_MYRMEX.addTrait(HIVE_DEFENDER, HEAD);
         MATERIAL_DESERT_MYRMEX.addTrait(poisonous);
 
@@ -97,10 +97,10 @@ public class TinkersCompat {
         MATERIAL_JUNGLE_MYRMEX.addItem(IafItemRegistry.myrmex_jungle_chitin, 1, Material.VALUE_Ingot);
         MATERIAL_JUNGLE_MYRMEX.setRepresentativeItem(IafItemRegistry.myrmex_jungle_chitin);
         TinkerRegistry.addMaterialStats(MATERIAL_JUNGLE_MYRMEX,
-                new HeadMaterialStats(400, 4.00f, 5.50f, HarvestLevels.DIAMOND),
-                new HandleMaterialStats(0.7F, 300),
-                new ExtraMaterialStats(150));
-        TinkerRegistry.addMaterialStats(MATERIAL_JUNGLE_MYRMEX, new BowMaterialStats(0.5f, 0.7F, 2F));
+                new HeadMaterialStats(IceAndFire.CONFIG.tinkersCompatMyrmexChitinToolHeadDurability, (float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinToolHeadEfficiency, (float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinToolHeadBaseDamage, HarvestLevels.DIAMOND),
+                new HandleMaterialStats((float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinToolHandleModifier, IceAndFire.CONFIG.tinkersCompatMyrmexChitinToolHandleDurability),
+                new ExtraMaterialStats(IceAndFire.CONFIG.tinkersCompatMyrmexChitinExtraMaterialDurability));
+        TinkerRegistry.addMaterialStats(MATERIAL_JUNGLE_MYRMEX, new BowMaterialStats((float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinBowDrawSpeed, (float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinBowRangeMultiplier, (float) IceAndFire.CONFIG.tinkersCompatMyrmexChitinBowBaseDamage));
         MATERIAL_JUNGLE_MYRMEX.addTrait(HIVE_DEFENDER, HEAD);
         MATERIAL_JUNGLE_MYRMEX.addTrait(poisonous);
         setupFluids();
@@ -110,10 +110,10 @@ public class TinkersCompat {
         MATERIAL_DRAGONSTEEL_FIRE.addItem(IafItemRegistry.dragonsteel_fire_ingot, 1, Material.VALUE_Ingot);
         MATERIAL_DRAGONSTEEL_FIRE.setRepresentativeItem(IafItemRegistry.dragonsteel_fire_ingot);
         TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_FIRE,
-                new HeadMaterialStats(1500, 7.00f, (float) IceAndFire.CONFIG.dragonsteelBaseDamage - 8.0F, HarvestLevels.COBALT),
-                new HandleMaterialStats(0.4F, 400),
-                new ExtraMaterialStats(510));
-        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_FIRE, new BowMaterialStats(0.9f, 3.0F, 6F));
+                new HeadMaterialStats(IceAndFire.CONFIG.tinkersCompatDragonsteelToolHeadDurability, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelToolHeadEfficiency, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelToolHeadBaseDamage, HarvestLevels.COBALT),
+                new HandleMaterialStats((float) IceAndFire.CONFIG.tinkersCompatDragonsteelToolHandleModifier, IceAndFire.CONFIG.tinkersCompatDragonsteelToolHandleDurability),
+                new ExtraMaterialStats(IceAndFire.CONFIG.tinkersCompatDragonsteelExtraMaterialDurability));
+        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_FIRE, new BowMaterialStats((float) IceAndFire.CONFIG.tinkersCompatDragonsteelBowDrawSpeed, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelBowRangeMultiplier, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelBowBaseDamage));
         MATERIAL_DRAGONSTEEL_FIRE.addTrait(BURN_II, HEAD);
         MATERIAL_DRAGONSTEEL_FIRE.addTrait(sharp);
 
@@ -124,10 +124,10 @@ public class TinkersCompat {
         MATERIAL_DRAGONSTEEL_ICE.setCraftable(false);
         MATERIAL_DRAGONSTEEL_ICE.setCastable(true);
         TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_ICE,
-                new HeadMaterialStats(1500, 7.00f, (float) IceAndFire.CONFIG.dragonsteelBaseDamage - 8.0F, HarvestLevels.COBALT),
-                new HandleMaterialStats(0.4F, 400),
-                new ExtraMaterialStats(510));
-        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_ICE, new BowMaterialStats(0.9f, 3.0F, 6F));
+                new HeadMaterialStats(IceAndFire.CONFIG.tinkersCompatDragonsteelToolHeadDurability, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelToolHeadEfficiency, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelToolHeadBaseDamage, HarvestLevels.COBALT),
+                new HandleMaterialStats((float) IceAndFire.CONFIG.tinkersCompatDragonsteelToolHandleModifier, IceAndFire.CONFIG.tinkersCompatDragonsteelToolHandleDurability),
+                new ExtraMaterialStats(IceAndFire.CONFIG.tinkersCompatDragonsteelExtraMaterialDurability));
+        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_ICE, new BowMaterialStats((float) IceAndFire.CONFIG.tinkersCompatDragonsteelBowDrawSpeed, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelBowRangeMultiplier, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelBowBaseDamage));
         MATERIAL_DRAGONSTEEL_ICE.addTrait(FREEZE_II, HEAD);
         MATERIAL_DRAGONSTEEL_ICE.addTrait(sharp);
         
@@ -138,10 +138,10 @@ public class TinkersCompat {
         MATERIAL_DRAGONSTEEL_LIGHTNING.setCraftable(false);
         MATERIAL_DRAGONSTEEL_LIGHTNING.setCastable(true);
         TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_LIGHTNING,
-                new HeadMaterialStats(1500, 7.00f, (float) IceAndFire.CONFIG.dragonsteelBaseDamage - 8.0F, HarvestLevels.COBALT),
-                new HandleMaterialStats(0.4F, 400),
-                new ExtraMaterialStats(510));
-        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_LIGHTNING, new BowMaterialStats(0.9f, 3.0F, 6F));
+                new HeadMaterialStats(IceAndFire.CONFIG.tinkersCompatDragonsteelToolHeadDurability, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelToolHeadEfficiency, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelToolHeadBaseDamage, HarvestLevels.COBALT),
+                new HandleMaterialStats((float) IceAndFire.CONFIG.tinkersCompatDragonsteelToolHandleModifier, IceAndFire.CONFIG.tinkersCompatDragonsteelToolHandleDurability),
+                new ExtraMaterialStats(IceAndFire.CONFIG.tinkersCompatDragonsteelExtraMaterialDurability));
+        TinkerRegistry.addMaterialStats(MATERIAL_DRAGONSTEEL_LIGHTNING, new BowMaterialStats((float) IceAndFire.CONFIG.tinkersCompatDragonsteelBowDrawSpeed, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelBowRangeMultiplier, (float) IceAndFire.CONFIG.tinkersCompatDragonsteelBowBaseDamage));
         MATERIAL_DRAGONSTEEL_LIGHTNING.addTrait(LIGHTNING_II, HEAD);
         MATERIAL_DRAGONSTEEL_LIGHTNING.addTrait(sharp);
         
@@ -157,14 +157,14 @@ public class TinkersCompat {
         MATERIAL_STYMPH_FEATHER.addItem(IafItemRegistry.stymphalian_bird_feather, 1, Material.VALUE_Ingot);
         MATERIAL_STYMPH_FEATHER.setRepresentativeItem(IafItemRegistry.stymphalian_bird_feather);
         MATERIAL_STYMPH_FEATHER.addTrait(ANTIGRAVITY);
-        TinkerRegistry.addMaterialStats(MATERIAL_STYMPH_FEATHER, new FletchingMaterialStats(1.0f, 1.1f));
+        TinkerRegistry.addMaterialStats(MATERIAL_STYMPH_FEATHER, new FletchingMaterialStats((float) IceAndFire.CONFIG.tinkersCompatStymphalianBirdFeatherFletchingAccuracy, (float) IceAndFire.CONFIG.tinkersCompatStymphalianBirdFeatherFletchingModifier));
 
         TinkerMaterials.materials.add(MATERIAL_AMPHITHERE_FEATHER);
         TinkerRegistry.integrate(MATERIAL_AMPHITHERE_FEATHER).preInit();
         MATERIAL_AMPHITHERE_FEATHER.addItem(IafItemRegistry.amphithere_feather, 1, Material.VALUE_Ingot);
         MATERIAL_AMPHITHERE_FEATHER.setRepresentativeItem(IafItemRegistry.amphithere_feather);
         MATERIAL_AMPHITHERE_FEATHER.addTrait(ARROW_KNOCKBACK);
-        TinkerRegistry.addMaterialStats(MATERIAL_AMPHITHERE_FEATHER, new FletchingMaterialStats(0.9f, 0.7f));
+        TinkerRegistry.addMaterialStats(MATERIAL_AMPHITHERE_FEATHER, new FletchingMaterialStats((float) IceAndFire.CONFIG.tinkersCompatAmphithereFeatherFletchingAccuracy, (float) IceAndFire.CONFIG.tinkersCompatAmphithereFeatherFletchingModifier));
 
         if(IceAndFire.CONFIG.weezerTinkers) {
             TinkerMaterials.materials.add(MATERIAL_WEEZER);
@@ -174,10 +174,10 @@ public class TinkersCompat {
             MATERIAL_WEEZER.addItem(IafItemRegistry.weezer_blue_album, 1, Material.VALUE_Ingot);
             MATERIAL_WEEZER.setRepresentativeItem(IafItemRegistry.weezer_blue_album);
             TinkerRegistry.addMaterialStats(MATERIAL_WEEZER,
-                    new HeadMaterialStats(1500, 5.00f, 10.00f, HarvestLevels.COBALT),
-                    new HandleMaterialStats(1.5F, 100),
-                    new ExtraMaterialStats(500));
-            TinkerRegistry.addMaterialStats(MATERIAL_WEEZER, new BowMaterialStats(1.5f, 1.2f, 8F));
+                new HeadMaterialStats(IceAndFire.CONFIG.tinkersCompatWeezerToolHeadDurability, (float) IceAndFire.CONFIG.tinkersCompatWeezerToolHeadEfficiency, (float) IceAndFire.CONFIG.tinkersCompatWeezerToolHeadBaseDamage, HarvestLevels.COBALT),
+                new HandleMaterialStats((float) IceAndFire.CONFIG.tinkersCompatWeezerToolHandleModifier, IceAndFire.CONFIG.tinkersCompatWeezerToolHandleDurability),
+                new ExtraMaterialStats(IceAndFire.CONFIG.tinkersCompatWeezerExtraMaterialDurability));
+            TinkerRegistry.addMaterialStats(MATERIAL_WEEZER, new BowMaterialStats((float) IceAndFire.CONFIG.tinkersCompatWeezerBowDrawSpeed, (float) IceAndFire.CONFIG.tinkersCompatWeezerBowRangeMultiplier, (float) IceAndFire.CONFIG.tinkersCompatWeezerBowBaseDamage));
             MATERIAL_WEEZER.addTrait(IN_THE_GARAGE);
             MATERIAL_WEEZER.addTrait(SWEATER_SONG);
             MATERIAL_WEEZER.addTrait(SURF_WAX_AMERICA);
@@ -186,11 +186,11 @@ public class TinkersCompat {
 
     public static void setupFluids() {
         MOLTEN_FIRE_DRAGONSTEEL = fluidMetal("dragonsteel_fire", 0X594C58);
-        MOLTEN_FIRE_DRAGONSTEEL.setTemperature(769);
+        MOLTEN_FIRE_DRAGONSTEEL.setTemperature(IceAndFire.CONFIG.tinkersCompatDragonsteelSmelteryTemperature);
         MOLTEN_ICE_DRAGONSTEEL = fluidMetal("dragonsteel_ice", 0x8299A7);
-        MOLTEN_ICE_DRAGONSTEEL.setTemperature(769);
+        MOLTEN_ICE_DRAGONSTEEL.setTemperature(IceAndFire.CONFIG.tinkersCompatDragonsteelSmelteryTemperature);
         MOLTEN_LIGHTNING_DRAGONSTEEL = fluidMetal("dragonsteel_lightning", 0X725691);
-        MOLTEN_LIGHTNING_DRAGONSTEEL.setTemperature(769);
+        MOLTEN_LIGHTNING_DRAGONSTEEL.setTemperature(IceAndFire.CONFIG.tinkersCompatDragonsteelSmelteryTemperature);
         MATERIAL_DRAGONSTEEL_FIRE.setFluid(MOLTEN_FIRE_DRAGONSTEEL);
         MATERIAL_DRAGONSTEEL_ICE.setFluid(MOLTEN_ICE_DRAGONSTEEL);
         MATERIAL_DRAGONSTEEL_LIGHTNING.setFluid(MOLTEN_LIGHTNING_DRAGONSTEEL);

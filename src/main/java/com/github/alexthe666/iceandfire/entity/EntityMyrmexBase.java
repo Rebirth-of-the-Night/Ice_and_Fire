@@ -215,12 +215,6 @@ public abstract class EntityMyrmexBase extends EntityAnimal implements IAnimated
         net.minecraftforge.common.ForgeHooks.onLivingJump(this);
     }
 
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
-    }
-
     public float getBlockPathWeight(BlockPos pos) {
         return this.world.getBlockState(pos.down()).getBlock() instanceof BlockMyrmexResin ? 10.0F : this.world.getLightBrightness(pos) - 0.5F;
     }

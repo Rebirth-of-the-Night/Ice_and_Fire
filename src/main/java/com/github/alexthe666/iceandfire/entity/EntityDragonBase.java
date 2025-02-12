@@ -200,7 +200,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         this.minimumSpeed = minimumSpeed;
         this.maximumSpeed = maximumSpeed;
         this.minimumArmor = 1D;
-        this.maximumArmor = 20D;
+        this.maximumArmor = IceAndFire.CONFIG.dragonArmor;
         ANIMATION_EAT = Animation.create(20);
         updateAttributes();
         if (FMLCommonHandler.instance().getSide().isClient()) {

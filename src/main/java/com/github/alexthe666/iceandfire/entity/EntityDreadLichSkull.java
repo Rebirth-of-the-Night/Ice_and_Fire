@@ -28,18 +28,18 @@ public class EntityDreadLichSkull extends EntityArrow {
 
     public EntityDreadLichSkull(World worldIn) {
         super(worldIn);
-        this.setDamage(6F);
+        this.setDamage(IceAndFire.CONFIG.dreadLichSkullAttackStength);
     }
 
     public EntityDreadLichSkull(World worldIn, double x, double y, double z) {
         this(worldIn);
         this.setPosition(x, y, z);
-        this.setDamage(6F);
+        this.setDamage(IceAndFire.CONFIG.dreadLichSkullAttackStength);
     }
 
     public EntityDreadLichSkull(World worldIn, EntityLivingBase shooter, double x, double y, double z) {
         super(worldIn, shooter);
-        this.setDamage(6);
+        this.setDamage(IceAndFire.CONFIG.dreadLichSkullAttackStength);
         targetSorter = new EntityAINearestAttackableTarget.Sorter(shooter);
     }
 

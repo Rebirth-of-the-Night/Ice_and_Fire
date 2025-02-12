@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.item;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntityDreadLichSkull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -14,7 +15,7 @@ public class ItemLichStaff extends ItemGeneric {
     public ItemLichStaff() {
         super("lich_staff", "iceandfire.lich_staff");
         this.maxStackSize = 1;
-        this.setMaxDamage(100);
+        this.setMaxDamage(IceAndFire.CONFIG.lichStaffDurability);
     }
 
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
@@ -33,7 +34,7 @@ public class ItemLichStaff extends ItemGeneric {
         d2 = d2 + playerIn.getRNG().nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
         d3 = d3 + playerIn.getRNG().nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
         d4 = d4 + playerIn.getRNG().nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        EntityDreadLichSkull charge = new EntityDreadLichSkull(worldIn, playerIn, 6);
+        EntityDreadLichSkull charge = new EntityDreadLichSkull(worldIn, playerIn, (float) IceAndFire.CONFIG.lichStaffBaseDamage);
         charge.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 7.0F, 1.0F);
         charge.setPosition(playerIn.posX, playerIn.posY + 1, playerIn.posZ);
         if (!worldIn.isRemote) {
@@ -42,7 +43,7 @@ public class ItemLichStaff extends ItemGeneric {
         charge.shoot(d2, d3, d4, 1, 1);
         playerIn.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1F, 0.75F + 0.5F * playerIn.getRNG().nextFloat());
         itemStackIn.damageItem(1, playerIn);
-        playerIn.getCooldownTracker().setCooldown(this, 4);
+        playerIn.getCooldownTracker().setCooldown(this, IceAndFire.CONFIG.lichStaffCooldown);
         return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
     }
 }

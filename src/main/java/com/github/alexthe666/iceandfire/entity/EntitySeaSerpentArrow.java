@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,18 +17,18 @@ public class EntitySeaSerpentArrow extends EntityArrow {
 
     public EntitySeaSerpentArrow(World worldIn) {
         super(worldIn);
-        this.setDamage(3F);
+        this.setDamage(IceAndFire.CONFIG.seaSerpentArrowBaseDamage);
     }
 
     public EntitySeaSerpentArrow(World worldIn, double x, double y, double z) {
         this(worldIn);
         this.setPosition(x, y, z);
-        this.setDamage(3F);
+        this.setDamage(IceAndFire.CONFIG.seaSerpentArrowBaseDamage);
     }
 
     public EntitySeaSerpentArrow(World worldIn, EntityLivingBase shooter) {
         super(worldIn, shooter);
-        this.setDamage(3F);
+        this.setDamage(IceAndFire.CONFIG.seaSerpentArrowBaseDamage);
     }
 
     public void onUpdate() {

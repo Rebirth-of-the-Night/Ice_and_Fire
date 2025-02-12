@@ -39,7 +39,7 @@ public class ItemCockatriceScepter extends Item {
         this.setTranslationKey("iceandfire.cockatrice_scepter");
         this.setRegistryName(IceAndFire.MODID, "cockatrice_scepter");
         this.maxStackSize = 1;
-        this.setMaxDamage(700);
+        this.setMaxDamage(IceAndFire.CONFIG.cockatriceScepterDurability);
     }
 
     @Override

@@ -408,7 +408,7 @@ public class ServerEvents {
     @SubscribeEvent
     public void onPlayerAttack(AttackEntityEvent event) {
         if (event.getTarget() != null && isAnimaniaSheep(event.getTarget())) {
-            float dist = IceAndFire.CONFIG.cyclopesSheepSearchLength;
+            float dist = IceAndFire.CONFIG.cyclopsSheepSearchLength;
             List<Entity> list = event.getTarget().world.getEntitiesWithinAABBExcludingEntity(event.getEntityPlayer(), event.getEntityPlayer().getEntityBoundingBox().expand(dist, dist, dist));
             list.sort(new EntityAINearestAttackableTarget.Sorter(event.getEntityPlayer()));
             if (!list.isEmpty()) {

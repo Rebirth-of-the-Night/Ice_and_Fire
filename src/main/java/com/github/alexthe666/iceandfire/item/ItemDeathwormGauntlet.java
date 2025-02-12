@@ -33,7 +33,7 @@ public class ItemDeathwormGauntlet extends Item {
         this.setCreativeTab(IceAndFire.TAB_ITEMS);
         this.setTranslationKey("iceandfire.deathworm_gauntlet_" + color);
         this.maxStackSize = 1;
-        this.setMaxDamage(500);
+        this.setMaxDamage(IceAndFire.CONFIG.deathWormGauntletDurability);
         this.setRegistryName(IceAndFire.MODID, "deathworm_gauntlet_" + color);
     }
 
@@ -65,7 +65,7 @@ public class ItemDeathwormGauntlet extends Item {
                         stack.getTagCompound().setInteger("HolderID", player.getEntityId());
                     }
                     if (((EntityPlayer) player).getCooldownTracker().getCooldown(this, 0.0F) == 0) {
-                        ((EntityPlayer) player).getCooldownTracker().setCooldown(this, 10);
+                        ((EntityPlayer) player).getCooldownTracker().setCooldown(this, IceAndFire.CONFIG.deathWormGauntletCooldown);
                         player.playSound(IafSoundRegistry.DEATHWORM_ATTACK, 1F, 1F);
                         properties.deathwormReceded = false;
                         properties.deathwormLaunched = true;
@@ -126,7 +126,7 @@ public class ItemDeathwormGauntlet extends Item {
                             boolean canSee = d1 > 1.0D - 0.5D / d0 && player.canEntityBeSeen(entityliving);
                             if (canSee) {
                                 properties.specialWeaponDmg++;
-                                entityliving.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) entity), 3F);
+                                entityliving.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) entity), (float) IceAndFire.CONFIG.deathWormGauntletBaseDamage);
                                 entityliving.knockBack(entityliving, 0.5F, entityliving.posX - player.posX, entityliving.posZ - player.posZ);
                             }
                         }

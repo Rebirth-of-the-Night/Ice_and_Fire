@@ -37,14 +37,14 @@ public class ItemSirenFlute extends Item {
         this.setTranslationKey("iceandfire.siren_flute");
         this.setRegistryName(IceAndFire.MODID, "siren_flute");
         this.maxStackSize = 1;
-        this.setMaxDamage(200);
+        this.setMaxDamage(IceAndFire.CONFIG.sirenFluteDurability);
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
         ItemStack itemStackIn = player.getHeldItem(hand);
         player.setActiveHand(hand);
-        player.getCooldownTracker().setCooldown(this, 900);
+        player.getCooldownTracker().setCooldown(this, IceAndFire.CONFIG.sirenFluteCooldown);
         double dist = 32;
         Vec3d vec3d = player.getPositionEyes(1.0F);
         Vec3d vec3d1 = player.getLook(1.0F);

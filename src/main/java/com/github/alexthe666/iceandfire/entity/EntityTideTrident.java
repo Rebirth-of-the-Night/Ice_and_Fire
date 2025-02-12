@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -63,7 +64,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
         this.yTile = -1;
         this.zTile = -1;
         this.pickupStatus = PickupStatus.DISALLOWED;
-        this.damage = 6.0D;
+        this.damage = (float) IceAndFire.CONFIG.tideTridentBaseDamage;
         this.setSize(0.85F, 0.5F);
         this.stack = new ItemStack(IafItemRegistry.tide_trident);
     }

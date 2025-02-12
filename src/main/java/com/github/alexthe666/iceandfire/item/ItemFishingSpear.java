@@ -27,7 +27,7 @@ public class ItemFishingSpear extends Item {
         this.setCreativeTab(IceAndFire.TAB_ITEMS);
         this.setTranslationKey("iceandfire.fishing_spear");
         this.maxStackSize = 1;
-        this.setMaxDamage(64);
+        this.setMaxDamage(IceAndFire.CONFIG.fishingSpearDurability);
         this.setRegistryName(IceAndFire.MODID, "fishing_spear");
     }
 

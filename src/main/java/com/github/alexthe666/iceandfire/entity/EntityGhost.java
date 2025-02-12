@@ -94,13 +94,13 @@ public class EntityGhost extends EntityMob implements IAnimatedEntity, IVillager
         //HEALTH
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(IceAndFire.CONFIG.ghostMaxHealth);
         //FOLLOW_RANGE
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64D);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(Math.min(2048, IceAndFire.CONFIG.ghostTargetSearchLength));
         //SPEED
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
         //ATTACK
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(IceAndFire.CONFIG.ghostAttackStrength);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue((float) IceAndFire.CONFIG.ghostAttackStrength);
         //ARMOR
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(1D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(IceAndFire.CONFIG.ghostArmor);
     }
 
     public boolean isPotionApplicable(PotionEffect potioneffectIn) {

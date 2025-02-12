@@ -28,7 +28,7 @@ public class ItemPixieWand extends Item {
         this.setTranslationKey("iceandfire.pixie_wand");
         this.setRegistryName(IceAndFire.MODID, "pixie_wand");
         this.maxStackSize = 1;
-        this.setMaxDamage(500);
+        this.setMaxDamage(IceAndFire.CONFIG.pixieWandDurability);
     }
 
 
@@ -61,7 +61,7 @@ public class ItemPixieWand extends Item {
             }
             playerIn.playSound(IafSoundRegistry.PIXIE_WAND, 1F, 0.75F + 0.5F * playerIn.getRNG().nextFloat());
             itemStackIn.damageItem(1, playerIn);
-            playerIn.getCooldownTracker().setCooldown(this, 5);
+            playerIn.getCooldownTracker().setCooldown(this, IceAndFire.CONFIG.pixieWandCooldown);
         }
         return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
     }

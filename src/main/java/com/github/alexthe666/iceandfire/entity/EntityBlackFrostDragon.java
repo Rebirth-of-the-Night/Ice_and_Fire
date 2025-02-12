@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.ai.*;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.google.common.base.Optional;
@@ -31,7 +32,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
 
     public EntityBlackFrostDragon(World worldIn) {
         super(worldIn);
-        this.maximumArmor = 70D;
+        this.maximumArmor = IceAndFire.CONFIG.blackFrostDragonArmor;
     }
 
     @Override

@@ -59,7 +59,7 @@ public class ItemGhostSword extends ItemSword {
         shot.shoot(vector3f.x, vector3f.y, vector3f.z, 1.0F, 0.5F);
         playerEntity.world.spawnEntity(shot);
         stack.damageItem(1, playerEntity);
-        playerEntity.getCooldownTracker().setCooldown(stack.getItem(), 10);
+        playerEntity.getCooldownTracker().setCooldown(stack.getItem(), IceAndFire.CONFIG.phantasmalBladeProjectileCooldown);
     }
 
     @Override

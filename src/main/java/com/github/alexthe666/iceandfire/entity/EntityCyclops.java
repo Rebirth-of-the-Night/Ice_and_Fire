@@ -139,11 +139,11 @@ public class EntityCyclops extends EntityMob implements IAnimatedEntity, IBlackl
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32D);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(IceAndFire.CONFIG.cyclopsAttackStrength);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(Math.min(2048, IceAndFire.CONFIG.cyclopsTargetSearchLength));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue((float) IceAndFire.CONFIG.cyclopsAttackStrength);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(IceAndFire.CONFIG.cyclopsMaxHealth);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1D);
-        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(20.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(IceAndFire.CONFIG.cyclopsArmor);
 
     }
 
@@ -357,7 +357,7 @@ public class EntityCyclops extends EntityMob implements IAnimatedEntity, IBlackl
     public void onHitEye(DamageSource source, float damage) {
         if (!this.isBlinded()) {
             this.setBlinded(true);
-            this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(6F);
+            this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(Math.min(2048, IceAndFire.CONFIG.cyclopsBlindTargetSearchLength));
             this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
             this.setAnimation(ANIMATION_ROAR);
             this.attackEntityFrom(source, damage * 3);

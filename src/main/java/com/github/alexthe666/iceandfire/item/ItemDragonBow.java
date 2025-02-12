@@ -22,7 +22,7 @@ public class ItemDragonBow extends ItemBow implements ICustomRendered {
 
     public ItemDragonBow() {
         this.maxStackSize = 1;
-        this.setMaxDamage(584);
+        this.setMaxDamage(IceAndFire.CONFIG.dragonboneBowDurability);
         this.setCreativeTab(IceAndFire.TAB_ITEMS);
         this.setTranslationKey("iceandfire.dragonbone_bow");
         this.setRegistryName(IceAndFire.MODID, "dragonbone_bow");

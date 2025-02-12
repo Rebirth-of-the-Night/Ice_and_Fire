@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,18 +17,18 @@ public class EntityStymphalianArrow extends EntityArrow {
 
     public EntityStymphalianArrow(World worldIn) {
         super(worldIn);
-        this.setDamage(3.5F);
+        this.setDamage(IceAndFire.CONFIG.stymphalianArrowBaseDamage);
     }
 
     public EntityStymphalianArrow(World worldIn, double x, double y, double z) {
         this(worldIn);
         this.setPosition(x, y, z);
-        this.setDamage(3.5F);
+        this.setDamage(IceAndFire.CONFIG.stymphalianArrowBaseDamage);
     }
 
     public EntityStymphalianArrow(World worldIn, EntityLivingBase shooter) {
         super(worldIn, shooter);
-        this.setDamage(3.5F);
+        this.setDamage(IceAndFire.CONFIG.stymphalianArrowBaseDamage);
     }
 
     public void onUpdate() {

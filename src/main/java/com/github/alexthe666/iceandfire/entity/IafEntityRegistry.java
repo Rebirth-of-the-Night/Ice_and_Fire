@@ -50,11 +50,11 @@ public class IafEntityRegistry {
                 }
             }
         }
-        if (IceAndFire.CONFIG.spawnLiches) {
+        if (IceAndFire.CONFIG.spawnDreadLiches) {
             for (Biome biome : Biome.REGISTRY) {
                 if (biome != null && BiomeDictionary.hasType(biome, BiomeDictionary.Type.SNOWY)) {
                     List<Biome.SpawnListEntry> spawnList = biome.getSpawnableList(EnumCreatureType.MONSTER);
-                    spawnList.add(new Biome.SpawnListEntry(EntityDreadLich.class, IceAndFire.CONFIG.lichSpawnRate, 1, 1));
+                    spawnList.add(new Biome.SpawnListEntry(EntityDreadLich.class, IceAndFire.CONFIG.dreadLichSpawnRate, 1, 1));
                 }
             }
         }

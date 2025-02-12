@@ -92,7 +92,7 @@ public class EntityPixieCharge extends EntityFireball {
             if (movingObject.entityHit instanceof EntityLivingBase) {
                 ((EntityLivingBase) movingObject.entityHit).addPotionEffect(new PotionEffect(MobEffects.LEVITATION, 100, 0));
                 ((EntityLivingBase) movingObject.entityHit).addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 0));
-                movingObject.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(shootingEntity, null), 5.0F);
+                movingObject.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(shootingEntity, null), (float) IceAndFire.CONFIG.pixieWandBaseDamage);
             }
             if (this.world.isRemote) {
                 for (int i = 0; i < 20; ++i) {

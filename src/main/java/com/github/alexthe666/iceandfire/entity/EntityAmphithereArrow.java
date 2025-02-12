@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,18 +20,18 @@ public class EntityAmphithereArrow extends EntityArrow {
 
     public EntityAmphithereArrow(World worldIn) {
         super(worldIn);
-        this.setDamage(2.5F);
+        this.setDamage(IceAndFire.CONFIG.hydraArrowBaseDamage);
     }
 
     public EntityAmphithereArrow(World worldIn, double x, double y, double z) {
         this(worldIn);
         this.setPosition(x, y, z);
-        this.setDamage(2.5F);
+        this.setDamage(IceAndFire.CONFIG.hydraArrowBaseDamage);
     }
 
     public EntityAmphithereArrow(World worldIn, EntityLivingBase shooter) {
         super(worldIn, shooter);
-        this.setDamage(2.5F);
+        this.setDamage(IceAndFire.CONFIG.hydraArrowBaseDamage);
     }
 
     public void onUpdate() {

@@ -18,18 +18,18 @@ public class EntityHydraArrow  extends EntityArrow {
 
     public EntityHydraArrow(World worldIn) {
         super(worldIn);
-        this.setDamage(5F);
+        this.setDamage(IceAndFire.CONFIG.hydraArrowBaseDamage);
     }
 
     public EntityHydraArrow(World worldIn, double x, double y, double z) {
         this(worldIn);
         this.setPosition(x, y, z);
-        this.setDamage(5F);
+        this.setDamage(IceAndFire.CONFIG.hydraArrowBaseDamage);
     }
 
     public EntityHydraArrow(World worldIn, EntityLivingBase shooter) {
         super(worldIn, shooter);
-        this.setDamage(5F);
+        this.setDamage(IceAndFire.CONFIG.hydraArrowBaseDamage);
     }
 
     public void onUpdate() {
