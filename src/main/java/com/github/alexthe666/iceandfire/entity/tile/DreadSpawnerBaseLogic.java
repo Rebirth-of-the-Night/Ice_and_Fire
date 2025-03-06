@@ -29,7 +29,7 @@ public abstract class DreadSpawnerBaseLogic extends MobSpawnerBaseLogic {
     private int maxSpawnDelay = 800;
     private int spawnCount = 4;
     private Entity cachedEntity;
-    private int maxNearbyEntities = 6;
+    private int maxNearbyEntities = IceAndFire.CONFIG.maxDreadSpawnerEntities;
     private int activatingRangeFromPlayer = 16;
     private int spawnRange = 4;
 

@@ -50,6 +50,7 @@ public class IafItemRegistry {
     public static ToolMaterial hippocampus_sword_tools = EnumHelper.addToolMaterial("HippocampusSword", 0, 500, 0.0F, -2F, 50);
     public static ToolMaterial dread_sword_tools = EnumHelper.addToolMaterial("DreadSword", 0, 100, 0.0F, 1F, 0);
     public static ToolMaterial dread_knight_sword_tools = EnumHelper.addToolMaterial("DreadKnightSword", 0, 1200, 0.0F, 13F, 10);
+    public static ToolMaterial dread_royal_knight_sword_tools = EnumHelper.addToolMaterial("DreadRoyalKnightSword", 0, IceAndFire.CONFIG.dragonsteelBaseDurability, 0.0F, 15F, 10);
     public static ToolMaterial dread_queen_sword_tools = EnumHelper.addToolMaterial("DreadQueenSword", 0, IceAndFire.CONFIG.dragonsteelBaseDurability, 10.0F, (float) IceAndFire.CONFIG.dragonsteelBaseDamage, 10);
     public static ToolMaterial ghost_sword_tool_material = EnumHelper.addToolMaterial("GhostSword", 2, 3000, 5, 7.0F, 25);
 
@@ -237,7 +238,7 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":hippocampus_slapper")
     public static Item hippocampus_slapper = new ItemHippocampusSlapper();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":earplugs")
-    public static Item earplugs = new ItemModArmor(earplugsArmor, 0, EntityEquipmentSlot.HEAD, "earplugs", "iceandfire.earplugs");
+    public static Item earplugs = new ItemEarplugs();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":deathworm_chitin")
     public static Item deathworm_chitin = new ItemDeathWormChitin();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":deathworm_yellow_helmet")
@@ -418,6 +419,9 @@ public class IafItemRegistry {
     public static Item dread_sword = new ItemModSword(dread_sword_tools, "dread_sword", "iceandfire.dread_sword");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_knight_sword")
     public static Item dread_knight_sword = new ItemModSword(dread_knight_sword_tools, "dread_knight_sword", "iceandfire.dread_knight_sword");
+
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_royal_knight_sword")
+    public static Item dread_royal_knight_sword = new ItemModSword(dread_royal_knight_sword_tools, "dread_royal_knight_sword", "iceandfire.dread_royal_knight_sword", 4);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":lich_staff")
     public static Item lich_staff = new ItemLichStaff();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_queen_sword")
@@ -517,7 +521,6 @@ public class IafItemRegistry {
     public static Item dragonegg_copper = new ItemDragonEgg("dragonegg_copper", EnumDragonEgg.COPPER);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragonegg_black")
     public static Item dragonegg_black = new ItemDragonEgg("dragonegg_black", EnumDragonEgg.BLACK);
-
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":amethyst_gem")
     public static Item amethystGem = new ItemGeneric("amethyst_gem", "iceandfire.amethyst_gem");
 

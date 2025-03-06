@@ -20,6 +20,7 @@ import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerDragonAr
 import com.github.alexthe666.iceandfire.client.render.tile.*;
 import com.github.alexthe666.iceandfire.command.CommandTreeBaseButOurs;
 import com.github.alexthe666.iceandfire.compat.TinkersCompatBridge;
+import com.github.alexthe666.iceandfire.compat.bauble.client.BaublesCompatBridge;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.entity.tile.*;
 import com.github.alexthe666.iceandfire.enums.*;
@@ -338,7 +339,7 @@ public class ClientProxy extends CommonProxy {
         ForgeHooksClient.registerTESRItemStack(IafItemRegistry.gorgon_head, 1, TileEntityDummyGorgonHeadActive.class);
         renderEntities();
 
-
+        BaublesCompatBridge.loadBaublesClientModels();
     }
 
     @SideOnly(Side.CLIENT)

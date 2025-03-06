@@ -175,6 +175,7 @@ public class IceAndFireConfig {
     public float weezerTinkersDisarmChance = 0.2F;
     public boolean chunkLoadSummonCrystal = true;
     public int ballistaBaseDamage = 10;
+    public int maxDreadSpawnerEntities = 2;
     public double ghostMaxHealth = 30;
     public double ghostAttackStrength = 3F;
     public boolean generateGraveyards = true;
@@ -370,6 +371,8 @@ public class IceAndFireConfig {
 
         this.chunkLoadSummonCrystal = config.getBoolean("Chunk Load Summon Crystal", "all", true, "True if the summon crystal can load chunks to find dragons.");
 
+        //Castle
+        this.maxDreadSpawnerEntities = config.getInt("Dread Spawner Entity Counts)", "all", 2, 1, 100, "Maximum counts of Entities can once spawned by a Dread Spawner");
         //Ghost
         this.ghostMaxHealth = config.getFloat("Ghost Max Health", "all", 30F, 1.0F, 10000.0F, "Maximum ghost health.");
         this.ghostAttackStrength = config.getFloat("Ghost Attack Strength", "all", 3F, 0.0F, 10000.0F, "Maximum ghost attack strength.");

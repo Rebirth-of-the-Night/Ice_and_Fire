@@ -16,7 +16,6 @@ import net.minecraft.world.gen.structure.template.TemplateManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.*;
 
 public class WorldGenCastle extends WorldGenerator {
     private static final BlockPos CASTLE_POSITION = new BlockPos(-126, 90, -330);
@@ -24,26 +23,6 @@ public class WorldGenCastle extends WorldGenerator {
     private static final int CASTLE_HEIGHT = 130;
     private static final int CASTLE_DEPTH = 280;
     private static final int PART_SIZE = 32;
-    private static final int BATCH_SIZE = 8;
-
-    private static final ExecutorService GENERATION_EXECUTOR =
-            new ThreadPoolExecutor(
-                    4,
-                    8,
-                    60L,
-                    TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<>(1000),
-                    new ThreadFactory() {
-                        private int count = 1;
-                        @Override
-                        public Thread newThread(Runnable r) {
-                            Thread thread = new Thread(r);
-                            thread.setName("Castle-Gen-Thread-" + count++);
-                            thread.setPriority(Thread.NORM_PRIORITY);
-                            return thread;
-                        }
-                    }
-            );
 
     private static final DreadCastleProcessor CASTLE_PROCESSOR = new DreadCastleProcessor();
     private static final PlacementSettings PLACEMENT_SETTINGS = new PlacementSettings();
@@ -63,24 +42,33 @@ public class WorldGenCastle extends WorldGenerator {
         BlockPos origin = getGroundFast(worldIn, CASTLE_POSITION.getX(), CASTLE_POSITION.getZ());
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
 
-        CompletableFuture.runAsync(() -> {
-            preloadChunks(worldIn, origin);
-            generateFoundation(worldIn, origin);
-        }, GENERATION_EXECUTOR).join();
+        // Preload all templates
+        List<TemplatePlacement> allPlacements = createPlacements(origin);
+        List<Template> templates = new ArrayList<>();
+        for (TemplatePlacement placement : allPlacements) {
+            Template template = templateManager.getTemplate(null, placement.resourceLocation);
+            if (template != null) {
+                templates.add(template);
+            }
+        }
 
-        List<List<TemplatePlacement>> batches = createBatches(origin);
+        // Preload chunks
+        preloadChunks(worldIn, origin);
 
-        CompletableFuture<?>[] futures = batches.stream()
-                .map(batch -> CompletableFuture.runAsync(() ->
-                        processBatch(worldIn, templateManager, batch), GENERATION_EXECUTOR))
-                .toArray(CompletableFuture[]::new);
+        // Generate foundation
+        generateFoundation(worldIn, origin);
 
-        CompletableFuture.allOf(futures).join();
+        // Generate castle parts
+        for (int i = 0; i < allPlacements.size(); i++) {
+            TemplatePlacement placement = allPlacements.get(i);
+            Template template = templates.get(i);
+            template.addBlocksToWorld(worldIn, placement.pos, CASTLE_PROCESSOR, PLACEMENT_SETTINGS, 2);
+        }
 
         return true;
     }
 
-    private List<List<TemplatePlacement>> createBatches(BlockPos origin) {
+    private List<TemplatePlacement> createPlacements(BlockPos origin) {
         List<TemplatePlacement> allPlacements = new ArrayList<>();
 
         for (int y = 0, j = 0; y < CASTLE_HEIGHT; y = Math.min(CASTLE_HEIGHT, y + PART_SIZE), j++) {
@@ -95,12 +83,7 @@ public class WorldGenCastle extends WorldGenerator {
             }
         }
 
-        List<List<TemplatePlacement>> batches = new ArrayList<>();
-        for (int i = 0; i < allPlacements.size(); i += BATCH_SIZE) {
-            batches.add(allPlacements.subList(i,
-                    Math.min(i + BATCH_SIZE, allPlacements.size())));
-        }
-        return batches;
+        return allPlacements;
     }
 
     private void preloadChunks(World world, BlockPos origin) {
@@ -109,43 +92,33 @@ public class WorldGenCastle extends WorldGenerator {
         int maxChunkX = (origin.getX() + CASTLE_WIDTH) >> 4;
         int maxChunkZ = (origin.getZ() + CASTLE_DEPTH) >> 4;
 
-        List<CompletableFuture<Void>> futures = new ArrayList<>();
         for (int x = minChunkX; x <= maxChunkX; x++) {
             for (int z = minChunkZ; z <= maxChunkZ; z++) {
-                final int fx = x, fz = z;
-                futures.add(CompletableFuture.runAsync(() ->
-                        world.getChunkProvider().provideChunk(fx, fz), GENERATION_EXECUTOR));
+                world.getChunkProvider().provideChunk(x, z);
             }
         }
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
     }
 
     private void generateFoundation(World world, BlockPos origin) {
         IBlockState foundation = IafBlockRegistry.dread_stone.getDefaultState();
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        // Define the height range for the foundation
+        int foundationHeight = 10; // Fill 10 blocks high (adjust as needed)
+        int baseY = origin.getY() - 1; // Start from the ground level
+
+        // Generate foundation in batches
         for (int x = 0; x < CASTLE_WIDTH; x += 16) {
-            final int fx = x;
-            futures.add(CompletableFuture.runAsync(() -> {
-                for (int ix = fx; ix < Math.min(fx + 16, CASTLE_WIDTH); ix++) {
-                    for (int z = 0; z < CASTLE_DEPTH; z++) {
-                        mutablePos.setPos(origin.getX() + ix, origin.getY() - 1, origin.getZ() + z);
-                        world.setBlockState(mutablePos, foundation, 2);
+            for (int z = 0; z < CASTLE_DEPTH; z += 16) {
+                for (int ix = x; ix < Math.min(x + 16, CASTLE_WIDTH); ix++) {
+                    for (int iz = z; iz < Math.min(z + 16, CASTLE_DEPTH); iz++) {
+                        // Fill from baseY to baseY + foundationHeight
+                        for (int y = baseY; y < baseY + foundationHeight; y++) {
+                            mutablePos.setPos(origin.getX() + ix, y, origin.getZ() + iz);
+                            world.setBlockState(mutablePos, foundation, 2); // Flag 2 to suppress block updates
+                        }
                     }
                 }
-            }, GENERATION_EXECUTOR));
-        }
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-    }
-
-    private void processBatch(World world, TemplateManager templateManager,
-                              List<TemplatePlacement> batch) {
-        for (TemplatePlacement placement : batch) {
-            Template template = templateManager.getTemplate(null, placement.resourceLocation);
-            if (template != null) {
-                template.addBlocksToWorld(world, placement.pos,
-                        CASTLE_PROCESSOR, PLACEMENT_SETTINGS, 2);
             }
         }
     }

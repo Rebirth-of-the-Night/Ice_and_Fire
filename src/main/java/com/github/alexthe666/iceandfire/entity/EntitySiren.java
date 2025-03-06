@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.compat.bauble.client.BaublesCompatBridge;
 import com.github.alexthe666.iceandfire.entity.ai.AquaticAIGetInWater;
 import com.github.alexthe666.iceandfire.entity.ai.AquaticAIGetOutOfWater;
 import com.github.alexthe666.iceandfire.entity.ai.SirenAIFindWaterTarget;
@@ -110,7 +111,7 @@ public class EntitySiren extends EntityMob implements IAnimatedEntity, IVillager
 
     public static boolean isWearingEarplugs(EntityLivingBase entity) {
         ItemStack helmet = entity.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
-        return helmet.getItem() == IafItemRegistry.earplugs || helmet != ItemStack.EMPTY && helmet.getItem().getTranslationKey().contains("earmuff");
+        return helmet.getItem() == IafItemRegistry.earplugs || helmet != ItemStack.EMPTY && helmet.getItem().getTranslationKey().contains("earmuff") || BaublesCompatBridge.isWearSpecificBauble(entity, IafItemRegistry.earplugs);
     }
 
     public static boolean isDrawnToSong(Entity entity) {
