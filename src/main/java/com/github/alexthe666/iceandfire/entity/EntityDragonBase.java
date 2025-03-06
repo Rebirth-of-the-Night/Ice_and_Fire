@@ -5,6 +5,7 @@ import com.github.alexthe666.iceandfire.api.FoodUtils;
 import com.github.alexthe666.iceandfire.client.IafKeybindRegistry;
 import com.github.alexthe666.iceandfire.client.model.IFChainBuffer;
 import com.github.alexthe666.iceandfire.client.model.util.LegSolverQuadruped;
+import com.github.alexthe666.iceandfire.compat.bauble.client.BaublesCompatBridge;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforgeInput;
 import com.github.alexthe666.iceandfire.enums.EnumDragonEgg;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
@@ -2389,7 +2390,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                     if (this.isOwner(living) || this.isOwnersPet(living)) {
                         living.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 30 * size));
                     } else {
-                        if (living.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != IafItemRegistry.earplugs) {
+                        if (living.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() != IafItemRegistry.earplugs && !BaublesCompatBridge.isWearSpecificBauble(living, IafItemRegistry.earplugs)) {
                             living.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 30 * size));
                         }
                     }

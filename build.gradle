@@ -48,6 +48,7 @@ repositories {
 
 dependencies {
     compileOnly "curse.maven:llibrary-243298:2504999"
+    deobfCompile "curse.maven:baubles-227083:2518667"
     compileOnly "curse.maven:thaumcraft-223628:2629023"
     compileOnly "curse.maven:hwyla-253449:2545475"
     deobfCompile "curse.maven:jei-238222:2561546"

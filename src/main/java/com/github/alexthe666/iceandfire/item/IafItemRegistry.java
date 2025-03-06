@@ -237,7 +237,7 @@ public class IafItemRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":hippocampus_slapper")
     public static Item hippocampus_slapper = new ItemHippocampusSlapper();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":earplugs")
-    public static Item earplugs = new ItemModArmor(earplugsArmor, 0, EntityEquipmentSlot.HEAD, "earplugs", "iceandfire.earplugs");
+    public static Item earplugs = new ItemEarplugs();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":deathworm_chitin")
     public static Item deathworm_chitin = new ItemDeathWormChitin();
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":deathworm_yellow_helmet")
