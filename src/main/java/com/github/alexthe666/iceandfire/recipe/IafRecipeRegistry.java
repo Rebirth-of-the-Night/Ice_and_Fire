@@ -296,6 +296,7 @@ public class IafRecipeRegistry {
         IafItemRegistry.myrmexJungle.setRepairItem(new ItemStack(IafItemRegistry.myrmex_jungle_chitin));
         IafItemRegistry.dread_sword_tools.setRepairItem(new ItemStack(IafItemRegistry.dread_shard));
         IafItemRegistry.dread_knight_sword_tools.setRepairItem(new ItemStack(IafItemRegistry.dread_shard));
+        IafItemRegistry.dread_royal_knight_sword_tools.setRepairItem(new ItemStack(IafItemRegistry.dread_shard));
         for (EnumSeaSerpent serpent : EnumSeaSerpent.values()) {
             serpent.armorMaterial.setRepairItem(new ItemStack(serpent.scale));
         }

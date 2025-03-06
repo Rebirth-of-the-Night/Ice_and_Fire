@@ -107,7 +107,7 @@ public class EntityDreadKnightRoyal extends EntityDreadKnight {
 
     protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
         super.setEquipmentBasedOnDifficulty(difficulty);
-        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(IafItemRegistry.dragonsteel_ice_sword));
+        this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(IafItemRegistry.dread_royal_knight_sword));
         if(rand.nextBoolean()){
             this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, SHIELD.copy());
         }
