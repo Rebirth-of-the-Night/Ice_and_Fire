@@ -5,7 +5,7 @@ import com.github.alexthe666.iceandfire.api.FoodUtils;
 import com.github.alexthe666.iceandfire.client.IafKeybindRegistry;
 import com.github.alexthe666.iceandfire.client.model.IFChainBuffer;
 import com.github.alexthe666.iceandfire.client.model.util.LegSolverQuadruped;
-import com.github.alexthe666.iceandfire.compat.bauble.client.BaublesCompatBridge;
+import com.github.alexthe666.iceandfire.compat.bauble.common.BaublesCompatBridge;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforgeInput;
 import com.github.alexthe666.iceandfire.enums.EnumDragonEgg;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
