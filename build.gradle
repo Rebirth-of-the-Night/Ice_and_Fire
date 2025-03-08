@@ -48,7 +48,7 @@ repositories {
 
 dependencies {
     compileOnly "curse.maven:llibrary-243298:2504999"
-    deobfCompile "curse.maven:baubles-227083:2518667"
+    compileOnly "curse.maven:baubles-227083:2518667"
     compileOnly "curse.maven:thaumcraft-223628:2629023"
     compileOnly "curse.maven:hwyla-253449:2545475"
     deobfCompile "curse.maven:jei-238222:2561546"
@@ -61,7 +61,10 @@ dependencies {
 }
 
 jar {
-    manifest.attributes('FMLAT': 'iceandfire_at.cfg')
+    manifest.attributes(
+            'FMLCorePlugin': 'com.github.alexthe666.iceandfire.asm.IceAndFirePlugin',
+            'FMLCorePluginContainsFMLMod': 'true',
+            'FMLAT': 'iceandfire_at.cfg')
 }
 
 processResources {
@@ -71,7 +74,7 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
 
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
 
     // copy everything else except the mcmod.info

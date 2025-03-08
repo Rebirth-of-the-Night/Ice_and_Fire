@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.compat.bauble.client.BaublesCompatBridge;
+import com.github.alexthe666.iceandfire.compat.bauble.common.BaublesCompatBridge;
 import com.github.alexthe666.iceandfire.entity.ai.AquaticAIGetInWater;
 import com.github.alexthe666.iceandfire.entity.ai.AquaticAIGetOutOfWater;
 import com.github.alexthe666.iceandfire.entity.ai.SirenAIFindWaterTarget;

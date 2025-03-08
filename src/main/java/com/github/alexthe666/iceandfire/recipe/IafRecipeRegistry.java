@@ -2,10 +2,7 @@ package com.github.alexthe666.iceandfire.recipe;
 
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
-import com.github.alexthe666.iceandfire.enums.EnumDragonArmor;
-import com.github.alexthe666.iceandfire.enums.EnumSeaSerpent;
-import com.github.alexthe666.iceandfire.enums.EnumSkullType;
-import com.github.alexthe666.iceandfire.enums.EnumTroll;
+import com.github.alexthe666.iceandfire.enums.*;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
@@ -14,6 +11,7 @@ import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.BannerPattern;
@@ -38,6 +36,34 @@ public class IafRecipeRegistry {
         FIRE_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(IafItemRegistry.fire_dragon_blood), new ItemStack(IafItemRegistry.dragonsteel_fire_ingot)));
         ICE_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(IafItemRegistry.ice_dragon_blood), new ItemStack(IafItemRegistry.dragonsteel_ice_ingot)));
         LIGHTNING_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(IafItemRegistry.lightning_dragon_blood), new ItemStack(IafItemRegistry.dragonsteel_lightning_ingot)));
+        FIRE_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(IafItemRegistry.dragonbone_sword), new ItemStack(IafItemRegistry.fire_dragon_blood), new ItemStack(IafItemRegistry.dragonbone_sword_fire)));
+        ICE_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(IafItemRegistry.dragonbone_sword), new ItemStack(IafItemRegistry.ice_dragon_blood), new ItemStack(IafItemRegistry.dragonbone_sword_ice)));
+        LIGHTNING_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(IafItemRegistry.dragonbone_sword), new ItemStack(IafItemRegistry.lightning_dragon_blood), new ItemStack(IafItemRegistry.dragonbone_sword_lightning)));
+
+        for (EnumDragonArmor input : EnumDragonArmor.values()) {
+            List<DragonForgeRecipe> recipes;
+            Item blood;
+            switch (input.eggType.dragonType.getName()) {
+                case "ice":
+                    recipes = ICE_FORGE_RECIPES;
+                    blood = IafItemRegistry.ice_dragon_blood;
+                    break;
+                case "lightning":
+                    recipes = LIGHTNING_FORGE_RECIPES;
+                    blood = IafItemRegistry.lightning_dragon_blood;
+                    break;
+                default:
+                    recipes = FIRE_FORGE_RECIPES;
+                    blood = IafItemRegistry.fire_dragon_blood;
+            }
+
+            EnumBloodedDragonArmor result = EnumBloodedDragonArmor.valueOf(input.name());
+
+            recipes.add(new DragonForgeRecipe(new ItemStack(input.helmet), new ItemStack(blood, 32), new ItemStack(result.helmet)));
+            recipes.add(new DragonForgeRecipe(new ItemStack(input.chestplate), new ItemStack(blood, 32), new ItemStack(result.chestplate)));
+            recipes.add(new DragonForgeRecipe(new ItemStack(input.leggings), new ItemStack(blood, 32), new ItemStack(result.leggings)));
+            recipes.add(new DragonForgeRecipe(new ItemStack(input.boots), new ItemStack(blood, 32), new ItemStack(result.boots)));
+        }
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(IafItemRegistry.stymphalian_arrow, new BehaviorProjectileDispense() {
             /**
              * Return the projectile entity spawned by this dispense behavior.
@@ -299,6 +325,9 @@ public class IafRecipeRegistry {
         IafItemRegistry.dread_royal_knight_sword_tools.setRepairItem(new ItemStack(IafItemRegistry.dread_shard));
         for (EnumSeaSerpent serpent : EnumSeaSerpent.values()) {
             serpent.armorMaterial.setRepairItem(new ItemStack(serpent.scale));
+        }
+        for (EnumBloodedDragonArmor armor : EnumBloodedDragonArmor.values()) {
+            armor.armorMaterial.setRepairItem(new ItemStack(EnumBloodedDragonArmor.getScaleItem(armor)));
         }
         ItemStack waterBreathingPotion = new ItemStack(Items.POTIONITEM, 1, 0);
         NBTTagCompound tag = new NBTTagCompound();

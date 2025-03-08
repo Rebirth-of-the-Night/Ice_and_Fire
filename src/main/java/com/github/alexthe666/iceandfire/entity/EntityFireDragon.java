@@ -82,6 +82,7 @@ public class EntityFireDragon extends EntityDragonBase {
         this.targetTasks.addTask(5, new DragonAITargetItems<>(this, false));
     }
 
+    @Override
     public void stimulateFire(double burnX, double burnY, double burnZ, int syncType) {
         if (MinecraftForge.EVENT_BUS.post(new DragonFireEvent(this, burnX, burnY, burnZ))) return;
         if (syncType == 1 && !world.isRemote) {
@@ -133,25 +134,28 @@ public class EntityFireDragon extends EntityDragonBase {
         double d3 = burnY - headPos.y;
         double d4 = burnZ - headPos.z;
         double distance = Math.max(5 * this.getDistance(burnX, burnY, burnZ), 0);
-        int increment = (int) Math.ceil(distance / 100);
+        double conqueredDistance = burnProgress / 40D * distance;
+        int increment = (int) Math.ceil(conqueredDistance / 100);
+        for (int i = 0; i < conqueredDistance; i += increment) {
+            double progressX = headPos.x + d2 * (distance / (float) distance);
+            double progressY = headPos.y + d3 * (distance / (float) distance);
+            double progressZ = headPos.z + d4 * (distance / (float) distance);
 
-        double progressX = headPos.x + d2 * (distance / (float) distance);
-        double progressY = headPos.y + d3 * (distance / (float) distance);
-        double progressZ = headPos.z + d4 * (distance / (float) distance);
-
-        if (canPositionBeSeen(progressX, progressY, progressZ)) {
-            if (world.isRemote && rand.nextInt(5) == 0) {
-                IceAndFire.PROXY.spawnDragonParticle("dragonfire", headPos.x, headPos.y, headPos.z, 0, 0, 0, this);
-            }
-        } else {
-            if (!world.isRemote) {
-                RayTraceResult result = this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), new Vec3d(progressX, progressY, progressZ), false, true, false);
-                BlockPos pos = result.getBlockPos();
-                IafDragonDestructionManager.destroyAreaFire(world, pos, this);
+            if (canPositionBeSeen(progressX, progressY, progressZ)) {
+                if (world.isRemote && rand.nextInt(5) == 0) {
+                    IceAndFire.PROXY.spawnDragonParticle("dragonfire", headPos.x, headPos.y, headPos.z, 0, 0, 0, this);
+                }
+            } else {
+                if (!world.isRemote) {
+                    RayTraceResult result = this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), new Vec3d(progressX, progressY, progressZ), false, true, false);
+                    if (result != null) {
+                        BlockPos pos = result.getBlockPos();
+                        IafDragonDestructionManager.destroyAreaFire(world, pos, this);
+                    }
+                }
             }
         }
-
-        if (canPositionBeSeen(burnX, burnY, burnZ)) {
+        if (burnProgress >= 40D && canPositionBeSeen(burnX, burnY, burnZ)) {
             double spawnX = burnX + (rand.nextFloat() * 3.0) - 1.5;
             double spawnY = burnY + (rand.nextFloat() * 3.0) - 1.5;
             double spawnZ = burnZ + (rand.nextFloat() * 3.0) - 1.5;
@@ -309,7 +313,7 @@ public class EntityFireDragon extends EntityDragonBase {
                     }
                 }
             }else {
-                this.setBreathingFire(this.burningTarget != null);
+                this.setBreathingFire(!this.isSleeping() && this.burningTarget != null);
             }
         }
     }
