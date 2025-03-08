@@ -91,6 +91,21 @@ public class ClientProxy extends CommonProxy {
     private static final ModelCopperArmor COPPER_ARMOR_MODEL = new ModelCopperArmor(0.5F);
     private static final ModelCopperArmor COPPER_ARMOR_MODEL_LEGS = new ModelCopperArmor(0.2F);
 
+    /*
+     *
+     * Dragon Blood Armor From Ice and Fire - RLCraft Edition
+     * Code by Shivaxi, FonnyMunkey, Kotlin-Programmer and ArtsyDy
+     * Under LGPL-3.0 License
+     * Port by keletu
+     *
+     * */
+    public static final ModelBloodedFireDragonArmor FIRE_DRAGON_SCALE_ARMOR_MODEL_BLOODED = new ModelBloodedFireDragonArmor(0.5F, false);
+    public static final ModelBloodedFireDragonArmor FIRE_DRAGON_SCALE_ARMOR_MODEL_LEGS_BLOODED = new ModelBloodedFireDragonArmor(0.2F, true);
+    public static final ModelBloodedIceDragonArmor ICE_DRAGON_SCALE_ARMOR_MODEL_BLOODED = new ModelBloodedIceDragonArmor(0.5F, false);
+    public static final ModelBloodedIceDragonArmor ICE_DRAGON_SCALE_ARMOR_MODEL_LEGS_BLOODED = new ModelBloodedIceDragonArmor(0.2F, true);
+    public static final ModelBloodedLightningDragonArmor LIGHTNING_DRAGON_SCALE_ARMOR_MODEL_BLOODED = new ModelBloodedLightningDragonArmor(0.5F, false);
+    public static final ModelBloodedLightningDragonArmor LIGHTNING_DRAGON_SCALE_ARMOR_MODEL_LEGS_BLOODED = new ModelBloodedLightningDragonArmor(0.2F, true);
+
     @SideOnly(Side.CLIENT)
     private static final IceAndFireTEISR TEISR = new IceAndFireTEISR();
     public static List<UUID> currentDragonRiders = new ArrayList<>();
@@ -191,6 +206,9 @@ public class ClientProxy extends CommonProxy {
 
         for (EnumDragonArmor armor : EnumDragonArmor.values()) {
             renderDragonArmors(armor);
+        }
+        for (EnumBloodedDragonArmor armor : EnumBloodedDragonArmor.values()) {
+            renderBloodedDragonArmors(armor);
         }
         for (EnumSeaSerpent armor : EnumSeaSerpent.values()) {
             renderSeaSerpentArmors(armor);
@@ -293,6 +311,14 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.setCustomModelResourceLocation(armor.chestplate, 0, new ModelResourceLocation("iceandfire:" + armor.name() + "_chestplate", "inventory"));
         ModelLoader.setCustomModelResourceLocation(armor.leggings, 0, new ModelResourceLocation("iceandfire:" + armor.name() + "_leggings", "inventory"));
         ModelLoader.setCustomModelResourceLocation(armor.boots, 0, new ModelResourceLocation("iceandfire:" + armor.name() + "_boots", "inventory"));
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void renderBloodedDragonArmors(EnumBloodedDragonArmor armor) {
+        ModelLoader.setCustomModelResourceLocation(armor.helmet, 0, new ModelResourceLocation("iceandfire:" + armor.name() + "_helmet_blooded", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(armor.chestplate, 0, new ModelResourceLocation("iceandfire:" + armor.name() + "_chestplate_blooded", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(armor.leggings, 0, new ModelResourceLocation("iceandfire:" + armor.name() + "_leggings_blooded", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(armor.boots, 0, new ModelResourceLocation("iceandfire:" + armor.name() + "_boots_blooded", "inventory"));
     }
 
     @SideOnly(Side.CLIENT)
@@ -579,6 +605,18 @@ public class ClientProxy extends CommonProxy {
                 return COPPER_ARMOR_MODEL;
             case 21:
                 return COPPER_ARMOR_MODEL_LEGS;
+            case 22:
+                return FIRE_DRAGON_SCALE_ARMOR_MODEL_BLOODED;
+            case 23:
+                return FIRE_DRAGON_SCALE_ARMOR_MODEL_LEGS_BLOODED;
+            case 24:
+                return ICE_DRAGON_SCALE_ARMOR_MODEL_BLOODED;
+            case 25:
+                return ICE_DRAGON_SCALE_ARMOR_MODEL_LEGS_BLOODED;
+            case 26:
+                return LIGHTNING_DRAGON_SCALE_ARMOR_MODEL_BLOODED;
+            case 27:
+                return LIGHTNING_DRAGON_SCALE_ARMOR_MODEL_LEGS_BLOODED;
         }
         return null;
     }

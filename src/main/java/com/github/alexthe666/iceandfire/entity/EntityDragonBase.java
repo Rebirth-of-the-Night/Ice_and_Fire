@@ -12,7 +12,6 @@ import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.item.ItemDragonArmor;
 import com.github.alexthe666.iceandfire.item.ItemSummoningCrystal;
 import com.github.alexthe666.iceandfire.message.MessageDragonControl;
-import com.github.alexthe666.iceandfire.message.MessageDragonSetBurnBlock;
 import com.github.alexthe666.iceandfire.message.MessageStartRidingMob;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import net.ilexiconn.llibrary.client.model.tools.ChainBuffer;
@@ -156,6 +155,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public LegSolverQuadruped legSolver;
     public int walkCycle;
     public BlockPos burningTarget;
+    public int burnProgress;
     public double burnParticleX;
     public double burnParticleY;
     public double burnParticleZ;
@@ -174,6 +174,12 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public String prevArmorResLoc = "0|0|0|0";
     public String armorResLoc = "0|0|0|0";
     public boolean lookingForRoostAIFlag = false;
+    private boolean isSleeping;
+    private boolean isSitting;
+    private boolean isHovering;
+    private boolean isFlying;
+    private boolean isBreathingFire;
+    private boolean isTackling;
     protected int fireTicks;
     private boolean isModelDead;
     private int animationTick;
@@ -731,19 +737,31 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     }
 
     public boolean isHovering() {
-        return this.dataManager.get(HOVERING);
+        if (world.isRemote) {
+            return this.isHovering = this.dataManager.get(HOVERING);
+        }
+        return isHovering;
     }
 
     public void setHovering(boolean hovering) {
         this.dataManager.set(HOVERING, hovering);
+        if (!world.isRemote) {
+            this.isHovering = hovering;
+        }
     }
 
     public boolean isFlying() {
-        return this.dataManager.get(FLYING);
+        if (world.isRemote) {
+            return this.isFlying = this.dataManager.get(FLYING);
+        }
+        return isFlying;
     }
 
     public void setFlying(boolean flying) {
         this.dataManager.set(FLYING, flying);
+        if (!world.isRemote) {
+            this.isFlying = flying;
+        }
     }
 
     public boolean useFlyingPathFinder() {
@@ -754,24 +772,47 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         this.dataManager.set(GENDER, male);
     }
 
-    public boolean isSleeping() {
-        return this.dataManager.get(SLEEPING);
-    }
-
-    public void setSleeping(boolean sleeping) {
-        this.dataManager.set(SLEEPING, sleeping);
-    }
-
     public boolean isBlinking() {
         return this.ticksExisted % 50 > 43;
     }
 
+    public void setTackling(boolean tackling) {
+        this.dataManager.set(TACKLE, tackling);
+        if (!world.isRemote) {
+            this.isTackling = tackling;
+        }
+    }
+
+    public boolean isSleeping() {
+        if (world.isRemote) {
+            boolean isSleeping = this.dataManager.get(SLEEPING);
+            this.isSleeping = isSleeping;
+            return isSleeping;
+        }
+        return isSleeping;
+    }
+
+    public void setSleeping(boolean sleeping) {
+        this.dataManager.set(SLEEPING, sleeping);
+        if (!world.isRemote) {
+            this.isSleeping = sleeping;
+        }
+    }
+
     public boolean isBreathingFire() {
-        return this.dataManager.get(FIREBREATHING);
+        if (world.isRemote) {
+            boolean breathing = this.dataManager.get(FIREBREATHING);
+            this.isBreathingFire = breathing;
+            return breathing;
+        }
+        return isBreathingFire;
     }
 
     public void setBreathingFire(boolean breathing) {
         this.dataManager.set(FIREBREATHING, breathing);
+        if (!world.isRemote) {
+            this.isBreathingFire = breathing;
+        }
     }
 
     protected boolean canFitPassenger(Entity passenger) {
@@ -878,11 +919,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public int getStartMetaForType() {
         return 0;
     }
-
-    public void setTackling(boolean tackling) {
-        this.dataManager.set(TACKLE, tackling);
-    }
-
 
     public void setAgingDisabled(boolean isAgingDisabled) {
         this.dataManager.set(AGINGDISABLED, isAgingDisabled);
@@ -1877,6 +1913,14 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             this.setBreathingFire(false);
             return;
         }
+        if (this.isBreathingFire() && this.burnProgress < 40) {
+            this.burnProgress++;
+        } else if (!this.isBreathingFire()) {
+            this.burnProgress = 0;
+        }
+        if (!world.isRemote) {
+            this.updateBurnTarget();
+        }
         if (this.up()) {
             if (!this.isFlying() && !this.isHovering()) {
                 this.spacebarTicks += 2;
@@ -1955,25 +1999,25 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 }
             }
         }
-        if (!world.isRemote && !this.isModelDead()) {
-            if (this instanceof EntityBlackFrostDragon)
-                return;
+    }
 
-            if (burningTarget != null && !this.isSleeping() && !this.isModelDead() && !this.isChild()) {
-                if (world.getTileEntity(burningTarget) != null && world.getTileEntity(burningTarget) instanceof TileEntityDragonforgeInput && this.getDistanceSq(burningTarget) < 300) {
-                    this.getLookHelper().setLookPosition(burningTarget.getX() + 0.5D, burningTarget.getY() + 0.5D, burningTarget.getZ() + 0.5D, 180F, 180F);
-                    this.breathFireAtPos(burningTarget);
-                    this.setBreathingFire(true);
-                } else {
-                    this.setBreathingFire(false);
-                    if (!world.isRemote) {
-                        IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageDragonSetBurnBlock(this.getEntityId(), true, burningTarget));
-                    }
-                    burningTarget = null;
-                }
+    protected void updateBurnTarget() {
+        if (this instanceof EntityBlackFrostDragon)
+            return;
+
+        if (burningTarget != null && !this.isSleeping() && !this.isModelDead() && !this.isChild()) {
+            if (world.getTileEntity(burningTarget) instanceof TileEntityDragonforgeInput && this.getDistanceSq(burningTarget) < 300) {
+                this.getLookHelper().setLookPosition(burningTarget.getX() + 0.5D, burningTarget.getY() + 0.5D, burningTarget.getZ() + 0.5D, 180F, 180F);
+                this.breathFireAtPos(burningTarget);
+                this.setBreathingFire(true);
+            } else {
+                this.setBreathingFire(false);
+                burningTarget = null;
             }
         }
     }
+
+
 
     @Override
     public void setScaleForAge(boolean par1) {

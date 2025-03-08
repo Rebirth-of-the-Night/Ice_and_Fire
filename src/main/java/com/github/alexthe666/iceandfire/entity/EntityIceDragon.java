@@ -276,7 +276,7 @@ public class EntityIceDragon extends EntityDragonBase {
 
                 }
             } else {
-                this.setBreathingFire(this.burningTarget != null);
+                this.setBreathingFire(!this.isSleeping() && this.burningTarget != null);
             }
             if (this.isInsideWaterBlock() && !this.isSwimming() && (!this.isFlying() && !this.isHovering() || this.flyTicks > 100)) {
                 this.setSwimming(true);
@@ -459,6 +459,7 @@ public class EntityIceDragon extends EntityDragonBase {
         this.faceEntity(entity, 360, 360);
     }
 
+    @Override
     public void stimulateFire(double burnX, double burnY, double burnZ, int syncType) {
         if (MinecraftForge.EVENT_BUS.post(new DragonFireEvent(this, burnX, burnY, burnZ))) return;
         if (syncType == 1 && !world.isRemote) {
@@ -510,8 +511,9 @@ public class EntityIceDragon extends EntityDragonBase {
         double d3 = burnY - headPos.y;
         double d4 = burnZ - headPos.z;
         double distance = Math.max(5 * this.getDistance(burnX, burnY, burnZ), 0);
-        int increment = (int) Math.ceil(distance / 100);
-        for (int i = 0; i < distance; i += increment) {
+        double conqueredDistance = burnProgress / 40D * distance;
+        int increment = (int) Math.ceil(conqueredDistance / 100);
+        for (int i = 0; i < conqueredDistance; i += increment) {
             double progressX = headPos.x + d2 * (i / (float) distance);
             double progressY = headPos.y + d3 * (i / (float) distance);
             double progressZ = headPos.z + d4 * (i / (float) distance);
@@ -522,12 +524,14 @@ public class EntityIceDragon extends EntityDragonBase {
             } else {
                 if (!world.isRemote) {
                     RayTraceResult result = this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), new Vec3d(progressX, progressY, progressZ), false, true, false);
-                    BlockPos pos = result.getBlockPos();
-                    IafDragonDestructionManager.destroyAreaIce(world, pos, this);
+                    if(result != null) {
+                        BlockPos pos = result.getBlockPos();
+                        IafDragonDestructionManager.destroyAreaIce(world, pos, this);
+                    }
                 }
             }
         }
-        if (canPositionBeSeen(burnX, burnY, burnZ)) {
+        if (burnProgress >= 40D && canPositionBeSeen(burnX, burnY, burnZ)) {
             double spawnX = burnX + (rand.nextFloat() * 3.0) - 1.5;
             double spawnY = burnY + (rand.nextFloat() * 3.0) - 1.5;
             double spawnZ = burnZ + (rand.nextFloat() * 3.0) - 1.5;
