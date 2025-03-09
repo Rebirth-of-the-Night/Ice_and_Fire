@@ -1,16 +1,18 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import com.github.alexthe666.iceandfire.entity.ai.*;
-import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.entity.ai.DragonAITargetItems;
+import com.github.alexthe666.iceandfire.entity.ai.DreadAIDragonWaitForQueen;
+import com.github.alexthe666.iceandfire.entity.ai.DreadAITargetNonDread;
+import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.google.common.base.Optional;
-import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.IEntityLivingData;
+import net.ilexiconn.llibrary.server.animation.AnimationHandler;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
 import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,6 +20,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.server.management.PreYggdrasilConverter;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
@@ -25,9 +28,12 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob {
+public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob, IBlacklistedFromStatues {
 
     protected static final DataParameter<Optional<UUID>> COMMANDER_UNIQUE_ID = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    protected static final DataParameter<Boolean> IS_LEAPING = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> IS_PHRASE_ONE = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.BOOLEAN);
+    public int leapingTick;
 
     public EntityBlackFrostDragon(World worldIn) {
         super(worldIn);
@@ -38,17 +44,18 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(COMMANDER_UNIQUE_ID, Optional.absent());
+        this.dataManager.register(IS_LEAPING, false);
+        this.dataManager.register(IS_PHRASE_ONE, false);
     }
 
     @Override
     public void onLivingUpdate() {
         EntityDreadQueen queen = this.getRidingQueen();
         if (queen != null) {
-            if(this.canMove()
+            if (this.canMove()
                     && !this.isHovering()
                     && !this.isFlying()
-                    && !this.isChild()
-            && this.posY < 255) {
+                    && !this.isChild()) {
                 this.setHovering(true);
                 this.setSleeping(false);
                 this.setSitting(false);
@@ -63,25 +70,140 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
             this.setFlying(false);
             this.setSwimming(false);
         }
-        super.onLivingUpdate();
 
+        super.onLivingUpdate();
+        this.stepHeight = this.getDragonStage() * 0.5F;
+        if (!world.isRemote) {
+            if ((int) this.prevPosX == (int) this.posX && (int) this.prevPosZ == (int) this.posZ) {
+                this.ticksStill++;
+            } else {
+                ticksStill = 0;
+            }
+            if (this.getDragonStage() >= 3 && isStuck() && this.world.getGameRules().getBoolean("mobGriefing") && IceAndFire.CONFIG.dragonGriefing != 2) {
+                if (this.getAnimation() == NO_ANIMATION && this.ticksExisted % 5 == 0) {
+                    this.setAnimation(ANIMATION_TAILWHACK);
+                }
+                if (this.getAnimation() == ANIMATION_TAILWHACK && this.getAnimationTick() == 10) {
+                    BlockBreakExplosion explosion = new BlockBreakExplosion(world, this, this.posX, this.posY, this.posZ, (4) * this.getDragonStage() - 2);
+                    explosion.doExplosionA();
+                    explosion.doExplosionB(true);
+                    this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1, 1);
+                }
+            }
+        }
+        if (this.walkCycle < 39) {
+            this.walkCycle++;
+        } else {
+            this.walkCycle = 0;
+        }
+        if (this.getAnimation() == ANIMATION_WINGBLAST && (this.getAnimationTick() == 17 || this.getAnimationTick() == 22 || this.getAnimationTick() == 28)) {
+            this.spawnGroundEffects();
+            if (!this.world.isRemote && this.getAttackTarget() != null) {
+                this.getAttackTarget().attackEntityFrom(DamageSource.causeMobDamage(this), ((float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()) / 4);
+                this.getAttackTarget().knockBack(this.getAttackTarget(), this.getDragonStage() * 0.6F, 1, 1);
+                this.usingGroundAttack = this.getRNG().nextBoolean();
+            }
+        }
+        AnimationHandler.INSTANCE.updateAnimations(this);
+        this.legSolver.update(this);
+        if ((this.isFlying() || this.isHovering()) && !this.isModelDead()) {
+            if (flightCycle < 58) {
+                flightCycle += 2;
+            } else {
+                flightCycle = 0;
+            }
+            if (flightCycle == 2) {
+                this.playSound(IafSoundRegistry.DRAGON_FLIGHT, this.getSoundVolume() * IceAndFire.CONFIG.dragonFlapNoiseDistance, getSoundPitch());
+            }
+        } else if (this.isModelDead()) {
+            flightCycle = 0;
+        }
+
+        boolean sitting = isSitting() && !isModelDead() && !isSleeping() && !isHovering() && !isFlying();
+        if (sitting && sitProgress < 20.0F) {
+            sitProgress += 0.5F;
+        } else if (!sitting && sitProgress > 0.0F) {
+            sitProgress -= 0.5F;
+        }
+        boolean sleeping = isSleeping() && !isHovering() && !isFlying();
+        if (sleeping && sleepProgress < 20.0F) {
+            sleepProgress += 0.5F;
+        } else if (!sleeping && sleepProgress > 0.0F) {
+            sleepProgress -= 0.5F;
+        }
+        boolean fireBreathing = isBreathingFire();
+        prevFireBreathProgress = fireBreathProgress;
+        if (fireBreathing && fireBreathProgress < 5.0F) {
+            fireBreathProgress += 0.5F;
+        } else if (!fireBreathing && fireBreathProgress > 0.0F) {
+            fireBreathProgress -= 0.5F;
+        }
+        boolean hovering = isHovering();
+        if (hovering && hoverProgress < 20.0F) {
+            hoverProgress += 0.5F;
+        } else if (!hovering && hoverProgress > 0.0F) {
+            hoverProgress -= 0.5F;
+        }
+        boolean tackling = isTackling();
+        if (tackling && tackleProgress < 5F) {
+            tackleProgress += 0.5F;
+        } else if (!tackling && tackleProgress > 0.0F) {
+            tackleProgress -= 1.5F;
+        }
+        boolean flying = !tackling && this.isFlying() || !this.onGround && !this.isHovering() && this.airTarget != null;
+        if (flying && flyProgress < 20.0F) {
+            flyProgress += 0.5F;
+        } else if (!flying && flyProgress > 0.0F) {
+            flyProgress -= 0.5F;
+        }
+        boolean isModelDead = isModelDead();
+        if (isModelDead && modelDeadProgress < 20.0F) {
+            modelDeadProgress += 0.5F;
+        } else if (!isModelDead && modelDeadProgress > 0.0F) {
+            modelDeadProgress -= 0.5F;
+        }
+        boolean riding = isRiding() && this.getRidingEntity() != null && this.getRidingEntity() instanceof EntityPlayer;
+        if (riding && ridingProgress < 20.0F) {
+            ridingProgress += 0.5F;
+        } else if (!riding && ridingProgress > 0.0F) {
+            ridingProgress -= 0.5F;
+        }
+        if (this.isModelDead()) {
+            return;
+        }
+        if (!this.world.isRemote) {
+            if (this.isBreathingFire()) {
+                this.fireTicks++;
+                if (this.fireTicks > this.getDragonStage() * 25 || this.fireStopTicks <= 0 && this.isPlayerControlled()) {
+                    this.setBreathingFire(false);
+                    this.usingGroundAttack = this.getRNG().nextBoolean();
+                    this.fireTicks = 0;
+                }
+                if (this.fireStopTicks > 0 && this.isPlayerControlled()) {
+                    this.fireStopTicks--;
+                }
+            }
+            if (this.isFlying() && this.getAttackTarget() != null && this.getEntityBoundingBox().expand(3.0F, 3.0F, 3.0F).intersects(this.getAttackTarget().getEntityBoundingBox())) {
+                this.attackEntityAsMob(this.getAttackTarget());
+            }
+            this.breakBlock();
+        }
     }
 
     @Override
     protected void initEntityAI() {
-        //this.tasks.addTask(0, new DreadAIDragonWaitForQueen(this));
-        doRoboty();
+        this.tasks.addTask(0, new DreadAIDragonWaitForQueen(this));
     }
 
     public void doRoboty() {
         //this.tasks.addTask(1, new BlackFrostAILeap(this));
-        this.tasks.addTask(2, new DragonAIAttackMelee(this, 1.5D, false));
-        this.tasks.addTask(3, new AquaticAITempt(this, 1.0D, IafItemRegistry.frost_stew, false));
-        this.tasks.addTask(4, new DragonAIAirTarget(this));
-        this.tasks.addTask(4, new DragonAIWaterTarget(this));
-        this.tasks.addTask(5, new DragonAIWander(this, 1.0D));
-        this.tasks.addTask(6, new DragonAIWatchClosest(this, EntityLivingBase.class, 6.0F));
-        this.tasks.addTask(6, new DragonAILookIdle(this));
+        //this.tasks.addTask(2, new DragonAIAttackMelee(this, 1.5D, false));
+        //this.tasks.addTask(3, new AquaticAITempt(this, 1.0D, IafItemRegistry.frost_stew, false));
+        //this.tasks.addTask(4, new DragonAIAirTarget(this));
+        //this.tasks.addTask(4, new DragonAIWaterTarget(this));
+        //this.tasks.addTask(5, new DragonAIWander(this, 1.0D));
+        //this.tasks.addTask(6, new DragonAIWatchClosest(this, EntityLivingBase.class, 6.0F));
+        //this.tasks.addTask(6, new DragonAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
@@ -102,6 +224,26 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         return super.getControllingPassenger();
     }
 
+    @Override
+    public void onUpdate(){
+        super.onUpdate();
+        if(this.isFlying() && this.isLeaping()) {
+            this.motionY += 0.1;
+            this.leapingTick++;
+        }
+        if(this.leapingTick >= 40){
+            this.setLeaping(false);
+            this.setPhraseOne(true);
+        }
+        if(this.isPhraseOne()){
+            //Phrase One AI
+        }
+    }
+
+    public boolean hasNoGravity() {
+        return true;
+    }
+
     public boolean isPlayerControlled() {
         return false;
     }
@@ -112,10 +254,6 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     }
 
     public boolean canMove() {
-        StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(this, StoneEntityProperties.class);
-        if (properties != null && properties.isStone) {
-            return false;
-        }
         return !this.isSitting() && !this.isSleeping() && !this.isModelDead() && sleepProgress == 0 && this.getAnimation() != ANIMATION_SHAKEPREY;
     }
 
@@ -154,6 +292,9 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         } else {
             compound.setString("CommanderUUID", this.getCommanderId().toString());
         }
+        compound.setBoolean("isLeaping", this.isLeaping());
+        compound.setInteger("tickLeaping", this.leapingTick);
+        compound.setBoolean("phrase_one", this.isPhraseOne());
 
     }
 
@@ -173,6 +314,9 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
             } catch (Throwable var4) {
             }
         }
+        this.setLeaping(compound.getBoolean("isLeaping"));
+        this.leapingTick = compound.getInteger("tickLeaping");
+        this.setPhraseOne(compound.getBoolean("phrase_one"));
     }
 
     @Override
@@ -200,6 +344,22 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
 
     public void setCommanderId(@Nullable UUID uuid) {
         this.dataManager.set(COMMANDER_UNIQUE_ID, Optional.fromNullable(uuid));
+    }
+
+    public boolean isLeaping() {
+        return this.dataManager.get(IS_LEAPING);
+    }
+
+    public void setLeaping(Boolean leap) {
+        this.dataManager.set(IS_LEAPING, leap);
+    }
+
+    public boolean isPhraseOne() {
+        return this.dataManager.get(IS_PHRASE_ONE);
+    }
+
+    public void setPhraseOne(Boolean phrase) {
+        this.dataManager.set(IS_PHRASE_ONE, phrase);
     }
 
     @Override
@@ -298,5 +458,10 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
 
     protected float getFlightChancePerTick() {
         return 1 / 15F;
+    }
+
+    @Override
+    public boolean canBeTurnedToStone() {
+        return false;
     }
 }

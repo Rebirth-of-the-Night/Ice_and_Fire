@@ -66,13 +66,13 @@ import java.util.List;
 import java.util.Random;
 
 /*
-*
-* Smarter Dragon AI From Ice and Fire - RLCraft Edition
-* Code by Alexthe668, Shivaxi, FonnyMunkey and Kotlin-Programmer
-* Under LGPL-3.0 License
-* Port by keletu
-*
-* */
+ *
+ * Smarter Dragon AI From Ice and Fire - RLCraft Edition
+ * Code by Alexthe668, Shivaxi, FonnyMunkey and Kotlin-Programmer
+ * Under LGPL-3.0 License
+ * Port by keletu
+ *
+ * */
 public abstract class EntityDragonBase extends EntityTameable implements ISyncMount, IMultipartEntity, IAnimatedEntity, IDragonFlute, IDeadMob, IVillagerFear, IAnimalFear, IDropArmor {
 
     public static final int FLIGHT_CHANCE_PER_TICK = 1500;
@@ -607,7 +607,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         this.setCrystalBound(compound.getBoolean("CrystalBound"));
     }
 
-	private void initInventory() {
+    private void initInventory() {
         dragonInventory = new InventoryBasic("dragonInventory", false, 5);
         dragonInventory.setCustomName(this.getName());
         if (dragonInventory != null) {
@@ -1076,7 +1076,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         } else if (!this.isModelDead()) {
             if (this.isOwner(player)) {
                 if (!stack.isEmpty()) {
-                    if(stack.getItem() == getSummoningCrystal() && !ItemSummoningCrystal.hasDragon(stack)){
+                    if (stack.getItem() == getSummoningCrystal() && !ItemSummoningCrystal.hasDragon(stack)) {
                         this.setCrystalBound(true);
                         NBTTagCompound compound = stack.getTagCompound();
                         if (compound == null) {
@@ -1301,14 +1301,14 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     }
 
     protected boolean isTimeToWake() {
-        if(this instanceof EntityBlackFrostDragon)
+        if (this instanceof EntityBlackFrostDragon)
             return true;
-        if(this instanceof EntityLightningDragon)
+        if (this instanceof EntityLightningDragon)
             return !this.world.isDaytime();
         return this.world.isDaytime();
     }
 
-    private boolean isStuck() {
+    protected boolean isStuck() {
         return !this.isTamed() && (!this.getNavigator().noPath() && (this.getNavigator().getPath() == null || this.getNavigator().getPath().getFinalPathPoint() != null && this.getDistanceSq(new BlockPos(this.getNavigator().getPath().getFinalPathPoint().x, this.getNavigator().getPath().getFinalPathPoint().y, this.getNavigator().getPath().getFinalPathPoint().z)) > 15) || this.airTarget != null) && ticksStill > 80 && !this.isHovering() && canMove();
     }
 
@@ -1326,6 +1326,8 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        if(this instanceof EntityBlackFrostDragon)
+            return;
         this.stepHeight = this.getDragonStage() * 0.5F;
         if (!this.isPlayerControlled() && this.isBeyondHeight() && !this.onGround) {
             this.motionY -= 0.1F;
@@ -1651,10 +1653,14 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         }
     }
 
-    private boolean isBeyondHeight() {
+    protected boolean isBeyondHeight() {
+        if (this instanceof EntityBlackFrostDragon)
+            return false;
+
         if (this.posY > this.world.getHeight()) {
             return true;
         }
+
         return this.posY > IceAndFire.CONFIG.maxDragonFlight;
     }
 
@@ -1907,12 +1913,15 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             this.updateClientControls();
         }
         if (this.isModelDead()) {
-            if(!world.isRemote && world.isAirBlock(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) && this.posY > -1){
+            if (!world.isRemote && world.isAirBlock(new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ)) && this.posY > -1) {
                 this.move(MoverType.SELF, 0, -0.2F, 0);
             }
             this.setBreathingFire(false);
             return;
         }
+        if(this instanceof EntityBlackFrostDragon)
+            return;
+
         if (this.isBreathingFire() && this.burnProgress < 40) {
             this.burnProgress++;
         } else if (!this.isBreathingFire()) {
@@ -2016,7 +2025,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             }
         }
     }
-
 
 
     @Override
@@ -2249,7 +2257,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         return this.dataManager.get(TACKLE);
     }
 
-    private boolean isAgingDisabled() {
+    protected boolean isAgingDisabled() {
         return this.dataManager.get(AGINGDISABLED);
     }
 

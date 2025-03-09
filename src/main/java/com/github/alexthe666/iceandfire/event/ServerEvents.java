@@ -456,7 +456,7 @@ public class ServerEvents {
                                     event.getTarget().entityDropItem(statuette, 1);
                                 }
                             } else {
-                                if (!((EntityLiving) event.getTarget()).world.isRemote) {
+                                if (!event.getTarget().world.isRemote) {
                                     event.getTarget().dropItem(Item.getItemFromBlock(Blocks.COBBLESTONE), 2 + event.getEntityLiving().getRNG().nextInt(4));
                                 }
                             }
@@ -586,10 +586,10 @@ public class ServerEvents {
     	if(event.getSource().getImmediateSource() instanceof EntityLivingBase && event.getSource().getDamageType() != "thorns" && !(event.getEntity() instanceof EntityItem)) {
     		EntityLivingBase attacker = (EntityLivingBase)event.getSource().getImmediateSource();
     		EntityLivingBase target = event.getEntityLiving();
-    		
+
     		Item weapon = attacker.getHeldItemMainhand().getItem();
     		float amount = event.getAmount();
-    		
+
     		if(weapon instanceof IaFTool) {
     			switch(((IaFTool)weapon).getToolMode()) {
     			case 0:
@@ -694,8 +694,8 @@ public class ServerEvents {
 	            attacker.world.playSound(null, attacker.posX, attacker.posY, attacker.posZ, SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP, attacker.getSoundCategory(), 1.0F, 1.0F);
 	            if(attacker instanceof EntityPlayer) {
 	            	EntityPlayer player = (EntityPlayer)attacker;
-	            	double d0 = (double)(-MathHelper.sin(player.rotationYaw * 0.017453292F));
-		            double d1 = (double)MathHelper.cos(player.rotationYaw * 0.017453292F);
+	            	double d0 = -MathHelper.sin(player.rotationYaw * 0.017453292F);
+		            double d1 = MathHelper.cos(player.rotationYaw * 0.017453292F);
 
 		            if (player.world instanceof WorldServer) {
 		                ((WorldServer)player.world).spawnParticle(EnumParticleTypes.SWEEP_ATTACK, player.posX + d0, player.posY + (double)player.height * 0.5D, player.posZ + d1, 0, d0, 0.0D, d1, 0.0D);
@@ -704,7 +704,7 @@ public class ServerEvents {
     		}
     	}
     }
-    
+
     @SubscribeEvent
     public void onEntityUpdate(LivingEvent.LivingUpdateEvent event) {
         ChainEntityProperties chainProperties = EntityPropertiesHandler.INSTANCE.getProperties(event.getEntity(), ChainEntityProperties.class);
@@ -827,7 +827,7 @@ public class ServerEvents {
                         entity.motionX += (Math.signum(closestSiren.posX - entity.posX) * 0.5D - entity.motionX) * 0.100000000372529;
                         entity.motionY += (Math.signum(closestSiren.posY - entity.posY + 1) * 0.5D - entity.motionY) * 0.100000000372529;
                         entity.motionZ += (Math.signum(closestSiren.posZ - entity.posZ) * 0.5D - entity.motionZ) * 0.100000000372529;
-						
+
                         double d0 = closestSiren.posX - entity.posX;
                         double d2 = closestSiren.posZ - entity.posZ;
                         double d1 = closestSiren.posY - 1 - entity.posY;
@@ -946,7 +946,7 @@ public class ServerEvents {
                 }
             }
         }
-        
+
         if(event.getEntityLiving().getHeldItemMainhand().getItem() instanceof ItemHydraHeart || event.getEntityLiving().getHeldItemOffhand().getItem() instanceof ItemHydraHeart) {
         	double healthPercentage = event.getEntityLiving().getHealth() / Math.max(1, event.getEntityLiving().getMaxHealth());
             if(healthPercentage < 1.0D){
