@@ -31,6 +31,7 @@ public class DreadCastleProcessor implements ITemplateProcessor {
     public static final ResourceLocation DREAD_CHEST_LOOT_NORMAL = LootTableList.register(new ResourceLocation("iceandfire", "dredcastleloot1"));
     public static final ResourceLocation DREAD_CHEST_LOOT_NORMAL2 = LootTableList.register(new ResourceLocation("iceandfire", "dredcastleloot2"));
     public static final ResourceLocation DREAD_CHEST_LOOT_NORMAL3 = LootTableList.register(new ResourceLocation("iceandfire", "dredcastleloot3"));
+    public static final ResourceLocation DREAD_CHEST_LOOT_NORMAL4 = LootTableList.register(new ResourceLocation("iceandfire", "dredcastleloot4"));
     public static final ResourceLocation DREAD_CHEST_LOOT_VALUABLE = LootTableList.register(new ResourceLocation("iceandfire", "dredcastlecitadel1"));
     public static final ResourceLocation DREAD_CHEST_LOOT_QUEEN = LootTableList.register(new ResourceLocation("iceandfire", "dredcastlequeen1"));
     public static final ResourceLocation DREAD_CHEST_LOOT_LIBRARY = LootTableList.register(new ResourceLocation("iceandfire", "dredcastleloot5"));
@@ -149,6 +150,9 @@ public class DreadCastleProcessor implements ITemplateProcessor {
             }
             if (blockInfoIn.blockState == Blocks.STONE.getStateFromMeta(2)) {
                 return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_NORMAL3);
+            }
+            if (blockInfoIn.blockState == Blocks.SANDSTONE.getDefaultState()) {
+                return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_NORMAL4);
             }
             if (blockInfoIn.blockState == Blocks.SPONGE.getStateFromMeta(1)) {
                 return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_VALUABLE);

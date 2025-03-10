@@ -34,8 +34,10 @@ public class DreadCastleProtection {
         BREAKABLE_BLOCKS.add(Blocks.SNOW);
         BREAKABLE_BLOCKS.add(Blocks.SNOW_LAYER);
         BREAKABLE_BLOCKS.add(Blocks.CHEST);
+        BREAKABLE_BLOCKS.add(Blocks.COBBLESTONE);
         BREAKABLE_BLOCKS.add(IafBlockRegistry.dragonsteel_ice_block);
         BREAKABLE_BLOCKS.add(IafBlockRegistry.dread_torch);
+        BREAKABLE_BLOCKS.add(IafBlockRegistry.burnt_torch);
     }
 
     public static class CastleProtectionData extends WorldSavedData {
