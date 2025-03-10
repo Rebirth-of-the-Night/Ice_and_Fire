@@ -231,7 +231,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
             this.motionY += 0.1;
             this.leapingTick++;
         }
-        if(this.leapingTick >= 40){
+        if(this.leapingTick >= 30){
             this.setLeaping(false);
             this.setPhraseOne(true);
         }
