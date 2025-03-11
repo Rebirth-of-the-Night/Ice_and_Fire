@@ -18,17 +18,18 @@ public class DreadAIDragonWaitForQueen extends EntityAIBase {
             this.queen = dragon.getRidingQueen();
         }
 
-        return this.queen != null;
+        return this.queen != null || this.dragon.isAwaken();
     }
 
     public boolean shouldContinueExecuting() {
-        return this.queen != null;
+        return this.dragon.isAwaken();
     }
 
     public void startExecuting() {
         this.queen.getNavigator().clearPath();
         this.dragon.setFlying(true);
         this.dragon.setLeaping(true);
+        this.dragon.setAwaken(true);
     }
 
     public void resetTask() {

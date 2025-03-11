@@ -35,6 +35,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     protected static final DataParameter<Boolean> IS_LEAPING = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> IS_PHRASE_ONE = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.FLOAT);
+    protected static final DataParameter<Boolean> AWAKEN = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.BOOLEAN);
 
     public BlockPos spawnPointPos;
     public int leapingTick;
@@ -62,6 +63,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         this.dataManager.register(COMMANDER_UNIQUE_ID, Optional.absent());
         this.dataManager.register(IS_LEAPING, false);
         this.dataManager.register(IS_PHRASE_ONE, false);
+        this.dataManager.register(AWAKEN, false);
         this.dataManager.register(LOOK, 0f);
     }
 
@@ -227,7 +229,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         //this.tasks.addTask(5, new DragonAIWander(this, 1.0D));
         //this.tasks.addTask(6, new DragonAIWatchClosest(this, EntityLivingBase.class, 6.0F));
         //this.tasks.addTask(6, new DragonAILookIdle(this));
-        this.tasks.addTask(1, new AIBlackFrostPassiveCircle<>(this, 35));
+        this.tasks.addTask(1, new AIBlackFrostPassiveCircle<>(this, 55));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
@@ -287,23 +289,38 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
             passenger.setPosition(this.posX, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ);
         }
         if (this.isPassenger(passenger)) {
-            if (!(passenger instanceof EntityDreadQueen) && (this.getControllingPassenger() == null || !this.getControllingPassenger().getUniqueID().equals(passenger.getUniqueID()))) {
+            if (!(passenger instanceof EntityDreadQueen)) {
                 updatePreyInMouth(passenger);
             } else {
                 if (this.isModelDead()) {
                     passenger.dismountRidingEntity();
                 }
-                if (passenger instanceof EntityDreadQueen) {
-                    passenger.rotationYaw = this.rotationYaw;
-                    ((EntityDreadQueen) passenger).renderYawOffset = rotationYaw;
-                } else {
-                    renderYawOffset = rotationYaw;
+                float speed_walk = 0.2F;
+                float speed_idle = 0.05F;
+                float speed_fly = 0.2F;
+                float degree_walk = 0.5F;
+                float degree_idle = 0.5F;
+                float degree_fly = 0.5F;
+                if (passenger instanceof EntityPlayer) {
+                    this.renderYawOffset = this.rotationYaw;
                     this.rotationYaw = passenger.rotationYaw;
                 }
+                float hoverAddition = hoverProgress * -0.001F;
+                float flyAddition = flyProgress * -0.0001F;
+                float flyBody = Math.max(flyProgress, hoverProgress) * 0.0065F;
+                float radius = 0.75F * ((0.3F - flyBody) * getRenderSize()) + ((this.getRenderSize() / 3) * flyAddition * 0.0065F);
+                float angle = (0.01745329251F * this.renderYawOffset);
+                double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
+                double extraZ = radius * MathHelper.cos(angle);
+                float bob0 = this.isFlying() || this.isHovering() ? (hoverProgress > 0 || flyProgress > 0 ? this.bob(-speed_fly, degree_fly * 5, false, this.ticksExisted, -0.0625F) : 0) : 0;
+                float bob1 = this.bob(speed_walk * 2, degree_walk * 1.7F, false, this.limbSwing, this.limbSwingAmount * -0.0625F);
+                float bob2 = this.bob(speed_idle, degree_idle * 1.3F, false, this.ticksExisted, -0.0625F);
+                float extraAgeScale = (Math.max(0, this.getAgeInDays() - 75) / 75F) * 1.65F;
 
-                Vec3d riderPos = this.getRiderPosition();
-                passenger.setPosition(riderPos.x, riderPos.y + passenger.height, riderPos.z);
-                this.stepHeight = 1;
+                double extraY_pre = 0.8F;
+                double extraY = ((extraY_pre - (hoverAddition) + (flyAddition)) * (this.getRenderSize() / 3)) - (0.35D * (1 - (this.getRenderSize() / 30))) + bob0 + bob1 + bob2 + extraAgeScale;
+
+                passenger.setPosition(this.posX, this.posY + extraY, this.posZ);
             }
         }
     }
@@ -323,6 +340,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         compound.setFloat("spawnPointPosX", this.spawnPointPos.getX());
         compound.setFloat("spawnPointPosY", this.spawnPointPos.getY());
         compound.setFloat("spawnPointPosZ", this.spawnPointPos.getZ());
+        compound.setBoolean("isAwaken", this.isAwaken());
     }
 
     @Override
@@ -346,6 +364,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         this.setPhraseOne(compound.getBoolean("phrase_one"));
         this.dataManager.set(LOOK, compound.getFloat("Look"));
         this.spawnPointPos = new BlockPos(compound.getFloat("spawnPointPosX"), compound.getFloat("spawnPointPosY"), compound.getFloat("spawnPointPosZ"));
+        this.dataManager.set(AWAKEN, compound.getBoolean("isAwaken"));
     }
 
     public BlockPos getSpawnPointPos() {
@@ -397,6 +416,14 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
 
     public void setPhraseOne(Boolean phrase) {
         this.dataManager.set(IS_PHRASE_ONE, phrase);
+    }
+
+    public boolean isAwaken() {
+        return this.dataManager.get(AWAKEN);
+    }
+
+    public void setAwaken(Boolean active) {
+        this.dataManager.set(AWAKEN, active);
     }
 
     @Override

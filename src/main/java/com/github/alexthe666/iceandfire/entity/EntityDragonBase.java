@@ -90,7 +90,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     private static final DataParameter<Boolean> TACKLE = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> AGINGDISABLED = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> COMMAND = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.VARINT);
-    private static final DataParameter<Float> DRAGON_PITCH = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.FLOAT);
     private static final DataParameter<Boolean> CRYSTAL_BOUND = EntityDataManager.createKey(EntityDragonBase.class, DataSerializers.BOOLEAN);
     public static Animation ANIMATION_FIRECHARGE;
     public static Animation ANIMATION_EAT;
@@ -434,7 +433,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         this.dataManager.register(TACKLE, Boolean.FALSE);
         this.dataManager.register(AGINGDISABLED, Boolean.FALSE);
         this.dataManager.register(COMMAND, 0);
-        this.dataManager.register(DRAGON_PITCH, (float) 0);
         this.dataManager.register(CRYSTAL_BOUND, Boolean.FALSE);
     }
 
@@ -502,22 +500,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public void setCommand(int command) {
         this.dataManager.set(COMMAND, command);
         this.setSitting(command == 1);
-    }
-
-    public float getDragonPitch() {
-        return dataManager.get(DRAGON_PITCH);
-    }
-
-    public void setDragonPitch(float pitch) {
-        dataManager.set(DRAGON_PITCH, pitch);
-    }
-
-    public void incrementDragonPitch(float pitch) {
-        dataManager.set(DRAGON_PITCH, getDragonPitch() + pitch);
-    }
-
-    public void decrementDragonPitch(float pitch) {
-        dataManager.set(DRAGON_PITCH, getDragonPitch() - pitch);
     }
 
     @Override
@@ -773,6 +755,15 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         }
     }
 
+    protected boolean isTackling() {
+        if (world.isRemote) {
+            boolean tackling = this.dataManager.get(TACKLE);
+            this.isTackling = tackling;
+            return tackling;
+        }
+        return isTackling;
+    }
+
     public boolean isSleeping() {
         if (world.isRemote) {
             boolean isSleeping = this.dataManager.get(SLEEPING);
@@ -953,31 +944,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         Vec3d vec3d1 = rider.getLook(partialTicks);
         Vec3d vec3d2 = vec3d.add(vec3d1.x * blockReachDistance, vec3d1.y * blockReachDistance, vec3d1.z * blockReachDistance);
         return this.world.rayTraceBlocks(vec3d, vec3d2, false, false, true);
-    }
-
-    public Vec3d getRiderPosition() {
-        float sitProg = this.sitProgress * 0.015F;
-        float deadProg = this.modelDeadProgress * -0.02F;
-        float hoverProg = this.hoverProgress * 0.03F;
-        float flyProg = this.flyProgress * 0.01F;
-        float sleepProg = this.sleepProgress * -0.025F;
-        float extraAgeScale = (Math.max(0, this.getAgeInDays() - 75) / 75F) * 1.65F;
-        float pitchX = 0;
-        float pitchY = 0;
-        float dragonPitch = getDragonPitch();
-        if (dragonPitch > 0) {
-            pitchX = Math.min(dragonPitch / 90, 0.3F);
-            pitchY = -(dragonPitch / 90) * 2F;
-        }
-        if (dragonPitch < 0) {//going up
-            pitchY = (dragonPitch / 90) * 0.1F;
-            pitchX = Math.max(dragonPitch / 90, -0.7F);
-        }
-        float xzMod = (0.15F + pitchX) * getRenderSize() + extraAgeScale;
-        float headPosX = (float) (posX + (xzMod) * Math.cos((rotationYaw + 90) * Math.PI / 180));
-        float headPosY = (float) (posY + (0.7F + sitProg + hoverProg + deadProg + sleepProg + flyProg + pitchY) * getRenderSize() * 0.3F + extraAgeScale);
-        float headPosZ = (float) (posZ + (xzMod) * Math.sin((rotationYaw + 90) * Math.PI / 180));
-        return new Vec3d(headPosX, headPosY, headPosZ);
     }
 
     public boolean isPart(Entity entityHit) {
@@ -1743,7 +1709,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 if (passenger instanceof EntityPlayer) {
                     this.renderYawOffset = this.rotationYaw;
                     this.rotationYaw = passenger.rotationYaw;
-                    this.stepHeight = this.getDragonStage() > 1 ? 1.5F : 1F;
                 }
                 float hoverAddition = hoverProgress * -0.001F;
                 float flyAddition = flyProgress * -0.0001F;
@@ -1765,7 +1730,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         }
     }
 
-    private float bob(float speed, float degree, boolean bounce, float f, float f1) {
+    protected float bob(float speed, float degree, boolean bounce, float f, float f1) {
         float bob = (float) (Math.sin(f * speed) * f1 * degree - f1 * degree);
         if (bounce) {
             bob = (float) -Math.abs((Math.sin(f * speed) * f1 * degree));
@@ -2241,10 +2206,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
 
     private double getFlySpeed() {
         return (2 + ((double) this.getAgeInDays() / 125) * 2) * (this.isTackling() ? 2 : 1);
-    }
-
-    public boolean isTackling() {
-        return this.dataManager.get(TACKLE);
     }
 
     protected boolean isAgingDisabled() {
