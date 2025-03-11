@@ -263,9 +263,9 @@ public class EntityLightningDragon extends EntityDragonBase {
             } else {
                 this.setBreathingFire(!this.isSleeping() && this.burningTarget != null);
             }
-            if (!isBreathingFire()) {
-                this.setHasLightningTarget(false);
-            }
+        }
+        if (!isBreathingFire()) {
+            this.setHasLightningTarget(false);
         }
     }
 

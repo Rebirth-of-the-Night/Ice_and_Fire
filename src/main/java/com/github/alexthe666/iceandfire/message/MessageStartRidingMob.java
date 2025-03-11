@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -47,16 +46,14 @@ public class MessageStartRidingMob extends AbstractMessage<MessageStartRidingMob
     public void onServerReceived(MinecraftServer server, MessageStartRidingMob message, EntityPlayer player, MessageContext messageContext) {
         if (player.world != null) {
             Entity entity = player.world.getEntityByID(message.dragonId);
-            if (entity != null && entity instanceof ISyncMount && entity instanceof EntityTameable) {
-                EntityTameable dragon = (EntityTameable) entity;
-                if(message.ride){
-                    player.startRiding(dragon);
-                }else{
+            if (entity instanceof ISyncMount) {
+                if (message.ride) {
+                    player.startRiding(entity, true);
+                } else if (entity.equals(player.getRidingEntity())) {
                     player.dismountRidingEntity();
                 }
             }
         }
     }
-
 
 }

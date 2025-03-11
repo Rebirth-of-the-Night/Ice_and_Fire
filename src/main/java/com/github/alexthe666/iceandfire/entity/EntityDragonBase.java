@@ -628,19 +628,9 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 if (this.isTamed() && this.getOwnerId() != null && this.getOwnerId().equals(player.getUniqueID())) {
                     return player;
                 }
+            } else if (passenger instanceof EntityLiving && DragonUtils.isDragonRider(passenger)) {
+                return passenger;
             }
-        }
-        return null;
-    }
-
-    public boolean isRidingPlayer(EntityPlayer player) {
-        return getRidingPlayer() != null && player != null && getRidingPlayer().getUniqueID().equals(player.getUniqueID());
-    }
-
-    @Nullable
-    public EntityPlayer getRidingPlayer() {
-        if (this.getControllingPassenger() instanceof EntityPlayer) {
-            return (EntityPlayer) this.getControllingPassenger();
         }
         return null;
     }
@@ -650,8 +640,8 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(Math.min(2048, IceAndFire.CONFIG.dragonTargetSearchLength));
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
 

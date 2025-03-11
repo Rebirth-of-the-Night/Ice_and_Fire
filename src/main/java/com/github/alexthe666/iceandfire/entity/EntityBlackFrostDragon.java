@@ -1,10 +1,9 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.entity.ai.DragonAITargetItems;
-import com.github.alexthe666.iceandfire.entity.ai.DreadAIDragonWaitForQueen;
-import com.github.alexthe666.iceandfire.entity.ai.DreadAITargetNonDread;
+import com.github.alexthe666.iceandfire.entity.ai.*;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
+import com.github.alexthe666.iceandfire.util.EntityUtil;
 import com.google.common.base.Optional;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
 import net.minecraft.entity.*;
@@ -21,6 +20,8 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
@@ -33,11 +34,26 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     protected static final DataParameter<Optional<UUID>> COMMANDER_UNIQUE_ID = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     protected static final DataParameter<Boolean> IS_LEAPING = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> IS_PHRASE_ONE = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Float> LOOK = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.FLOAT);
+
+    public BlockPos spawnPointPos;
     public int leapingTick;
 
     public EntityBlackFrostDragon(World worldIn) {
         super(worldIn);
         this.maximumArmor = 70D;
+    }
+
+    public void setPitch(Vec3d look) {
+        float prevLook = this.getPitch();
+        float newLook = (float) EntityUtil.toPitch(look);
+        float deltaLook = 5;
+        float clampedLook = MathHelper.clamp(newLook, prevLook - deltaLook, prevLook + deltaLook / 2);
+        this.dataManager.set(LOOK, clampedLook);
+    }
+
+    public float getPitch() {
+        return this.dataManager == null ? 0 : this.dataManager.get(LOOK);
     }
 
     @Override
@@ -46,6 +62,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         this.dataManager.register(COMMANDER_UNIQUE_ID, Optional.absent());
         this.dataManager.register(IS_LEAPING, false);
         this.dataManager.register(IS_PHRASE_ONE, false);
+        this.dataManager.register(LOOK, 0f);
     }
 
     @Override
@@ -191,6 +208,12 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     }
 
     @Override
+    public void applyEntityAttributes() {
+        super.applyEntityAttributes();
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
+    }
+
+    @Override
     protected void initEntityAI() {
         this.tasks.addTask(0, new DreadAIDragonWaitForQueen(this));
     }
@@ -204,6 +227,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         //this.tasks.addTask(5, new DragonAIWander(this, 1.0D));
         //this.tasks.addTask(6, new DragonAIWatchClosest(this, EntityLivingBase.class, 6.0F));
         //this.tasks.addTask(6, new DragonAILookIdle(this));
+        this.tasks.addTask(1, new AIBlackFrostPassiveCircle<>(this, 35));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
@@ -211,7 +235,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         this.targetTasks.addTask(5, new DragonAITargetItems<>(this, false));
     }
 
-    @Nullable
+    /*@Nullable
     public Entity getControllingPassenger() {
         Entity commander = getCommander();
         if (commander != null) {
@@ -222,20 +246,20 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
             }
         }
         return super.getControllingPassenger();
-    }
+    }*/
 
     @Override
-    public void onUpdate(){
+    public void onUpdate() {
         super.onUpdate();
-        if(this.isFlying() && this.isLeaping()) {
+        if (this.isFlying() && this.isLeaping()) {
             this.motionY += 0.1;
             this.leapingTick++;
         }
-        if(this.leapingTick >= 30){
+        if (this.leapingTick >= 30) {
             this.setLeaping(false);
             this.setPhraseOne(true);
         }
-        if(this.isPhraseOne()){
+        if (this.isPhraseOne()) {
             //Phrase One AI
         }
     }
@@ -257,7 +281,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         return !this.isSitting() && !this.isSleeping() && !this.isModelDead() && sleepProgress == 0 && this.getAnimation() != ANIMATION_SHAKEPREY;
     }
 
-
+    @Override
     public void updatePassenger(Entity passenger) {
         if (this.isPassenger(passenger)) {
             passenger.setPosition(this.posX, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ);
@@ -295,7 +319,10 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         compound.setBoolean("isLeaping", this.isLeaping());
         compound.setInteger("tickLeaping", this.leapingTick);
         compound.setBoolean("phrase_one", this.isPhraseOne());
-
+        compound.setFloat("Look", this.getPitch());
+        compound.setFloat("spawnPointPosX", this.spawnPointPos.getX());
+        compound.setFloat("spawnPointPosY", this.spawnPointPos.getY());
+        compound.setFloat("spawnPointPosZ", this.spawnPointPos.getZ());
     }
 
     @Override
@@ -317,6 +344,16 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         this.setLeaping(compound.getBoolean("isLeaping"));
         this.leapingTick = compound.getInteger("tickLeaping");
         this.setPhraseOne(compound.getBoolean("phrase_one"));
+        this.dataManager.set(LOOK, compound.getFloat("Look"));
+        this.spawnPointPos = new BlockPos(compound.getFloat("spawnPointPosX"), compound.getFloat("spawnPointPosY"), compound.getFloat("spawnPointPosZ"));
+    }
+
+    public BlockPos getSpawnPointPos() {
+        return this.spawnPointPos;
+    }
+
+    public void setSpawnPointPos(BlockPos pos) {
+        this.spawnPointPos = pos;
     }
 
     @Override
@@ -428,7 +465,8 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         return false;
     }
 
-    public boolean isDaytime() {
+    @Override
+    public boolean isTimeToWake() {
         return true;
     }
 
