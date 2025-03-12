@@ -104,7 +104,7 @@ public class WorldGenCastle extends WorldGenerator {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
         // Define the height range for the foundation
-        int foundationHeight = 10; // Fill 10 blocks high (adjust as needed)
+        int foundationHeight = 20; // Fill 10 blocks high (adjust as needed)
         int baseY = origin.getY() - 1; // Start from the ground level
 
         // Generate foundation in batches

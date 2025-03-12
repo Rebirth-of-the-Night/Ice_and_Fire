@@ -5,10 +5,9 @@ import com.github.alexthe666.iceandfire.entity.EntityDreadQueen;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 
 public class TileEntityDreadSingleUseSpawnerDragon extends TileEntity implements ITickable {
-
-	private int activatingRangeFromPlayer = 16;
 
 	@Override
 	public void onLoad()
@@ -27,6 +26,7 @@ public class TileEntityDreadSingleUseSpawnerDragon extends TileEntity implements
 				blackFrost.setOwnerId(queen.getUniqueID());
 				blackFrost.setPosition(pos.getX(), pos.getY(), pos.getZ());
 				blackFrost.onInitialSpawn(world.getDifficultyForLocation(pos), null);
+				blackFrost.setSpawnPointPos(new BlockPos(pos.getX(), pos.getY() + 80, pos.getZ() + 40));
 				world.spawnEntity(blackFrost);
 				world.setBlockToAir(pos);
 			}

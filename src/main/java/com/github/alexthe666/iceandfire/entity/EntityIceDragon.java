@@ -259,6 +259,8 @@ public class EntityIceDragon extends EntityDragonBase {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
+        if(this instanceof EntityBlackFrostDragon)
+            return;
         if (!world.isRemote) {
             if (this.isInLava() && !this.isFlying() && !this.isChild() && !this.isHovering() && this.canMove()) {
                 this.setHovering(true);

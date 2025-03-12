@@ -26,7 +26,7 @@ public class BlockCrackedDreadstone extends Block implements IDragonProof {
     }
 
     private void deleteNearbyBlock(World worldIn, BlockPos pos, BlockPos startPos) {
-        if (pos.getDistance(startPos.getX(), startPos.getY(), startPos.getZ()) < 32) {
+        if (pos.getDistance(startPos.getX(), startPos.getY(), startPos.getZ()) < 64) {
             if (worldIn.getBlockState(pos).getBlock() == IafBlockRegistry.cracked_dreadstone || worldIn.getBlockState(pos).getBlock() == this) {
                 worldIn.destroyBlock(pos, false);
                 for (EnumFacing facing : EnumFacing.values()) {

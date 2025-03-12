@@ -263,9 +263,9 @@ public class EntityLightningDragon extends EntityDragonBase {
             } else {
                 this.setBreathingFire(!this.isSleeping() && this.burningTarget != null);
             }
-            if (!isBreathingFire()) {
-                this.setHasLightningTarget(false);
-            }
+        }
+        if (!isBreathingFire()) {
+            this.setHasLightningTarget(false);
         }
     }
 
@@ -542,38 +542,17 @@ public class EntityLightningDragon extends EntityDragonBase {
     /*Code by Kotlin-Programmer*/
     @Override
     public Vec3d getHeadPosition() {
-        float sitProg = this.sitProgress * 0.005F;
         float deadProg = this.modelDeadProgress * -0.02F;
         float hoverProg = this.hoverProgress * 0.03F;
-        float flyProg = Math.max(0, this.flyProgress * 0.01F);
-        int tick;
-        if (this.getAnimationTick() < 10) {
-            tick = this.getAnimationTick();
-        } else if (this.getAnimationTick() > 50) {
-            tick = 60 - this.getAnimationTick();
-        } else {
-            tick = 10;
-        }
-        float epicRoarProg = this.getAnimation() == ANIMATION_EPIC_ROAR ? tick * 0.1F : 0;
-        float sleepProg = this.sleepProgress * 0.025F;
-        float pitchY = 0;
-        float dragonPitch = -getDragonPitch();// -90 = down, 0 = straight, 90 = up
-        if (this.isFlying() || this.isHovering()) {
-            if (dragonPitch > 0) {
-                pitchY = (dragonPitch / 90F) * 1.2F;
-            } else {
-                pitchY = (dragonPitch / 90F) * 3F;
-            }
-        }
+        float flyProg = this.flyProgress * 0.01F;
+        float sitProg = this.sitProgress * 0.005F;
+        float sleepProg = this.sleepProgress * 0.005F;
         float flightXz = 1.0F + flyProg + hoverProg;
-        float absPitch = Math.abs(dragonPitch) / 90F;//1 down/up, 0 straight
-        float minXZ = dragonPitch > 20 ? (dragonPitch - 20) * 0.009F : 0;
-        float xzMod = (0.58F - hoverProg * 0.45F + flyProg * 0.2F + absPitch * 0.3F - sitProg - sleepProg * 0.9F) * flightXz * getRenderSize();
-        double xzModSine = xzMod * (Math.max(0.25F, Math.cos((float) Math.toRadians(dragonPitch))) - minXZ);
+        float xzMod = (0.58F - hoverProg * 0.45F + flyProg * 0.2F - sitProg - sleepProg * 0.9F) * flightXz * getRenderSize();
         float xzSleepMod = -1.25F * sleepProg * getRenderSize();
-        float headPosX = (float) (posX + (xzModSine) * Math.cos((float) ((rotationYaw + 90) * Math.PI / 180)) + xzSleepMod * Math.cos(rotationYaw * Math.PI / 180));
-        float headPosY = (float) (posY + (0.7F + (sitProg * 5F) + hoverProg + deadProg + epicRoarProg + sleepProg + flyProg + pitchY) * getRenderSize() * 0.3F);
-        float headPosZ = (float) (posZ + (xzModSine) * Math.sin((float) ((rotationYaw + 90) * Math.PI / 180)) + xzSleepMod * Math.sin(rotationYaw * Math.PI / 180));
+        float headPosX = (float) (posX + xzMod * Math.cos((rotationYaw + 90) * Math.PI / 180) + xzSleepMod * Math.cos(rotationYaw * Math.PI / 180));
+        float headPosY = (float) (posY + (0.7F + (sitProg * 5F) + hoverProg + deadProg + (sleepProg * 6F) + flyProg) * getRenderSize() * 0.3F);
+        float headPosZ = (float) (posZ + xzMod * Math.sin((rotationYaw + 90) * Math.PI / 180) + xzSleepMod * Math.sin(rotationYaw * Math.PI / 180));
         return new Vec3d(headPosX, headPosY, headPosZ);
     }
 

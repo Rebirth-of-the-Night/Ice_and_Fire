@@ -16,18 +16,20 @@ public class DreadAIDragonWaitForQueen extends EntityAIBase {
     public boolean shouldExecute() {
         if (this.dragon.getRidingQueen() != null) {
             this.queen = dragon.getRidingQueen();
-            this.dragon.doRoboty();
         }
 
-        return this.queen != null;
+        return this.queen != null || this.dragon.isAwaken();
     }
 
     public boolean shouldContinueExecuting() {
-        return this.queen != null;
+        return this.dragon.isAwaken();
     }
 
     public void startExecuting() {
         this.queen.getNavigator().clearPath();
+        this.dragon.setFlying(true);
+        this.dragon.setLeaping(true);
+        this.dragon.setAwaken(true);
     }
 
     public void resetTask() {
@@ -36,6 +38,6 @@ public class DreadAIDragonWaitForQueen extends EntityAIBase {
     }
 
     public void updateTask() {
-
+        this.dragon.doRoboty();
     }
 }
