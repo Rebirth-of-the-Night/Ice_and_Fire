@@ -340,7 +340,7 @@ public class EntityLightningDragon extends EntityDragonBase {
                 }
             }
         }
-        if (burnProgress > 40D && canPositionBeSeen(burnX, burnY, burnZ)) {
+        if (burnProgress >= 40D && canPositionBeSeen(burnX, burnY, burnZ)) {
             double spawnX = burnX + (rand.nextFloat() * 3.0) - 1.5;
             double spawnY = burnY + (rand.nextFloat() * 3.0) - 1.5;
             double spawnZ = burnZ + (rand.nextFloat() * 3.0) - 1.5;
