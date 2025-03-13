@@ -5,9 +5,11 @@ import org.objectweb.asm.*;
 
 public class EntityLivingBaseTransformer implements IClassTransformer {
     private static final String[] TARGET_CLASSES = {
-        "net/minecraft/entity/EntityLivingBase",
-        "net/minecraft/client/entity/EntityPlayerSP",
-        "net/minecraft/entity/player/EntityPlayer"
+            "net/minecraft/entity/EntityLivingBase",
+            "net/minecraft/client/entity/EntityPlayerSP",
+            "net/minecraft/entity/player/EntityPlayerMP",
+            "net/minecraft/client/entity/EntityOtherPlayerMP",
+            "net/minecraft/entity/player/EntityPlayer"
     };
 
     private static final String INTERFACE_NAME = "com/github/alexthe666/iceandfire/client/model/util/IEntityLivingBaseRenderContext";
