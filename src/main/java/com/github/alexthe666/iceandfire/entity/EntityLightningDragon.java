@@ -320,7 +320,7 @@ public class EntityLightningDragon extends EntityDragonBase {
         double d3 = burnY - headPos.y;
         double d4 = burnZ - headPos.z;
         double distance = Math.max(2.5F * this.getDistance(burnX, burnY, burnZ), 0);
-        double conqueredDistance = burnProgress / 40D * distance;
+        double conqueredDistance = shouldBurnFire(world) / 40D * distance;
         int increment = (int) Math.ceil(conqueredDistance / 100);
         for (int i = 0; i < conqueredDistance; i += increment) {
             double progressX = headPos.x + d2 * (i / (float) distance);
@@ -340,7 +340,7 @@ public class EntityLightningDragon extends EntityDragonBase {
                 }
             }
         }
-        if (burnProgress > 400 && canPositionBeSeen(burnX, burnY, burnZ)) {
+        if (shouldBurnFire(world) >= 40D && canPositionBeSeen(burnX, burnY, burnZ)) {
             double spawnX = burnX + (rand.nextFloat() * 3.0) - 1.5;
             double spawnY = burnY + (rand.nextFloat() * 3.0) - 1.5;
             double spawnZ = burnZ + (rand.nextFloat() * 3.0) - 1.5;

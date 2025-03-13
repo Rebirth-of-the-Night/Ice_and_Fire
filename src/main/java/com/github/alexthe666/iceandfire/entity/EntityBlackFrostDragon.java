@@ -70,7 +70,13 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     @Override
     public void onLivingUpdate() {
         EntityDreadQueen queen = this.getRidingQueen();
-        if (this.isPhraseOne()) {
+
+        if(this.getHealth() <= 0){
+            this.setAwaken(false);
+            this.setModelDead(true);
+        }
+
+        if (this.isAwaken() && !this.isModelDead()) {
             if (this.canMove()
                     && !this.isHovering()
                     && !this.isFlying()
@@ -83,8 +89,8 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
             }
             if (queen != null && queen.getAttackTarget() != null)
                 this.setAttackTarget(queen.getAttackTarget());
-        } else if (!this.isModelDead()) {
-            this.setSleeping(true);
+        } else {
+            this.setSleeping(!this.isModelDead());
             this.setHovering(false);
             this.setFlying(false);
             this.setSwimming(false);
