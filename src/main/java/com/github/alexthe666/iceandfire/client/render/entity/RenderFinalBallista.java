@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
 import com.github.alexthe666.iceandfire.client.model.ModelBallista;
-import com.github.alexthe666.iceandfire.entity.EntityCastleBallista;
+import com.github.alexthe666.iceandfire.entity.EntityFinalBallista;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -13,29 +13,29 @@ import javax.annotation.Nullable;
 
 
 @SideOnly(Side.CLIENT)
-public class RenderCastleBallista extends RenderLiving<EntityCastleBallista>
+public class RenderFinalBallista extends RenderLiving<EntityFinalBallista>
 {
     public static final ResourceLocation xz = new ResourceLocation("iceandfire", "textures/models/ballista/ballista.png");
 
-    public RenderCastleBallista(RenderManager rm) {
-        super(rm, new ModelBallista(false), 1.0f);
+    public RenderFinalBallista(RenderManager rm) {
+        super(rm, new ModelBallista(true), 1.0f);
     }
 
-    protected float getSwingProgress(EntityCastleBallista e, float p_77040_2_) {
+    protected float getSwingProgress(EntityFinalBallista e, float p_77040_2_) {
         e.loadProgressForRender = e.getSwingProgress(p_77040_2_);
         e.renderYawOffset = 0.0F;
         e.prevRenderYawOffset = 0.0F;
         return super.getSwingProgress(e, p_77040_2_);
     }
 
-    protected void preRenderCallback(EntityCastleBallista entitylivingbaseIn, float partialTickTime) {
+    protected void preRenderCallback(EntityFinalBallista entitylivingbaseIn, float partialTickTime) {
         entitylivingbaseIn.renderYawOffset = 0.0F;
         entitylivingbaseIn.prevRenderYawOffset = 0.0F;
         super.preRenderCallback(entitylivingbaseIn, partialTickTime);
     }
 
     @Override
-    public void doRender(EntityCastleBallista entity, double x, double y, double z, float entityYaw, float partialTicks) {
+    public void doRender(EntityFinalBallista entity, double x, double y, double z, float entityYaw, float partialTicks) {
         bindTexture(xz);
         GlStateManager.pushMatrix();
         GlStateManager.enableRescaleNormal();
@@ -58,7 +58,7 @@ public class RenderCastleBallista extends RenderLiving<EntityCastleBallista>
 
     @Nullable
     @Override
-    protected ResourceLocation getEntityTexture(EntityCastleBallista entityCastleBallista) {
+    protected ResourceLocation getEntityTexture(EntityFinalBallista ballista) {
         return xz;
     }
 }
