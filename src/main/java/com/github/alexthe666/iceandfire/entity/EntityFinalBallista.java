@@ -31,7 +31,7 @@ public class EntityFinalBallista extends EntityCreature implements IDreadMob {
     float prevLoadProgress;
     public float loadProgressForRender;
     boolean attackedLastTick;
-    int attackCount;
+    int coolDown = 100;
 
     public EntityFinalBallista(World worldIn) {
         super(worldIn);
@@ -41,7 +41,6 @@ public class EntityFinalBallista extends EntityCreature implements IDreadMob {
         prevLoadProgress = 0.0f;
         loadProgressForRender = 0.0f;
         attackedLastTick = false;
-        attackCount = 0;
         setSize(1.5f, 3.00f);
         stepHeight = 0.0f;
         isImmuneToFire = true;
@@ -104,29 +103,6 @@ public class EntityFinalBallista extends EntityCreature implements IDreadMob {
         }
     }
 
-    protected void updateArmSwingProgress() {
-        if (isSwingInProgress) {
-            ++swingProgressInt;
-            if (swingProgressInt >= 6) {
-                swingProgressInt = 0;
-                isSwingInProgress = false;
-            }
-        } else {
-            swingProgressInt = 0;
-        }
-        swingProgress = swingProgressInt / 6.0f;
-        if (isLoadInProgress) {
-            ++loadProgressInt;
-            if (loadProgressInt >= 10) {
-                loadProgressInt = 0;
-                isLoadInProgress = false;
-            }
-        } else {
-            loadProgressInt = 0;
-        }
-        loadProgress = loadProgressInt / 10.0f;
-    }
-
     public void onEntityUpdate() {
         prevLoadProgress = loadProgress;
         super.onEntityUpdate();
@@ -186,6 +162,9 @@ public class EntityFinalBallista extends EntityCreature implements IDreadMob {
             this.prevRotationYawHead = this.rotationYawHead;
             this.prevRotationPitch = this.rotationPitch;
         }
+        if(this.coolDown < 100){
+            this.coolDown++;
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -242,23 +221,16 @@ public class EntityFinalBallista extends EntityCreature implements IDreadMob {
             d4 = this.getLookVec().z;
         }
 
-        float inaccuracy = 1.0F;
-        d2 = d2 + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        d3 = d3 + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        d4 = d4 + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-
         EntityBallistaArrow entityarrow = new EntityBallistaArrow(world, owner instanceof EntityLivingBase ? (EntityLivingBase) owner : this, d2, d3, d4);
 
         this.playSound(SoundEvents.ENTITY_WITHER_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 
         entityarrow.setPosition(this.posX + d2 * 3, this.posY + this.getEyeHeight() + d3 * 3, this.posZ + d4 * 3);
 
-        if (!this.world.isRemote)
+        if (!this.world.isRemote && this.coolDown == 100) {
             this.world.spawnEntity(entityarrow);
-    }
-
-    public boolean canBePushed() {
-        return true;
+            this.coolDown = 0;
+        }
     }
 
     public boolean canBeCollidedWith() {
@@ -274,27 +246,43 @@ public class EntityFinalBallista extends EntityCreature implements IDreadMob {
     @Override
     public void readEntityFromNBT(NBTTagCompound nbt) {
         super.readEntityFromNBT(nbt);
+         this.coolDown = nbt.getInteger("coolDown");
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound nbt) {
         super.writeEntityToNBT(nbt);
+        nbt.setInteger("coolDown", coolDown);
     }
 
-    public void knockBack(Entity p_70653_1_, float p_70653_2_, double p_70653_3_, double p_70653_5_) {
-        super.knockBack(p_70653_1_, p_70653_2_, p_70653_3_ / 10.0, p_70653_5_ / 10.0);
+    @Override
+    public void knockBack(Entity entity, float f1, double f2, double f3) {
+        super.knockBack(entity, f1, f2 / 10.0, f3 / 10.0);
         if (motionY > 0) {
             motionY = 0;
         }
     }
 
+    @Override
     public void move(MoverType mt, double x, double y, double z) {
         super.move(mt, x / 20.0, y, z / 20.0);
     }
 
+    @Override
     public void applyEntityCollision(Entity entityIn) {
     }
 
+    @Override
+    public boolean isPushedByWater() {
+        return false;
+    }
+
+    @Override
+    public boolean canBePushed() {
+        return false;
+    }
+
+    @Override
     public float getCollisionBorderSize() {
         return 0.0F;
     }
@@ -304,7 +292,7 @@ public class EntityFinalBallista extends EntityCreature implements IDreadMob {
         return this.isEntityAlive() ? this.getEntityBoundingBox() : null;
     }
 
-
+    @Override
     public int getVerticalFaceSpeed() {
         return 20;
     }

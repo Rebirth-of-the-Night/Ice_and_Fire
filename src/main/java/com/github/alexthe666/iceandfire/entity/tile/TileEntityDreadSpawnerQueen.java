@@ -6,7 +6,7 @@ import net.minecraft.util.ITickable;
 
 public class TileEntityDreadSpawnerQueen extends TileEntity implements ITickable {
 
-	private int activatingRangeFromPlayer = 10;
+	private int activatingRangeFromPlayer = 20;
 
 	@Override
 	public void onLoad()

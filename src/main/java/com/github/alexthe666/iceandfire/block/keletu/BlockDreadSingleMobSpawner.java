@@ -9,9 +9,12 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -54,6 +57,11 @@ public class BlockDreadSingleMobSpawner extends Block implements IDreadBlock {
 		return true;
 	}
 
+	@SideOnly(Side.CLIENT)
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state)
 	{
@@ -65,7 +73,7 @@ public class BlockDreadSingleMobSpawner extends Block implements IDreadBlock {
 			return new TileEntityDreadSingleUseSpawnerDragon();
 		if(state.getBlock() == IafBlockRegistry.dread_single_spawner_ballista)
 			return new TileEntityDreadSingleUseSpawnerBallista();
-		if(state.getBlock() == IafBlockRegistry.dread_single_spawner_ballista)
+		if(state.getBlock() == IafBlockRegistry.dread_single_spawner_final_ballista)
 			return new TileEntityDreadSingleUseSpawnerFinalBallista();
 		return null;
 	}

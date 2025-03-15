@@ -2034,7 +2034,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             this.motionY = 0.0D;
             this.motionZ = 0.0D;
             this.onUpdate();
-            if (this.isRiding()) {
+            if (this.isRiding() && !(this instanceof EntityBlackFrostDragon)) {
                 this.updateRiding(entity);
             }
         }

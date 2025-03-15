@@ -11,6 +11,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
 import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,6 +24,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 
@@ -31,6 +34,8 @@ import java.util.UUID;
 
 public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob, IBlacklistedFromStatues {
 
+
+    private final BossInfoServer bossInfo = (BossInfoServer) new BossInfoServer(this.getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS).setDarkenSky(true);
     protected static final DataParameter<Optional<UUID>> COMMANDER_UNIQUE_ID = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     protected static final DataParameter<Boolean> IS_LEAPING = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.BOOLEAN);
     protected static final DataParameter<Boolean> IS_PHRASE_ONE = EntityDataManager.createKey(EntityBlackFrostDragon.class, DataSerializers.BOOLEAN);
@@ -71,7 +76,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     public void onLivingUpdate() {
         EntityDreadQueen queen = this.getRidingQueen();
 
-        if(this.getHealth() <= 0){
+        if (this.getHealth() <= 0) {
             this.setAwaken(false);
             this.setModelDead(true);
         }
@@ -199,14 +204,6 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         if (!this.world.isRemote) {
             if (this.isBreathingFire()) {
                 this.fireTicks++;
-                if (this.fireTicks > this.getDragonStage() * 25 || this.fireStopTicks <= 0 && this.isPlayerControlled()) {
-                    this.setBreathingFire(false);
-                    this.usingGroundAttack = this.getRNG().nextBoolean();
-                    this.fireTicks = 0;
-                }
-                if (this.fireStopTicks > 0 && this.isPlayerControlled()) {
-                    this.fireStopTicks--;
-                }
             }
             if (this.isFlying() && this.getAttackTarget() != null && this.getEntityBoundingBox().expand(3.0F, 3.0F, 3.0F).intersects(this.getAttackTarget().getEntityBoundingBox())) {
                 this.attackEntityAsMob(this.getAttackTarget());
@@ -235,7 +232,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         //this.tasks.addTask(5, new DragonAIWander(this, 1.0D));
         //this.tasks.addTask(6, new DragonAIWatchClosest(this, EntityLivingBase.class, 6.0F));
         //this.tasks.addTask(6, new DragonAILookIdle(this));
-        this.tasks.addTask(1, new AIBlackFrostPassiveCircle<>(this, 55));
+        this.tasks.addTask(1, new AIBlackFrostPassiveCircle<>(this, 40));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
@@ -347,6 +344,9 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         compound.setFloat("spawnPointPosY", this.spawnPointPos.getY());
         compound.setFloat("spawnPointPosZ", this.spawnPointPos.getZ());
         compound.setBoolean("isAwaken", this.isAwaken());
+        if (this.hasCustomName()) {
+            this.bossInfo.setName(this.getDisplayName());
+        }
     }
 
     @Override
@@ -527,8 +527,29 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
         return false;
     }
 
-    protected float getFlightChancePerTick() {
-        return 1 / 15F;
+    @Override
+    public void setCustomNameTag(String name) {
+        super.setCustomNameTag(name);
+        this.bossInfo.setName(this.getDisplayName());
+    }
+
+    @Override
+    protected void updateAITasks() {
+        super.updateAITasks();
+        this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+    }
+
+    @Override
+    public void addTrackingPlayer(EntityPlayerMP player) {
+        super.addTrackingPlayer(player);
+        if (this.isPhraseOne())
+            this.bossInfo.addPlayer(player);
+    }
+
+    @Override
+    public void removeTrackingPlayer(EntityPlayerMP player) {
+        super.removeTrackingPlayer(player);
+        this.bossInfo.removePlayer(player);
     }
 
     @Override
