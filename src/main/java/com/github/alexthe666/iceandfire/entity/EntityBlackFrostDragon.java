@@ -254,6 +254,14 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     }*/
 
     @Override
+    public void updateRidden() {
+        Entity entity = this.getRidingEntity();
+        if (this.isRiding() && entity.isDead) {
+            this.dismountRidingEntity();
+        }
+    }
+
+    @Override
     public void onUpdate() {
         super.onUpdate();
         if (this.isFlying() && this.isLeaping()) {
@@ -304,10 +312,6 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
                 float degree_walk = 0.5F;
                 float degree_idle = 0.5F;
                 float degree_fly = 0.5F;
-                if (passenger instanceof EntityPlayer) {
-                    this.renderYawOffset = this.rotationYaw;
-                    this.rotationYaw = passenger.rotationYaw;
-                }
                 float hoverAddition = hoverProgress * -0.001F;
                 float flyAddition = flyProgress * -0.0001F;
                 float flyBody = Math.max(flyProgress, hoverProgress) * 0.0065F;
@@ -542,8 +546,7 @@ public class EntityBlackFrostDragon extends EntityIceDragon implements IDreadMob
     @Override
     public void addTrackingPlayer(EntityPlayerMP player) {
         super.addTrackingPlayer(player);
-        if (this.isPhraseOne())
-            this.bossInfo.addPlayer(player);
+        this.bossInfo.addPlayer(player);
     }
 
     @Override

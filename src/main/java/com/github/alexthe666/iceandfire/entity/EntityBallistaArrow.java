@@ -90,12 +90,12 @@ public class EntityBallistaArrow extends EntityFireball {
                         entityHit = ((EntityMutlipartPart) entityHit).getParent();
                     if (!entityHit.onGround)
                         attackDamage *= 1.5;
-                    if (entityHit instanceof EntityDragonBase) {
+                    if (entityHit instanceof EntityDragonBase)
                         attackDamage *= 5;
+                    if (entityHit instanceof EntityBlackFrostDragon) {
+                        attackDamage = ((EntityBlackFrostDragon) entityHit).getMaxHealth() * 0.25F;
                         //this.shootingEntity.setDead();
                     }
-                    if (entityHit instanceof EntityBlackFrostDragon)
-                        attackDamage = ((EntityBlackFrostDragon) entityHit).getMaxHealth() * 0.25F;
 
 
                     entityHit.attackEntityFrom(IceAndFire.dragonIce, attackDamage);
