@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.inventory;
 
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforge;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.recipe.IafRecipeRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -53,11 +54,13 @@ public class ContainerDragonForge extends SyncedFieldContainer {
                 }
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (index != 1 && index != 0) {
-                if (dragonType == 0 && IafRecipeRegistry.getFireForgeRecipe(itemstack1) != null || dragonType == 1 && IafRecipeRegistry.getIceForgeRecipe(itemstack1) != null || dragonType == 2 && IafRecipeRegistry.getLightningForgeRecipe(itemstack1) != null) {
+                if (IafRecipeRegistry.getForgeRecipe(itemstack1) != null) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (dragonType == 0 && IafRecipeRegistry.getFireForgeRecipeForBlood(itemstack1) != null || dragonType == 1 && IafRecipeRegistry.getIceForgeRecipeForBlood(itemstack1) != null || dragonType == 2 && IafRecipeRegistry.getLightningForgeRecipeForBlood(itemstack1) != null) {
+                } else if (itemstack1.getItem() == IafItemRegistry.fire_dragon_blood
+                        || itemstack1.getItem() == IafItemRegistry.ice_dragon_blood
+                        || itemstack1.getItem() == IafItemRegistry.lightning_dragon_blood) {
                     if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
                         return ItemStack.EMPTY;
                     }

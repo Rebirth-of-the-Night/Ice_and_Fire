@@ -25,7 +25,7 @@ public class TileEntityDragonforgeInput extends TileEntity implements ITickable 
     public void onHitWithFlame() {
         TileEntityDragonforge forge = getConnectedTileEntity();
         if (forge != null) {
-            forge.transferPower(1);
+            forge.transferPower();
         }
     }
 

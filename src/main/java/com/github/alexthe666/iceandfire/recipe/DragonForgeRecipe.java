@@ -5,14 +5,20 @@ import net.minecraft.util.NonNullList;
 
 public class DragonForgeRecipe {
 
-    private final ItemStack input;
-    private final ItemStack blood;
-    private final ItemStack output;
+    protected ItemStack input;
+    protected ItemStack blood;
+    protected ItemStack output;
+    boolean persistMetadata;
 
-    public DragonForgeRecipe(ItemStack input, ItemStack blood, ItemStack output) {
+    public DragonForgeRecipe(ItemStack input, ItemStack blood, ItemStack output, boolean persistMetadata) {
         this.input = input;
         this.blood = blood;
         this.output = output;
+        this.persistMetadata = persistMetadata;
+    }
+
+    public DragonForgeRecipe(ItemStack input, ItemStack blood, ItemStack output) {
+        this(input, blood, output, false);
     }
 
     public ItemStack getInput() {
@@ -27,9 +33,35 @@ public class DragonForgeRecipe {
         return output;
     }
 
+    public boolean canSmelt(NonNullList<ItemStack> forge) {
+        ItemStack input = forge.get(0);
+        ItemStack blood = forge.get(1);
+        ItemStack output = forge.get(2);
+        return canSmelt(input, blood, output);
+    }
 
-
-
+    public boolean canSmelt(ItemStack input, ItemStack blood, ItemStack output) {
+        if (input.isEmpty() || !input.isItemEqualIgnoreDurability(getInput())) {
+            return false;
+        }
+        if (input.getCount() < getInput().getCount()) {
+            return false;
+        }
+        if (blood.isEmpty() || !blood.isItemEqual(getBlood())) {
+            return false;
+        }
+        if (blood.getCount() < getBlood().getCount()) {
+            return false;
+        }
+        if (getOutput().isEmpty()) {
+            return false;
+        }
+        if (!output.isEmpty() && !output.isItemEqual(getOutput())) {
+            return false;
+        }
+        int calculatedOutputCount = output.getCount() + getOutput().getCount();
+        return calculatedOutputCount <= 64 && calculatedOutputCount <= output.getMaxStackSize();
+    }
 
     public void smelt(NonNullList<ItemStack> forge) {
         ItemStack input = forge.get(0);
@@ -41,7 +73,7 @@ public class DragonForgeRecipe {
     public void smelt(NonNullList<ItemStack> forge, ItemStack input, ItemStack blood, ItemStack output) {
         if (output.isEmpty()) {
             ItemStack stack = getOutput().copy();
-            if (input.getCount() == 1 && getOutput().getCount() == 1) {
+            if (this.persistMetadata) {
                 stack.setStackDisplayName(input.getDisplayName());
                 stack.setItemDamage(input.getItemDamage());
                 stack.setRepairCost(input.getRepairCost());

@@ -233,12 +233,6 @@ public class CommonProxy {
             event.getRegistry().register(armor.leggings);
             event.getRegistry().register(armor.boots);
         }
-        for (EnumBloodedDragonArmor armor : EnumBloodedDragonArmor.values()) {
-            event.getRegistry().register(armor.helmet);
-            event.getRegistry().register(armor.chestplate);
-            event.getRegistry().register(armor.leggings);
-            event.getRegistry().register(armor.boots);
-        }
         for (EnumSeaSerpent armor : EnumSeaSerpent.values()) {
             event.getRegistry().register(armor.scale);
             event.getRegistry().register(armor.helmet);
