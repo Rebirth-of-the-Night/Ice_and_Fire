@@ -83,29 +83,34 @@ public class EntityBallistaArrow extends EntityFireball {
                 return;
             }
             EntityLivingBase shootingEntity = this.shootingEntity;
-            if (shootingEntity instanceof EntityCastleBallista) {
-                if (entityHit != null && !entityHit.isEntityEqual(shootingEntity)) {
-                    if (!entityHit.isEntityEqual(shootingEntity)) {
-                        float attackDamage = IceAndFire.CONFIG.ballistaBaseDamage;
-                        if (!entityHit.onGround)
-                            attackDamage *= 1.5;
-                        if (entityHit instanceof EntityCastleBallista)
-                            attackDamage *= 5;
+            if (entityHit != null && !entityHit.isEntityEqual(shootingEntity)) {
+                if (!entityHit.isEntityEqual(shootingEntity)) {
+                    float attackDamage = IceAndFire.CONFIG.ballistaBaseDamage;
+                    if (entityHit instanceof EntityMutlipartPart)
+                        entityHit = ((EntityMutlipartPart) entityHit).getParent();
+                    if (!entityHit.onGround)
+                        attackDamage *= 1.5;
+                    if (entityHit instanceof EntityDragonBase)
+                        attackDamage *= 5;
+                    if (entityHit instanceof EntityBlackFrostDragon) {
+                        attackDamage = ((EntityBlackFrostDragon) entityHit).getMaxHealth() * 0.25F;
+                        //this.shootingEntity.setDead();
+                    }
 
-                        entityHit.attackEntityFrom(IceAndFire.dragonFire, attackDamage);
 
-                        if (entityHit instanceof EntityLivingBase) {
-                            if (!IsImmune.toDragonIce(entityHit)) {
-                                FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityHit, FrozenEntityProperties.class);
-                                if (frozenProps != null) {
-                                    frozenProps.setFrozenFor(200);
-                                }
+                    entityHit.attackEntityFrom(IceAndFire.dragonIce, attackDamage);
+
+                    if (entityHit instanceof EntityLivingBase) {
+                        if (!IsImmune.toDragonIce(entityHit)) {
+                            FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityHit, FrozenEntityProperties.class);
+                            if (frozenProps != null) {
+                                frozenProps.setFrozenFor(200);
                             }
                         }
                     }
-                    this.applyEnchantments(shootingEntity, entityHit);
-                    this.setDead();
                 }
+                this.applyEnchantments(shootingEntity, entityHit);
+                this.setDead();
             }
         }
         this.setDead();

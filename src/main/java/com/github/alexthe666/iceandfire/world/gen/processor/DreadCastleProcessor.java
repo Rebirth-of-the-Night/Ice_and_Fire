@@ -139,6 +139,9 @@ public class DreadCastleProcessor implements ITemplateProcessor {
             if (block == Blocks.PURPUR_BLOCK) {
                 return new Template.BlockInfo(pos, IafBlockRegistry.dread_single_spawner_ballista.getDefaultState(), null);
             }
+            if (block == Blocks.NOTEBLOCK) {
+                return new Template.BlockInfo(pos, IafBlockRegistry.dread_single_spawner_final_ballista.getDefaultState(), null);
+            }
             if (block == Blocks.NETHERRACK) {
                 if (worldIn.rand.nextInt(2) < 1)
                     return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_NORMAL);

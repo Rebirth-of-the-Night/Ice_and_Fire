@@ -26,7 +26,8 @@ public class DreadAIDragonWaitForQueen extends EntityAIBase {
     }
 
     public void startExecuting() {
-        this.queen.getNavigator().clearPath();
+        if (this.queen != null)
+            this.queen.getNavigator().clearPath();
         this.dragon.setFlying(true);
         this.dragon.setLeaping(true);
         this.dragon.setAwaken(true);

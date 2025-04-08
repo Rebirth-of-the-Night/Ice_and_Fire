@@ -44,6 +44,7 @@ public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity,
 
     public EntityDreadQueen(World worldIn) {
         super(worldIn);
+        this.fallDistance = 0;
     }
 
     @Override
@@ -54,7 +55,15 @@ public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity,
     }
 
     protected void initEntityAI() {
-
+        this.tasks.addTask(0, new DreadAIMountDragon(this));
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
+        this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
+        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(7, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(3, new DreadAITargetNonDread(this, EntityLivingBase.class, false, DragonUtils::canHostilesTarget));
     }
 
     @Nullable
@@ -68,15 +77,6 @@ public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity,
     public void doRoboty() {
         if (!awake) {
             awake = true;
-            this.tasks.addTask(0, new DreadAIMountDragon(this));
-            this.tasks.addTask(1, new EntityAISwimming(this));
-            this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0D, true));
-            this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D));
-            this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-            this.tasks.addTask(7, new EntityAILookIdle(this));
-            this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
-            this.targetTasks.addTask(3, new DreadAITargetNonDread(this, EntityLivingBase.class, false, DragonUtils::canHostilesTarget));
         }
     }
 
@@ -183,6 +183,7 @@ public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity,
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setBoolean("awake", awake);
+        compound.setBoolean("isAwaken", this.dataManager.get(AWAKEN));
     }
 
     @Override
@@ -194,7 +195,7 @@ public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity,
         }
 
         awake = compound.getBoolean("awake");
-
+        this.dataManager.set(AWAKEN, compound.getBoolean("isAwaken"));
     }
 
     public boolean isAwaken() {

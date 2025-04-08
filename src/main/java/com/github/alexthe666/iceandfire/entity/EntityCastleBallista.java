@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import net.minecraft.block.BlockRailBase;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -12,8 +11,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -150,12 +147,6 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
             rotationYaw = rotationYawHead;
             if (ticksExisted % 80 == 0) {
                 heal(1.0f);
-            }
-            int k = MathHelper.floor(posX);
-            int l = MathHelper.floor(posY);
-            int i1 = MathHelper.floor(posZ);
-            if (BlockRailBase.isRailBlock(world, new BlockPos(k, l - 1, i1))) {
-                --l;
             }
         } else {
             updateArmSwingProgress();

@@ -60,7 +60,7 @@ public class MessageDragonControl extends AbstractMessage<MessageDragonControl> 
     public void onServerReceived(MinecraftServer server, MessageDragonControl message, EntityPlayer player, MessageContext messageContext) {
         if (player.world != null) {
             Entity entity = player.world.getEntityByID(message.dragonId);
-            if (entity.isRidingOrBeingRiddenBy(player)) {
+            if (entity != null && entity.isRidingOrBeingRiddenBy(player)) {
                 if (entity instanceof EntityDragonBase) {
                     EntityDragonBase dragon = (EntityDragonBase) entity;
                     if (dragon.isOwner(player)) {
@@ -89,6 +89,10 @@ public class MessageDragonControl extends AbstractMessage<MessageDragonControl> 
                         amphi.setControlState(message.controlState);
                     }
                     amphi.setPosition(message.posX, message.posY, message.posZ);
+                }else if (entity instanceof EntityFinalBallista) {
+                    EntityFinalBallista ballista = (EntityFinalBallista) entity;
+                    ballista.setControlState(message.controlState);
+                    ballista.setPosition(message.posX, message.posY, message.posZ);
                 }
             }
         }

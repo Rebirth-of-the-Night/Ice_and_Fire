@@ -1,13 +1,18 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.network.play.server.SPacketChangeGameState;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
@@ -20,6 +25,7 @@ public class EntityGhostSword extends EntityArrow {
 
     public Entity shooter;
     int maxDisposeTime = 15;
+    private int knockbackStrength;
 
     @Override
     public void notifyDataManagerChange(DataParameter<?> key) {
@@ -66,6 +72,11 @@ public class EntityGhostSword extends EntityArrow {
         return d0 * d0 + d1 * d1 + d2 * d2;
     }
 
+    @Override
+    public void setKnockbackStrength(int knockbackStrength) {
+        this.knockbackStrength = knockbackStrength;
+    }
+
     public void onUpdate() {
         super.onUpdate();
         noClip = true;
@@ -85,7 +96,7 @@ public class EntityGhostSword extends EntityArrow {
             this.world.spawnParticle(EnumParticleTypes.END_ROD, x, y + 0.5D, z, d0, d1, d2);
         }
 
-        if (this.ticksExisted >= 100) //<- loop exit for primal
+        if (this.ticksExisted >= 100)
             this.setDead();
     }
 
@@ -98,31 +109,51 @@ public class EntityGhostSword extends EntityArrow {
         if (this.isDead)
             return;
 
-        if (world.isRemote)
-            return;
-
-        if (!this.world.isRemote && object.typeOfHit == RayTraceResult.Type.BLOCK) {
-            return;
-        }
-
-        if (object.typeOfHit == RayTraceResult.Type.ENTITY) {
+        Entity entity = object.entityHit;
+        if (entity != null) {
             Entity e = object.entityHit;
             if (e == shooter)
                 return;
 
-            if (e instanceof EntityLivingBase) {
-                EntityLivingBase elb = (EntityLivingBase) e;
-
-                elb.attackEntityFrom(DamageSource.causeArrowDamage(this, shooter), 5);
-
-                this.setDead();
+            int damage = MathHelper.ceil(getDamage());
+            if (this.getIsCritical()) {
+                damage += this.rand.nextInt(damage / 2 + 2);
             }
-            if (e instanceof EntityMutlipartPart) {
-                EntityMutlipartPart elb = (EntityMutlipartPart) e;
-                elb.getParent().attackEntityFrom(DamageSource.causeArrowDamage(this, shooter), 5);
 
-                this.setDead();
+            DamageSource damageSource;
+            if (this.shootingEntity == null) {
+                damageSource = DamageSource.causeArrowDamage(this, this);
+            } else {
+                damageSource = DamageSource.causeArrowDamage(this, this.shootingEntity);
             }
+
+            if (this.isBurning() && !(entity instanceof EntityEnderman)) {
+                entity.setFire(5);
+            }
+
+            if (entity.attackEntityFrom(damageSource, (float) damage)) {
+                if (entity instanceof EntityLivingBase) {
+                    EntityLivingBase entitylivingbase = (EntityLivingBase) entity;
+                    if (this.knockbackStrength > 0) {
+                        float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+                        if (f1 > 0.0F) {
+                            entitylivingbase.addVelocity(this.motionX * (double) this.knockbackStrength * 0.6000000238418579 / (double) f1, 0.1, this.motionZ * (double) this.knockbackStrength * 0.6000000238418579 / (double) f1);
+                        }
+                    }
+
+                    if (this.shootingEntity instanceof EntityLivingBase) {
+                        EnchantmentHelper.applyThornEnchantments(entitylivingbase, this.shootingEntity);
+                        EnchantmentHelper.applyArthropodEnchantments((EntityLivingBase) this.shootingEntity, entitylivingbase);
+                    }
+
+                    this.arrowHit(entitylivingbase);
+                    if (this.shootingEntity != null && entitylivingbase != this.shootingEntity && entitylivingbase instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP) {
+                        ((EntityPlayerMP) this.shootingEntity).connection.sendPacket(new SPacketChangeGameState(6, 0.0F));
+                    }
+                }
+            }
+        } else {
+            this.setDead();
         }
     }
 

@@ -19,7 +19,7 @@ public class ModelBallista extends ModelBase {
 	private final ModelRenderer MAIMBALLISTAE43_1_r1;
 	private final ModelRenderer handle;
 
-	public ModelBallista() {
+	public ModelBallista(boolean isFinal) {
 		textureWidth = 256;
 		textureHeight = 256;
 
@@ -119,16 +119,20 @@ public class ModelBallista extends ModelBase {
 		setRotationAngle(MAIMBALLISTAE4_r1, 0.0F, -0.5672F, 0.0F);
 		MAIMBALLISTAE4_r1.cubeList.add(new ModelBox(MAIMBALLISTAE4_r1, 0, 68, -4.5F, -4.0F, -2.5F, 23, 4, 5, 0.0F, false));
 
-		skull = new ModelRenderer(this);
-		skull.setRotationPoint(0.0F, 0.0F, 0.0F);
-		MAINBALLISTAE.addChild(skull);
-		skull.cubeList.add(new ModelBox(skull, 120, 23, -3.0F, -19.0887F, -37.25F, 8, 6, 8, 0.0F, false));
 
+		skull = new ModelRenderer(this);
 		MAIMBALLISTAE43_1_r1 = new ModelRenderer(this);
-		MAIMBALLISTAE43_1_r1.setRotationPoint(1.0F, -5.215F, 3.5584F);
-		skull.addChild(MAIMBALLISTAE43_1_r1);
-		setRotationAngle(MAIMBALLISTAE43_1_r1, 0.1309F, 0.0F, 0.0F);
-		MAIMBALLISTAE43_1_r1.cubeList.add(new ModelBox(MAIMBALLISTAE43_1_r1, 120, 37, -4.0F, -12.0887F, -39.5F, 8, 2, 8, 0.0F, false));
+
+		if(!isFinal) {
+			skull.setRotationPoint(0.0F, 0.0F, 0.0F);
+			MAINBALLISTAE.addChild(skull);
+			skull.cubeList.add(new ModelBox(skull, 120, 23, -3.0F, -19.0887F, -37.25F, 8, 6, 8, 0.0F, false));
+
+			MAIMBALLISTAE43_1_r1.setRotationPoint(1.0F, -5.215F, 3.5584F);
+			skull.addChild(MAIMBALLISTAE43_1_r1);
+			setRotationAngle(MAIMBALLISTAE43_1_r1, 0.1309F, 0.0F, 0.0F);
+			MAIMBALLISTAE43_1_r1.cubeList.add(new ModelBox(MAIMBALLISTAE43_1_r1, 120, 37, -4.0F, -12.0887F, -39.5F, 8, 2, 8, 0.0F, false));
+		}
 
 		handle = new ModelRenderer(this);
 		handle.setRotationPoint(0.0F, 0.0F, 0.0F);

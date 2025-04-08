@@ -11,7 +11,6 @@ import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.BannerPattern;
@@ -23,6 +22,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class IafRecipeRegistry {
@@ -40,30 +40,6 @@ public class IafRecipeRegistry {
         ICE_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(IafItemRegistry.dragonbone_sword), new ItemStack(IafItemRegistry.ice_dragon_blood), new ItemStack(IafItemRegistry.dragonbone_sword_ice)));
         LIGHTNING_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(IafItemRegistry.dragonbone_sword), new ItemStack(IafItemRegistry.lightning_dragon_blood), new ItemStack(IafItemRegistry.dragonbone_sword_lightning)));
 
-        for (EnumDragonArmor input : EnumDragonArmor.values()) {
-            List<DragonForgeRecipe> recipes;
-            Item blood;
-            switch (input.eggType.dragonType.getName()) {
-                case "ice":
-                    recipes = ICE_FORGE_RECIPES;
-                    blood = IafItemRegistry.ice_dragon_blood;
-                    break;
-                case "lightning":
-                    recipes = LIGHTNING_FORGE_RECIPES;
-                    blood = IafItemRegistry.lightning_dragon_blood;
-                    break;
-                default:
-                    recipes = FIRE_FORGE_RECIPES;
-                    blood = IafItemRegistry.fire_dragon_blood;
-            }
-
-            EnumBloodedDragonArmor result = EnumBloodedDragonArmor.valueOf(input.name());
-
-            recipes.add(new DragonForgeRecipe(new ItemStack(input.helmet), new ItemStack(blood, 32), new ItemStack(result.helmet)));
-            recipes.add(new DragonForgeRecipe(new ItemStack(input.chestplate), new ItemStack(blood, 32), new ItemStack(result.chestplate)));
-            recipes.add(new DragonForgeRecipe(new ItemStack(input.leggings), new ItemStack(blood, 32), new ItemStack(result.leggings)));
-            recipes.add(new DragonForgeRecipe(new ItemStack(input.boots), new ItemStack(blood, 32), new ItemStack(result.boots)));
-        }
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(IafItemRegistry.stymphalian_arrow, new BehaviorProjectileDispense() {
             /**
              * Return the projectile entity spawned by this dispense behavior.
@@ -326,9 +302,6 @@ public class IafRecipeRegistry {
         for (EnumSeaSerpent serpent : EnumSeaSerpent.values()) {
             serpent.armorMaterial.setRepairItem(new ItemStack(serpent.scale));
         }
-        for (EnumBloodedDragonArmor armor : EnumBloodedDragonArmor.values()) {
-            armor.armorMaterial.setRepairItem(new ItemStack(EnumBloodedDragonArmor.getScaleItem(armor)));
-        }
         ItemStack waterBreathingPotion = new ItemStack(Items.POTIONITEM, 1, 0);
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("Potion", "water_breathing");
@@ -364,55 +337,42 @@ public class IafRecipeRegistry {
         }
     }
 
-    public static DragonForgeRecipe getFireForgeRecipe(ItemStack stack) {
-        for (DragonForgeRecipe recipe : FIRE_FORGE_RECIPES) {
-            if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
+    public static DragonForgeRecipe getForgeRecipe(String type, ItemStack stack) {
+        for (DragonForgeRecipe recipe : getForgeRecipes(type)) {
+            if (!stack.isEmpty() && stack.isItemEqualIgnoreDurability(recipe.getInput())) {
                 return recipe;
             }
         }
         return null;
     }
 
-    public static DragonForgeRecipe getIceForgeRecipe(ItemStack stack) {
-        for (DragonForgeRecipe recipe : ICE_FORGE_RECIPES) {
-            if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
-                return recipe;
-            }
-        }
-        return null;
-    }
-    public static DragonForgeRecipe getLightningForgeRecipe(ItemStack stack) {
-        for (DragonForgeRecipe recipe : LIGHTNING_FORGE_RECIPES) {
-            if (OreDictionary.itemMatches(recipe.getInput(), stack, false)) {
+    public static DragonForgeRecipe getForgeRecipe(ItemStack stack) {
+        for (String type : Arrays.asList("fire", "ice", "lightning")) {
+            DragonForgeRecipe recipe = getForgeRecipe(type, stack);
+            if (recipe != null) {
                 return recipe;
             }
         }
         return null;
     }
 
-    public static DragonForgeRecipe getFireForgeRecipeForBlood(ItemStack stack) {
-        for (DragonForgeRecipe recipe : FIRE_FORGE_RECIPES) {
-            if (OreDictionary.itemMatches(recipe.getBlood(), stack, false)) {
+    public static DragonForgeRecipe getForgeRecipeForBlood(String type, ItemStack stack) {
+        for (DragonForgeRecipe recipe : getForgeRecipes(type)) {
+            if (stack != null && stack.isItemEqual(recipe.getBlood())) {
                 return recipe;
             }
         }
         return null;
     }
 
-    public static DragonForgeRecipe getIceForgeRecipeForBlood(ItemStack stack) {
-        for (DragonForgeRecipe recipe : ICE_FORGE_RECIPES) {
-            if (OreDictionary.itemMatches(recipe.getBlood(), stack, false)) {
-                return recipe;
-            }
+    public static List<DragonForgeRecipe> getForgeRecipes(String type) {
+        if (type == null) {
+            return new ArrayList<>();
         }
-        return null;
-    }
-    public static DragonForgeRecipe getLightningForgeRecipeForBlood(ItemStack stack) {
-        for (DragonForgeRecipe recipe : LIGHTNING_FORGE_RECIPES) {
-            if (OreDictionary.itemMatches(recipe.getBlood(), stack, false)) {
-                return recipe;
-            }
+        switch (type) {
+            case "ice": return ICE_FORGE_RECIPES;
+            case "lightning": return LIGHTNING_FORGE_RECIPES;
+            default: return FIRE_FORGE_RECIPES;
         }
-        return null;
     }
 }
