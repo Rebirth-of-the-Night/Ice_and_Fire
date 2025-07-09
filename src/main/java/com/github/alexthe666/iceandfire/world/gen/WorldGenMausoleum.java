@@ -24,6 +24,7 @@ public class WorldGenMausoleum extends WorldGenerator {
 
     public EnumFacing facing;
     private static final ResourceLocation STRUCTURE = new ResourceLocation(IceAndFire.MODID, "dread_mausoleum");
+    private static final ResourceLocation STRUCTURE_OLD = new ResourceLocation(IceAndFire.MODID, "dread_mausoleum_forge");
 
     public WorldGenMausoleum(EnumFacing facing) {
         super(false);
@@ -70,7 +71,7 @@ public class WorldGenMausoleum extends WorldGenerator {
         BlockPos height = getGround(position, worldIn);
         IBlockState dirt = worldIn.getBlockState(height.down(2));
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
-        Template template = templateManager.getTemplate(server, STRUCTURE);
+        Template template = templateManager.getTemplate(server, IceAndFire.CONFIG.enableDreadlands ? STRUCTURE : STRUCTURE_OLD);
         PlacementSettings settings = new PlacementSettings().setRotation(getRotationFromFacing(facing));
         BlockPos pos = height.offset(facing, template.getSize().getZ() / 2).offset(facing.rotateYCCW(), template.getSize().getX() / 2);
         if (checkIfCanGenAt(worldIn, pos, template.getSize().getX(), template.getSize().getZ(), facing)) {

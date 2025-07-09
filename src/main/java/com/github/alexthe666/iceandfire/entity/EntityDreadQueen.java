@@ -3,8 +3,8 @@ package com.github.alexthe666.iceandfire.entity;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.ai.DreadAIMountDragon;
 import com.github.alexthe666.iceandfire.entity.ai.DreadAITargetNonDread;
-import com.github.alexthe666.iceandfire.event.DreadCastleProtection;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
@@ -17,41 +17,21 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 
 import javax.annotation.Nullable;
 
-public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity, IVillagerFear, IAnimalFear, IDreadMob {
-
-    public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("iceandfire", "dread_queen"));
-
+public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity, IVillagerFear, IAnimalFear {
     private final BossInfoServer bossInfo = (BossInfoServer) new BossInfoServer(this.getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS).setDarkenSky(true);
-    private static final DataParameter<Boolean> AWAKEN = EntityDataManager.createKey(EntityDreadQueen.class, DataSerializers.BOOLEAN);
     public static Animation ANIMATION_SPAWN = Animation.create(40);
     private int animationTick;
     private Animation currentAnimation;
 
-    private boolean awake = false;
-
     public EntityDreadQueen(World worldIn) {
         super(worldIn);
-        this.fallDistance = 0;
-    }
-
-    @Override
-    protected void entityInit() {
-        super.entityInit();
-        this.dataManager.register(AWAKEN, false);
-
     }
 
     protected void initEntityAI() {
@@ -62,22 +42,13 @@ public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity,
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(7, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(3, new DreadAITargetNonDread(this, EntityLivingBase.class, false, DragonUtils::canHostilesTarget));
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable() {
-        return LOOT;
-    }
-
-    /**
-     * Pabilo & Carver, Quality Coding(tm)
-     */
-    public void doRoboty() {
-        if (!awake) {
-            awake = true;
-        }
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(3, new DreadAITargetNonDread(this, EntityLivingBase.class, false, new Predicate<Entity>() {
+            @Override
+            public boolean apply(@Nullable Entity entity) {
+                return entity instanceof EntityLivingBase && DragonUtils.canHostilesTarget(entity);
+            }
+        }));
     }
 
     protected void applyEntityAttributes() {
@@ -87,6 +58,15 @@ public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity,
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
         this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(256.0D);
         this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(30.0D);
+    }
+
+
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+
+        if (this.hasCustomName()) {
+            this.bossInfo.setName(this.getDisplayName());
+        }
     }
 
     public void setCustomNameTag(String name) {
@@ -160,13 +140,7 @@ public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity,
 
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (world.isRemote) {
-            boolean server = dataManager.get(AWAKEN);
-            if (server && !awake)
-                awake = true;
-        }
-        if (!isAwaken() && !world.getEntitiesWithinAABB(EntityPlayer.class, getEntityBoundingBox().grow(20)).isEmpty())
-            doRoboty();
+
     }
 
     @Override
@@ -177,40 +151,5 @@ public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity,
     @Override
     protected boolean canDespawn() {
         return false;
-    }
-
-    @Override
-    public void writeEntityToNBT(NBTTagCompound compound) {
-        super.writeEntityToNBT(compound);
-        compound.setBoolean("awake", awake);
-        compound.setBoolean("isAwaken", this.dataManager.get(AWAKEN));
-    }
-
-    @Override
-    public void readEntityFromNBT(NBTTagCompound compound) {
-        super.readEntityFromNBT(compound);
-
-        if (this.hasCustomName()) {
-            this.bossInfo.setName(this.getDisplayName());
-        }
-
-        awake = compound.getBoolean("awake");
-        this.dataManager.set(AWAKEN, compound.getBoolean("isAwaken"));
-    }
-
-    public boolean isAwaken() {
-        return awake;
-    }
-
-    @Override
-    public void onDeath(DamageSource cause) {
-        super.onDeath(cause);
-        if (!world.isRemote) {
-            DreadCastleProtection.onBossDefeated(this);
-
-            if (world.getPerWorldStorage() != null) {
-                world.getPerWorldStorage().saveAllData();
-            }
-        }
     }
 }

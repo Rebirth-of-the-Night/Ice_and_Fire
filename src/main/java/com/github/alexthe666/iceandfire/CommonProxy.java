@@ -133,12 +133,14 @@ public class CommonProxy {
         registerSpawnable(EntityEntryBuilder.create(), event, EntityDreadQueen.class, "dread_queen", 58, 0XE0E6E6, 0X4A6C6E);
         registerUnspawnable(EntityEntryBuilder.create(), event, EntityDragonLightningBolt.class, "dragon_lightning_bolt", 59);
         registerSpawnable(EntityEntryBuilder.create(), event, EntityDreadKnightRoyal.class, "dread_knight_royal", 60, 0XE0E6E6, 0X4A6C6E);
-        registerUnspawnable(EntityEntryBuilder.create(), event, EntityCastleBallista.class, "ballista", 61);
         registerUnspawnable(EntityEntryBuilder.create(), event, EntityBallistaArrow.class, "ballista_arrow", 62);
         registerSpawnable(EntityEntryBuilder.create(), event, EntityGhost.class, "ghost", 63, 0XB9EDB8, 0X73B276);
         registerUnspawnable(EntityEntryBuilder.create(), event, EntityGhostSword.class, "ghost_sword", 64);
-        registerSpawnable(EntityEntryBuilder.create(), event, EntityAutomatonFlying.class, "automaton_flying", 65, 0, 0);
-        registerUnspawnable(EntityEntryBuilder.create(), event, EntityFinalBallista.class, "final_ballista", 66);
+
+        if(IceAndFire.CONFIG.enableDreadlands) {
+            registerUnspawnable(EntityEntryBuilder.create(), event, EntityCastleBallista.class, "ballista", 61);
+            registerUnspawnable(EntityEntryBuilder.create(), event, EntityFinalBallista.class, "final_ballista", 66);
+        }
     }
 
     public static <T extends Entity> void registerSpawnable(EntityEntryBuilder<T> builder, RegistryEvent.Register<EntityEntry> event, Class<T> entityClass, String name, int id, int mainColor, int subColor) {

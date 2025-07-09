@@ -598,8 +598,7 @@ public class ServerEvents {
     }
 
     @SubscribeEvent
-    public void onFillBucket(FillBucketEvent event)
-    {
+    public void onFillBucket(FillBucketEvent event) {
         World worldObj = event.getWorld();
         RayTraceResult target = event.getTarget();
         ItemStack stack = event.getEmptyBucket();
@@ -611,24 +610,20 @@ public class ServerEvents {
         boolean isLava = stack.getItem() == Items.LAVA_BUCKET
                 || (fluid != null && fluid.getFluid().getBlock() == Blocks.LAVA);
 
-        if (target != null && target.typeOfHit == RayTraceResult.Type.BLOCK)
-        {
+        if (target != null && target.typeOfHit == RayTraceResult.Type.BLOCK) {
             BlockPos hitPos = target.getBlockPos().offset(target.sideHit);
 
-            if ((isLava || isWater) && player.dimension == IceAndFire.CONFIG.dreadlandsDimensionId)
-            {
-                if (worldObj.isAirBlock(hitPos))
-                {
+            if ((isLava || isWater) && player.dimension == IceAndFire.CONFIG.dreadlandsDimensionId) {
+                if (worldObj.isAirBlock(hitPos)) {
                     worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, hitPos.getX() + 0.5, hitPos.getY() + 1, hitPos.getZ() + 0.5, 0, 0, 0);
                     event.getEntityPlayer().playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 1.0F, 1.0F);
 
-                    if(isLava)
+                    if (isLava)
                         worldObj.setBlockState(hitPos, Blocks.COBBLESTONE.getDefaultState());
-                    if(isWater)
+                    if (isWater)
                         worldObj.setBlockState(hitPos, Blocks.SNOW.getDefaultState());
 
-                    if (!player.capabilities.isCreativeMode)
-                    {
+                    if (!player.capabilities.isCreativeMode) {
                         event.setFilledBucket(new ItemStack(Items.BUCKET));
                     }
 
@@ -1095,6 +1090,15 @@ public class ServerEvents {
                 }
             }
         }
+
+        if (IceAndFire.CONFIG.enableDreadlands)
+            DreadCastleProtection.onBlockBreak(event);
+    }
+
+    @SubscribeEvent
+    public void onPlaceBlock(BlockEvent.EntityPlaceEvent event) {
+        if (IceAndFire.CONFIG.enableDreadlands)
+            DreadCastleProtection.onBlockPlace(event);
     }
 
     @SubscribeEvent

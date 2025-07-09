@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class IceAndFireConfig {
+    public boolean enableDreadlands = false;
     public boolean customMainMenu = true;
     public boolean useVanillaFont = false;
     public boolean logCascadingWorldGen = false;
@@ -370,6 +371,9 @@ public class IceAndFireConfig {
         this.generateHydraChance = config.getInt("Hydra Caves Gen Chance", "all", 200, 1, 10000, "One out of this number chance per chunk to generate a hydra cave.");
 
         this.chunkLoadSummonCrystal = config.getBoolean("Chunk Load Summon Crystal", "all", true, "True if the summon crystal can load chunks to find dragons.");
+
+        //Dreadlands
+        this.enableDreadlands = config.getBoolean("Enable Dreadlands", "all", false, "Enable dreadland dimension. (WIP)");
 
         //Castle
         this.maxDreadSpawnerEntities = config.getInt("Dread Spawner Entity Counts)", "all", 2, 1, 100, "Maximum counts of Entities can once spawned by a Dread Spawner");

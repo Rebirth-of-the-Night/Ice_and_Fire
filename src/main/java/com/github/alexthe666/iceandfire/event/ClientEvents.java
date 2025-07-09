@@ -53,6 +53,13 @@ public class ClientEvents {
     private static final ResourceLocation CHAIN_TEXTURE = new ResourceLocation("iceandfire:textures/models/misc/chain_link.png");
     private final Random rand = new Random();
 
+    private static boolean shouldCancelRender(EntityLivingBase living) {
+        if (living.getRidingEntity() != null && living.getRidingEntity() instanceof EntityDragonBase) {
+            return ClientProxy.currentDragonRiders.contains(living.getUniqueID()) || living == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0;
+        }
+        return false;
+    }
+
     public static void initializeStoneLayer() {
         for (Map.Entry<Class<? extends Entity>, Render<? extends Entity>> entry : Minecraft.getMinecraft().getRenderManager().entityRenderMap.entrySet()) {
             Render<? extends Entity> render = entry.getValue();
@@ -257,13 +264,10 @@ public class ClientEvents {
         }
     }
 
-	@SubscribeEvent
-    public void onPreRenderLiving(RenderLivingEvent.Pre<?> event) {
-        if (event.getEntity().getRidingEntity() != null && event.getEntity().getRidingEntity() instanceof EntityDragonBase) {
-            if (ClientProxy.currentDragonRiders.contains(event.getEntity().getUniqueID()) || event.getEntity() == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
-                event.setCanceled(true);
-                net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post<>(event.getEntity(), event.getRenderer(), event.getPartialRenderTick(), event.getX(), event.getY(), event.getZ()));
-            }
+    @SubscribeEvent
+    public void onPreRenderLiving(RenderLivingEvent.Pre<?> event){
+        if (shouldCancelRender(event.getEntity())) {
+            event.setCanceled(true);
         }
 
         if (event.getEntity() instanceof EntityLiving && !event.getEntity().isInvisible()) {
@@ -277,6 +281,10 @@ public class ClientEvents {
 	@SubscribeEvent
     @SuppressWarnings("rawtypes")
     public void onPostRenderLiving(RenderLivingEvent.Post event) {
+        if (shouldCancelRender(event.getEntity())) {
+            event.setCanceled(true);
+        }
+
         EntityLivingBase entity = event.getEntity();
         ChainEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(entity, ChainEntityProperties.class);
         if (properties != null) {

@@ -20,13 +20,7 @@ public class RenderDreadQueen extends RenderLiving<EntityDreadQueen> {
 
     public RenderDreadQueen(RenderManager renderManager) {
         super(renderManager, new ModelDreadQueen(0.0F, false), 0.6F);
-        this.addLayer(new LayerGenericGlowing<EntityDreadQueen>(this, TEXTURE_EYES) {
-            @Override
-            public void doRenderLayer(EntityDreadQueen queen, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-                if (queen.isAwaken())
-                    super.doRenderLayer(queen, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale);
-            }
-        });
+        this.addLayer(new LayerGenericGlowing<>(this, TEXTURE_EYES));
         this.addLayer(new LayerHeldItem(this) {
             protected void translateToHand(EnumHandSide p_191361_1_) {
                 ((ModelDreadQueen) this.livingEntityRenderer.getMainModel()).postRenderArm(0.0625F, p_191361_1_);
@@ -47,6 +41,6 @@ public class RenderDreadQueen extends RenderLiving<EntityDreadQueen> {
     @Nullable
     @Override
     protected ResourceLocation getEntityTexture(EntityDreadQueen entity) {
-        return entity.isAwaken() ? (entity.getHealth()<=entity.getMaxHealth()*0.2f?TEXTURE_INJURED:TEXTURE) : TEXTURE_INACTIVE;
+        return TEXTURE;
     }
 }
