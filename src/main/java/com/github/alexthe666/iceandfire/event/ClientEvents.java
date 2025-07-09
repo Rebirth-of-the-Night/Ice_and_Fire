@@ -269,6 +269,13 @@ public class ClientEvents {
         if (shouldCancelRender(event.getEntity())) {
             event.setCanceled(true);
         }
+
+        if (event.getEntity() instanceof EntityLiving && !event.getEntity().isInvisible()) {
+            StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(event.getEntity(), StoneEntityProperties.class);
+            if (properties != null && properties.isStone) {
+                event.getEntity().setInvisible(true);
+            }
+        }
     }
 
 	@SubscribeEvent
