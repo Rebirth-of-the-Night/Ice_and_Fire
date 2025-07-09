@@ -1257,8 +1257,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     }
 
     protected boolean isTimeToWake() {
-        if (this instanceof EntityBlackFrostDragon)
-            return true;
         if (this instanceof EntityLightningDragon)
             return !this.world.isDaytime();
         return this.world.isDaytime();
@@ -1282,8 +1280,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if(this instanceof EntityBlackFrostDragon)
-            return;
         this.stepHeight = this.getDragonStage() * 0.5F;
         if (!this.isPlayerControlled() && this.isBeyondHeight() && !this.onGround) {
             this.motionY -= 0.1F;
@@ -1874,8 +1870,6 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             this.setBreathingFire(false);
             return;
         }
-        if(this instanceof EntityBlackFrostDragon)
-            return;
 
         if (this.isBreathingFire() && this.burnProgress < 40) {
             this.burnProgress++;

@@ -426,12 +426,14 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityDreadQueen.class, new RenderDreadQueen(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityDragonLightningBolt.class, new RenderDragonLightningBolt(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityDreadKnightRoyal.class, new RenderDreadKnightRoyal(Minecraft.getMinecraft().getRenderManager()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityCastleBallista.class, new RenderCastleBallista(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityBallistaArrow.class, new RenderBallistaArrow(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityGhost.class, new RenderGhost(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityGhostSword.class, new RenderGhostSword<>(Minecraft.getMinecraft().getRenderManager(), Minecraft.getMinecraft().getRenderItem()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityAutomatonFlying.class, new RenderAutomatonFlying(Minecraft.getMinecraft().getRenderManager()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityFinalBallista.class, new RenderFinalBallista(Minecraft.getMinecraft().getRenderManager()));
+
+        if(IceAndFire.CONFIG.enableDreadlands) {
+            RenderingRegistry.registerEntityRenderingHandler(EntityCastleBallista.class, new RenderCastleBallista(Minecraft.getMinecraft().getRenderManager()));
+            RenderingRegistry.registerEntityRenderingHandler(EntityFinalBallista.class, new RenderFinalBallista(Minecraft.getMinecraft().getRenderManager()));
+        }
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPodium.class, new RenderPodium());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLectern.class, new RenderLectern());

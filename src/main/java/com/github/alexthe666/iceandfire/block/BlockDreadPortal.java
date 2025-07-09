@@ -50,6 +50,9 @@ public class BlockDreadPortal extends BlockContainer implements IDreadBlock {
 
     @Override
     public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+        if(!IceAndFire.CONFIG.enableDreadlands)
+            return;
+
         if(entity.dimension != IceAndFire.CONFIG.dreadlandsDimensionId){
             MiscEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(entity, MiscEntityProperties.class);
             if (properties != null) {

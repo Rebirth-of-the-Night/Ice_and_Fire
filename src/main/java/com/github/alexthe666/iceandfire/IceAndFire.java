@@ -6,7 +6,6 @@ import com.github.alexthe666.iceandfire.compat.ThaumcraftCompatBridge;
 import com.github.alexthe666.iceandfire.compat.TinkersCompatBridge;
 import com.github.alexthe666.iceandfire.entity.IafEntityRegistry;
 import com.github.alexthe666.iceandfire.entity.IafVillagerRegistry;
-import com.github.alexthe666.iceandfire.event.DreadCastleProtection;
 import com.github.alexthe666.iceandfire.event.ServerEvents;
 import com.github.alexthe666.iceandfire.event.WorldGenDreadDimension;
 import com.github.alexthe666.iceandfire.event.WorldGenEvents;
@@ -28,14 +27,12 @@ import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -47,7 +44,7 @@ import java.io.File;
 import java.util.Random;
 
 @Mod(modid = IceAndFire.MODID,
-        dependencies = "required-after:llibrary@[" + IceAndFire.LLIBRARY_VERSION + ",);required-after:boatdeletebegone;after:thaumicadds",
+        dependencies = "required-after:llibrary@[" + IceAndFire.LLIBRARY_VERSION + ",);after:thaumicadds",
         version = IceAndFire.VERSION, name = IceAndFire.NAME, guiFactory = "com.github.alexthe666.iceandfire.client.gui.IceAndFireGuiFactory")
 public class IceAndFire {
 
@@ -104,7 +101,8 @@ public class IceAndFire {
         TAB_ITEMS = new CreativeTab(MODID + "_items");
         TAB_BLOCKS = new CreativeTab(MODID + "_blocks");
         IafEntityRegistry.init();
-        IafWorldRegistry.init();
+        if (IceAndFire.CONFIG.enableDreadlands)
+            IafWorldRegistry.init();
         MinecraftForge.EVENT_BUS.register(PROXY);
         logger.info("A raven flies from the north to the sea");
         logger.info("A dragon whispers her name in the east");
@@ -119,17 +117,6 @@ public class IceAndFire {
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new Object() {
-            @SubscribeEvent
-            public void onBlockBreak(BlockEvent.BreakEvent event) {
-                DreadCastleProtection.onBlockBreak(event);
-            }
-
-            @SubscribeEvent
-            public void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
-                DreadCastleProtection.onBlockPlace(event);
-            }
-        });
         IafVillagerRegistry.INSTANCE.init();
         logger.info("The watcher waits on the northern wall");
         logger.info("A daughter picks up a warrior's sword");

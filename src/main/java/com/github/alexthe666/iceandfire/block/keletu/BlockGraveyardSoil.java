@@ -40,14 +40,11 @@ public class BlockGraveyardSoil extends Block {
                 int k = worldIn.getEntitiesWithinAABB(EntityGhost.class, (new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1)).grow(checkRange)).size();
                 if (k < 10) {
                     EntityGhost ghost = new EntityGhost(worldIn);
-                    ghost.moveToBlockPosAndAngles(pos.add(0.5, 0.5, 0.5),
-                        ThreadLocalRandom.current().nextFloat() * 360F, 0);
-                    if (!worldIn.isRemote) {
-                        ghost.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
-                        worldIn.spawnEntity(ghost);
-                    }
+                    ghost.moveToBlockPosAndAngles(pos.add(0.5, 0.5, 0.5), ThreadLocalRandom.current().nextFloat() * 360F, 0);
+                    ghost.onInitialSpawn(worldIn.getDifficultyForLocation(pos), null);
                     ghost.setAnimation(EntityGhost.ANIMATION_SCARE);
                     ghost.setHomePosAndDistance(pos, 16);
+                    worldIn.spawnEntity(ghost);
                 }
             }
         }

@@ -55,13 +55,12 @@ public class EntitySnowVillager extends EntityVillager {
 
     private DataParameter<Boolean> BABY() {
         try {
-            if(FIELD_BABY == null) {
+            if (FIELD_BABY == null) {
                 FIELD_BABY = ObfuscationReflectionHelper.findField(EntityAgeable.class, "field_184751_bv");
                 FIELD_BABY.setAccessible(true);
             }
-            return (DataParameter<Boolean>)FIELD_BABY.get(this);
-        }
-        catch (Exception e) {
+            return (DataParameter<Boolean>) FIELD_BABY.get(this);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -69,13 +68,12 @@ public class EntitySnowVillager extends EntityVillager {
 
     private DataParameter<Integer> PROFESSION() {
         try {
-            if(FIELD_PROFESSION == null) {
+            if (FIELD_PROFESSION == null) {
                 FIELD_PROFESSION = ObfuscationReflectionHelper.findField(EntityVillager.class, "field_184752_bw");
                 FIELD_PROFESSION.setAccessible(true);
             }
-            return (DataParameter<Integer>)FIELD_PROFESSION.get(this);
-        }
-        catch (Exception e) {
+            return (DataParameter<Integer>) FIELD_PROFESSION.get(this);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -138,13 +136,12 @@ public class EntitySnowVillager extends EntityVillager {
                 this.prof = IafVillagerRegistry.INSTANCE.professions.get(intFromProfesion(p));
             }
             try {
-                if(FIELD_CAREER == null) {
+                if (FIELD_CAREER == null) {
                     FIELD_CAREER = ObfuscationReflectionHelper.findField(EntityVillager.class, "field_175563_bv");
                     FIELD_CAREER.setAccessible(true);
                 }
                 FIELD_CAREER.set(this, 1);
-            }
-            catch (IllegalAccessException e) {
+            } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }

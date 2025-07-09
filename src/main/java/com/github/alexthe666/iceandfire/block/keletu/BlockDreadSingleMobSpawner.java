@@ -27,11 +27,13 @@ public class BlockDreadSingleMobSpawner extends Block implements IDreadBlock {
 		this.setTranslationKey("iceandfire." + name);
 		this.setSoundType(SoundType.METAL);
 		this.setRegistryName(IceAndFire.MODID, name);
-		GameRegistry.registerTileEntity(TileEntityDreadSingleUseSpawner.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single"));
-		GameRegistry.registerTileEntity(TileEntityDreadSingleUseSpawnerDragon.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single_dragon"));
-		GameRegistry.registerTileEntity(TileEntityDreadSingleUseSpawnerBallista.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single_ballista"));
-		GameRegistry.registerTileEntity(TileEntityDreadSpawnerQueen.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single_queen"));
-		GameRegistry.registerTileEntity(TileEntityDreadSingleUseSpawnerFinalBallista.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single_final_ballista"));
+		if(IceAndFire.CONFIG.enableDreadlands) {
+			GameRegistry.registerTileEntity(TileEntityDreadSingleUseSpawner.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single"));
+			GameRegistry.registerTileEntity(TileEntityDreadSingleUseSpawnerDragon.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single_dragon"));
+			GameRegistry.registerTileEntity(TileEntityDreadSingleUseSpawnerBallista.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single_ballista"));
+			GameRegistry.registerTileEntity(TileEntityDreadSpawnerQueen.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single_queen"));
+			GameRegistry.registerTileEntity(TileEntityDreadSingleUseSpawnerFinalBallista.class, new ResourceLocation(IceAndFire.MODID, "dread_spawner_single_final_ballista"));
+		}
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class BlockDreadSingleMobSpawner extends Block implements IDreadBlock {
 	@Override
 	public boolean hasTileEntity(IBlockState state)
 	{
-		return true;
+		return IceAndFire.CONFIG.enableDreadlands;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -65,6 +67,9 @@ public class BlockDreadSingleMobSpawner extends Block implements IDreadBlock {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state)
 	{
+		if(!IceAndFire.CONFIG.enableDreadlands)
+			return null;
+
 		if(state.getBlock() == IafBlockRegistry.dread_single_spawner_lich)
 			return new TileEntityDreadSingleUseSpawner();
 		if(state.getBlock() == IafBlockRegistry.dread_single_spawner_queen)
