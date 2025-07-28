@@ -2,6 +2,7 @@ package com.github.alexthe666.iceandfire.world.gen;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.world.gen.processor.ScriberVillageProcessor;
+import com.github.alexthe666.iceandfire.world.village.ComponentScriberHouse;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
@@ -14,17 +15,19 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
-import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Random;
 
 public class WorldGenScriberHouse extends WorldGenerator {
 
     private static final ResourceLocation HOUSE = new ResourceLocation(IceAndFire.MODID, "scriber_house");
-    private static final ResourceLocation HOUSE_DESERT = new ResourceLocation(IceAndFire.MODID, "scriber_house_3");
+    private ComponentScriberHouse component;
     private Rotation rotation;
+    private EnumFacing facing;
 
-    public WorldGenScriberHouse(EnumFacing facing) {
+    public WorldGenScriberHouse(ComponentScriberHouse component, EnumFacing facing) {
+        this.component = component;
+        this.facing = facing;
         switch (facing) {
             case SOUTH:
                 rotation = Rotation.CLOCKWISE_180;
@@ -49,15 +52,8 @@ public class WorldGenScriberHouse extends WorldGenerator {
         MinecraftServer server = worldIn.getMinecraftServer();
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
         PlacementSettings settings = new PlacementSettings().setRotation(rotation).setMirror(Mirror.NONE);
-        ResourceLocation location;
+        Template template = templateManager.getTemplate(server, HOUSE);
         Biome biome = worldIn.getBiome(position);
-        if (BiomeDictionary.hasType(biome, BiomeDictionary.Type.SANDY) && BiomeDictionary.hasType(biome, BiomeDictionary.Type.DRY)) {
-            location = HOUSE_DESERT;
-        } else {
-            location = HOUSE;
-        }
-        Template template = templateManager.getTemplate(server, location);
-
         int xSize = template.getSize().getX() / 2;
         int zSize = template.getSize().getZ() / 2;
 
