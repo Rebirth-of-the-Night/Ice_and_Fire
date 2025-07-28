@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.Loader;
 public class OneProbeCompatBridge {
     private static final String COMPAT_MOD_ID = "theoneprobe";
 
-    public static void loadPreInit() {
+    public static void loadInit() {
         if (Loader.isModLoaded(COMPAT_MOD_ID)) {
             IceAndFireOneProbeCompat.register();
         }

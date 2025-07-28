@@ -27,6 +27,16 @@ public class CraftTweakerCompat {
     }
 
     @ZenMethod
+    public static void addFireDragonForgeRecipe(IItemStack iinput, IItemStack ibloodinput, IItemStack ioutput) {
+        IafRecipeRegistry.FIRE_FORGE_RECIPES.add(new DragonForgeRecipe(CraftTweakerMC.getItemStack(iinput), CraftTweakerMC.getItemStack(ibloodinput), CraftTweakerMC.getItemStack(ioutput), false));
+    }
+
+    @ZenMethod
+    public static void addIceDragonForgeRecipe(IItemStack iinput, IItemStack ibloodinput, IItemStack ioutput) {
+        IafRecipeRegistry.ICE_FORGE_RECIPES.add(new DragonForgeRecipe(CraftTweakerMC.getItemStack(iinput), CraftTweakerMC.getItemStack(ibloodinput), CraftTweakerMC.getItemStack(ioutput), false));
+    }
+
+    @ZenMethod
     public static void removeFireDragonForgeRecipe(IItemStack ioutput) {
         ItemStack output = CraftTweakerMC.getItemStack(ioutput).copy();
         output.setCount(1);
@@ -44,6 +54,12 @@ public class CraftTweakerCompat {
     public static void addLightningDragonForgeRecipe(IItemStack iinput, IItemStack ibloodinput, IItemStack ioutput, boolean tag) {
         IafRecipeRegistry.LIGHTNING_FORGE_RECIPES.add(new DragonForgeRecipe(CraftTweakerMC.getItemStack(iinput), CraftTweakerMC.getItemStack(ibloodinput), CraftTweakerMC.getItemStack(ioutput), tag));
     }
+
+    @ZenMethod
+    public static void addLightningDragonForgeRecipe(IItemStack iinput, IItemStack ibloodinput, IItemStack ioutput) {
+        IafRecipeRegistry.LIGHTNING_FORGE_RECIPES.add(new DragonForgeRecipe(CraftTweakerMC.getItemStack(iinput), CraftTweakerMC.getItemStack(ibloodinput), CraftTweakerMC.getItemStack(ioutput), false));
+    }
+
     @ZenMethod
     public static void removeLightningDragonForgeRecipe(IItemStack ioutput) {
         ItemStack output = CraftTweakerMC.getItemStack(ioutput).copy();

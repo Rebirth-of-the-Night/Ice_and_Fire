@@ -54,11 +54,11 @@ import javax.annotation.Nullable;
 public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlacklistedFromStatues, IMultipartEntity, IAnimatedEntity, IVillagerFear, IAnimalFear, IPhasesThroughBlock, IGroundMount {
 
     public static final ResourceLocation TAN_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "deathworm_tan"));
-    public static final ResourceLocation WHITE_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "deathworm_white"));
-    public static final ResourceLocation RED_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "deathworm_red"));
+    public static final ResourceLocation RED_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "deathworm_white"));
+    public static final ResourceLocation WHITE_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "deathworm_red"));
     public static final ResourceLocation TAN_GIANT_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "deathworm_tan_giant"));
-    public static final ResourceLocation WHITE_GIANT_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "deathworm_white_giant"));
-    public static final ResourceLocation RED_GIANT_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "deathworm_red_giant"));
+    public static final ResourceLocation RED_GIANT_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "deathworm_white_giant"));
+    public static final ResourceLocation WHITE_GIANT_LOOT = LootTableList.register(new ResourceLocation("iceandfire", "deathworm_red_giant"));
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(EntityDeathWorm.class, DataSerializers.VARINT);
     private static final DataParameter<Float> SCALE = EntityDataManager.createKey(EntityDeathWorm.class, DataSerializers.FLOAT);
     private static final DataParameter<Byte> CONTROL_STATE = EntityDataManager.createKey(EntityDeathWorm.class, DataSerializers.BYTE);
@@ -111,7 +111,7 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
         }));
         initSegments(1);
     }
-	
+
     public EnumCreatureAttribute getCreatureAttribute() {
         return EnumCreatureAttribute.ARTHROPOD;
     }
@@ -241,7 +241,7 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
             case 0:
                 return this.getScaleForAge() > 3 ? TAN_GIANT_LOOT : TAN_LOOT;
             case 1:
-                return this.getScaleForAge() > 3 ? WHITE_GIANT_LOOT : WHITE_LOOT;
+                return this.getScaleForAge() > 3 ?  WHITE_GIANT_LOOT: WHITE_LOOT;
             case 2:
                 return this.getScaleForAge() > 3 ? RED_GIANT_LOOT : RED_LOOT;
         }

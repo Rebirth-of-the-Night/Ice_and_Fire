@@ -137,8 +137,8 @@ public class IceAndFireConfig {
     public int myrmexColonyGenChance = 150;
     public int myrmexColonySize = 80;
     public double myrmexBaseAttackStrength = 3.0D;
-    public String[] myrmexJungleRepItems = new String[] { "iceandfire:myrmex_jungle_resin 5" };
-    public String[] myrmexDesertRepItems = new String[] { "iceandfire:myrmex_desert_resin 5" };
+    public String[] myrmexJungleRepItems = new String[]{"iceandfire:myrmex_jungle_resin 5"};
+    public String[] myrmexDesertRepItems = new String[]{"iceandfire:myrmex_desert_resin 5"};
     public boolean experimentalPathFinder;
     public boolean spawnAmphitheres = true;
     public int amphithereSpawnRate = 5;
@@ -152,6 +152,8 @@ public class IceAndFireConfig {
     public boolean seaSerpentGriefing = true;
     public double seaSerpentBaseHealth = 20D;
     public double seaSerpentAttackStrength = 4D;
+    public float tideTridentBaseDamage = 13.0F;
+    public float tideTridentUnderwaterDamageMultiplier = 2.0F;
     public double dragonsteelBaseDamage = 25F;
     public int dragonsteelBaseArmor = 12;
     public int dragonsteelBaseDurability = 8000;
@@ -221,7 +223,7 @@ public class IceAndFireConfig {
         this.dragonFlapNoiseDistance = config.getInt("Dragon Flap Noise Distance", "all", 4, 0, 10000, "Dragon Flap Noise Distance - Larger number, further away you can hear it");
         this.dragonFluteDistance = config.getInt("Dragon Flute Distance", "all", 4, 0, 10000, "Dragon Flute Distance - how many chunks away is the dragon flute effective?");
         this.dragonHealth = config.getInt("Dragon Health", "all", 500, 1, 100000, "Max dragon health. Health is scaled to this");
-        this.lightningDragonHealAmount = config.getInt("Lightning Dragon Healing Amount", "all", 15, 0, 100000, "The amount of health lightning dragons heal when they get hit by a lightning bolt.");  
+        this.lightningDragonHealAmount = config.getInt("Lightning Dragon Healing Amount", "all", 15, 0, 100000, "The amount of health lightning dragons heal when they get hit by a lightning bolt.");
         this.dragonAttackDamage = config.getInt("Dragon Attack Damage", "all", 17, 1, 10000, "Max dragon attack damage. Attack Damage is scaled to this");
         this.dragonAttackDamageFire = config.getFloat("Dragon Attack Damage(Fire breath)", "all", 2.0F, 0, 10000, "Damage dealt from a successful fire breath attack. Attack Damage is scaled to by age, so a stage 5 dragon will deal 5x as much as this number");
         this.dragonAttackDamageIce = config.getFloat("Dragon Attack Damage(Ice breath)", "all", 2.5F, 0, 10000, "Damage dealt from a successful ice breath attack. Attack Damage is scaled to by age, so a stage 5 dragon will deal 5x as much as this number");
@@ -239,12 +241,12 @@ public class IceAndFireConfig {
         this.dragonWanderFromHomeDistance = config.getInt("Dragon Wander From Home Distance", "all", 40, 1, 10000, "How many blocks away can dragons wander from their defined \"home\" position.");
         this.dragonHungerTickRate = config.getInt("Dragon Hunger Tick Rate", "all", 3000, 1, 10000, "Every interval of this number in ticks, dragon hunger decreases.");
         this.dragonFlightChance = config.getFloat("Dragon Flight Chance Per Tick", "all", 0.000666F, 0F, 1F, "Every tick a RNG decides whether this dragon should start flying or not, based on this chance");
-	    this.dragonIceImmuneEntities = config.getStringList("Entities immune to dragon ice", "all", new String[0], "Entities listed here will not be affected by dragon ice freezing");
-	    this.dragonFireImmuneEntities = config.getStringList("Entities immune to dragon fire", "all", new String[0], "Entities listed here will not be affected by dragon fire burning");
-	    this.dragonLightningImmuneEntities = config.getStringList("Entities immune to dragon lightning", "all", new String[0], "Entities listed here will not be affected by dragon lightning electrocuting");
-	    this.stoneImmuneEntities = config.getStringList("Entities immune to being turned to stone", "all", new String[0], "Entities listed here will never be turned to stone");
-	    this.chainImmuneEntities = config.getStringList("Entities immune to being tied to a chain", "all", new String[0], "Entities listed here can't be tied to chains");
-	    this.dragonBreakBlockCooldown = config.getInt("Dragon Block Break Cooldown", "all", 5, 0, 10000, "Every interval of this number in ticks, dragon allowed to break blocks.");
+        this.dragonIceImmuneEntities = config.getStringList("Entities immune to dragon ice", "all", new String[0], "Entities listed here will not be affected by dragon ice freezing");
+        this.dragonFireImmuneEntities = config.getStringList("Entities immune to dragon fire", "all", new String[0], "Entities listed here will not be affected by dragon fire burning");
+        this.dragonLightningImmuneEntities = config.getStringList("Entities immune to dragon lightning", "all", new String[0], "Entities listed here will not be affected by dragon lightning electrocuting");
+        this.stoneImmuneEntities = config.getStringList("Entities immune to being turned to stone", "all", new String[0], "Entities listed here will never be turned to stone");
+        this.chainImmuneEntities = config.getStringList("Entities immune to being tied to a chain", "all", new String[0], "Entities listed here can't be tied to chains");
+        this.dragonBreakBlockCooldown = config.getInt("Dragon Block Break Cooldown", "all", 5, 0, 10000, "Every interval of this number in ticks, dragon allowed to break blocks.");
         this.villagersFearDragons = config.getBoolean("Villagers Fear Dragons", "all", true, "True if villagers should run away and hide from dragons and other hostile Ice and Fire mobs.");
         this.animalsFearDragons = config.getBoolean("Animals Fear Dragons", "all", true, "True if animals should run away and hide from dragons and other hostile Ice and Fire mobs.");
         this.blacklistedBreakBlocks = config.getStringList("Blacklisted Blocks from Dragon", "all", new String[0], "Blacklist for blocks that dragons are not to break or burn. Ex. \"minecraft:sponge\" or \"rats:rat_crafting_table\"");
@@ -265,7 +267,7 @@ public class IceAndFireConfig {
         this.spawnPixies = config.getBoolean("Spawn Pixies", "all", true, "True if pixie villages are allowed to spawn");
         this.spawnPixiesChance = config.getInt("Spawn Pixies Chance", "all", 60, 1, 10000, "1 out of this number chance per chunk for generation");
         this.pixieVillageSize = config.getInt("Pixie Village Size", "all", 5, 1, 10000, "size of pixie villages");
-        this.pixieVillageBiomeBlacklist = config.getStringList("Blacklisted Biomes from Pixie Village Generation", "all", new String[] {"minecraft:roofed_forest", "biomesoplenty:ominous_woods", "biomesoplenty:mystic_grove"}, "Biomes that pixie villages will not be generated in (e.g. minecraft:plains or roofed_forest)");
+        this.pixieVillageBiomeBlacklist = config.getStringList("Blacklisted Biomes from Pixie Village Generation", "all", new String[]{"minecraft:roofed_forest", "biomesoplenty:ominous_woods", "biomesoplenty:mystic_grove"}, "Biomes that pixie villages will not be generated in (e.g. minecraft:plains or roofed_forest)");
         this.pixieVillageBiomeBlacklistIsWhitelist = config.getBoolean("Blacklisted Biomes from Pixie Village Generation is a Whitelist", "all", true, "If true, then the blacklist will act as a whitelist.");
         this.pixiesStealItems = config.getBoolean("Pixies Steal Items", "all", true, "True if pixies are allowed to steal from players");
 
@@ -333,8 +335,8 @@ public class IceAndFireConfig {
         this.myrmexColonyGenChance = config.getInt("Myrmex Colony Gen Chance", "all", 150, 1, 10000, "One out of this number chance per chunk to generate a myrmex hive.");
         this.myrmexColonySize = config.getInt("Myrmex Colony Max Size", "all", 80, 10, 10000, "How many maximum individuals a myrmex colony can have.");
         this.myrmexBaseAttackStrength = config.getFloat("Myrmex Base Attack Strength", "all", 3, 1, 10000, "Base Myrmex(worker) attack strength");
-        this.myrmexJungleRepItems = config.getStringList("Myrmex Jungle Reputation Items", "all", new String[] { "iceandfire:myrmex_jungle_resin 5" } /*TODO*/, "How much reputation the player will receive for donating a specific item to a jungle myrmex worker");
-        this.myrmexDesertRepItems = config.getStringList("Myrmex Desert Reputation Items", "all", new String[] { "iceandfire:myrmex_desert_resin 5" } /*TODO*/, "How much reputation the player will receive for donating a specific item to a desert myrmex worker");
+        this.myrmexJungleRepItems = config.getStringList("Myrmex Jungle Reputation Items", "all", new String[]{"iceandfire:myrmex_jungle_resin 5"} /*TODO*/, "How much reputation the player will receive for donating a specific item to a jungle myrmex worker");
+        this.myrmexDesertRepItems = config.getStringList("Myrmex Desert Reputation Items", "all", new String[]{"iceandfire:myrmex_desert_resin 5"} /*TODO*/, "How much reputation the player will receive for donating a specific item to a desert myrmex worker");
 
         this.experimentalPathFinder = config.getBoolean("Experimental Dragon path Finder", "all", false, "Turning this to true simplifies the dragon's pathfinding process, making them dumber when finding a path, but better for servers with many loaded dragons.");
 
@@ -352,6 +354,9 @@ public class IceAndFireConfig {
         this.seaSerpentBaseHealth = config.getFloat("Sea Serpent Base Health", "all", 20, 1, 10000, "Default sea serpent health, this is scaled to the sea serpent's particular size");
         this.seaSerpentAttackStrength = config.getFloat("Sea Serpent Base Attack Strength", "all", 4, 1, 10000, "Default sea serpent attack strength, this is scaled to the sea serpent's particular size");
 
+        this.tideTridentBaseDamage = config.getFloat("Base damage for the Tide Trident", "all", 13.0F, 1, 10000, "Base damage for the Tide Trident");
+        this.tideTridentUnderwaterDamageMultiplier = config.getFloat("Tide Trident Underwater Damage Multiplier", "all", 2.0F, 1, 10000, "Damage multiplier for the Tide Trident - applied when the trident is underwater");
+
         this.dragonsteelBaseDamage = config.getFloat("Dragonsteel Sword Base Attack Strength", "all", 25, 5, Integer.MAX_VALUE, "Default attack strength of a dragonsteel sword.");
         this.dragonsteelBaseArmor = config.getInt("Dragonsteel Base Armor", "all", 12, 7, Integer.MAX_VALUE, "Default armor value of dragonsteel chestplate.");
         this.dragonsteelBaseDurability = config.getInt("Dragonsteel Base Durability", "all", 8000, 1, Integer.MAX_VALUE, "Default durability value of dragonsteel sword.");
@@ -365,7 +370,7 @@ public class IceAndFireConfig {
         this.spawnLiches = config.getBoolean("Spawn Liches", "all", true, "True if dread liches are allowed to spawn");
         this.lichSpawnRate = config.getInt("Lich Spawn Weight", "all", 2, 1, 10000, "Dread Lich spawn weight. Lower = lower chance to spawn");
         this.dreadGang = config.getStringList("Dread Gang", "all", new String[0], "These entities are on the same team as dread mobs");
-        
+
         this.hydraMaxHealth = config.getFloat("Hydra Max Health", "all", 250, 1, 10000, "Maximum hydra health");
         this.generateHydraCaves = config.getBoolean("Generate Hydra Caves", "all", true, "True if hydra caves are allowed to generate");
         this.generateHydraChance = config.getInt("Hydra Caves Gen Chance", "all", 200, 1, 10000, "One out of this number chance per chunk to generate a hydra cave.");
