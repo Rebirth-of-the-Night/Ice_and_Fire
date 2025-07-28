@@ -1,6 +1,8 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.compat.spartanweaponry.SpartanWeaponryCompat;
+import com.github.alexthe666.iceandfire.item.ItemTideTrident;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import net.minecraft.block.Block;
@@ -9,12 +11,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.MoverType;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Enchantments;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,29 +23,26 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SPacketChangeGameState;
 import net.minecraft.util.*;
-import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.registry.IThrowableEntity;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntityTideTrident extends Entity implements IProjectile {
-    @SuppressWarnings("unchecked")
-    private static final Predicate<Entity> ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, new Predicate<Entity>() {
-        public boolean apply(@Nullable Entity p_apply_1_) {
-            return p_apply_1_.canBeCollidedWith();
-        }
-    });
-    private static final DataParameter<Byte> CRITICAL = EntityDataManager.createKey(EntityTideTrident.class, DataSerializers.BYTE);
-    public PickupStatus pickupStatus;
-    public int arrowShake;
-    public Entity shootingEntity;
-    protected boolean inGround;
-    protected int timeInGround;
+/*
+ *
+ * Smarter TideTrident Pickup From Ice and Fire - RLCraft Edition
+ * Code by Alexthe668, Shivaxi, FonnyMunkey and Kotlin-Programmer
+ * Under LGPL-3.0 License
+ * Port by keletu
+ *
+ * */
+public class EntityTideTrident extends EntityArrow implements IThrowableEntity {
+    private static final Predicate<Entity> ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, Entity::canBeCollidedWith);
+    private static final DataParameter<ItemStack> WEAPON = EntityDataManager.createKey(EntityTideTrident.class, DataSerializers.ITEM_STACK);
+    private static final DataParameter<Byte> RETURN = EntityDataManager.createKey(EntityTideTrident.class, DataSerializers.BYTE);
     private int xTile;
     private int yTile;
     private int zTile;
@@ -53,139 +50,108 @@ public class EntityTideTrident extends Entity implements IProjectile {
     private int inData;
     private int ticksInGround;
     private int ticksInAir;
-    private double damage;
     private int knockbackStrength;
-    private ItemStack stack;
+    private boolean isReturning = false;
+    private boolean playedReturnSound = false;
 
-    public EntityTideTrident(World worldIn) {
-        super(worldIn);
-        this.xTile = -1;
-        this.yTile = -1;
-        this.zTile = -1;
-        this.pickupStatus = PickupStatus.DISALLOWED;
-        this.damage = 6.0D;
+    public EntityTideTrident(World world) {
+        super(world);
+        init();
+    }
+
+    public EntityTideTrident(World world, double x, double y, double z) {
+        super(world, x, y, z);
+        init();
+    }
+
+    public EntityTideTrident(World world, EntityLivingBase shooter) {
+        super(world, shooter);
+        init();
+    }
+
+    private void init() {
+        this.setDamage(IceAndFire.CONFIG.tideTridentBaseDamage);
         this.setSize(0.85F, 0.5F);
-        this.stack = new ItemStack(IafItemRegistry.tide_trident);
     }
 
-    public EntityTideTrident(World worldIn, double x, double y, double z, ItemStack stack) {
-        this(worldIn);
-        this.setPosition(x, y, z);
-        this.stack = stack;
-    }
-
-    public EntityTideTrident(World worldIn, EntityLivingBase shooter, ItemStack stack) {
-        this(worldIn, shooter.posX, shooter.posY + (double) shooter.getEyeHeight() - 0.10000000149011612D, shooter.posZ, stack.copy());
-        this.shootingEntity = shooter;
-
-        if (shooter instanceof EntityPlayer && !((EntityPlayer) shooter).isCreative()) {
-            this.pickupStatus = PickupStatus.ALLOWED;
-        }
-    }
-
-    public static void registerFixesArrow(DataFixer fixer, String name) {
-    }
-
-    public static void registerFixesArrow(DataFixer fixer) {
-        registerFixesArrow(fixer, "Arrow");
-    }
-
-    @SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance) {
-        double d0 = this.getEntityBoundingBox().getAverageEdgeLength() * 10.0D;
-
-        if (Double.isNaN(d0)) {
-            d0 = 1.0D;
-        }
-
-        d0 = d0 * 64.0D * getRenderDistanceWeight();
-        return distance < d0 * d0;
-    }
-
+    @Override
     protected void entityInit() {
-        this.dataManager.register(CRITICAL, (byte) 0);
+        super.entityInit();
+        this.dataManager.register(WEAPON, ItemStack.EMPTY);
+        this.dataManager.register(RETURN, (byte) 0);
     }
 
-    public void shoot(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy) {
-        float f = -MathHelper.sin(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
-        float f1 = -MathHelper.sin(pitch * 0.017453292F);
-        float f2 = MathHelper.cos(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
-        this.shoot(f, f1, f2, velocity, inaccuracy);
-        this.motionX += shooter.motionX;
-        this.motionZ += shooter.motionZ;
-
-        if (!shooter.onGround) {
-            this.motionY += shooter.motionY;
+    public void setWeapon(ItemStack weaponStack) {
+        ItemStack stack = weaponStack.copy();
+        if (stack.getItem() instanceof ItemTideTrident) {
+            ItemTideTrident.setEmpty(stack, false);
+            ItemTideTrident.setOriginal(stack, false);
         }
-    }
-
-    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        float f = MathHelper.sqrt(x * x + y * y + z * z);
-        x = x / (double) f;
-        y = y / (double) f;
-        z = z / (double) f;
-        x = x + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        y = y + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        z = z + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
-        x = x * (double) velocity;
-        y = y * (double) velocity;
-        z = z * (double) velocity;
-        this.motionX = x;
-        this.motionY = y;
-        this.motionZ = z;
-        float f1 = MathHelper.sqrt(x * x + z * z);
-        this.rotationYaw = (float) (MathHelper.atan2(x, z) * (180D / Math.PI));
-        this.rotationPitch = (float) (MathHelper.atan2(y, f1) * (180D / Math.PI));
-        this.prevRotationYaw = this.rotationYaw;
-        this.prevRotationPitch = this.rotationPitch;
-        this.ticksInGround = 0;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
-        if (!inGround) {
-            this.setPosition(x, y, z);
-            this.setRotation(yaw, pitch);
-        }
-
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void setVelocity(double x, double y, double z) {
-        this.motionX = x;
-        this.motionY = y;
-        this.motionZ = z;
-
-        if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
-            float f = MathHelper.sqrt(x * x + z * z);
-            this.rotationPitch = (float) (MathHelper.atan2(y, f) * (180D / Math.PI));
-            this.rotationYaw = (float) (MathHelper.atan2(x, z) * (180D / Math.PI));
-            this.prevRotationPitch = this.rotationPitch;
-            this.prevRotationYaw = this.rotationYaw;
-            this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-            this.ticksInGround = 0;
+        this.getDataManager().set(WEAPON, stack);
+        this.getDataManager().setDirty(WEAPON);
+        if (SpartanWeaponryCompat.hasReturnEnchantment()) {
+            this.getDataManager().set(RETURN, (byte) EnchantmentHelper.getEnchantmentLevel(SpartanWeaponryCompat.getReturnEnchantment(), stack));
+            this.getDataManager().setDirty(RETURN);
         }
     }
 
     public void onUpdate() {
-        super.onUpdate();
+        Vec3d vec3d;
+        if (this.timeInGround > 4 || this.noClip || this.isReturning && this.shootingEntity != null) {
+            int returnLevel = this.getDataManager().get(RETURN);
+            if (returnLevel > 0 && this.shootingEntity.isEntityAlive() && (!(this.shootingEntity instanceof EntityPlayerMP) || !((EntityPlayer) this.shootingEntity).isSpectator())) {
+                if (!this.isReturning) {
+                    this.noClip = true;
+                    this.inGround = false;
+                    this.isReturning = true;
+                    this.setNoGravity(true);
+                }
+
+                Vec3d distance = this.shootingEntity.getPositionEyes(1.0F).subtract(this.getPositionVector());
+                this.posY += distance.y * 0.015 * (double)returnLevel;
+                if (this.world.isRemote) {
+                    this.prevPosY = this.posY;
+                }
+
+                double velocity = 1.0 + 0.25 * (double)(returnLevel - 1);
+                vec3d = distance.normalize().scale(velocity);
+                this.motionX = vec3d.x;
+                this.motionY = vec3d.y;
+                this.motionZ = vec3d.z;
+                if (!this.playedReturnSound) {
+                    SoundEvent returnSound = SpartanWeaponryCompat.getReturnSoundEvent();
+                    if (returnSound != null) {
+                        this.world.playSound(null, this.posX, this.posY, this.posZ, returnSound, SoundCategory.NEUTRAL, 10.0F, 0.1F);
+                    }
+                    this.playedReturnSound = true;
+                }
+            } else if (returnLevel > 0 && !this.shootingEntity.isEntityAlive()) {
+                this.noClip = false;
+                this.isReturning = false;
+                this.setNoGravity(false);
+                this.getDataManager().set(RETURN, (byte)0);
+            }
+        }
+
+        if (!this.world.isRemote) {
+            this.setFlag(6, this.isGlowing());
+        }
+
+        this.onEntityUpdate();
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
             float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            this.rotationPitch = (float) (MathHelper.atan2(this.motionY, f) * (180D / Math.PI));
-            this.rotationYaw = (float) (MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
+            this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
+            this.rotationPitch = (float)(MathHelper.atan2(this.motionY, f) * (180D / Math.PI));
             this.prevRotationYaw = this.rotationYaw;
             this.prevRotationPitch = this.rotationPitch;
-            this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
         }
 
         BlockPos blockpos = new BlockPos(this.xTile, this.yTile, this.zTile);
         IBlockState iblockstate = this.world.getBlockState(blockpos);
         Block block = iblockstate.getBlock();
-
-        if (iblockstate.getMaterial() != Material.AIR && !this.noClip) {
+        if (iblockstate.getMaterial() != Material.AIR && !noClip) {
             AxisAlignedBB axisalignedbb = iblockstate.getCollisionBoundingBox(this.world, blockpos);
-
             if (axisalignedbb != Block.NULL_AABB && axisalignedbb.offset(blockpos).contains(new Vec3d(this.posX, this.posY, this.posZ))) {
                 this.inGround = true;
             }
@@ -197,21 +163,28 @@ public class EntityTideTrident extends Entity implements IProjectile {
 
         if (this.inGround && !this.noClip) {
             int j = block.getMetaFromState(iblockstate);
-            if ((block != this.inTile || j != this.inData) && !this.world.collidesWithAnyBlock(this.getEntityBoundingBox().grow(0.05D))) {
+            if ((block != this.inTile || j != this.inData) && !this.world.collidesWithAnyBlock(this.getEntityBoundingBox().grow(0.05))) {
                 this.inGround = false;
                 this.motionX *= this.rand.nextFloat() * 0.2F;
                 this.motionY *= this.rand.nextFloat() * 0.2F;
                 this.motionZ *= this.rand.nextFloat() * 0.2F;
                 this.ticksInGround = 0;
                 this.ticksInAir = 0;
+            } else {
+                this.ticksInGround++;
+                if (this.ticksInGround >= 1200) {
+                    this.attemptDropAsItem();
+                    this.setDead();
+                }
             }
-            ++this.timeInGround;
+
+            this.timeInGround++;
         } else {
             this.timeInGround = 0;
-            ++this.ticksInAir;
+            this.ticksInAir++;
             Vec3d vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
-            Vec3d vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-            RayTraceResult raytraceresult = this.world.rayTraceBlocks(vec3d1, vec3d, false, true, false);
+            vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            RayTraceResult raytraceresult = this.world.rayTraceBlocks(vec3d1, vec3d);
             vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
             vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -220,20 +193,25 @@ public class EntityTideTrident extends Entity implements IProjectile {
             }
 
             Entity entity = this.findEntityOnPath(vec3d1, vec3d);
-
             if (entity != null) {
                 raytraceresult = new RayTraceResult(entity);
             }
 
+            boolean caught = false;
             if (raytraceresult != null && raytraceresult.entityHit instanceof EntityPlayer) {
                 EntityPlayer entityplayer = (EntityPlayer) raytraceresult.entityHit;
+                if (this.shootingEntity instanceof EntityPlayer) {
+                    if (this.canBeCaughtInMidair(this.shootingEntity, entityplayer)) {
+                        caught = this.attemptCatch(entityplayer);
+                    }
 
-                if (this.shootingEntity instanceof EntityPlayer && !((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer)) {
-                    raytraceresult = null;
+                    if (!((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer)) {
+                        raytraceresult = null;
+                    }
                 }
             }
 
-            if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
+            if (raytraceresult != null && raytraceresult.typeOfHit != RayTraceResult.Type.MISS && !caught && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
                 this.onHit(raytraceresult);
             }
 
@@ -246,6 +224,7 @@ public class EntityTideTrident extends Entity implements IProjectile {
             this.posX += this.motionX;
             this.posY += this.motionY;
             this.posZ += this.motionZ;
+
             float f4 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
             if (noClip) {
                 this.rotationYaw = (float) (MathHelper.atan2(-this.motionX, -this.motionZ) * (180D / Math.PI));
@@ -283,20 +262,64 @@ public class EntityTideTrident extends Entity implements IProjectile {
                 this.extinguish();
             }
 
-            if (!noClip) {
+            if (!this.noClip) {
                 float f1 = 0.99F;
                 this.motionX *= f1;
                 this.motionY *= f1;
                 this.motionZ *= f1;
-
                 if (!this.hasNoGravity()) {
-                    this.motionY -= 0.05000000074505806D;
+                    this.motionY -= 0.05000000074505806;
                 }
             }
 
             this.setPosition(this.posX, this.posY, this.posZ);
             this.doBlockCollisions();
         }
+    }
+
+    @Nullable
+    @Override
+    protected Entity findEntityOnPath(Vec3d currentVec, Vec3d nextVec) {
+        Entity entityOnPath = null;
+        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0), ARROW_TARGETS);
+        double d0 = 0.0;
+
+        for (Entity entity : list) {
+            if (entity != this.shootingEntity || this.ticksInAir >= 5) {
+                AxisAlignedBB axisalignedbb = entity.getEntityBoundingBox().grow(0.30000001192092896);
+                RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(currentVec, nextVec);
+                if (raytraceresult != null) {
+                    double d1 = currentVec.squareDistanceTo(raytraceresult.hitVec);
+                    if (d1 < d0 || d0 == 0.0) {
+                        entityOnPath = entity;
+                        d0 = d1;
+                    }
+                }
+            }
+        }
+
+        return entityOnPath;
+    }
+
+    @Override
+    public void setKnockbackStrength(int knockback) {
+        this.knockbackStrength = knockback;
+    }
+
+    @Override
+    public Entity getThrower() {
+        return this.shootingEntity;
+    }
+
+    @Override
+    public void setThrower(Entity entity) {
+        this.shootingEntity = entity;
+    }
+
+    @Override
+    public void onKillCommand() {
+        this.attemptDropAsItem();
+        super.onKillCommand();
     }
 
     /**
@@ -310,25 +333,18 @@ public class EntityTideTrident extends Entity implements IProjectile {
                 return;
             }
 
-            float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-            int i = MathHelper.ceil((double) f * this.damage);
+            float f = isInWater() ? IceAndFire.CONFIG.tideTridentUnderwaterDamageMultiplier : 1.0f;
+            int i = MathHelper.ceil((double) f * this.getDamage());
 
             if (this.getIsCritical()) {
                 i += this.rand.nextInt(i / 2 + 2);
-            }
-
-            DamageSource damagesource;
-
-            if (this.shootingEntity == null) {
-                damagesource = new EntityDamageSourceIndirect("trident", this, this).setProjectile();
-            } else {
-                damagesource = new EntityDamageSourceIndirect("trident", this, shootingEntity).setProjectile();
             }
 
             if (this.isBurning() && !(entity instanceof EntityEnderman)) {
                 entity.setFire(5);
             }
 
+            DamageSource damagesource = DamageSource.causeThrownDamage(this, shootingEntity);
             if (entity.attackEntityFrom(damagesource, (float) i)) {
                 if (entity instanceof EntityLivingBase) {
                     EntityLivingBase entitylivingbase = (EntityLivingBase) entity;
@@ -353,28 +369,31 @@ public class EntityTideTrident extends Entity implements IProjectile {
                     this.arrowHit(entitylivingbase);
 
                     if (this.shootingEntity != null && entitylivingbase != this.shootingEntity && entitylivingbase instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP) {
-                        ((EntityPlayerMP) this.shootingEntity).connection.sendPacket(new SPacketChangeGameState(6, 0.0F));
+                        ((EntityPlayerMP)this.shootingEntity).connection.sendPacket(new SPacketChangeGameState(6, 0.0F));
                     }
                 }
                 this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
             } else {
-                this.motionX *= -0.10000000149011612D;
-                this.motionY *= -0.10000000149011612D;
-                this.motionZ *= -0.10000000149011612D;
+                this.motionX *= -0.10000000149011612;
+                this.motionY *= -0.10000000149011612;
+                this.motionZ *= -0.10000000149011612;
+                this.rotationYaw += 180.0F;
+                this.prevRotationYaw += 180.0F;
                 this.ticksInAir = 0;
-
-                if (!this.world.isRemote && this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ < 0.0010000000474974513D) {
-                    if (this.pickupStatus == PickupStatus.ALLOWED) {
-                        this.entityDropItem(this.getArrowStack(), 0.1F);
+                if (!this.world.isRemote && this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ < 0.0010000000474974513) {
+                    if (this.getDataManager().get(RETURN) > 0 && !this.noClip) {
+                        this.noClip = true;
+                    } else {
+                        this.attemptDropAsItem();
+                        this.setDead();
                     }
-                    this.setDead();
                 }
             }
-        } else {
+        }  else {
             if (!this.noClip) {
                 if (raytraceResultIn.typeOfHit == RayTraceResult.Type.BLOCK) {
                     if (!this.world.isRemote) {
-                        ((WorldServer) this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, 5, 0.1, 0.1, 0.1, 0.05, Block.getIdFromBlock(this.world.getBlockState(raytraceResultIn.getBlockPos()).getBlock()));
+                        ((WorldServer)this.world).spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX, this.posY, this.posZ, 5, 0.1, 0.1, 0.1, 0.05, Block.getIdFromBlock(this.world.getBlockState(raytraceResultIn.getBlockPos()).getBlock()));
                     }
                 }
 
@@ -385,18 +404,17 @@ public class EntityTideTrident extends Entity implements IProjectile {
                 IBlockState iblockstate = this.world.getBlockState(blockpos);
                 this.inTile = iblockstate.getBlock();
                 this.inData = this.inTile.getMetaFromState(iblockstate);
-                this.motionX = (float) (raytraceResultIn.hitVec.x - this.posX);
-                this.motionY = (float) (raytraceResultIn.hitVec.y - this.posY);
-                this.motionZ = (float) (raytraceResultIn.hitVec.z - this.posZ);
+                this.motionX = (float)(raytraceResultIn.hitVec.x - this.posX);
+                this.motionY = (float)(raytraceResultIn.hitVec.y - this.posY);
+                this.motionZ = (float)(raytraceResultIn.hitVec.z - this.posZ);
                 float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-                this.posX -= this.motionX / (double) f2 * 0.05000000074505806D;
-                this.posY -= this.motionY / (double) f2 * 0.05000000074505806D;
-                this.posZ -= this.motionZ / (double) f2 * 0.05000000074505806D;
+                this.posX -= this.motionX / (double)f2 * 0.05000000074505806;
+                this.posY -= this.motionY / (double)f2 * 0.05000000074505806;
+                this.posZ -= this.motionZ / (double)f2 * 0.05000000074505806;
                 this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
                 this.inGround = true;
                 this.arrowShake = 7;
                 this.setIsCritical(false);
-
                 if (iblockstate.getMaterial() != Material.AIR) {
                     this.inTile.onEntityCollision(this.world, blockpos, iblockstate, this);
                 }
@@ -404,50 +422,9 @@ public class EntityTideTrident extends Entity implements IProjectile {
         }
     }
 
-    public void move(MoverType type, double x, double y, double z) {
-        super.move(type, x, y, z);
-
-        if (this.inGround) {
-            this.xTile = MathHelper.floor(this.posX);
-            this.yTile = MathHelper.floor(this.posY);
-            this.zTile = MathHelper.floor(this.posZ);
-        }
-    }
-
-    protected void arrowHit(EntityLivingBase living) {
-    }
-
-    @Nullable
-    protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
-        Entity entity = null;
-        List<Entity> list = this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D), ARROW_TARGETS);
-        double d0 = 0.0D;
-
-        for (int i = 0; i < list.size(); ++i) {
-            Entity entity1 = list.get(i);
-
-            if (entity1 != this.shootingEntity || this.ticksInAir >= 5) {
-                AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow(0.30000001192092896D);
-                RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);
-
-                if (raytraceresult != null) {
-                    double d1 = start.squareDistanceTo(raytraceresult.hitVec);
-
-                    if (d1 < d0 || d0 == 0.0D) {
-                        entity = entity1;
-                        d0 = d1;
-                    }
-                }
-            }
-        }
-
-        return entity;
-    }
-
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
+    @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
         compound.setInteger("xTile", this.xTile);
         compound.setInteger("yTile", this.yTile);
         compound.setInteger("zTile", this.zTile);
@@ -458,14 +435,13 @@ public class EntityTideTrident extends Entity implements IProjectile {
         compound.setByte("shake", (byte) this.arrowShake);
         compound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
         compound.setByte("pickup", (byte) this.pickupStatus.ordinal());
-        compound.setDouble("damage", this.damage);
+        compound.setDouble("damage", this.getDamage());
         compound.setBoolean("crit", this.getIsCritical());
     }
 
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
+    @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
         this.xTile = compound.getInteger("xTile");
         this.yTile = compound.getInteger("yTile");
         this.zTile = compound.getInteger("zTile");
@@ -482,114 +458,70 @@ public class EntityTideTrident extends Entity implements IProjectile {
         this.inGround = compound.getByte("inGround") == 1;
 
         if (compound.hasKey("damage", 99)) {
-            this.damage = compound.getDouble("damage");
+            this.setDamage(compound.getDouble("damage"));
         }
 
         if (compound.hasKey("pickup", 99)) {
-            this.pickupStatus = PickupStatus.getByOrdinal(compound.getByte("pickup"));
+            this.pickupStatus = EntityArrow.PickupStatus.getByOrdinal(compound.getByte("pickup"));
         } else if (compound.hasKey("player", 99)) {
-            this.pickupStatus = compound.getBoolean("player") ? PickupStatus.ALLOWED : PickupStatus.DISALLOWED;
+            this.pickupStatus = compound.getBoolean("player") ? EntityArrow.PickupStatus.ALLOWED : EntityArrow.PickupStatus.DISALLOWED;
         }
 
         this.setIsCritical(compound.getBoolean("crit"));
     }
 
-    /**
-     * Called by a player entity when they collide with an entity
-     */
+    protected void attemptDropAsItem() {
+        if (this.pickupStatus == PickupStatus.ALLOWED) {
+            this.entityDropItem(this.getArrowStack(), 0.1F);
+        }
+    }
+
+    @Override
     public void onCollideWithPlayer(EntityPlayer entityIn) {
-        if (!this.world.isRemote && this.inGround && this.arrowShake <= 0) {
-            boolean flag = this.pickupStatus == PickupStatus.ALLOWED || this.pickupStatus == PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
+        if (this.inGround) {
+            this.attemptCatch(entityIn);
+        }
+    }
 
-            if (this.pickupStatus == PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getArrowStack())) {
-                flag = false;
-            }
-
-            if (flag) {
-                entityIn.onItemPickup(this, 1);
+    protected boolean attemptCatch(EntityPlayer player) {
+        if (!this.world.isRemote && this.arrowShake <= 0) {
+            if (this.pickupStatus == PickupStatus.CREATIVE_ONLY && player.capabilities.isCreativeMode) {
+                player.onItemPickup(this, 1);
                 this.setDead();
+                return true;
+            } else if (this.pickupStatus == PickupStatus.ALLOWED) {
+                ItemStack weapon = this.getArrowStack();
+
+                for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
+                    ItemStack slotStack = player.inventory.getStackInSlot(i);
+                    if (slotStack.getItem() instanceof ItemTideTrident && ItemTideTrident.hasMatchingUUID(slotStack, weapon)) {
+                        boolean empty = ItemTideTrident.isEmpty(slotStack);
+                        if (empty) {
+                            int itemDamage = slotStack.getItemDamage() + 1;
+                            if (itemDamage > slotStack.getMaxDamage()) {
+                                player.renderBrokenItemStack(slotStack);
+                                slotStack.setCount(0);
+                            } else {
+                                ItemTideTrident.setEmpty(slotStack, ItemTideTrident.isEmpty(weapon));
+                                slotStack.setItemDamage(itemDamage);
+                            }
+                            player.onItemPickup(this, 1);
+                            this.setDead();
+                            return true;
+                        }
+                    }
+                }
             }
         }
+        return false;
     }
 
+    protected boolean canBeCaughtInMidair(Entity shooter, Entity entityHit) {
+        return shooter == entityHit && this.noClip;
+    }
+
+    @Override
     protected ItemStack getArrowStack() {
-        if (shootingEntity instanceof EntityLivingBase) {
-            stack.damageItem(1, (EntityLivingBase) shootingEntity);
-        }
-        return stack;
-    }
-
-    protected boolean canTriggerWalking() {
-        return false;
-    }
-
-    public double getDamage() {
-        return this.damage;
-    }
-
-    public void setDamage(double damageIn) {
-        this.damage = damageIn;
-    }
-
-    public void setKnockbackStrength(int knockbackStrengthIn) {
-        this.knockbackStrength = knockbackStrengthIn;
-    }
-
-    public boolean canBeAttackedWithItem() {
-        return false;
-    }
-
-    public float getEyeHeight() {
-        return 0.0F;
-    }
-
-    /**
-     * Whether the arrow has a stream of critical hit particles flying behind it.
-     */
-    public boolean getIsCritical() {
-        byte b0 = this.dataManager.get(CRITICAL);
-        return (b0 & 1) != 0;
-    }
-
-    public void setIsCritical(boolean critical) {
-        byte b0 = this.dataManager.get(CRITICAL);
-
-        if (critical) {
-            this.dataManager.set(CRITICAL, (byte) (b0 | 1));
-        } else {
-            this.dataManager.set(CRITICAL, (byte) (b0 & -2));
-        }
-    }
-
-    public void setEnchantmentEffectsFromEntity(EntityLivingBase p_190547_1_, float p_190547_2_) {
-        int i = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.POWER, p_190547_1_);
-        int j = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.PUNCH, p_190547_1_);
-        this.setDamage((double) (p_190547_2_ * 2.0F) + this.rand.nextGaussian() * 0.25D + (double) ((float) this.world.getDifficulty().getId() * 0.11F));
-
-        if (i > 0) {
-            this.setDamage(this.getDamage() + (double) i * 0.5D + 0.5D);
-        }
-
-        if (j > 0) {
-            this.setKnockbackStrength(j);
-        }
-
-        if (EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.FLAME, p_190547_1_) > 0) {
-            this.setFire(100);
-        }
-    }
-
-    public enum PickupStatus {
-        DISALLOWED,
-        ALLOWED,
-        CREATIVE_ONLY;
-
-        public static EntityTideTrident.PickupStatus getByOrdinal(int ordinal) {
-            if (ordinal < 0 || ordinal > values().length) {
-                ordinal = 0;
-            }
-
-            return values()[ordinal];
-        }
+        return this.getDataManager().get(WEAPON);
     }
 }

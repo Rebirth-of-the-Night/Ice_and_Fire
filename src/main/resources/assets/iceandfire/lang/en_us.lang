@@ -371,6 +371,7 @@ item.iceandfire.amphithere_macuahuitl.desc_1=Disables shields
 item.iceandfire.tide_trident.name=Tide Trident
 item.iceandfire.tide_trident.desc_0=Very strong trident weapon
 item.iceandfire.tide_trident.desc_1=Pierces through multiple enemies
+item.iceandfire.tide_trident.not_original=Cannot be repaired or enchanted
 item.iceandfire.hippogryph_skull.name=Hippogryph Skull
 item.iceandfire.cyclops_skull.name=Cyclops Skull
 item.iceandfire.cockatrice_skull.name=Cockatrice Skull
