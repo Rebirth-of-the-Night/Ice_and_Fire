@@ -15,9 +15,13 @@ public class IceAndFirePlugin implements IFMLLoadingPlugin {
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[]{IceAndFireRuntimePatcher.class.getName()/*,
+        return new String[]{IceAndFireRuntimePatcher.class.getName(),/*,
                 "com.github.alexthe666.iceandfire.asm.EntityLivingBaseTransformer",
-                "com.github.alexthe666.iceandfire.asm.LayerArmorBaseTransformer"*/};
+                "com.github.alexthe666.iceandfire.asm.LayerArmorBaseTransformer"*/
+                AnvilChunkLoaderTransformer.class.getName(),
+                ChunkTransformer.class.getName(),
+                EntityAccessorTransformer.class.getName()
+        };
     }
 
     @Override
