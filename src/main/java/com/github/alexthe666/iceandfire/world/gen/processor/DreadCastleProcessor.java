@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.world.gen.processor;
 
-import com.github.alexthe666.iceandfire.block.IDreadBlock;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityPodium;
@@ -26,7 +25,6 @@ import java.util.Random;
 
 public class DreadCastleProcessor implements ITemplateProcessor {
 
-    private float integrity = 1.0F;
     public static final ResourceLocation DREAD_CHEST_LOOT_TRASH = LootTableList.register(new ResourceLocation("iceandfire", "dredcastlebasic1"));
     public static final ResourceLocation DREAD_CHEST_LOOT_NORMAL = LootTableList.register(new ResourceLocation("iceandfire", "dredcastleloot1"));
     public static final ResourceLocation DREAD_CHEST_LOOT_NORMAL2 = LootTableList.register(new ResourceLocation("iceandfire", "dredcastleloot2"));
@@ -72,13 +70,7 @@ public class DreadCastleProcessor implements ITemplateProcessor {
     public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfoIn) {
         Block block = blockInfoIn.blockState.getBlock();
 
-        if (worldIn.rand.nextFloat() <= integrity) {
-            if (block instanceof IDreadBlock) {
-                if (block == IafBlockRegistry.dread_stone_bricks) {
-                    IBlockState state = getRandomCrackedBlock(null, worldIn.rand);
-                    return new Template.BlockInfo(pos, state, null);
-                }
-            }
+        if (block != Blocks.AIR) {
             if (block instanceof BlockChest) {
                 return getLootTable(worldIn, pos, blockInfoIn, DREAD_CHEST_LOOT_TRASH);
             }

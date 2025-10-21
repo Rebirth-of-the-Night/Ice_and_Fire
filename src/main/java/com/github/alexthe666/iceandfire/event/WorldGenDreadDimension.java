@@ -24,8 +24,7 @@ public class WorldGenDreadDimension implements IWorldGenerator {
     private static final int MAX_GENERATION_HEIGHT = 120;
 
     @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world,
-                         IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         // Early exit if not in DreadLands dimension
         if (!(world.provider instanceof WorldProviderDreadLands)) {
             return;
