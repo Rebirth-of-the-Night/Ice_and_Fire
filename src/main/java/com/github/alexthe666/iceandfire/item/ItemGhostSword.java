@@ -49,7 +49,7 @@ public class ItemGhostSword extends ItemSword {
             return;
         final Multimap<String, AttributeModifier> dmg = stack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
         double totalDmg = 0D;
-        for (AttributeModifier modifier : dmg.get(String.valueOf(SharedMonsterAttributes.ATTACK_DAMAGE))) {
+        for (AttributeModifier modifier : dmg.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
             totalDmg += modifier.getAmount();
         }
         playerEntity.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);

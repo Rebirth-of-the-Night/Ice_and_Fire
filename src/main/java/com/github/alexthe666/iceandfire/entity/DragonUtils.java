@@ -64,6 +64,7 @@ public class DragonUtils {
         }
         return false;
     }
+
     public static boolean isOwner(Entity owner, Entity entity) {
         if (!(entity instanceof IEntityOwnable)) {
             return false;
@@ -76,7 +77,7 @@ public class DragonUtils {
     }
 
     public static EntityEquipmentSlot getEquipmentSlotFromDragonInvSlot(int slot) {
-        switch(slot) {
+        switch (slot) {
             default:
                 return EntityEquipmentSlot.HEAD;
             case 1:
@@ -89,7 +90,7 @@ public class DragonUtils {
     }
 
     public static int getDragonInvSlotFromEquipmentSlot(EntityEquipmentSlot slot) {
-        switch(slot) {
+        switch (slot) {
             default:
                 return 0;
             case CHEST:
@@ -131,7 +132,7 @@ public class DragonUtils {
         double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = new BlockPos(target.posX + extraX, target.posY, target.posZ + extraZ);
         BlockPos ground = radialPos;
-        if (ghost.getDistanceSq(ground) > 30) {
+        if (ghost.getDistanceSq(ground.getX() + 0.5D, ground.getY() + 0.5D, ground.getZ() + 0.5D) > 30) {
             return ground;
         }
         return ghost.getPosition();

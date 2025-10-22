@@ -1,8 +1,6 @@
 package com.github.alexthe666.iceandfire.client.particle;
 
 import com.github.alexthe666.iceandfire.entity.EntityGhost;
-import com.github.alexthe666.iceandfire.entity.GhostEntityProperties;
-import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleMobAppearance;
@@ -13,18 +11,18 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class ParticleGhostAppearance extends ParticleMobAppearance {
     private boolean fromLeft;
-    private EntityLivingBase entity;
+    private int ghostEntityId;
 
-    public ParticleGhostAppearance(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn) {
+    public ParticleGhostAppearance(World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, int entityId) {
         super(worldIn, xCoordIn, yCoordIn, zCoordIn);
         this.particleMaxAge = 15;
         fromLeft = worldIn.rand.nextBoolean();
+        this.ghostEntityId = entityId;
     }
 
     public int getFXLayer() {
@@ -33,19 +31,13 @@ public class ParticleGhostAppearance extends ParticleMobAppearance {
 
     public void onUpdate() {
         super.onUpdate();
-
-        if (this.entity == null) {
-            GhostEntityProperties ghostProps = EntityPropertiesHandler.INSTANCE.getProperties(Minecraft.getMinecraft().player, GhostEntityProperties.class);
-            EntityGhost ghost = new EntityGhost(this.world);
-            if (ghostProps != null && ghostProps.getGhost(Minecraft.getMinecraft().player.world) != null) {
-                ghost = ghostProps.getGhost(Minecraft.getMinecraft().player.world);
-            }
-            this.entity = ghost;
-        }
     }
 
     public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-        if (this.entity != null) {
+        Entity entity = world.getEntityByID(ghostEntityId);
+
+        if (entity instanceof EntityGhost && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
+            EntityGhost ghost = (EntityGhost) entity;
             RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
             rendermanager.setRenderPosition(Particle.interpPosX, Particle.interpPosY, Particle.interpPosZ);
             // float f = 0.42553192F;
@@ -74,13 +66,13 @@ public class ParticleGhostAppearance extends ParticleMobAppearance {
             GlStateManager.translate(0.0F, -1.2F, -1.25F);
             GlStateManager.scale(0.6F, 0.6F, 0.6F);
 
-            this.entity.rotationYaw = 0.0F;
-            this.entity.rotationYawHead = 0.0F;
-            this.entity.prevRotationYaw = 0.0F;
-            this.entity.prevRotationYawHead = 0.0F;
+            ghost.rotationYaw = 0.0F;
+            ghost.rotationYawHead = 0.0F;
+            ghost.prevRotationYaw = 0.0F;
+            ghost.prevRotationYawHead = 0.0F;
 
-            EntityGhost ghost = (EntityGhost) entity;
-            ghost.setAnimation(EntityGhost.ANIMATION_SCARE);
+            //EntityGhost ghost = (EntityGhost) entity;
+            //ghost.setAnimation(EntityGhost.ANIMATION_SCARE);
             //for (int i = 0; i < 30; i++)
             //    ghost.setAnimationTick(i);
             Render<?> render = rendermanager.getEntityRenderObject(ghost);

@@ -509,7 +509,7 @@ public class ClientProxy extends CommonProxy {
             particle = new ParticleHydraBreath(world, x, y, z, (float) motX, (float) motY, (float) motZ);
         }
         if (name.equals("ghost_appearance")) {
-            particle = new ParticleGhostAppearance(world, x, y, z);
+            particle = new ParticleGhostAppearance(world, x, y, z, (int) motX);
         }
         if (particle != null) {
             particleSpawner.spawnParticle(particle, false, false, false, x, y, z);
