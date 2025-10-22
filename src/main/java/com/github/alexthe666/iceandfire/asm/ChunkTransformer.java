@@ -22,7 +22,6 @@ public class ChunkTransformer implements IClassTransformer {
         ClassReader classReader = new ClassReader(basicClass);
         classReader.accept(classNode, 0);
 
-        // 使用 FML 反混淆映射器获取正确的方法名
         String addEntityMethodName = getMethodName("net.minecraft.world.chunk.Chunk", "addEntity", "(Lnet/minecraft/entity/Entity;)V");
 
         for (MethodNode method : classNode.methods) {
@@ -34,7 +33,6 @@ public class ChunkTransformer implements IClassTransformer {
 
         addHasValidVehicleNBTMethod(classNode);
 
-        // 修改 ClassWriter 的创建方式，避免计算堆栈帧
         ClassWriter writer = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS) {
             @Override
             protected String getCommonSuperClass(String type1, String type2) {
@@ -74,7 +72,6 @@ public class ChunkTransformer implements IClassTransformer {
         AbstractInsnNode[] nodes = instructions.toArray();
         int startRemoveIndex = warnCallIndex;
 
-        // 获取 LOGGER 字段的混淆名称
         String loggerFieldName = getFieldName("net.minecraft.world.chunk.Chunk", "LOGGER");
 
         for (int i = warnCallIndex - 1; i >= 0; i--) {
@@ -95,8 +92,6 @@ public class ChunkTransformer implements IClassTransformer {
 
     private void removeSetDeadCall(InsnList instructions) {
         AbstractInsnNode[] nodes = instructions.toArray();
-        
-        // 获取 Entity.setDead() 方法的混淆名称
         String setDeadMethodName = getMethodName("net.minecraft.entity.Entity", "setDead", "()V");
         String entityClassName = getClassName("net.minecraft.entity.Entity");
 
@@ -105,7 +100,6 @@ public class ChunkTransformer implements IClassTransformer {
             if (node instanceof MethodInsnNode) {
                 MethodInsnNode methodNode = (MethodInsnNode) node;
                 if (setDeadMethodName.equals(methodNode.name) && entityClassName.equals(methodNode.owner)) {
-                    // 简单地用 POP 替换，不修改堆栈帧
                     instructions.insertBefore(node, new InsnNode(POP));
                     instructions.remove(node);
                     break;
@@ -123,7 +117,6 @@ public class ChunkTransformer implements IClassTransformer {
 
         LabelNode skipLabel = new LabelNode();
 
-        // 获取混淆名称
         String entityClassName = getClassName("net.minecraft.entity.Entity");
         String nbtClassName = getClassName("net.minecraft.nbt.NBTTagCompound");
         String mathHelperClassName = getClassName("net.minecraft.util.math.MathHelper");
@@ -136,16 +129,14 @@ public class ChunkTransformer implements IClassTransformer {
         String loggerFieldName = getFieldName("net.minecraft.world.chunk.Chunk", "LOGGER");
         String setDeadMethodName = getMethodName("net.minecraft.entity.Entity", "setDead", "()V");
 
-        // 检查是否有有效的载具 NBT 数据
         list.add(new VarInsnNode(ALOAD, 0)); // this
         list.add(new VarInsnNode(ALOAD, entityIndex)); // entity
-        list.add(new MethodInsnNode(INVOKEVIRTUAL, entityClassName, getEntityDataMethodName, 
+        list.add(new MethodInsnNode(INVOKEVIRTUAL, entityClassName, getEntityDataMethodName,
                 "()L" + nbtClassName + ";", false));
-        list.add(new MethodInsnNode(INVOKESPECIAL, chunkClassName, "hasValidVehicleNBT", 
+        list.add(new MethodInsnNode(INVOKESPECIAL, chunkClassName, "hasValidVehicleNBT",
                 "(L" + nbtClassName + ";)Z", false));
         list.add(new JumpInsnNode(IFNE, skipLabel));
 
-        // 计算实体所在的区块坐标
         list.add(new VarInsnNode(ALOAD, entityIndex));
         list.add(new FieldInsnNode(GETFIELD, entityClassName, posXFieldName, "D"));
         list.add(new LdcInsnNode(16.0));
@@ -160,7 +151,6 @@ public class ChunkTransformer implements IClassTransformer {
         list.add(new MethodInsnNode(INVOKESTATIC, mathHelperClassName, floorMethodName, "(D)I", false));
         list.add(new VarInsnNode(ISTORE, entityChunkZIndex));
 
-        // 记录警告日志
         list.add(new FieldInsnNode(GETSTATIC, chunkClassName, loggerFieldName, "Lorg/apache/logging/log4j/Logger;"));
         list.add(new LdcInsnNode("Wrong location! ({}, {}) should be ({}, {}), {}"));
 
@@ -180,15 +170,13 @@ public class ChunkTransformer implements IClassTransformer {
 
         list.add(new VarInsnNode(ALOAD, entityIndex)); // entity
 
-        list.add(new MethodInsnNode(INVOKEINTERFACE, "org/apache/logging/log4j/Logger", "warn", 
+        list.add(new MethodInsnNode(INVOKEINTERFACE, "org/apache/logging/log4j/Logger", "warn",
                 "(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V", true));
 
-        // 设置实体为死亡状态
         list.add(new VarInsnNode(ALOAD, entityIndex));
         list.add(new MethodInsnNode(INVOKEVIRTUAL, entityClassName, setDeadMethodName, "()V", false));
 
         list.add(skipLabel);
-        // 添加 Frame 指令确保堆栈帧正确
         list.add(new FrameNode(F_SAME, 0, null, 0, null));
 
         return list;
@@ -218,35 +206,29 @@ public class ChunkTransformer implements IClassTransformer {
         int vehicleChunkXIndex = 3;
         int vehicleChunkZIndex = 4;
 
-        // 添加初始帧
         instructions.add(new FrameNode(F_SAME, 0, null, 0, null));
 
-        // 检查是否有 RiddenVehicle 键
         instructions.add(new VarInsnNode(ALOAD, 1)); // entityData
         instructions.add(new LdcInsnNode("RiddenVehicle"));
         instructions.add(new MethodInsnNode(INVOKEVIRTUAL, nbtClassName, hasKeyMethodName, "(Ljava/lang/String;)Z", false));
         instructions.add(new JumpInsnNode(IFEQ, returnFalseLabel));
 
-        // 获取 RiddenVehicle 数据
         instructions.add(new VarInsnNode(ALOAD, 1)); // entityData
         instructions.add(new LdcInsnNode("RiddenVehicle"));
-        instructions.add(new MethodInsnNode(INVOKEVIRTUAL, nbtClassName, getCompoundTagMethodName, 
+        instructions.add(new MethodInsnNode(INVOKEVIRTUAL, nbtClassName, getCompoundTagMethodName,
                 "(Ljava/lang/String;)L" + nbtClassName + ";", false));
         instructions.add(new VarInsnNode(ASTORE, vehiclePosNBTIndex));
 
-        // 获取 vehicleChunkX
         instructions.add(new VarInsnNode(ALOAD, vehiclePosNBTIndex));
         instructions.add(new LdcInsnNode("vehicleChunkX"));
         instructions.add(new MethodInsnNode(INVOKEVIRTUAL, nbtClassName, getIntegerMethodName, "(Ljava/lang/String;)I", false));
         instructions.add(new VarInsnNode(ISTORE, vehicleChunkXIndex));
 
-        // 获取 vehicleChunkZ
         instructions.add(new VarInsnNode(ALOAD, vehiclePosNBTIndex));
         instructions.add(new LdcInsnNode("vehicleChunkZ"));
         instructions.add(new MethodInsnNode(INVOKEVIRTUAL, nbtClassName, getIntegerMethodName, "(Ljava/lang/String;)I", false));
         instructions.add(new VarInsnNode(ISTORE, vehicleChunkZIndex));
 
-        // 比较 vehicleChunkX == this.x
         instructions.add(new VarInsnNode(ILOAD, vehicleChunkXIndex));
         instructions.add(new VarInsnNode(ALOAD, 0)); // this
         instructions.add(new FieldInsnNode(GETFIELD, classNode.name, chunkXFieldName, "I"));

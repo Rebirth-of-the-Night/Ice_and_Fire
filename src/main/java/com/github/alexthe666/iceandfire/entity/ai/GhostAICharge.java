@@ -7,8 +7,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
-import net.minecraftforge.common.util.Constants;
 
 public class GhostAICharge extends EntityAIBase {
 
@@ -18,7 +16,7 @@ public class GhostAICharge extends EntityAIBase {
     public Vec3d offsetOf = Vec3d.ZERO;
 
     public GhostAICharge(EntityGhost ghost) {
-        this.setMutexBits(Constants.AiMutexBits.MOVE);
+        this.setMutexBits(1); // MOVE flag
         this.ghost = ghost;
     }
 
@@ -29,7 +27,7 @@ public class GhostAICharge extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return ghost.getAttackTarget() != null && !ghost.getAttackTarget().isDead;
+        return ghost.getAttackTarget() != null && ghost.getAttackTarget().isEntityAlive();
     }
 
     @Override
@@ -44,10 +42,6 @@ public class GhostAICharge extends EntityAIBase {
         ghost.setCharging(false);
     }
 
-    public static Vec3d copyCentered(Vec3i toCopy) {
-        return new Vec3d((double)toCopy.getX() + 0.5D, (double)toCopy.getY() + 0.5D, (double)toCopy.getZ() + 0.5D);
-    }
-
     @Override
     public void updateTask() {
         EntityLivingBase target = ghost.getAttackTarget();
@@ -58,11 +52,10 @@ public class GhostAICharge extends EntityAIBase {
             if (firstPhase) {
                 if (this.moveToPos == null) {
                     BlockPos moveToPos = DragonUtils.getBlockInTargetsViewGhost(ghost, target);
-                    this.moveToPos = copyCentered(moveToPos);
+                    this.moveToPos = new Vec3d(moveToPos.getX() + 0.5D, moveToPos.getY() + 0.5D, moveToPos.getZ() + 0.5D);
                 } else {
-                    this.ghost.getNavigator().tryMoveToXYZ(this.moveToPos.x + 0.5D, this.moveToPos.y + 0.5D,
-                        this.moveToPos.z + 0.5D, 1F);
-                    if (this.ghost.getDistanceSq(new BlockPos(this.moveToPos.add(0.5D, 0.5D, 0.5D))) < 9D) {
+                    this.ghost.getNavigator().tryMoveToXYZ(this.moveToPos.x, this.moveToPos.y, this.moveToPos.z, 1F);
+                    if (this.ghost.getDistanceSq(this.moveToPos.x, this.moveToPos.y, this.moveToPos.z) < 9D) {
                         if (this.ghost.getAnimation() == IAnimatedEntity.NO_ANIMATION) {
                             this.ghost.setAnimation(EntityGhost.ANIMATION_SCARE);
                         }
@@ -75,11 +68,10 @@ public class GhostAICharge extends EntityAIBase {
                 Vec3d fin = target.getPositionVector();
                 this.moveToPos = new Vec3d(fin.x, target.posY + target.getEyeHeight() / 2, fin.z);
                 this.ghost.getNavigator().tryMoveToEntityLiving(target, 1.2F);
-                if (this.ghost.getDistanceSq(new BlockPos(this.moveToPos.add(0.5D, 0.5D, 0.5D))) < 3D) {
+                if (this.ghost.getDistanceSq(this.moveToPos.x, this.moveToPos.y, this.moveToPos.z) < 3D) {
                     this.resetTask();
                 }
             }
         }
-
     }
 }

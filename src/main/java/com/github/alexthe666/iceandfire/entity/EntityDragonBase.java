@@ -2034,7 +2034,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         }
     }
 
-    protected int shouldBurnFire(World world){
+    protected int shouldBurnFire(World world) {
         return world.isRemote ? burnProgress : (this.fireTicks > 20 ? this.fireTicks : 0);
     }
 
