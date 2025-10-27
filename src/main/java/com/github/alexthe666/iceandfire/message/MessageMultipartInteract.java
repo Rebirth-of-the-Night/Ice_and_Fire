@@ -17,10 +17,12 @@ public class MessageMultipartInteract extends AbstractMessage<MessageMultipartIn
 
     public int creatureID;
     public float dmg;
+    public boolean attack;
 
-    public MessageMultipartInteract(int creatureID, float dmg) {
+    public MessageMultipartInteract(int creatureID, float dmg, boolean attack) {
         this.creatureID = creatureID;
         this.dmg = dmg;
+        this.attack = attack;
     }
 
     public MessageMultipartInteract() {
@@ -28,50 +30,36 @@ public class MessageMultipartInteract extends AbstractMessage<MessageMultipartIn
 
     @Override
     public void fromBytes(ByteBuf buf) {
-        creatureID = buf.readInt();
-        dmg = buf.readFloat();
+        this.creatureID = buf.readInt();
+        this.dmg = buf.readFloat();
+        this.attack = buf.readBoolean();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        buf.writeInt(creatureID);
-        buf.writeFloat(dmg);
+        buf.writeInt(this.creatureID);
+        buf.writeFloat(this.dmg);
+        buf.writeBoolean(this.attack);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void onClientReceived(Minecraft client, MessageMultipartInteract message, EntityPlayer player, MessageContext messageContext) {
-        if (player.world != null) {
-            Entity entity = player.world.getEntityByID(message.creatureID);
-            if (entity != null && entity instanceof EntityLivingBase) {
-                double dist = player.getDistance(entity);
-                EntityLivingBase mob = (EntityLivingBase) entity;
-                if(dist < 100) {
-                    if (message.dmg > 0F) {
-                        mob.attackEntityFrom(DamageSource.causeMobDamage(player), dmg);
-                    } else {
-                        mob.processInitialInteract(player, EnumHand.MAIN_HAND);
-                    }
-                }
-            }
+        Entity entity = player.world.getEntityByID(message.creatureID);
+        if(entity instanceof EntityLivingBase) {
+            EntityLivingBase mob = (EntityLivingBase)entity;
+            if(message.attack) mob.attackEntityFrom(DamageSource.causeMobDamage(player), dmg);
+            else mob.processInitialInteract(player, EnumHand.MAIN_HAND);
         }
     }
 
     @Override
     public void onServerReceived(MinecraftServer server, MessageMultipartInteract message, EntityPlayer player, MessageContext messageContext) {
-        if (player.world != null) {
-            Entity entity = player.world.getEntityByID(message.creatureID);
-            if (entity != null && entity instanceof EntityLivingBase) {
-                double dist = player.getDistance(entity);
-                EntityLivingBase mob = (EntityLivingBase) entity;
-                if(dist < 100) {
-                    if (message.dmg > 0F) {
-                        mob.attackEntityFrom(DamageSource.causeMobDamage(player), dmg);
-                    } else {
-                        mob.processInitialInteract(player, EnumHand.MAIN_HAND);
-                    }
-                }
-            }
+        Entity entity = player.world.getEntityByID(message.creatureID);
+        if(entity instanceof EntityLivingBase) {
+            EntityLivingBase mob = (EntityLivingBase)entity;
+            if(message.attack) mob.attackEntityFrom(DamageSource.causeMobDamage(player), dmg);
+            else mob.processInitialInteract(player, EnumHand.MAIN_HAND);
         }
     }
 }

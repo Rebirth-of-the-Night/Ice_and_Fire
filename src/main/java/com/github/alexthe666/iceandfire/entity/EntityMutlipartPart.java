@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.entity;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.message.MessageMultipartInteract;
 import net.ilexiconn.llibrary.server.entity.multipart.PartEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,26 +16,25 @@ public class EntityMutlipartPart extends PartEntity {
         super(parent, radius, angleYaw, offsetY, sizeX, sizeY, damageMultiplier);
     }
 
+    @Override
     public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
-        if (world.isRemote) {
-            IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageMultipartInteract(this.parent.getEntityId(), 0));
-        }
+        if(world.isRemote) IceAndFire.NETWORK_WRAPPER.sendToServer(
+                new MessageMultipartInteract(this.parent.getEntityId(), 0, false));
         return this.parent.processInitialInteract(player, hand);
     }
 
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        if(world.isRemote && source.getTrueSource() instanceof EntityPlayer) {
-            IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageMultipartInteract(this.parent.getEntityId(), damage * damageMultiplier));
-        }
+        if(world.isRemote && source.getTrueSource() instanceof EntityPlayer) IceAndFire.NETWORK_WRAPPER.sendToServer(
+                new MessageMultipartInteract(this.parent.getEntityId(), damage * damageMultiplier, true));
         return this.parent.attackEntityFrom(source, damage * this.damageMultiplier);
     }
 
-    public EntityLivingBase getParent() {
+    public EntityLivingBase getParent(){
         return this.parent;
     }
 
-    public void resize(float width, float height) {
+    public void resize(float width, float height){
         this.setSize(width, height);
     }
 
@@ -46,7 +46,14 @@ public class EntityMutlipartPart extends PartEntity {
         }
     }
 
-    public boolean shouldNotExist() {
+    public boolean shouldNotExist(){
         return !this.parent.isEntityAlive();
+    }
+
+    public boolean isEntityEqual(Entity entityIn) {
+        if (entityIn instanceof EntityMutlipartPart) {
+            return super.isEntityEqual(entityIn);
+        }
+        return parent.isEntityEqual(entityIn);
     }
 }
