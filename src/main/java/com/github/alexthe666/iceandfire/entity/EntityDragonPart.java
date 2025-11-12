@@ -24,6 +24,6 @@ public class EntityDragonPart extends EntityMutlipartPart {
 
     @Override
     public boolean shouldNotExist(){
-        return this.dragon != null && !this.dragon.isEntityAlive() && !this.dragon.isModelDead();
+        return !this.dragon.isEntityAlive() && !this.dragon.isModelDead();
     }
 }
