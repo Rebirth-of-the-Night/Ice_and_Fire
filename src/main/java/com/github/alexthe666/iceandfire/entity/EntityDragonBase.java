@@ -1694,12 +1694,13 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
         if (this.isPassenger(passenger)) {
+            if (this.isModelDead()) {
+                passenger.dismountRidingEntity();
+            }
+
             if (this.getControllingPassenger() == null || !this.isControllingPassenger(passenger)) {
                 updatePreyInMouth(passenger);
             } else {
-                if (this.isModelDead()) {
-                    passenger.dismountRidingEntity();
-                }
                 float speed_walk = 0.2F;
                 float speed_idle = 0.05F;
                 float speed_fly = 0.2F;
