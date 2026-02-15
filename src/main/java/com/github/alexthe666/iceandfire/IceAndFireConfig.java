@@ -185,6 +185,7 @@ public class IceAndFireConfig {
     public int generateGraveyardChance = 256;
     public boolean ghostSpawnFromPlayerDeaths = true;
     public int ghostSpawnChanceFromGraveyardSoil = 9;
+    public int bloodedDragonArmorSetEffectCooldown = 300;
     public String villagerTradingItem = "iceandfire:sapphire_gem"; // TODO make trading item configurable
 
     public void init(Configuration config) {
@@ -376,6 +377,8 @@ public class IceAndFireConfig {
         this.generateHydraChance = config.getInt("Hydra Caves Gen Chance", "all", 200, 1, 10000, "One out of this number chance per chunk to generate a hydra cave.");
 
         this.chunkLoadSummonCrystal = config.getBoolean("Chunk Load Summon Crystal", "all", true, "True if the summon crystal can load chunks to find dragons.");
+
+        this.bloodedDragonArmorSetEffectCooldown = config.getInt("Blooded Dragon Armor Set Effect Cooldown", "all", 100, 10, 1000, "Length in required between the activation of the Blooded Dragon Armor Set Effects");
 
         //Dreadlands
         this.enableDreadlands = config.getBoolean("Enable Dreadlands", "all", false, "Enable dreadland dimension. (WIP)");

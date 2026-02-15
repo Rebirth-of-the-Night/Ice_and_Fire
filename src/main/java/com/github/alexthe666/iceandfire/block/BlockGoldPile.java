@@ -40,6 +40,11 @@ public class BlockGoldPile extends Block {
     }
 
     @Override
+    public String getHarvestTool(IBlockState state) {
+        return "shovel";
+    }
+
+    @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
         return SNOW_AABB[state.getValue(LAYERS)];
     }
