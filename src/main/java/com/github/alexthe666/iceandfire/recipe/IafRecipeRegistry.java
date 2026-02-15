@@ -2,7 +2,10 @@ package com.github.alexthe666.iceandfire.recipe;
 
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
-import com.github.alexthe666.iceandfire.enums.*;
+import com.github.alexthe666.iceandfire.enums.EnumDragonArmor;
+import com.github.alexthe666.iceandfire.enums.EnumSeaSerpent;
+import com.github.alexthe666.iceandfire.enums.EnumSkullType;
+import com.github.alexthe666.iceandfire.enums.EnumTroll;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
@@ -36,9 +39,6 @@ public class IafRecipeRegistry {
         FIRE_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(IafItemRegistry.fire_dragon_blood), new ItemStack(IafItemRegistry.dragonsteel_fire_ingot)));
         ICE_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(IafItemRegistry.ice_dragon_blood), new ItemStack(IafItemRegistry.dragonsteel_ice_ingot)));
         LIGHTNING_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(Items.IRON_INGOT), new ItemStack(IafItemRegistry.lightning_dragon_blood), new ItemStack(IafItemRegistry.dragonsteel_lightning_ingot)));
-        FIRE_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(IafItemRegistry.dragonbone_sword), new ItemStack(IafItemRegistry.fire_dragon_blood), new ItemStack(IafItemRegistry.dragonbone_sword_fire)));
-        ICE_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(IafItemRegistry.dragonbone_sword), new ItemStack(IafItemRegistry.ice_dragon_blood), new ItemStack(IafItemRegistry.dragonbone_sword_ice)));
-        LIGHTNING_FORGE_RECIPES.add(new DragonForgeRecipe(new ItemStack(IafItemRegistry.dragonbone_sword), new ItemStack(IafItemRegistry.lightning_dragon_blood), new ItemStack(IafItemRegistry.dragonbone_sword_lightning)));
 
         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(IafItemRegistry.stymphalian_arrow, new BehaviorProjectileDispense() {
             /**
@@ -150,7 +150,7 @@ public class IafRecipeRegistry {
         OreDictionary.registerOre("ingotCopper", IafItemRegistry.copperIngot);
         OreDictionary.registerOre("nuggetCopper", IafItemRegistry.copperNugget);
         OreDictionary.registerOre("oreCopper", IafBlockRegistry.copperOre);
-        OreDictionary.registerOre("blockCopper", IafBlockRegistry.copperBlock);   
+        OreDictionary.registerOre("blockCopper", IafBlockRegistry.copperBlock);
         OreDictionary.registerOre("gemSapphire", IafItemRegistry.sapphireGem);
         OreDictionary.registerOre("oreSapphire", IafBlockRegistry.sapphireOre);
         OreDictionary.registerOre("blockSapphire", IafBlockRegistry.sapphireBlock);
@@ -220,12 +220,12 @@ public class IafRecipeRegistry {
         OreDictionary.registerOre("toolAxe", IafItemRegistry.dragonsteel_fire_axe);
         OreDictionary.registerOre("toolAxe", IafItemRegistry.dragonsteel_ice_axe);
         OreDictionary.registerOre("toolAxe", IafItemRegistry.dragonsteel_lightning_axe);
-        
+
         OreDictionary.registerOre("logWood", IafBlockRegistry.dreadwood_log);
 
-        OreDictionary.registerOre("dragonSkull",  new ItemStack(IafItemRegistry.dragon_skull, 1, OreDictionary.WILDCARD_VALUE));
-        OreDictionary.registerOre("mythicalSkull",  new ItemStack(IafItemRegistry.dragon_skull, 1, OreDictionary.WILDCARD_VALUE));
-        for(EnumSkullType skullType : EnumSkullType.values()){
+        OreDictionary.registerOre("dragonSkull", new ItemStack(IafItemRegistry.dragon_skull, 1, OreDictionary.WILDCARD_VALUE));
+        OreDictionary.registerOre("mythicalSkull", new ItemStack(IafItemRegistry.dragon_skull, 1, OreDictionary.WILDCARD_VALUE));
+        for (EnumSkullType skullType : EnumSkullType.values()) {
             OreDictionary.registerOre("mythicalSkull", skullType.skull_item);
         }
 
@@ -307,7 +307,6 @@ public class IafRecipeRegistry {
         tag.setString("Potion", "water_breathing");
         waterBreathingPotion.setTagCompound(tag);
         BrewingRecipeRegistry.addRecipe(new ItemStack(Items.POTIONITEM, 1, 0), new ItemStack(IafItemRegistry.shiny_scales), waterBreathingPotion);
-
     }
 
     public static BannerPattern addBanner(String name, ItemStack craftingStack) {
@@ -335,6 +334,8 @@ public class IafRecipeRegistry {
                 }
             }
         }
+        
+        BloodRecipes.init();
     }
 
     public static DragonForgeRecipe getForgeRecipe(String type, ItemStack stack) {
@@ -370,9 +371,12 @@ public class IafRecipeRegistry {
             return new ArrayList<>();
         }
         switch (type) {
-            case "ice": return ICE_FORGE_RECIPES;
-            case "lightning": return LIGHTNING_FORGE_RECIPES;
-            default: return FIRE_FORGE_RECIPES;
+            case "ice":
+                return ICE_FORGE_RECIPES;
+            case "lightning":
+                return LIGHTNING_FORGE_RECIPES;
+            default:
+                return FIRE_FORGE_RECIPES;
         }
     }
 }

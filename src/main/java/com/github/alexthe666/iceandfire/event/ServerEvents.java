@@ -326,16 +326,16 @@ public class ServerEvents {
         }
         if (event.getSource() == IceAndFire.dragonFire || event.getSource() == IceAndFire.dragonIce || event.getSource() == IceAndFire.dragonLightning) {
             float multi = 1;
-            if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof ItemScaleArmor) {
+            if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof IProtectAgainstDragonItem) {
                 multi -= 0.1;
             }
-            if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() instanceof ItemScaleArmor) {
+            if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.CHEST).getItem() instanceof IProtectAgainstDragonItem) {
                 multi -= 0.3;
             }
-            if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() instanceof ItemScaleArmor) {
+            if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.LEGS).getItem() instanceof IProtectAgainstDragonItem) {
                 multi -= 0.2;
             }
-            if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() instanceof ItemScaleArmor) {
+            if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.FEET).getItem() instanceof IProtectAgainstDragonItem) {
                 multi -= 0.1;
             }
             //TODO Balance
@@ -343,6 +343,16 @@ public class ServerEvents {
                 multi = 0;
             }
             event.setAmount(event.getAmount() * multi);
+        }
+        if (event.getSource().getImmediateSource() == event.getSource().getTrueSource() && event.getSource().getTrueSource() instanceof EntityLivingBase) {
+            EntityLivingBase attacker = (EntityLivingBase) event.getSource().getTrueSource();
+
+            //Todo: add same compat to first aid mod like RLcraft
+            //if (!CompatLoadUtil.isFirstAidLoaded()) {
+                if (event.getEntityLiving() instanceof EntityPlayer) {
+                    IElementalThornArmor.applySetEffect((EntityPlayer) event.getEntityLiving(), attacker);
+                }
+           // }
         }
     }
 

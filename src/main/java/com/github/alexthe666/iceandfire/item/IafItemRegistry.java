@@ -547,6 +547,7 @@ public class IafItemRegistry {
 
     static {
         EnumDragonArmor.initArmors();
+        EnumBloodedDragonArmor.initArmors();
         EnumSeaSerpent.initArmors();
         EnumSkullType.initItems();
 

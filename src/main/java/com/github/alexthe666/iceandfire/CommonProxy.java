@@ -137,7 +137,7 @@ public class CommonProxy {
         registerSpawnable(EntityEntryBuilder.create(), event, EntityGhost.class, "ghost", 63, 0XB9EDB8, 0X73B276);
         registerUnspawnable(EntityEntryBuilder.create(), event, EntityGhostSword.class, "ghost_sword", 64);
 
-        if(IceAndFire.CONFIG.enableDreadlands) {
+        if (IceAndFire.CONFIG.enableDreadlands) {
             registerUnspawnable(EntityEntryBuilder.create(), event, EntityCastleBallista.class, "ballista", 61);
             registerUnspawnable(EntityEntryBuilder.create(), event, EntityFinalBallista.class, "final_ballista", 66);
         }
@@ -230,6 +230,12 @@ public class CommonProxy {
             throw new RuntimeException(e);
         }
         for (EnumDragonArmor armor : EnumDragonArmor.values()) {
+            event.getRegistry().register(armor.helmet);
+            event.getRegistry().register(armor.chestplate);
+            event.getRegistry().register(armor.leggings);
+            event.getRegistry().register(armor.boots);
+        }
+        for (EnumBloodedDragonArmor armor : EnumBloodedDragonArmor.values()) {
             event.getRegistry().register(armor.helmet);
             event.getRegistry().register(armor.chestplate);
             event.getRegistry().register(armor.leggings);
