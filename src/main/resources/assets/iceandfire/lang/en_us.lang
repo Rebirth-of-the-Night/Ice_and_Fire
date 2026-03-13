@@ -669,6 +669,11 @@ death.attack.dragon_ice.player_2=was put into suspended animation by a dragon
 death.attack.gorgon.player_0=was turned to stone by a gorgon
 death.attack.gorgon.player_1=was turned into gorgonzola by a gorgon
 death.attack.gorgon.player_2=was solidified by a gorgon
+
+death.attack.dragon_fire_smoke.player_0=was smoked to perfection by a dragon
+death.attack.dragon_fire_smoke.player_1=was choked on too much dragon-smog
+death.attack.dragon_fire_smoke.player_2=was got a noseful of dragon dust
+
 key.dragon_strike=Dragon Strike
 key.dragon_fireAttack=Dragon Breath
 key.dragon_down=Dragon Down

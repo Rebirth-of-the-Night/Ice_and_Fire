@@ -141,7 +141,7 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
                             .getOwner() == ((EntityTameable) entityHit).getOwner()) {
                         return;
                     }
-                    entityHit.attackEntityFrom(IceAndFire.dragonFire, 10.0F);
+                    entityHit.attackEntityFrom(ash ? IceAndFire.dragonFireSmoke : IceAndFire.dragonFire, ash ? 10.0F / IceAndFire.CONFIG.dragonAttackDamageSmokeDecrease : 10.0F);
                     if (entityHit instanceof EntityLivingBase && ((EntityLivingBase) entityHit).getHealth() == 0) {
                         ((EntityDragonBase) shootingEntity).usingGroundAttack = shootingEntity.getRNG().nextBoolean();
                     }

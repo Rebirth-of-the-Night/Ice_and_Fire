@@ -652,6 +652,11 @@ death.attack.dragon_ice.player_2=被龙送入了永恒的冬眠
 death.attack.gorgon.player_0=被蛇发女妖变成了石头
 death.attack.gorgon.player_1=变成了蛇发女妖的戈尔贡佐拉干酪
 death.attack.gorgon.player_2=被蛇发女妖石化
+
+death.attack.dragon_fire_smoke.player_0=被龙呛成了熏肉
+death.attack.dragon_fire_smoke.player_1=被迫摄入了过多的PM2.5
+death.attack.dragon_fire_smoke.player_2=被龙碰了一鼻子灰
+
 key.dragon_strike=发动龙袭
 key.dragon_fireAttack=喷吐龙息
 key.dragon_down=降低龙飞行高度

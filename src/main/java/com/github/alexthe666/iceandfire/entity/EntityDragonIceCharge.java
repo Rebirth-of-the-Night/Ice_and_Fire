@@ -127,7 +127,7 @@ public class EntityDragonIceCharge extends EntityFireball implements IDragonProj
                         return;
                     }
                     if (!entityHit.isEntityEqual(shootingEntity)) {
-                        entityHit.attackEntityFrom(IceAndFire.dragonFire, 10.0F);
+                        entityHit.attackEntityFrom(IceAndFire.dragonIce, 10.0F);
                         if (entityHit instanceof EntityLivingBase) {
                             if (!IsImmune.toDragonIce(entityHit)) {
                                 FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entityHit, FrozenEntityProperties.class);
