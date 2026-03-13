@@ -2,6 +2,8 @@ package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.*;
+import com.github.alexthe666.iceandfire.compat.FRTCompatBridge;
+import com.github.alexthe666.iceandfire.util.IsImmune;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import net.minecraft.block.Block;
@@ -505,5 +507,10 @@ public class DragonUtils {
     // TODO: 15.06.2022 organize
     public static boolean isDreadBlock(IBlockState state) {
         return BlockUtils.isDreadBlock(state);
+    }
+
+    //Kedition
+    public static boolean isImmuneFireEntity(EntityLivingBase base) {
+        return FRTCompatBridge.loadResistantTweaks(base) || base.isImmuneToFire() || IsImmune.toDragonFire(base);
     }
 }

@@ -55,6 +55,7 @@ dependencies {
     deobfCompile "curse.maven:mantle-74924:2713386"
     deobfCompile "curse.maven:tinkers-construct-74072:2902483"
     deobfCompile "curse.maven:theoneprobe-245211:2667280"
+    deobfCompile "curse.maven:fire-resistance-tiers-382381:2953279"
 
     deobfCompile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.675"
 

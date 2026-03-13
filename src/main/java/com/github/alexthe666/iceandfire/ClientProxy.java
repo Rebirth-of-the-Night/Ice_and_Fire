@@ -492,6 +492,9 @@ public class ClientProxy extends CommonProxy {
         if (name.equals("dragonice")) {
             particle = new ParticleDragonFrost(world, x, y, z, motX, motY, motZ, entityDragonBase, 0);
         }
+        if (name.equals("dragonsmoke")) {
+            particle = new ParticleDragonSmoke(world, x, y, z, motX, motY, motZ, entityDragonBase, 0);
+        }
         if (particle != null) {
             particleSpawner.spawnParticle(particle, true, true, false, x, y, z);
         }

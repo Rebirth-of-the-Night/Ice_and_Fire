@@ -12,9 +12,16 @@ import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
+import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
+import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -31,6 +38,8 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class EntityFireDragon extends EntityDragonBase {
+
+    private static final DataParameter<Boolean> SMOKING = EntityDataManager.createKey(EntityFireDragon.class, DataSerializers.BOOLEAN);
 
     public static final float[] growth_stage_1 = new float[]{1F, 3F};
     public static final float[] growth_stage_2 = new float[]{3F, 7F};
@@ -83,6 +92,34 @@ public class EntityFireDragon extends EntityDragonBase {
     }
 
     @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataManager.register(SMOKING, false);
+    }
+
+    public void setIsSmoking(boolean smoking) {
+        this.dataManager.set(SMOKING, smoking);
+    }
+
+    public boolean getIsSmoking() {
+        if (!IceAndFire.CONFIG.fireDragonUseSmokeAttack)
+            return false;
+        return this.dataManager.get(SMOKING);
+    }
+
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound) {
+        super.writeEntityToNBT(compound);
+        compound.setBoolean("Smoking", this.getIsSmoking());
+    }
+
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound) {
+        super.readEntityFromNBT(compound);
+        this.setIsSmoking(compound.getBoolean("Smoking"));
+    }
+
+    @Override
     public void stimulateFire(double burnX, double burnY, double burnZ, int syncType) {
         if (MinecraftForge.EVENT_BUS.post(new DragonFireEvent(this, burnX, burnY, burnZ))) return;
         if (syncType == 1 && !world.isRemote) {
@@ -115,7 +152,7 @@ public class EntityFireDragon extends EntityDragonBase {
                 d3 = d3 + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
                 d4 = d4 + this.rand.nextGaussian() * 0.007499999832361937D * (double) inaccuracy;
                 this.playSound(IafSoundRegistry.FIREDRAGON_BREATH, 4, 1);
-                EntityDragonFireCharge entitylargefireball = new EntityDragonFireCharge(world, this, d2, d3, d4);
+                EntityDragonFireCharge entitylargefireball = new EntityDragonFireCharge(world, this, d2, d3, d4, getIsSmoking());
                 float size = this.isChild() ? 0.4F : this.isAdult() ? 1.3F : 0.8F;
                 entitylargefireball.setSizes(size, size);
                 entitylargefireball.setPosition(headVec.x, headVec.y, headVec.z);
@@ -143,14 +180,14 @@ public class EntityFireDragon extends EntityDragonBase {
 
             if (canPositionBeSeen(progressX, progressY, progressZ)) {
                 if (world.isRemote && rand.nextInt(5) == 0) {
-                    IceAndFire.PROXY.spawnDragonParticle("dragonfire", headPos.x, headPos.y, headPos.z, 0, 0, 0, this);
+                    IceAndFire.PROXY.spawnDragonParticle(getIsSmoking() ? "dragonsmoke" : "dragonfire", headPos.x, headPos.y, headPos.z, 0, 0, 0, this);
                 }
             } else {
                 if (!world.isRemote) {
                     RayTraceResult result = this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), new Vec3d(progressX, progressY, progressZ), false, true, false);
                     if (result != null) {
                         BlockPos pos = result.getBlockPos();
-                        IafDragonDestructionManager.destroyAreaFire(world, pos, this);
+                        IafDragonDestructionManager.destroyAreaFire(world, pos, this, getIsSmoking());
                     }
                 }
             }
@@ -160,7 +197,7 @@ public class EntityFireDragon extends EntityDragonBase {
             double spawnY = burnY + (rand.nextFloat() * 3.0) - 1.5;
             double spawnZ = burnZ + (rand.nextFloat() * 3.0) - 1.5;
             if (!world.isRemote) {
-                IafDragonDestructionManager.destroyAreaFire(world, new BlockPos(spawnX, spawnY, spawnZ), this);
+                IafDragonDestructionManager.destroyAreaFire(world, new BlockPos(spawnX, spawnY, spawnZ), this, getIsSmoking());
             }
         }
     }
@@ -300,6 +337,7 @@ public class EntityFireDragon extends EntityDragonBase {
     public void onLivingUpdate() {
         super.onLivingUpdate();
         if (!world.isRemote) {
+            this.setIsSmoking(this.getAttackTarget() != null && DragonUtils.isImmuneFireEntity(this.getAttackTarget()));
             if ((this.isInLava() || isInWater()) && !this.isFlying() && !this.isChild() && !this.isHovering() && this.canMove()) {
                 this.setHovering(true);
                 this.flyTicks = 0;
@@ -312,7 +350,7 @@ public class EntityFireDragon extends EntityDragonBase {
                         attackEntityAsMob(this.getAttackTarget());
                     }
                 }
-            }else {
+            } else {
                 this.setBreathingFire(!this.isSleeping() && this.burningTarget != null);
             }
         }

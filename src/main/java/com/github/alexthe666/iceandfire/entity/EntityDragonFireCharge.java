@@ -7,6 +7,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.ProjectileHelper;
+import net.minecraft.init.MobEffects;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -17,6 +19,8 @@ import net.minecraft.world.World;
 public class EntityDragonFireCharge extends EntityFireball implements IDragonProjectile {
 
     public int ticksInAir;
+
+    public boolean ash;
 
     public EntityDragonFireCharge(World worldIn) {
         super(worldIn);
@@ -38,20 +42,33 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
         this.accelerationZ = accelZ / d0 * 0.07D;
     }
 
+    public EntityDragonFireCharge(World worldIn, EntityDragonBase shooter, double accelX, double accelY, double accelZ, boolean ash) {
+        this(worldIn, shooter, accelX, accelY, accelZ);
+        double d0 = MathHelper.sqrt(accelX * accelX + accelY * accelY + accelZ * accelZ);
+        this.accelerationX = accelX / d0 * 0.07D;
+        this.accelerationY = accelY / d0 * 0.07D;
+        this.accelerationZ = accelZ / d0 * 0.07D;
+        this.ash = ash;
+    }
+
     public void setSizes(float width, float height) {
         this.setSize(width, height);
     }
 
+    protected boolean isFireballFiery() {
+        return !ash;
+    }
+
     public void onUpdate() {
         for (int i = 0; i < 4; ++i) {
-            this.world.spawnParticle(EnumParticleTypes.FLAME, this.posX + ((this.rand.nextDouble() - 0.5D) * width), this.posY + ((this.rand.nextDouble() - 0.5D) * width), this.posZ + ((this.rand.nextDouble() - 0.5D) * width), 0.0D, 0.0D, 0.0D);
+            this.world.spawnParticle(ash ? EnumParticleTypes.SMOKE_NORMAL : EnumParticleTypes.FLAME, this.posX + ((this.rand.nextDouble() - 0.5D) * width), this.posY + ((this.rand.nextDouble() - 0.5D) * width), this.posZ + ((this.rand.nextDouble() - 0.5D) * width), 0.0D, 0.0D, 0.0D);
         }
         if (this.isInWater()) {
             setDead();
         }
 
         if (this.world.isRemote || (this.shootingEntity == null || !this.shootingEntity.isDead) && this.world.isBlockLoaded(new BlockPos(this))) {
-        	super.onUpdate();
+            super.onUpdate();
 
             if (this.isFireballFiery()) {
                 this.setFire(1);
@@ -93,15 +110,15 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
 
     @Override
     protected void onImpact(RayTraceResult movingObject) {
-	    if (movingObject == null) return;
-	
-	    if (!this.world.isRemote) {
-	        Entity entityHit = movingObject.entityHit;
-	        if (entityHit instanceof IDragonProjectile) {
+        if (movingObject == null) return;
+
+        if (!this.world.isRemote) {
+            Entity entityHit = movingObject.entityHit;
+            if (entityHit instanceof IDragonProjectile) {
                 return;
             }
             EntityLivingBase shootingEntity = this.shootingEntity;
-            if(shootingEntity instanceof EntityDragonBase) {
+            if (shootingEntity instanceof EntityDragonBase) {
                 if (entityHit != null && shootingEntity != null) {
                     EntityDragonBase dragon = (EntityDragonBase) shootingEntity;
                     if (dragon.isOnSameTeam(entityHit) || dragon.isEntityEqual(entityHit) || dragon.isPart(entityHit)) {
@@ -116,24 +133,27 @@ public class EntityDragonFireCharge extends EntityFireball implements IDragonPro
                     if (IceAndFire.CONFIG.dragonGriefing != 2) {
                         IafDragonDestructionManager.destroyAreaFireCharge(world, new BlockPos(posX, posY, posZ), dragon);
                     }
-	                dragon.usingGroundAttack = dragon.getRNG().nextBoolean();
-	                this.setDead();
+                    dragon.usingGroundAttack = dragon.getRNG().nextBoolean();
+                    this.setDead();
                 }
                 if (entityHit != null && !entityHit.isEntityEqual(shootingEntity)) {
                     if (entityHit.isEntityEqual(shootingEntity) || entityHit instanceof EntityTameable && ((EntityDragonBase) shootingEntity)
-		                    .getOwner() == ((EntityTameable) entityHit).getOwner()) {
+                            .getOwner() == ((EntityTameable) entityHit).getOwner()) {
                         return;
                     }
-	                entityHit.attackEntityFrom(IceAndFire.dragonFire, 10.0F);
-	                if (entityHit instanceof EntityLivingBase && ((EntityLivingBase) entityHit).getHealth() == 0) {
-	                    ((EntityDragonBase) shootingEntity).usingGroundAttack = shootingEntity.getRNG().nextBoolean();
-	                }
-	                if (!IsImmune.toDragonFire(entityHit)) {
-		                entityHit.setFire(5);
-	                }
-	                this.applyEnchantments(shootingEntity, entityHit);
-	                IafDragonDestructionManager.destroyAreaFireCharge(world, new BlockPos(posX, posY, posZ), ((EntityDragonBase) shootingEntity));
-	                this.setDead();
+                    entityHit.attackEntityFrom(IceAndFire.dragonFire, 10.0F);
+                    if (entityHit instanceof EntityLivingBase && ((EntityLivingBase) entityHit).getHealth() == 0) {
+                        ((EntityDragonBase) shootingEntity).usingGroundAttack = shootingEntity.getRNG().nextBoolean();
+                    }
+                    if (entityHit instanceof EntityLivingBase && ash) {
+                        ((EntityLivingBase) entityHit).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 0));
+                    }
+                    if (!IsImmune.toDragonFire(entityHit) && !ash) {
+                        entityHit.setFire(5);
+                    }
+                    this.applyEnchantments(shootingEntity, entityHit);
+                    IafDragonDestructionManager.destroyAreaFireCharge(world, new BlockPos(posX, posY, posZ), ((EntityDragonBase) shootingEntity));
+                    this.setDead();
                 }
             }
         }
