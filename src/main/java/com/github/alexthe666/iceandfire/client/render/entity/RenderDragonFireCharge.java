@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.client.render.entity;
 
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
+import com.github.alexthe666.iceandfire.entity.EntityDragonFireCharge;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
@@ -37,7 +38,7 @@ public class RenderDragonFireCharge extends Render<EntityFireball> {
         this.bindEntityTexture(entity);
         GlStateManager.rotate(entity.ticksExisted * 7, 1.0F, 1.0F, 1.0F);
         GlStateManager.translate(-0.5F, 0F, 0.5F);
-        blockrendererdispatcher.renderBlockBrightness(isFire ? Blocks.MAGMA.getDefaultState() : IafBlockRegistry.dragon_ice.getDefaultState(), entity.getBrightness());
+        blockrendererdispatcher.renderBlockBrightness(isFire ? ((EntityDragonFireCharge) entity).ash ? IafBlockRegistry.ash.getDefaultState() : Blocks.MAGMA.getDefaultState() : IafBlockRegistry.dragon_ice.getDefaultState(), entity.getBrightness());
         GlStateManager.translate(-1.0F, 0.0F, 1.0F);
         GL11.glPopMatrix();
     }

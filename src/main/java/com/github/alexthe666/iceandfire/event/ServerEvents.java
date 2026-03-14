@@ -324,7 +324,7 @@ public class ServerEvents {
             }
             event.setAmount(event.getAmount() * multi);
         }
-        if (event.getSource() == IceAndFire.dragonFire || event.getSource() == IceAndFire.dragonIce || event.getSource() == IceAndFire.dragonLightning) {
+        if (event.getSource() == IceAndFire.dragonFire || event.getSource() == IceAndFire.dragonIce || event.getSource() == IceAndFire.dragonLightning || event.getSource() == IceAndFire.dragonFireSmoke) {
             float multi = 1;
             if (event.getEntityLiving().getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() instanceof IProtectAgainstDragonItem) {
                 multi -= 0.1;
@@ -349,10 +349,10 @@ public class ServerEvents {
 
             //Todo: add same compat to first aid mod like RLcraft
             //if (!CompatLoadUtil.isFirstAidLoaded()) {
-                if (event.getEntityLiving() instanceof EntityPlayer) {
-                    IElementalThornArmor.applySetEffect((EntityPlayer) event.getEntityLiving(), attacker);
-                }
-           // }
+            if (event.getEntityLiving() instanceof EntityPlayer) {
+                IElementalThornArmor.applySetEffect((EntityPlayer) event.getEntityLiving(), attacker);
+            }
+            // }
         }
     }
 

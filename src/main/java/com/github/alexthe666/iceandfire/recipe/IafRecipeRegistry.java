@@ -2,10 +2,7 @@ package com.github.alexthe666.iceandfire.recipe;
 
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.*;
-import com.github.alexthe666.iceandfire.enums.EnumDragonArmor;
-import com.github.alexthe666.iceandfire.enums.EnumSeaSerpent;
-import com.github.alexthe666.iceandfire.enums.EnumSkullType;
-import com.github.alexthe666.iceandfire.enums.EnumTroll;
+import com.github.alexthe666.iceandfire.enums.*;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.BehaviorProjectileDispense;
@@ -274,6 +271,9 @@ public class IafRecipeRegistry {
         for (EnumDragonArmor armor : EnumDragonArmor.values()) {
             armor.armorMaterial.setRepairItem(new ItemStack(EnumDragonArmor.getScaleItem(armor)));
         }
+        for (EnumBloodedDragonArmor blood : EnumBloodedDragonArmor.values()) {
+            blood.armorMaterial.setRepairItem(new ItemStack(EnumBloodedDragonArmor.getScaleItem(blood)));
+        }
         IafItemRegistry.dragonsteel_fire_armor.setRepairItem(new ItemStack(IafItemRegistry.dragonsteel_fire_ingot));
         IafItemRegistry.dragonsteel_ice_armor.setRepairItem(new ItemStack(IafItemRegistry.dragonsteel_ice_ingot));
         IafItemRegistry.dragonsteel_lightning_armor.setRepairItem(new ItemStack(IafItemRegistry.dragonsteel_lightning_ingot));
@@ -334,7 +334,7 @@ public class IafRecipeRegistry {
                 }
             }
         }
-        
+
         BloodRecipes.init();
     }
 

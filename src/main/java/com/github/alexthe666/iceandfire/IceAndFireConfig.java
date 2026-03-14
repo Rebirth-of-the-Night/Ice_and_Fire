@@ -48,6 +48,7 @@ public class IceAndFireConfig {
     public double dragonAttackDamageFire = 2;
     public double dragonAttackDamageIce = 2.5;
     public double dragonAttackDamageLightning = 3.5;
+    public float dragonAttackDamageSmokeDecrease = 2F;
     public int maxDragonFlight = 128;
     public int dragonGoldSearchLength = 30;
     public boolean canDragonsDespawn = true;
@@ -186,6 +187,7 @@ public class IceAndFireConfig {
     public boolean ghostSpawnFromPlayerDeaths = true;
     public int ghostSpawnChanceFromGraveyardSoil = 9;
     public int bloodedDragonArmorSetEffectCooldown = 300;
+    public boolean fireDragonUseSmokeAttack = true;
     public String villagerTradingItem = "iceandfire:sapphire_gem"; // TODO make trading item configurable
 
     public void init(Configuration config) {
@@ -229,6 +231,10 @@ public class IceAndFireConfig {
         this.dragonAttackDamageFire = config.getFloat("Dragon Attack Damage(Fire breath)", "all", 2.0F, 0, 10000, "Damage dealt from a successful fire breath attack. Attack Damage is scaled to by age, so a stage 5 dragon will deal 5x as much as this number");
         this.dragonAttackDamageIce = config.getFloat("Dragon Attack Damage(Ice breath)", "all", 2.5F, 0, 10000, "Damage dealt from a successful ice breath attack. Attack Damage is scaled to by age, so a stage 5 dragon will deal 5x as much as this number");
         this.dragonAttackDamageLightning = config.getFloat("Dragon Attack Damage(Lightning breath)", "all", 3.5F, 0, 10000, "Damage dealt from a successful lightning breath attack. Attack Damage is scaled to by age, so a stage 5 dragon will deal 5x as much as this number");
+
+        this.fireDragonUseSmokeAttack = config.getBoolean("Fire Dragon Ash Attack", "all", true, "Should Fire Dragon use Smoke attack when target immune fire.");
+        this.dragonAttackDamageSmokeDecrease = config.getFloat("Dragon Attack Damage(Smoke breath)", "all", 2.0F, 1, 10000, "Damage decrease percentage when fire dragon use smoke attack.");
+
         this.maxDragonFlight = config.getInt("Max Dragon Flight Height", "all", 128, 100, Integer.MAX_VALUE, "How high dragons can fly, in Y height.");
         this.dragonGoldSearchLength = config.getInt("Dragon Gold Search Length", "all", 30, 0, 10000, "How far away dragons will detect gold blocks being destroyed or chests being opened");
         this.canDragonsDespawn = config.getBoolean("Dragons Despawn", "all", true, "True if dragons can despawn. Note that if this is false there may be SERIOUS lag issues.");

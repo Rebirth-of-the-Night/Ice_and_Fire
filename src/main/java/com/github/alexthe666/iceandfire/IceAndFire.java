@@ -69,6 +69,8 @@ public class IceAndFire {
     public static DamageSource dragonFire;
     public static DamageSource dragonIce;
     public static DamageSource dragonLightning;
+    public static DamageSource dragonFireSmoke;
+
     public static DamageSource gorgon;
     public static IceAndFireConfig CONFIG = new IceAndFireConfig();
     public static Configuration config;
@@ -170,6 +172,16 @@ public class IceAndFire {
                 return new TextComponentString(entityLivingBaseIn.getDisplayName().getFormattedText() + " ").appendSibling(new TextComponentTranslation(s1, entityLivingBaseIn.getDisplayName()));
             }
         }.setDamageBypassesArmor();
+
+        //Fire-Smoke
+        dragonFireSmoke = new DamageSource("dragon_smoke") {
+            @Override
+            public ITextComponent getDeathMessage(EntityLivingBase entityLivingBaseIn) {
+                String s = "death.attack.dragon_smoke";
+                String s1 = s + ".player_" + new Random().nextInt(2);
+                return new TextComponentString(entityLivingBaseIn.getDisplayName().getFormattedText() + " ").appendSibling(new TextComponentTranslation(s1, entityLivingBaseIn.getDisplayName()));
+            }
+        };
 
         OneProbeCompatBridge.loadInit();
     }

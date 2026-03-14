@@ -1694,8 +1694,13 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public void updatePassenger(Entity passenger) {
         super.updatePassenger(passenger);
         if (this.isPassenger(passenger)) {
+            if (passenger == null || passenger.isDead || !passenger.isEntityAlive()) {
+                return;
+            }
+
             if (this.isModelDead()) {
                 passenger.dismountRidingEntity();
+                return;
             }
 
             if (this.getControllingPassenger() == null || !this.isControllingPassenger(passenger)) {
@@ -1726,7 +1731,19 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 double extraY_pre = 0.8F;
                 double extraY = ((extraY_pre - (hoverAddition) + (flyAddition)) * (this.getRenderSize() / 3)) - (0.35D * (1 - (this.getRenderSize() / 30))) + bob0 + bob1 + bob2 + extraAgeScale;
 
-                passenger.setPosition(this.posX + extraX, this.posY + extraY, this.posZ + extraZ);
+                double newX = this.posX + extraX;
+                double newY = this.posY + extraY;
+                double newZ = this.posZ + extraZ;
+
+                if (Double.isFinite(newX) && Double.isFinite(newY) && Double.isFinite(newZ)) {
+                    if (newY >= -64 && newY <= 320) {
+                        passenger.setPosition(newX, newY, newZ);
+                    } else {
+                        passenger.dismountRidingEntity();
+                    }
+                } else {
+                    passenger.dismountRidingEntity();
+                }
             }
         }
     }
@@ -1745,6 +1762,11 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             this.doBiteAttack(prey);
             prey.dismountRidingEntity();
         }
+
+        if (prey == null || prey.isDead || !prey.isEntityAlive()) {
+            return;
+        }
+
         renderYawOffset = rotationYaw;
         float modTick_0 = this.getAnimationTick() - 25;
         float modTick_1 = this.getAnimationTick() > 25 && this.getAnimationTick() < 55 ? 8 * MathHelper.clamp(MathHelper.sin((float) (Math.PI + modTick_0 * 0.25)), -0.8F, 0.8F) : 0;
@@ -1754,7 +1776,20 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
         double extraZ = radius * MathHelper.cos(angle);
         double extraY = modTick_2 == 0 ? 0 : 0.035F * ((getRenderSize() / 3) + (modTick_2 * 0.5 * (getRenderSize() / 3)));
-        prey.setPosition(this.posX + extraX, this.posY + extraY, this.posZ + extraZ);
+
+        double newX = this.posX + extraX;
+        double newY = this.posY + extraY;
+        double newZ = this.posZ + extraZ;
+
+        if (Double.isFinite(newX) && Double.isFinite(newY) && Double.isFinite(newZ)) {
+            if (newY >= -64 && newY <= 320) {
+                prey.setPosition(newX, newY, newZ);
+            } else {
+                prey.dismountRidingEntity();
+            }
+        } else {
+            prey.dismountRidingEntity();
+        }
     }
 
     public int getDragonStage() {
@@ -2491,7 +2526,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
 
     @Override
     public void knockBack(Entity entity, float strength, double xRatio, double zRatio) {
-        if(xRatio == 0 && zRatio == 0)
+        if (xRatio == 0 && zRatio == 0)
             return;
         super.knockBack(entity, strength, xRatio, zRatio);
     }

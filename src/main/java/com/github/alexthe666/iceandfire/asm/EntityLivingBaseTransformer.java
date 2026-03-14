@@ -3,8 +3,6 @@ package com.github.alexthe666.iceandfire.asm;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.*;
 
-//Maybe One Day this method will have it's func.
-//This is the day.
 public class EntityLivingBaseTransformer implements IClassTransformer {
     private static final String ENTITY_LIVING_BASE = "net/minecraft/entity/EntityLivingBase";
     private static final String INTERFACE_NAME = "com/github/alexthe666/iceandfire/client/model/util/IEntityLivingBaseRenderContext";
@@ -12,36 +10,45 @@ public class EntityLivingBaseTransformer implements IClassTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
         if (basicClass == null) {
-            return null;
+            return basicClass;
         }
 
         String transformedClassPath = transformedName.replace('.', '/');
 
-        try {
-            // First check if this is EntityLivingBase itself
-            if (ENTITY_LIVING_BASE.equals(transformedClassPath)) {
-                return transformClass(basicClass, transformedClassPath);
-            }
-
-            // Check if this class extends EntityLivingBase
-            ClassReader reader = new ClassReader(basicClass);
-            InheritanceChecker checker = new InheritanceChecker();
-            reader.accept(checker, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
-
-            if (checker.extendsEntityLivingBase) {
-                return transformClass(basicClass, transformedClassPath);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Transform all entity classes, check at runtime via interface
+        if (!isEntityClass(transformedClassPath, basicClass)) {
+            return basicClass;
         }
 
-        return basicClass;
+        return transformClass(basicClass, transformedClassPath);
+    }
+
+    private boolean isEntityClass(String className, byte[] classBytes) {
+        // Always transform EntityLivingBase
+        if (ENTITY_LIVING_BASE.equals(className)) {
+            return true;
+        }
+
+        // Check if it's in entity package (simple heuristic)
+        if (!className.startsWith("net/minecraft/entity/") &&
+                !className.contains("/entity/")) {
+            return false;
+        }
+
+        try {
+            ClassReader reader = new ClassReader(classBytes);
+            EntityClassChecker checker = new EntityClassChecker();
+            reader.accept(checker, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+            return checker.isEntityClass;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private byte[] transformClass(byte[] basicClass, String className) {
         try {
             ClassReader reader = new ClassReader(basicClass);
-            ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+            ClassWriter writer = new SafeClassWriter(reader, ClassWriter.COMPUTE_MAXS);
             EntityLivingBaseVisitor visitor = new EntityLivingBaseVisitor(writer, className);
             reader.accept(visitor, 0);
             return writer.toByteArray();
@@ -51,31 +58,43 @@ public class EntityLivingBaseTransformer implements IClassTransformer {
         }
     }
 
-    // Helper class to check if a class extends EntityLivingBase
-    private static class InheritanceChecker extends ClassVisitor {
-        public boolean extendsEntityLivingBase = false;
+    private static class EntityClassChecker extends ClassVisitor {
+        public boolean isEntityClass = false;
 
-        public InheritanceChecker() {
+        public EntityClassChecker() {
             super(Opcodes.ASM5);
         }
 
         @Override
         public void visit(int version, int access, String name, String signature,
                           String superName, String[] interfaces) {
-            // Check if the superclass is EntityLivingBase
-            if (ENTITY_LIVING_BASE.equals(superName)) {
-                extendsEntityLivingBase = true;
-                return;
+            // Check if superclass looks like an entity
+            if (superName != null && (
+                    superName.startsWith("net/minecraft/entity/") ||
+                            superName.contains("/entity/") ||
+                            ENTITY_LIVING_BASE.equals(superName))) {
+                isEntityClass = true;
             }
+        }
+    }
 
-            // Could extend checking for other classes in inheritance hierarchy
-            // but this basic check will work for direct subclasses
+    private static class SafeClassWriter extends ClassWriter {
+        public SafeClassWriter(ClassReader classReader, int flags) {
+            super(classReader, flags);
+        }
+
+        @Override
+        protected String getCommonSuperClass(String type1, String type2) {
+            return "java/lang/Object";
         }
     }
 
     private static class EntityLivingBaseVisitor extends ClassVisitor {
         private final String className;
         private boolean alreadyImplementsInterface = false;
+        private boolean hasField = false;
+        private boolean hasSetter = false;
+        private boolean hasGetter = false;
 
         public EntityLivingBaseVisitor(ClassVisitor cv, String className) {
             super(Opcodes.ASM5, cv);
@@ -85,7 +104,6 @@ public class EntityLivingBaseTransformer implements IClassTransformer {
         @Override
         public void visit(int version, int access, String name, String signature,
                           String superName, String[] interfaces) {
-            // Check if the class already implements our interface
             for (String iface : interfaces) {
                 if (INTERFACE_NAME.equals(iface)) {
                     alreadyImplementsInterface = true;
@@ -94,7 +112,6 @@ public class EntityLivingBaseTransformer implements IClassTransformer {
             }
 
             if (!alreadyImplementsInterface) {
-                // Add IEntityLivingBaseRenderContext interface to the class
                 String[] newInterfaces = new String[interfaces.length + 1];
                 System.arraycopy(interfaces, 0, newInterfaces, 0, interfaces.length);
                 newInterfaces[interfaces.length] = INTERFACE_NAME;
@@ -106,57 +123,60 @@ public class EntityLivingBaseTransformer implements IClassTransformer {
 
         @Override
         public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-            // Check if the field already exists
             if ("iceAndFire$isRenderingWithGlint".equals(name)) {
-                return super.visitField(access, name, descriptor, signature, value);
+                hasField = true;
             }
             return super.visitField(access, name, descriptor, signature, value);
         }
 
         @Override
         public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-            // Skip adding methods if they already exist
-            if (("iceAndFire$setGlintContext".equals(name) && "(Z)V".equals(descriptor)) ||
-                    ("iceAndFire$getGlintContext".equals(name) && "()Z".equals(descriptor))) {
-                return super.visitMethod(access, name, descriptor, signature, exceptions);
+            if ("iceAndFire$setGlintContext".equals(name) && "(Z)V".equals(descriptor)) {
+                hasSetter = true;
+            }
+            if ("iceAndFire$getGlintContext".equals(name) && "()Z".equals(descriptor)) {
+                hasGetter = true;
             }
             return super.visitMethod(access, name, descriptor, signature, exceptions);
         }
 
         @Override
         public void visitEnd() {
-            // Add the field if not already implemented
             if (!alreadyImplementsInterface) {
-                FieldVisitor fv = cv.visitField(Opcodes.ACC_PRIVATE,
-                        "iceAndFire$isRenderingWithGlint", "Z", null, null);
-                if (fv != null) {
-                    fv.visitEnd();
+                if (!hasField) {
+                    FieldVisitor fv = cv.visitField(Opcodes.ACC_PRIVATE,
+                            "iceAndFire$isRenderingWithGlint", "Z", null, null);
+                    if (fv != null) {
+                        fv.visitEnd();
+                    }
                 }
 
-                // Add setter method
-                MethodVisitor setterMv = cv.visitMethod(Opcodes.ACC_PUBLIC,
-                        "iceAndFire$setGlintContext", "(Z)V", null, null);
-                setterMv.visitCode();
-                setterMv.visitVarInsn(Opcodes.ALOAD, 0);
-                setterMv.visitVarInsn(Opcodes.ILOAD, 1);
-                setterMv.visitFieldInsn(Opcodes.PUTFIELD,
-                        className,
-                        "iceAndFire$isRenderingWithGlint", "Z");
-                setterMv.visitInsn(Opcodes.RETURN);
-                setterMv.visitMaxs(2, 2);
-                setterMv.visitEnd();
+                if (!hasSetter) {
+                    MethodVisitor setterMv = cv.visitMethod(Opcodes.ACC_PUBLIC,
+                            "iceAndFire$setGlintContext", "(Z)V", null, null);
+                    setterMv.visitCode();
+                    setterMv.visitVarInsn(Opcodes.ALOAD, 0);
+                    setterMv.visitVarInsn(Opcodes.ILOAD, 1);
+                    setterMv.visitFieldInsn(Opcodes.PUTFIELD,
+                            className,
+                            "iceAndFire$isRenderingWithGlint", "Z");
+                    setterMv.visitInsn(Opcodes.RETURN);
+                    setterMv.visitMaxs(2, 2);
+                    setterMv.visitEnd();
+                }
 
-                // Add getter method
-                MethodVisitor getterMv = cv.visitMethod(Opcodes.ACC_PUBLIC,
-                        "iceAndFire$getGlintContext", "()Z", null, null);
-                getterMv.visitCode();
-                getterMv.visitVarInsn(Opcodes.ALOAD, 0);
-                getterMv.visitFieldInsn(Opcodes.GETFIELD,
-                        className,
-                        "iceAndFire$isRenderingWithGlint", "Z");
-                getterMv.visitInsn(Opcodes.IRETURN);
-                getterMv.visitMaxs(1, 1);
-                getterMv.visitEnd();
+                if (!hasGetter) {
+                    MethodVisitor getterMv = cv.visitMethod(Opcodes.ACC_PUBLIC,
+                            "iceAndFire$getGlintContext", "()Z", null, null);
+                    getterMv.visitCode();
+                    getterMv.visitVarInsn(Opcodes.ALOAD, 0);
+                    getterMv.visitFieldInsn(Opcodes.GETFIELD,
+                            className,
+                            "iceAndFire$isRenderingWithGlint", "Z");
+                    getterMv.visitInsn(Opcodes.IRETURN);
+                    getterMv.visitMaxs(1, 1);
+                    getterMv.visitEnd();
+                }
             }
 
             super.visitEnd();
