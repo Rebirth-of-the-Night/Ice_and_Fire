@@ -7,6 +7,7 @@ import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -87,8 +88,30 @@ public class WorldGenMausoleum extends WorldGenerator {
                     worldIn.setBlockState(underPos.down(3), dirt);
                 }
             }
+            addSnowCover(worldIn, pos, template, settings);
         }
         return true;
+    }
+
+    private void addSnowCover(World world, BlockPos origin, Template template, PlacementSettings settings) {
+        // Rotation can extend the template into negative X/Z relative to its origin.
+        BlockPos corner = origin.add(Template.transformedBlockPos(settings, template.getSize().add(-1, -1, -1)));
+        int minX = Math.min(origin.getX(), corner.getX());
+        int maxX = Math.max(origin.getX(), corner.getX());
+        int minZ = Math.min(origin.getZ(), corner.getZ());
+        int maxZ = Math.max(origin.getZ(), corner.getZ());
+        for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+                BlockPos snowPos = world.getPrecipitationHeight(new BlockPos(x, 0, z));
+                // Only cover exposed structure blocks, leaving surrounding terrain alone.
+                if (snowPos.getY() > origin.getY() && snowPos.getY() <= corner.getY() + 1
+                        && world.getBiome(snowPos).getEnableSnow()
+                        && isPartOfRuin(world.getBlockState(snowPos.down()))
+                        && world.canSnowAt(snowPos, true)) {
+                    world.setBlockState(snowPos, Blocks.SNOW_LAYER.getDefaultState(), 2);
+                }
+            }
+        }
     }
 
     public boolean checkIfCanGenAt(World world, BlockPos middle, int x, int z, EnumFacing facing) {
