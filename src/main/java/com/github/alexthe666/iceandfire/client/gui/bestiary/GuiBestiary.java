@@ -104,6 +104,9 @@ public class GuiBestiary extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        this.nextPage.enabled = this.index ? this.indexPages < this.indexPagesTotal - 1
+                : this.pageType != null && this.bookPages < this.pageType.pages;
+        this.nextPage.visible = this.nextPage.enabled;
         for (GuiButton button : this.buttonList) {
             if (button.id >= 2) {
                 button.enabled = index;
