@@ -95,7 +95,7 @@ public class IafVillagerRegistry {
             VillagerRegistry.VillagerCareer career = new VillagerRegistry.VillagerCareer(fisherman, "fisherman");
             career.addTrade(1, new SapphireForItems(Items.FISH, new EntityVillager.PriceInfo(1, 10)));
             career.addTrade(2, new ListItemForSapphires(Items.FISHING_ROD, new EntityVillager.PriceInfo(1, 3)));
-            career.addTrade(1, new ListItemForSapphires(IafItemRegistry.fishing_spear, new EntityVillager.PriceInfo(1, 5)));
+            career.addTrade(1, new ListItemForSapphires(IafItemRegistry.fishing_spear, new EntityVillager.PriceInfo(7, 7)));
             career.addTrade(2, new ListItemForSapphires(Items.COOKED_FISH, new EntityVillager.PriceInfo(1, 5)));
             career.addTrade(2, new ListItemForSapphires(Items.COOKED_FISH, new EntityVillager.PriceInfo(1, 5)));
             career.addTrade(3, new ListItemForSapphires(new ItemStack(Items.DYE, 1, EnumDyeColor.BLACK.getDyeDamage()), new EntityVillager.PriceInfo(2, 1)));
