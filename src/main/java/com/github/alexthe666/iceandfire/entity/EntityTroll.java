@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityBoat;
@@ -80,6 +81,24 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
     @Override
     public boolean isAIDisabled() {
         return EntityGorgon.isStoneMob(this) || super.isAIDisabled();
+    }
+
+    @Override
+    public void travel(float strafe, float vertical, float forward) {
+        if (EntityGorgon.isStoneMob(this)) {
+            // Disabled AI skips vanilla travel, so stone trolls need their own falling motion.
+            if (!this.world.isRemote) {
+                this.motionX = 0.0D;
+                this.motionZ = 0.0D;
+                this.move(MoverType.SELF, 0.0D, this.motionY, 0.0D);
+                if (!this.hasNoGravity()) {
+                    this.motionY -= 0.08D;
+                }
+                this.motionY *= 0.98D;
+            }
+            return;
+        }
+        super.travel(strafe, vertical, forward);
     }
 
 
@@ -292,8 +311,9 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
         if (!stone && this.getHealth() < this.getMaxHealth() && this.ticksExisted % 30 == 0) {
             this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 30, 1, false, false));
         }
-        setAvoidSun(this.world.isDaytime());
-        if (this.world.isDaytime() && !this.world.isRemote) {
+        boolean sunny = this.world.isDaytime() && !this.world.isRaining();
+        setAvoidSun(sunny);
+        if (sunny && !this.world.isRemote) {
             float f = this.getBrightness();
             BlockPos blockpos = this.getRidingEntity() instanceof EntityBoat ? (new BlockPos(this.posX, (double) Math.round(this.posY), this.posZ)).up() : new BlockPos(this.posX, (double) Math.round(this.posY), this.posZ);
             if (f > 0.5F && this.world.canSeeSky(blockpos)) {

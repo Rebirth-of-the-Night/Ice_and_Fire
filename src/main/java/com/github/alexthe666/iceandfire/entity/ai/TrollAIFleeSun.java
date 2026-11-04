@@ -25,7 +25,7 @@ public class TrollAIFleeSun extends EntityAIBase {
     }
 
     public boolean shouldExecute() {
-        if (!this.world.isDaytime()) {
+        if (!this.world.isDaytime() || this.world.isRaining()) {
             return false;
         } else if (!this.world.canSeeSky(new BlockPos(this.troll.posX, this.troll.getEntityBoundingBox().minY, this.troll.posZ))) {
             return false;

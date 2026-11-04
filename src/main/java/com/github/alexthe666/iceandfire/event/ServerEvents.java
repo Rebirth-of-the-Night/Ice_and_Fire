@@ -935,7 +935,9 @@ public class ServerEvents {
                 }
                 living.motionX *= 0D;
                 living.motionZ *= 0D;
-                living.motionY -= 0.1D;
+                if (!(living instanceof EntityTroll)) {
+                    living.motionY -= 0.1D;
+                }
                 living.swingProgress = 0;
                 living.limbSwing = 0;
                 living.livingSoundTime = 0;
