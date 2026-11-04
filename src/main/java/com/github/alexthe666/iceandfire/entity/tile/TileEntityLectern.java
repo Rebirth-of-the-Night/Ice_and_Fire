@@ -273,6 +273,19 @@ public class TileEntityLectern extends TileEntity implements ITickable, ISidedIn
     }
 
     @Override
+    public void markDirty() {
+        super.markDirty();
+        if (world != null && !world.isRemote) {
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+        }
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound tag = new NBTTagCompound();
         this.writeToNBT(tag);
