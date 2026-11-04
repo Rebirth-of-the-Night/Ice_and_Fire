@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.client.render.tile;
 
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityLectern;
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import net.minecraft.client.model.ModelBook;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -14,6 +15,9 @@ public class RenderLectern extends TileEntitySpecialRenderer<TileEntityLectern> 
 
     @Override
     public void render(TileEntityLectern lectern, double x, double y, double z, float f, int yee, float alpha) {
+        if (lectern.getStackInSlot(0).isEmpty() || lectern.getStackInSlot(0).getItem() != IafItemRegistry.bestiary) {
+            return;
+        }
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x + 0.5F, (float) y + 1.07F, (float) z + 0.5F);
         GlStateManager.scale(0.8F, 0.8F, 0.8F);
