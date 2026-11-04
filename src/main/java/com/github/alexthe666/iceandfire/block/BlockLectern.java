@@ -126,18 +126,17 @@ public class BlockLectern extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (playerIn.isSneaking()) {
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if (!(tile instanceof TileEntityLectern)) {
+            return false;
+        }
+        ItemStack book = ((TileEntityLectern) tile).getStackInSlot(0);
+        if (playerIn.isSneaking() || book.isEmpty() || book.getItem() != IafItemRegistry.bestiary) {
             if (!worldIn.isRemote) {
                 playerIn.openGui(IceAndFire.INSTANCE, 2, worldIn, pos.getX(), pos.getY(), pos.getZ());
             }
         } else if (worldIn.isRemote) {
-            TileEntity tile = worldIn.getTileEntity(pos);
-            if (tile instanceof TileEntityLectern) {
-                ItemStack book = ((TileEntityLectern) tile).getStackInSlot(0);
-                if (!book.isEmpty() && book.getItem() == IafItemRegistry.bestiary) {
-                    IceAndFire.PROXY.openBestiaryGui(book.copy());
-                }
-            }
+            IceAndFire.PROXY.openBestiaryGui(book.copy());
         }
         return true;
     }
