@@ -34,7 +34,7 @@ public abstract class DreadSpawnerBaseLogic extends MobSpawnerBaseLogic {
     private int spawnRange = 4;
 
     @Nullable
-    private ResourceLocation getEntityId() {
+    private ResourceLocation getDreadEntityId() {
         String s = this.spawnData.getNbt().getString("id");
         return StringUtils.isNullOrEmpty(s) ? null : new ResourceLocation(s);
     }
@@ -185,7 +185,7 @@ public abstract class DreadSpawnerBaseLogic extends MobSpawnerBaseLogic {
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound p_189530_1_) {
-        ResourceLocation resourcelocation = this.getEntityId();
+        ResourceLocation resourcelocation = this.getDreadEntityId();
 
         if (resourcelocation == null) {
             return p_189530_1_;
