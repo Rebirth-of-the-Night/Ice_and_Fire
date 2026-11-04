@@ -138,7 +138,7 @@ public abstract class DragonTabulaModelAnimator<T extends EntityDragonBase> exte
                 }
             }
         }
-        if (entity.width >= 2 && entity.flyProgress == 0 && entity.hoverProgress == 0) {
+        if (!entity.isModelDead() && entity.modelDeadProgress == 0 && entity.width >= 2 && entity.flyProgress == 0 && entity.hoverProgress == 0) {
             LegArticulator.articulateQuadruped(entity, entity.legSolver, model.getCube("BodyUpper"), model.getCube("BodyLower"), model.getCube("Neck1"),
                     model.getCube("ThighL"), model.getCube("LegL"), toesPartsL,
                     model.getCube("ThighR"), model.getCube("LegR"), toesPartsR,
@@ -173,8 +173,10 @@ public abstract class DragonTabulaModelAnimator<T extends EntityDragonBase> exte
             }
         }
         if (entity.modelDeadProgress > 0.0F) {
-            if (!isPartEqual(cube, getModel(EnumDragonPoses.DEAD).getCube(cube.boxName))) {
-                transitionTo(cube, getModel(EnumDragonPoses.DEAD).getCube(cube.boxName), entity.modelDeadProgress, 20, cube.boxName.equals("ThighR") || cube.boxName.equals("ThighL"));
+            // Death poses also lower parts without rotating them (notably the ice dragon's body).
+            AdvancedModelRenderer deadPart = getModel(EnumDragonPoses.DEAD).getCube(cube.boxName);
+            if (deadPart != null) {
+                transitionTo(cube, deadPart, entity.modelDeadProgress, 20, cube.boxName.equals("ThighR") || cube.boxName.equals("ThighL"));
             }
         }
         if (entity.sleepProgress > 0.0F) {
