@@ -18,6 +18,7 @@ public class IceAndFirePlugin implements IFMLLoadingPlugin {
         return new String[]{IceAndFireRuntimePatcher.class.getName(),
                 "com.github.alexthe666.iceandfire.asm.EntityLivingBaseTransformer",
                 "com.github.alexthe666.iceandfire.asm.LayerArmorBaseTransformer",
+                "com.github.alexthe666.iceandfire.asm.TridentPoseTransformer",
                 "com.github.alexthe666.iceandfire.asm.LLibraryPatronTransformer"
         };
     }

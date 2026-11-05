@@ -12,11 +12,13 @@ import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerStoneEnt
 import com.github.alexthe666.iceandfire.client.render.entity.layer.LayerStoneEntityCrack;
 import com.github.alexthe666.iceandfire.entity.*;
 import com.github.alexthe666.iceandfire.util.IAFMath;
+import com.github.alexthe666.iceandfire.item.ItemTideTrident;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
@@ -27,11 +29,14 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -45,6 +50,38 @@ import java.util.Map;
 import java.util.Random;
 
 public class ClientEvents {
+    @SubscribeEvent
+    public void onTridentHand(RenderSpecificHandEvent event) {
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        if (player == null || !player.isHandActive() || player.getActiveHand() != event.getHand()
+                || !(event.getItemStack().getItem() instanceof ItemTideTrident)) {
+            return;
+        }
+        boolean right = (event.getHand() == EnumHand.MAIN_HAND
+                ? player.getPrimaryHand() : player.getPrimaryHand().opposite()) == EnumHandSide.RIGHT;
+        int direction = right ? 1 : -1;
+        event.setCanceled(true);
+        GlStateManager.pushMatrix();
+        try {
+            // Keep the full-length shaft beside the camera. The charging model
+            // points along -Y, so positive pitch aims its forks away from the eye.
+            GlStateManager.translate(direction * 0.8F, -0.45F - event.getEquipProgress() * 0.6F, -1.3F);
+            GlStateManager.rotate(70.0F, 1.0F, 0.0F, 0.0F);
+            float charge = player.getItemInUseMaxCount() - event.getPartialTicks() + 1.0F;
+            float progress = Math.min(charge / 10.0F, 1.0F);
+            if (progress > 0.1F) {
+                GlStateManager.translate(0.0F, (float) Math.sin((charge - 0.1F) * 1.3F)
+                        * (progress - 0.1F) * 0.004F, 0.0F);
+            }
+            GlStateManager.translate(0.0F, progress * 0.1F, 0.0F);
+            Minecraft.getMinecraft().getItemRenderer().renderItemSide(player, event.getItemStack(),
+                    right ? ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND
+                            : ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, !right);
+        } finally {
+            GlStateManager.popMatrix();
+        }
+    }
+
     private static final ResourceLocation SIREN_SHADER = new ResourceLocation("iceandfire:shaders/post/siren.json");
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("textures/blocks/frosted_ice_0.png");
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("textures/blocks/frosted_ice_1.png");

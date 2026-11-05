@@ -171,7 +171,7 @@ public class ItemTideTrident extends Item {
 
     @Override
     public EnumAction getItemUseAction(ItemStack stack) {
-        return EnumAction.BOW;
+        return EnumAction.NONE;
     }
 
     @Override
@@ -236,7 +236,6 @@ public class ItemTideTrident extends Item {
         if (!isOriginal) {
             tooltip.add(TextFormatting.DARK_RED + I18n.format("item.iceandfire.tide_trident.not_original"));
         }
-        tooltip.add(I18n.format("item.iceandfire.tide_trident.desc_0"));
         tooltip.add(I18n.format("item.iceandfire.tide_trident.desc_1"));
     }
 }

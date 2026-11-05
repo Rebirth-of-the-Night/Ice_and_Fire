@@ -124,6 +124,7 @@ public class ClientProxy extends CommonProxy {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public static void registerModels(ModelRegistryEvent event) {
+        ModelBakery.registerItemVariants(IafItemRegistry.tide_trident, new ResourceLocation("iceandfire:tide_trident_in_hand"));
         ModelBakery.registerItemVariants(Item.getItemFromBlock(IafBlockRegistry.podium), new ResourceLocation("iceandfire:podium_oak"), new ResourceLocation("iceandfire:podium_spruce"), new ResourceLocation("iceandfire:podium_birch"), new ResourceLocation("iceandfire:podium_jungle"), new ResourceLocation("iceandfire:podium_acacia"), new ResourceLocation("iceandfire:podium_dark_oak"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.podium), 0, new ModelResourceLocation("iceandfire:podium_oak", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.podium), 1, new ModelResourceLocation("iceandfire:podium_spruce", "inventory"));
@@ -373,6 +374,7 @@ public class ClientProxy extends CommonProxy {
         for (EnumTroll.Weapon weapon : EnumTroll.Weapon.values()) {
             weapon.item.setTileEntityItemStackRenderer(TEISR);
         }
+        IafItemRegistry.tide_trident.setTileEntityItemStackRenderer(TEISR);
         IafItemRegistry.deathworm_gauntlet_yellow.setTileEntityItemStackRenderer(TEISR);
         IafItemRegistry.deathworm_gauntlet_white.setTileEntityItemStackRenderer(TEISR);
         IafItemRegistry.deathworm_gauntlet_red.setTileEntityItemStackRenderer(TEISR);

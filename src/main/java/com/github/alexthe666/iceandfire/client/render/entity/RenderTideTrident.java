@@ -27,6 +27,9 @@ public class RenderTideTrident extends Render<EntityTideTrident> {
         GlStateManager.translate((float) x, (float) y, (float) z);
         GlStateManager.rotate(entity.prevRotationYaw + (entity.prevRotationYaw - entity.rotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(entity.prevRotationPitch + (entity.prevRotationPitch - entity.rotationPitch) * partialTicks + 90.0F, 0.0F, 0.0F, 1.0F);
+        // The model's shaft runs along Y. Roll around it so the forks remain
+        // vertical in flight, matching the first-person throwing pose.
+        GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
         this.modelTideTrident.render(entity, 0, 0, 0, 0, 0, 0.0625F);
         GlStateManager.popMatrix();
         this.render(entity, x, y, z, entityYaw, partialTicks);
