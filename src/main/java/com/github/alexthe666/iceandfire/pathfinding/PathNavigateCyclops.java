@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.pathfinding;
 
-import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntityCyclops;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -157,13 +156,10 @@ public class PathNavigateCyclops extends PathNavigateGround {
             double d3 = 1.0D / Math.sqrt(d2);
             d0 = d0 * d3;
             d1 = d1 * d3;
-            if(IceAndFire.CONFIG.completeDragonPathfinding){
-                sizeX = sizeX + 2;
-                sizeZ = sizeZ + 2;
-            }else{
-                sizeX = 1;
-                sizeZ = 1;
-            }
+            // Check the full body width. The old fallback shrank this to one
+            // block, then subtracted two, allowing shortcuts through obstacles.
+            sizeX += 2;
+            sizeZ += 2;
             if (!this.isSafeToStandAt(i, (int)posVec31.y, j, sizeX, sizeY, sizeZ, posVec31, d0, d1))
             {
                 return false;
