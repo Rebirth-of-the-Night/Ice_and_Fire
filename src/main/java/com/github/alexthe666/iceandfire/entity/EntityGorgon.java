@@ -40,6 +40,8 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
     private GorgonAIStare aiStare;
     private EntityAIAttackMelee aiMelee;
     private int playerStatueCooldown;
+    private EntityLivingBase petrificationTarget;
+    private int petrificationChargeTicks;
 
     public EntityGorgon(World worldIn) {
         super(worldIn);
@@ -217,73 +219,85 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
             }
         }
 
-        if (target != null && isEntityLookingAt(this, target, 0.4) && isEntityLookingAt(target, this, 0.4) && !isBlindfolded(target)) {
-            boolean blindness = this.isPotionActive(MobEffects.BLINDNESS) || target.isPotionActive(MobEffects.BLINDNESS) || IsImmune
-                    .toStone(target);
-            if (!blindness && this.deathTime == 0) {
-                if (this.getAnimation() != ANIMATION_SCARE) {
-                    this.playSound(IafSoundRegistry.GORGON_ATTACK, 1, 1);
-                    this.setAnimation(ANIMATION_SCARE);
-                }
-                if (this.getAnimation() == ANIMATION_SCARE) {
-                    if (this.getAnimationTick() > 10) {
-                        if (target instanceof EntityPlayer) {
-                            if (!world.isRemote) {
-                                target.attackEntityFrom(IceAndFire.gorgon, Integer.MAX_VALUE);
-                                if (!target.isEntityAlive() && playerStatueCooldown == 0) {
-                                    EntityStoneStatue statue = new EntityStoneStatue(world);
-                                    statue.setPositionAndRotation(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
-                                    statue.smallArms = true;
-                                    if (!world.isRemote) {
-                                        world.spawnEntity(statue);
-                                    }
-                                    statue.prevRotationYaw = target.rotationYaw;
-                                    statue.rotationYaw = target.rotationYaw;
-                                    statue.rotationYawHead = target.rotationYaw;
-                                    statue.renderYawOffset = target.rotationYaw;
-                                    statue.prevRenderYawOffset = target.rotationYaw;
-                                    playerStatueCooldown = 40;
-                                }
-                                this.setAttackTarget(null);
-                            }
-                        } else {
-                            if (target instanceof EntityLiving && !(target instanceof IBlacklistedFromStatues) || !IsImmune
-                                    .toStone(target) && (target instanceof IBlacklistedFromStatues && ((IBlacklistedFromStatues) target)
-                                    .canBeTurnedToStone())) {
-                                StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(target, StoneEntityProperties.class);
-                                EntityLiving attackTarget = (EntityLiving) target;
-                                if (properties != null && !properties.isStone) {
-                                    properties.isStone = true;
-                                    if (world.isRemote) {
-                                        IceAndFire.NETWORK_WRAPPER.sendToServer(new MessageStoneStatue(attackTarget.getEntityId(), true));
-                                    } else {
-                                        IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageStoneStatue(attackTarget.getEntityId(), true));
-                                    }
-                                    this.playSound(IafSoundRegistry.GORGON_TURN_STONE, 1, 1);
-                                    this.setAttackTarget(null);
-                                }
-
-                                if (attackTarget instanceof EntityDragonBase) {
-                                    EntityDragonBase dragon = (EntityDragonBase) attackTarget;
-                                    dragon.setFlying(false);
-                                    dragon.setHovering(false);
-                                }
-                                if (attackTarget instanceof EntityHippogryph) {
-                                    EntityHippogryph dragon = (EntityHippogryph) attackTarget;
-                                    dragon.setFlying(false);
-                                    dragon.setHovering(false);
-                                    dragon.airTarget = null;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        if (!world.isRemote) {
+            updatePetrificationCharge(target);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
-        //if (player != null) {
-        //	player.addStat(ModAchievements.findGorgon);
-        //}
+    }
+
+    private void updatePetrificationCharge(@Nullable EntityLivingBase target) {
+        if (target == null || !target.isEntityAlive() || !this.isEntityAlive()
+                || !(target instanceof EntityPlayer || target instanceof EntityLiving)
+                || this.isPotionActive(MobEffects.BLINDNESS) || isBlindfolded(target)
+                || IsImmune.toStone(target)
+                || (target instanceof IBlacklistedFromStatues && !((IBlacklistedFromStatues) target).canBeTurnedToStone())
+                || !isEntityLookingAt(this, target, 0.4) || !isEntityLookingAt(target, this, 0.4)) {
+            if (petrificationTarget != null && this.getAnimation() == ANIMATION_SCARE) {
+                AnimationHandler.INSTANCE.sendAnimationMessage(this, NO_ANIMATION);
+                this.setAnimationTick(0);
+            }
+            petrificationTarget = null;
+            petrificationChargeTicks = 0;
+            return;
+        }
+
+        if (petrificationTarget != target) {
+            petrificationTarget = target;
+            petrificationChargeTicks = 0;
+        }
+        if (petrificationChargeTicks == 0) {
+            this.playSound(IafSoundRegistry.GORGON_ATTACK, 1, 1);
+        }
+        if (petrificationChargeTicks == 0 || this.getAnimation() != ANIMATION_SCARE) {
+            this.setAnimationTick(0);
+            this.setAnimation(ANIMATION_SCARE);
+        }
+
+        if (++petrificationChargeTicks >= IceAndFire.CONFIG.gorgonPetrificationChargeTicks) {
+            petrificationTarget = null;
+            petrificationChargeTicks = 0;
+            petrify(target);
+        }
+    }
+
+    private void petrify(EntityLivingBase target) {
+        if (target instanceof EntityPlayer) {
+            target.attackEntityFrom(IceAndFire.gorgon, Integer.MAX_VALUE);
+            if (!target.isEntityAlive() && playerStatueCooldown == 0) {
+                EntityStoneStatue statue = new EntityStoneStatue(world);
+                statue.setPositionAndRotation(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
+                statue.smallArms = true;
+                world.spawnEntity(statue);
+                statue.prevRotationYaw = target.rotationYaw;
+                statue.rotationYaw = target.rotationYaw;
+                statue.rotationYawHead = target.rotationYaw;
+                statue.renderYawOffset = target.rotationYaw;
+                statue.prevRenderYawOffset = target.rotationYaw;
+                playerStatueCooldown = 40;
+            }
+            this.setAttackTarget(null);
+            return;
+        }
+
+        StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(target, StoneEntityProperties.class);
+        if (properties != null && !properties.isStone) {
+            properties.isStone = true;
+            IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageStoneStatue(target.getEntityId(), true));
+            this.playSound(IafSoundRegistry.GORGON_TURN_STONE, 1, 1);
+            this.setAttackTarget(null);
+        }
+
+        if (target instanceof EntityDragonBase) {
+            EntityDragonBase dragon = (EntityDragonBase) target;
+            dragon.setFlying(false);
+            dragon.setHovering(false);
+        }
+        if (target instanceof EntityHippogryph) {
+            EntityHippogryph hippogryph = (EntityHippogryph) target;
+            hippogryph.setFlying(false);
+            hippogryph.setHovering(false);
+            hippogryph.airTarget = null;
+        }
     }
 
     public int getVerticalFaceSpeed() {

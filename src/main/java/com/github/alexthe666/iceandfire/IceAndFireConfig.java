@@ -76,6 +76,7 @@ public class IceAndFireConfig {
     public int spawnGorgonsChance = 75;
     public boolean gorgonTempleTestMode = true;
     public double gorgonMaxHealth = 100D;
+    public int gorgonPetrificationChargeTicks = 20;
     public boolean spawnPixies = true;
     public int spawnPixiesChance = 60;
     public int pixieVillageSize = 5;
@@ -272,6 +273,7 @@ public class IceAndFireConfig {
         this.spawnGorgonsChance = config.getInt("Spawn Gorgon Chance", "all", 75, 1, 10000, "1 out of this number chance per chunk for generation");
         this.gorgonTempleTestMode = config.getBoolean("Gorgon Temple Test Mode", "all", true, "Also attempt gorgon temples in plains and sandy biomes for testing. Disable to restrict them to beaches.");
         this.gorgonMaxHealth = config.getFloat("Gorgon Max Health", "all", 100, 1, 10000, "Maximum gorgon health");
+        this.gorgonPetrificationChargeTicks = config.getInt("Gorgon Petrification Charge Ticks", "all", 20, 1, Integer.MAX_VALUE, "Consecutive ticks of eye contact required for a gorgon to petrify its target");
 
         this.spawnPixies = config.getBoolean("Spawn Pixies", "all", true, "True if pixie villages are allowed to spawn");
         this.spawnPixiesChance = config.getInt("Spawn Pixies Chance", "all", 60, 1, 10000, "1 out of this number chance per chunk for generation");
