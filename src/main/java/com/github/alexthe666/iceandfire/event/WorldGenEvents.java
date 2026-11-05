@@ -54,7 +54,7 @@ public class WorldGenEvents implements IWorldGenerator {
     private static final WorldGenCyclopsCave CYCLOPS_CAVE = new WorldGenCyclopsCave();
     private static final WorldGenSirenIsland SIREN_ISLAND = new WorldGenSirenIsland();
     private static final WorldGenHydraCave HYDRA_CAVE = new WorldGenHydraCave();
-    private static final ResourceLocation GORGON_TEMPLE = new ResourceLocation(IceAndFire.MODID, "gorgon_temple");
+    private static final WorldGenGorgonTemple GORGON_TEMPLE = new WorldGenGorgonTemple();
     private static final ResourceLocation GRAVEYARD = new ResourceLocation(IceAndFire.MODID, "graveyard");
 
     private BlockPos lastSnowVillage = null;
@@ -109,21 +109,10 @@ public class WorldGenEvents implements IWorldGenerator {
         boolean isCold = types.contains(Type.COLD);
         boolean isSnowy = types.contains(Type.SNOWY);
 
-        if (IceAndFire.CONFIG.spawnGorgons && random.nextInt(IceAndFire.CONFIG.spawnGorgonsChance) == 0 && types.contains(Type.BEACH) && world.getBlockState(height.down()).isFullBlock() && world.isAirBlock(height.up())) {
-            Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
-            Mirror mirror = Mirror.values()[random.nextInt(Mirror.values().length)];
-            MinecraftServer server = world.getMinecraftServer();
-            TemplateManager templateManager = world.getSaveHandler().getStructureTemplateManager();
-            PlacementSettings settings = new PlacementSettings().setRotation(rotation).setMirror(mirror);
-            Template template = templateManager.getTemplate(server, GORGON_TEMPLE);
-            BlockPos center = height.add(template.getSize().getX() / 2, -9, template.getSize().getZ() / 2);
-            BlockPos corner1 = height.down();
-            BlockPos corner2 = height.add(template.getSize().getX(), -1, 0);
-            BlockPos corner3 = height.add(template.getSize().getX(), -1, template.getSize().getZ());
-            BlockPos corner4 = height.add(0, -1, template.getSize().getZ());
-            if (world.getBlockState(center).isOpaqueCube() && world.getBlockState(corner1).isOpaqueCube() && world.getBlockState(corner2).isOpaqueCube() && world.getBlockState(corner3).isOpaqueCube() && world.getBlockState(corner4).isOpaqueCube()) {
-                template.addBlocksToWorldChunk(world, center, settings);
-            }
+        boolean gorgonBiome = types.contains(Type.BEACH) || (IceAndFire.CONFIG.gorgonTempleTestMode
+                && (types.contains(Type.PLAINS) || types.contains(Type.SANDY)));
+        if (IceAndFire.CONFIG.spawnGorgons && random.nextInt(IceAndFire.CONFIG.spawnGorgonsChance) == 0 && gorgonBiome) {
+            GORGON_TEMPLE.generate(world, random, height);
         }
         if (IceAndFire.CONFIG.generateGraveyards && random.nextInt(IceAndFire.CONFIG.generateGraveyardChance) == 0 && types.contains(Type.PLAINS) && world.getBlockState(height.down()).isFullBlock() && world.isAirBlock(height.up())) {
             Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];

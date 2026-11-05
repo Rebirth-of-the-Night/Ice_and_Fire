@@ -74,6 +74,7 @@ public class IceAndFireConfig {
     public String hippogryphTameItem = "minecraft:rabbit_foot";
     public boolean spawnGorgons = true;
     public int spawnGorgonsChance = 75;
+    public boolean gorgonTempleTestMode = true;
     public double gorgonMaxHealth = 100D;
     public boolean spawnPixies = true;
     public int spawnPixiesChance = 60;
@@ -269,6 +270,7 @@ public class IceAndFireConfig {
 
         this.spawnGorgons = config.getBoolean("Spawn Gorgons", "all", true, "True if gorgon temples are allowed to spawn");
         this.spawnGorgonsChance = config.getInt("Spawn Gorgon Chance", "all", 75, 1, 10000, "1 out of this number chance per chunk for generation");
+        this.gorgonTempleTestMode = config.getBoolean("Gorgon Temple Test Mode", "all", true, "Also attempt gorgon temples in plains and sandy biomes for testing. Disable to restrict them to beaches.");
         this.gorgonMaxHealth = config.getFloat("Gorgon Max Health", "all", 100, 1, 10000, "Maximum gorgon health");
 
         this.spawnPixies = config.getBoolean("Spawn Pixies", "all", true, "True if pixie villages are allowed to spawn");
