@@ -12,6 +12,13 @@ public class StoneEntityProperties extends EntityProperties<EntityLiving> {
     private float headYaw;
     private float headPitch;
 
+    public static void applyPetrifiedName(EntityLiving statue, String originalName) {
+        String prefix = "Petrified ";
+        if (!originalName.startsWith(prefix)) {
+            statue.setCustomNameTag(prefix + originalName);
+        }
+    }
+
     public void freezePose(EntityLiving statue) {
         if (!poseFrozen) {
             bodyYaw = statue.renderYawOffset;

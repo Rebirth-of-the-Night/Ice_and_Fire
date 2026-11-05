@@ -104,6 +104,7 @@ public class ItemGorgonHead extends Item implements ICustomRendered {
                     EntityStoneStatue statue = new EntityStoneStatue(worldIn);
                     statue.setPositionAndRotation(pointedEntity.posX, pointedEntity.posY, pointedEntity.posZ, pointedEntity.rotationYaw, pointedEntity.rotationPitch);
                     statue.smallArms = true;
+                    StoneEntityProperties.applyPetrifiedName(statue, pointedEntity.getName());
                     if (!worldIn.isRemote) {
                         worldIn.spawnEntity(statue);
                     }

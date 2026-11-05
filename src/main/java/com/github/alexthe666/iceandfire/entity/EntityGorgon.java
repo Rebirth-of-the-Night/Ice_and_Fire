@@ -141,6 +141,25 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
         }
     }
 
+    public static boolean isPetrifiedEntity(Entity entity) {
+        return entity instanceof EntityStoneStatue
+                || entity instanceof EntityLivingBase && isStoneMob((EntityLivingBase) entity);
+    }
+
+    @Override
+    protected void collideWithEntity(Entity entity) {
+        if (!isPetrifiedEntity(entity)) {
+            super.collideWithEntity(entity);
+        }
+    }
+
+    @Override
+    public void applyEntityCollision(Entity entity) {
+        if (!isPetrifiedEntity(entity)) {
+            super.applyEntityCollision(entity);
+        }
+    }
+
     private static boolean canFight(EntityLivingBase target) {
         return !(target instanceof EntityStoneStatue) && target.isEntityAlive() && DragonUtils.isAlive(target);
     }
@@ -276,6 +295,7 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
                 EntityStoneStatue statue = new EntityStoneStatue(world);
                 statue.setPositionAndRotation(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
                 statue.smallArms = true;
+                StoneEntityProperties.applyPetrifiedName(statue, target.getName());
                 world.spawnEntity(statue);
                 statue.prevRotationYaw = target.rotationYaw;
                 statue.rotationYaw = target.rotationYaw;

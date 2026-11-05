@@ -64,6 +64,7 @@ public class ItemStoneStatue extends Item {
                     EntityStoneStatue statue = new EntityStoneStatue(worldIn);
                     statue.setPositionAndRotation(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, player.rotationYaw, 0);
                     statue.smallArms = true;
+                    statue.setCustomNameTag(stack.getTagCompound().getString("CustomName"));
                     if (!worldIn.isRemote) {
                         worldIn.spawnEntity(statue);
                     }
@@ -97,6 +98,7 @@ public class ItemStoneStatue extends Item {
                     }
                     if (entity != null && entity instanceof EntityLiving) {
                         entity.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, player.rotationYaw, 0);
+                        entity.setCustomNameTag(stack.getTagCompound().getString("CustomName"));
                         if (!worldIn.isRemote) {
                             worldIn.spawnEntity(entity);
                         }

@@ -13,7 +13,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityBoat;
@@ -82,25 +81,6 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
     public boolean isAIDisabled() {
         return EntityGorgon.isStoneMob(this) || super.isAIDisabled();
     }
-
-    @Override
-    public void travel(float strafe, float vertical, float forward) {
-        if (EntityGorgon.isStoneMob(this)) {
-            // Disabled AI skips vanilla travel, so stone trolls need their own falling motion.
-            if (!this.world.isRemote) {
-                this.motionX = 0.0D;
-                this.motionZ = 0.0D;
-                this.move(MoverType.SELF, 0.0D, this.motionY, 0.0D);
-                if (!this.hasNoGravity()) {
-                    this.motionY -= 0.08D;
-                }
-                this.motionY *= 0.98D;
-            }
-            return;
-        }
-        super.travel(strafe, vertical, forward);
-    }
-
 
     public boolean getCanSpawnHere() {
         BlockPos pos = new BlockPos(this);

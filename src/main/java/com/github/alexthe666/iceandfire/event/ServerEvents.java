@@ -256,6 +256,18 @@ public class ServerEvents {
 
     @SubscribeEvent
     public void onGatherCollisionBoxes(GetCollisionBoxesEvent event) {
+        if (event.getEntity() instanceof EntityGorgon && !event.getCollisionBoxesList().isEmpty()) {
+            AxisAlignedBB searchBox = event.getAabb().grow(0.25D);
+            for (Entity nearby : event.getWorld().getEntitiesWithinAABBExcludingEntity(event.getEntity(), searchBox)) {
+                if (EntityGorgon.isPetrifiedEntity(nearby)) {
+                    AxisAlignedBB statueBox = nearby.getCollisionBoundingBox();
+                    if (statueBox != null) {
+                        // Remove the entity's box by identity so coincident block boxes stay solid.
+                        event.getCollisionBoxesList().removeIf(box -> box == statueBox);
+                    }
+                }
+            }
+        }
         if (event.getEntity() != null && event.getEntity() instanceof IPhasesThroughBlock) {
             Iterator<AxisAlignedBB> itr = event.getCollisionBoxesList().iterator();
             while (itr.hasNext()) {
@@ -469,6 +481,7 @@ public class ServerEvents {
                                 statuette.getTagCompound().setBoolean("IAFStoneStatueEntityPlayer", stonePlayer);
                                 statuette.getTagCompound().setInteger("IAFStoneStatueEntityID", stonePlayer ? 90 : EntityList.getID(event.getTarget().getClass()));
                                 ((EntityLiving) event.getTarget()).writeEntityToNBT(statuette.getTagCompound());
+                                statuette.getTagCompound().setString("CustomName", event.getTarget().getCustomNameTag());
                                 if (!event.getTarget().world.isRemote) {
                                     event.getTarget().entityDropItem(statuette, 1);
                                 }
@@ -944,10 +957,24 @@ public class ServerEvents {
                         e.dismountRidingEntity();
                     }
                 }
-                living.motionX *= 0D;
-                living.motionZ *= 0D;
-                if (!(living instanceof EntityTroll)) {
-                    living.motionY -= 0.1D;
+                living.motionX = 0.0D;
+                living.motionZ = 0.0D;
+                if (!living.world.isRemote) {
+                    if (!stonePlayer) {
+                        StoneEntityProperties.applyPetrifiedName(living, living.getName());
+                    }
+                    if (living.isRiding()) {
+                        living.dismountRidingEntity();
+                    }
+                    // Disabled AI skips vanilla travel, including its gravity step.
+                    boolean wasNoClip = living.noClip;
+                    living.noClip = false;
+                    living.motionY = (living.motionY - 0.08D) * 0.98D;
+                    try {
+                        living.move(MoverType.SELF, 0.0D, living.motionY, 0.0D);
+                    } finally {
+                        living.noClip = wasNoClip;
+                    }
                 }
                 living.swingProgress = 0;
                 living.limbSwing = 0;
