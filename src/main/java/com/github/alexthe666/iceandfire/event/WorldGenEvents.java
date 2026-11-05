@@ -178,24 +178,33 @@ public class WorldGenEvents implements IWorldGenerator {
                 if (random.nextInt((isHills ? IceAndFire.CONFIG.generateDragonRoostChance : IceAndFire.CONFIG.generateDragonRoostChance * 2) + 1) == 0) {
                     BlockPos surface = world.getHeight(new BlockPos(x, 0, z));
                     surface = degradeSurface(world, surface);
-                    FIRE_DRAGON_ROOST.generate(world, random, surface);
-                    lastDragonRoost = surface;
+                    if (FIRE_DRAGON_ROOST.generate(world, random, surface,
+                        candidate -> isFarEnoughFromSpawn(world, candidate)
+                            && (lastDragonRoost == null || lastDragonRoost.distanceSq(candidate) >= spawnCheck))) {
+                        lastDragonRoost = FIRE_DRAGON_ROOST.getLastGeneratedPosition();
+                    }
                 }
             }
             if (BiomeDictionary.hasType(world.getBiome(height), Type.COLD) && BiomeDictionary.hasType(world.getBiome(height), Type.SNOWY)) {
                 if (random.nextInt((isHills ? IceAndFire.CONFIG.generateDragonRoostChance : IceAndFire.CONFIG.generateDragonRoostChance * 2) + 1) == 0) {
                     BlockPos surface = world.getHeight(new BlockPos(x, 0, z));
                     surface = degradeSurface(world, surface);
-                    ICE_DRAGON_ROOST.generate(world, random, surface);
-                    lastDragonRoost = surface;
+                    if (ICE_DRAGON_ROOST.generate(world, random, surface,
+                        candidate -> isFarEnoughFromSpawn(world, candidate)
+                            && (lastDragonRoost == null || lastDragonRoost.distanceSq(candidate) >= spawnCheck))) {
+                        lastDragonRoost = ICE_DRAGON_ROOST.getLastGeneratedPosition();
+                    }
                 }
             }
             if (BiomeDictionary.hasType(world.getBiome(height), Type.JUNGLE) || BiomeDictionary.hasType(world.getBiome(height), Type.MESA) || BiomeDictionary.hasType(world.getBiome(height), Type.SAVANNA)) {
                 if (random.nextInt((isHills ? IceAndFire.CONFIG.generateDragonRoostChance : IceAndFire.CONFIG.generateDragonRoostChance * 2) + 1) == 0) {
                     BlockPos surface = world.getHeight(new BlockPos(x, 0, z));
                     surface = degradeSurface(world, surface);
-                    LIGHTNING_DRAGON_ROOST.generate(world, random, surface);
-                    lastDragonRoost = surface;
+                    if (LIGHTNING_DRAGON_ROOST.generate(world, random, surface,
+                        candidate -> isFarEnoughFromSpawn(world, candidate)
+                            && (lastDragonRoost == null || lastDragonRoost.distanceSq(candidate) >= spawnCheck))) {
+                        lastDragonRoost = LIGHTNING_DRAGON_ROOST.getLastGeneratedPosition();
+                    }
                 }
             }
         }

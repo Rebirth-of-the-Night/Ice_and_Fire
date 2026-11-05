@@ -3,7 +3,6 @@ package com.github.alexthe666.iceandfire.world.gen;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityLightningDragon;
 import com.github.alexthe666.iceandfire.entity.HomePosition;
-import com.github.alexthe666.iceandfire.event.WorldGenEvents;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -17,14 +16,34 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
+import java.util.function.Predicate;
 
 public class WorldGenLightningDragonRoosts extends WorldGenerator {
     private static boolean isMale;
+    private BlockPos lastGeneratedPosition;
+
+    public BlockPos getLastGeneratedPosition() {
+        return lastGeneratedPosition;
+    }
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
+        return generate(worldIn, rand, position, candidate -> true);
+    }
+
+    public boolean generate(World worldIn, Random rand, BlockPos position, Predicate<BlockPos> allowed) {
+        lastGeneratedPosition = null;
         isMale = rand.nextBoolean();
-        int radius = 12 + rand.nextInt(8);
+        BlockPos origin = position;
+        DragonRoostTerrain.Site site = DragonRoostTerrain.findSite(worldIn, origin, 12 + rand.nextInt(8),
+            candidate -> worldIn.getBiome(candidate) == worldIn.getBiome(origin) && allowed.test(candidate));
+        if (site == null) {
+            return false;
+        }
+        position = site.position;
+        int radius = site.radius;
+        DragonRoostTerrain.clearTrees(worldIn, position, radius);
+        DragonRoostTerrain.levelFloor(worldIn, position, radius);
         {
             int j = radius;
             int k = 2;
@@ -82,19 +101,19 @@ public class WorldGenLightningDragonRoosts extends WorldGenerator {
                         transformState(worldIn, blockpos, worldIn.getBlockState(blockpos));
                     }
                     if (dist > 0.5D && rand.nextInt(1000) == 0) {
-                        BlockPos height = worldIn.getHeight(blockpos);
+                        BlockPos height = DragonRoostTerrain.surface(worldIn, blockpos);
                         new WorldGenRoostBoulder(IafBlockRegistry.crackledCobblestone, rand.nextInt(3), true).generate(worldIn, rand, height);
                     }
                     if (rand.nextInt(1000) == 0) {
-                        BlockPos height = worldIn.getHeight(blockpos);
+                        BlockPos height = DragonRoostTerrain.surface(worldIn, blockpos);
                         new WorldGenRoostPile(IafBlockRegistry.ash).generate(worldIn, rand, height);
                     }
                     if (dist < 0.3D && rand.nextInt(isMale ? 250 : 400) == 0) {
-                        BlockPos height = WorldGenEvents.degradeSurface(worldIn, worldIn.getHeight(blockpos));
+                        BlockPos height = DragonRoostTerrain.surface(worldIn, blockpos);
                         new WorldGenRoostGoldPile(IafBlockRegistry.copperPile).generate(worldIn, rand, height);
                     }
                     if (dist < 0.3D && rand.nextInt(isMale ? 500 : 700) == 0) {
-                        BlockPos height = WorldGenEvents.degradeSurface(worldIn, worldIn.getHeight(blockpos));
+                        BlockPos height = DragonRoostTerrain.surface(worldIn, blockpos);
                         worldIn.setBlockState(height, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.HORIZONTALS[new Random().nextInt(3)]), 2);
                         if (worldIn.getBlockState(height).getBlock() instanceof BlockChest) {
                             TileEntity tileentity1 = worldIn.getTileEntity(height);
@@ -104,7 +123,7 @@ public class WorldGenLightningDragonRoosts extends WorldGenerator {
                         }
                     }
                     if (rand.nextInt(5000) == 0) {
-                        BlockPos height = worldIn.getHeight(blockpos);
+                        BlockPos height = DragonRoostTerrain.surface(worldIn, blockpos);
                         new WorldGenRoostArch(IafBlockRegistry.crackledCobblestone).generate(worldIn, rand, height);
                     }
                 }
@@ -124,7 +143,8 @@ public class WorldGenLightningDragonRoosts extends WorldGenerator {
             worldIn.spawnEntity(dragon);
         }
 
-        return false;
+        lastGeneratedPosition = position;
+        return true;
     }
 
 	private void transformState(World world, BlockPos blockpos, IBlockState state) {
@@ -134,7 +154,9 @@ public class WorldGenLightningDragonRoosts extends WorldGenerator {
                 return;
             }
             if (state.getMaterial() == Material.GRASS) {
-                world.setBlockState(blockpos, IafBlockRegistry.crackledGrass.getDefaultState());
+                world.setBlockState(blockpos, world.getBlockState(blockpos.up()).isOpaqueCube()
+                    ? IafBlockRegistry.crackledDirt.getDefaultState()
+                    : IafBlockRegistry.crackledGrass.getDefaultState());
             } else if (state.getMaterial() == Material.GROUND && state.getBlock() == Blocks.DIRT) {
                 world.setBlockState(blockpos, IafBlockRegistry.crackledDirt.getDefaultState());
             } else if (state.getMaterial() == Material.GROUND && state.getBlock() == Blocks.GRAVEL) {

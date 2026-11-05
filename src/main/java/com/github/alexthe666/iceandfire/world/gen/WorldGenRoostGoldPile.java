@@ -26,11 +26,18 @@ public class WorldGenRoostGoldPile {
             BlockPos up = position.up(i);
             for (BlockPos blockpos : BlockPos.getAllInBox(up.add(-j, 0, -l), up.add(j, 0, l))) {
                 if (blockpos.distanceSq(position) <= (double) (f * f)) {
-                    blockpos = worldIn.getHeight(blockpos);
+                    blockpos = DragonRoostTerrain.surface(worldIn, blockpos);
+                    while (worldIn.getBlockState(blockpos).getBlock() == block) {
+                        blockpos = blockpos.up();
+                    }
+                    if (!worldIn.getBlockState(blockpos.down()).isFullCube()
+                        && worldIn.getBlockState(blockpos.down()).getBlock() != block) {
+                        continue;
+                    }
                     if (block instanceof BlockGoldPile) {
                         if (worldIn.isAirBlock(blockpos)) {
                             worldIn.setBlockState(blockpos, block.getDefaultState().withProperty(BlockGoldPile.LAYERS, 1 + rand.nextInt(7)));
-                            if (worldIn.getBlockState(blockpos.down()).getBlock() instanceof BlockGoldPile) {
+                            if (worldIn.getBlockState(blockpos.down()).getBlock() == block) {
                                 worldIn.setBlockState(blockpos.down(), block.getDefaultState().withProperty(BlockGoldPile.LAYERS, 8));
                             }
                         }
@@ -38,7 +45,7 @@ public class WorldGenRoostGoldPile {
                     if (block instanceof BlockSilverPile) {
                         if (worldIn.isAirBlock(blockpos)) {
                             worldIn.setBlockState(blockpos, block.getDefaultState().withProperty(BlockSilverPile.LAYERS, 1 + rand.nextInt(7)));
-                            if (worldIn.getBlockState(blockpos.down()).getBlock() instanceof BlockGoldPile) {
+                            if (worldIn.getBlockState(blockpos.down()).getBlock() == block) {
                                 worldIn.setBlockState(blockpos.down(), block.getDefaultState().withProperty(BlockSilverPile.LAYERS, 8));
                             }
                         }
@@ -46,7 +53,7 @@ public class WorldGenRoostGoldPile {
                     if (block instanceof BlockCopperPile) {
                         if (worldIn.isAirBlock(blockpos)) {
                             worldIn.setBlockState(blockpos, block.getDefaultState().withProperty(BlockCopperPile.LAYERS, 1 + rand.nextInt(7)));
-                            if (worldIn.getBlockState(blockpos.down()).getBlock() instanceof BlockGoldPile) {
+                            if (worldIn.getBlockState(blockpos.down()).getBlock() == block) {
                                 worldIn.setBlockState(blockpos.down(), block.getDefaultState().withProperty(BlockCopperPile.LAYERS, 8));
                             }
                         }
