@@ -52,6 +52,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -956,6 +957,15 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 leftWingUpperPart != null && leftWingUpperPart.isEntityEqual(entityHit) || rightWingUpperPart != null && rightWingUpperPart.isEntityEqual(entityHit) ||
                 tail1Part != null && tail1Part.isEntityEqual(entityHit) || tail2Part != null && tail2Part.isEntityEqual(entityHit) ||
                 tail3Part != null && tail3Part.isEntityEqual(entityHit) || tail4Part != null && tail4Part.isEntityEqual(entityHit);
+    }
+
+    @Override
+    public String getName() {
+        String name = super.getName();
+        if (!this.isModelDead() || this.hasCustomName()) {
+            return name;
+        }
+        return I18n.translateToLocalFormatted(this.isSkeletal() ? "dragon.name.skeleton" : "dragon.name.corpse", name);
     }
 
     public boolean isSkeletal() {
