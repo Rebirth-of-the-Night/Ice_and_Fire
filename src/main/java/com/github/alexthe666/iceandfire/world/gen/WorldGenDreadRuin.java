@@ -60,7 +60,7 @@ public class WorldGenDreadRuin extends WorldGenerator {
 
 
     private ResourceLocation getRandomStructure(Random rand){
-        switch (rand.nextInt(11)){
+        switch (rand.nextInt(13)){
             case 0:
                 return STRUCTURE_0;
             case 1:
