@@ -9,6 +9,9 @@
         }],
         "dragonsteel_ice": [{
             "custom": { "fluid": "dragonsteel_ice" }
+        }],
+        "dragonsteel_lightning": [{
+            "custom": { "fluid": "dragonsteel_lightning" }
         }]
     }
 }

@@ -301,7 +301,6 @@ public class ClientProxy extends CommonProxy {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        TinkersCompatBridge.loadTinkersClientModels(event);
     }
 
 
