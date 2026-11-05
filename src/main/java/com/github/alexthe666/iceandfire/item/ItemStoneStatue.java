@@ -111,6 +111,7 @@ public class ItemStoneStatue extends Item {
                         ((EntityLiving) entity).rotationYawHead = yaw;
                         ((EntityLiving) entity).renderYawOffset = yaw;
                         ((EntityLiving) entity).prevRenderYawOffset = yaw;
+                        properties.clearFrozenPose();
                         if (!player.capabilities.isCreativeMode) {
                             stack.shrink(1);
                         }

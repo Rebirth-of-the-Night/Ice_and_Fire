@@ -372,9 +372,10 @@ public class ClientEvents {
             event.setCanceled(true);
         }
 
-        if (event.getEntity() instanceof EntityLiving && !event.getEntity().isInvisible()) {
+        if (event.getEntity() instanceof EntityLiving) {
             StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(event.getEntity(), StoneEntityProperties.class);
             if (properties != null && properties.isStone) {
+                properties.freezePose((EntityLiving) event.getEntity());
                 event.getEntity().setInvisible(true);
             }
         }

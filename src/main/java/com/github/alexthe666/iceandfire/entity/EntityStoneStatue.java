@@ -35,6 +35,23 @@ public class EntityStoneStatue extends EntityLiving implements IBlacklistedFromS
     }
 
     @Override
+    protected boolean canDespawn() {
+        return false;
+    }
+
+    @Override
+    public float getRotationYawHead() {
+        return this.rotationYaw;
+    }
+
+    @Override
+    protected float updateDistance(float movementYaw, float movementAmount) {
+        this.renderYawOffset = this.prevRenderYawOffset = this.rotationYaw;
+        this.rotationYawHead = this.prevRotationYawHead = this.rotationYaw;
+        return 0.0F;
+    }
+
+    @Override
     public void writeEntityToNBT(NBTTagCompound tag) {
         super.writeEntityToNBT(tag);
         tag.setInteger("CrackAmount", this.crackAmount);

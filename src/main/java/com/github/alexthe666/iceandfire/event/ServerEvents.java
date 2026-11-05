@@ -936,6 +936,9 @@ public class ServerEvents {
             StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(event.getEntityLiving(), StoneEntityProperties.class);
             if (properties != null && properties.isStone || stonePlayer) {
                 EntityLiving living = ((EntityLiving) event.getEntityLiving());
+                if (!stonePlayer) {
+                    properties.freezePose(living);
+                }
                 if (!living.getPassengers().isEmpty()) {
                     for (Entity e : living.getPassengers()) {
                         e.dismountRidingEntity();
