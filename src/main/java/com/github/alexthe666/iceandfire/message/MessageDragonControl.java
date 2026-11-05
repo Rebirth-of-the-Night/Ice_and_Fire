@@ -63,6 +63,7 @@ public class MessageDragonControl extends AbstractMessage<MessageDragonControl> 
             if (entity != null && entity.isRidingOrBeingRiddenBy(player)) {
                 if (entity instanceof EntityDragonBase) {
                     EntityDragonBase dragon = (EntityDragonBase) entity;
+                    if (com.github.alexthe666.iceandfire.IceAndFire.CONFIG.disableDragonTaming) return;
                     if (dragon.isOwner(player)) {
                         dragon.setControlState(message.controlState);
                     }

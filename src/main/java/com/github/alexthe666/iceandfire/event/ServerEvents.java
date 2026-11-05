@@ -84,6 +84,15 @@ public class ServerEvents {
         }
     };
     private final Random rand = new Random();
+    @SubscribeEvent
+    public void syncDragonTamingConfig(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.player instanceof net.minecraft.entity.player.EntityPlayerMP) {
+            IceAndFire.NETWORK_WRAPPER.sendTo(new com.github.alexthe666.iceandfire.message.MessageDragonTamingConfig(
+                    IceAndFire.CONFIG.disableDragonTaming, IceAndFire.CONFIG.disableAmphithereTaming,
+                    IceAndFire.CONFIG.disableHippogryphTaming), (net.minecraft.entity.player.EntityPlayerMP) event.player);
+        }
+    }
+
 
     public static void onLeftClick(final EntityPlayer playerEntity, final ItemStack stack) {
         if (stack.getItem() == IafItemRegistry.ghost_sword && !playerEntity.world.isRemote) {

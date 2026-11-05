@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.message.MessageDragonTamingConfig;
 import com.github.alexthe666.iceandfire.client.IafKeybindRegistry;
 import com.github.alexthe666.iceandfire.client.model.IFChainBuffer;
 import com.github.alexthe666.iceandfire.entity.ai.*;
@@ -198,7 +199,10 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
                     return true;
                 }
                 return true;
-            } else if ((!this.isTamed() || this.isOwner(player)) && !this.isChild()) {
+            }
+            boolean tamingDisabled = this.world.isRemote
+                    ? MessageDragonTamingConfig.serverDisablesAmphithereTaming : IceAndFire.CONFIG.disableAmphithereTaming;
+            if ((this.isOwner(player) || (!this.isTamed() && !tamingDisabled)) && !this.isChild()) {
                 player.startRiding(this);
                 return true;
             }
@@ -361,7 +365,7 @@ public class EntityAmphithere extends EntityTameable implements ISyncMount, IAni
         if (this.getUntamedRider() == null) {
             ridingTime = 0;
         }
-        if (!this.isTamed() && ridingTime > IceAndFire.CONFIG.amphithereTameTime && this.getUntamedRider() != null && this.getUntamedRider() instanceof EntityPlayer) {
+        if (!IceAndFire.CONFIG.disableAmphithereTaming && !this.isTamed() && ridingTime > IceAndFire.CONFIG.amphithereTameTime && this.getUntamedRider() != null && this.getUntamedRider() instanceof EntityPlayer) {
             this.world.setEntityState(this, (byte) 45);
             this.setTamedBy((EntityPlayer) this.getUntamedRider());
         }

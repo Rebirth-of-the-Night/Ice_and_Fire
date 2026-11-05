@@ -7,6 +7,7 @@ import com.github.alexthe666.iceandfire.enums.EnumDragonArmor;
 import com.github.alexthe666.iceandfire.enums.EnumSeaSerpent;
 import com.github.alexthe666.iceandfire.enums.EnumTroll;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+import com.github.alexthe666.iceandfire.message.MessageDragonTamingConfig;
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -95,7 +96,7 @@ public class GuiBestiary extends GuiScreen {
             for (int i = 0; i < allPageTypes.size(); i++) {
                 int xIndex = i % -2;
                 int yIndex = i % 10;
-                IndexPageButton button = new IndexPageButton(2 + i, centerX + 15 + (xIndex * 200), centerY + 10 + (yIndex * 20) - (xIndex == 1 ? 20 : 0), I18n.format("bestiary." + EnumBestiaryPages.values()[allPageTypes.get(i).ordinal()].toString().toLowerCase()));
+                IndexPageButton button = new IndexPageButton(2 + i, centerX + 15 + (xIndex * 200), centerY + 10 + (yIndex * 20) - (xIndex == 1 ? 20 : 0), pageTitle(allPageTypes.get(i)));
                 this.indexButtons.add(button);
                 this.buttonList.add(button);
             }
@@ -213,6 +214,10 @@ public class GuiBestiary extends GuiScreen {
                 writeFromTxt();
                 break;
             case TAMEDDRAGONS:
+                if (dragonTamingDisabled()) {
+                    writeFromTxt();
+                    break;
+                }
                 if (bookPages == 0) {
                     GL11.glPushMatrix();
                     GL11.glScalef(1.5F, 1.5F, 1F);
@@ -382,10 +387,12 @@ public class GuiBestiary extends GuiScreen {
                     drawImage(DRAWINGS_0, 90, 230, 425, 223, 61, 35);
                     GL11.glPopMatrix();
 
-                    GL11.glPushMatrix();
-                    GL11.glScalef(1.5F, 1.5F, 1F);
-                    drawItemStack(new ItemStack(Items.RABBIT_FOOT), 70, 20, 2.5F);
-                    GL11.glPopMatrix();
+                    if (!MessageDragonTamingConfig.serverDisablesHippogryphTaming) {
+                        GL11.glPushMatrix();
+                        GL11.glScalef(1.5F, 1.5F, 1F);
+                        drawItemStack(new ItemStack(Items.RABBIT_FOOT), 70, 20, 2.5F);
+                        GL11.glPopMatrix();
+                    }
                     GL11.glPopMatrix();
                 }
 
@@ -914,20 +921,43 @@ public class GuiBestiary extends GuiScreen {
     }
 
 
+    private String pageTitle(EnumBestiaryPages page) {
+        return I18n.format(page == EnumBestiaryPages.TAMEDDRAGONS && dragonTamingDisabled()
+                ? "bestiary.wilddragons" : "bestiary." + page.toString().toLowerCase(java.util.Locale.ROOT));
+    }
+
+    private boolean dragonTamingDisabled() {
+        return MessageDragonTamingConfig.serverDisablesTaming;
+    }
+
+    private InputStream openPageText() {
+        String language = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getJavaLocale().toString();
+        String name = this.pageType.toString().toLowerCase(java.util.Locale.ROOT) + "_" + this.bookPages + ".txt";
+        String root = "assets/iceandfire/lang/bestiary/";
+        boolean useWildPage;
+        switch (this.pageType) {
+            case AMPHITHERE:
+                useWildPage = MessageDragonTamingConfig.serverDisablesAmphithereTaming;
+                break;
+            case HIPPOGRYPH:
+                useWildPage = MessageDragonTamingConfig.serverDisablesHippogryphTaming;
+                break;
+            default:
+                useWildPage = dragonTamingDisabled();
+                break;
+        }
+        if (useWildPage) {
+            InputStream alternative = getClass().getClassLoader().getResourceAsStream(root + language + "/wild/" + name);
+            if (alternative == null) alternative = getClass().getClassLoader().getResourceAsStream(root + "en_US/wild/" + name);
+            if (alternative != null) return alternative;
+        }
+        InputStream normal = getClass().getClassLoader().getResourceAsStream(root + language + "/" + name);
+        return normal != null ? normal : getClass().getClassLoader().getResourceAsStream(root + "en_US/" + name);
+    }
+
     public void writeFromTxt() {
-        String currentLanguage = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getJavaLocale().toString();
-        String filePath = "assets/iceandfire/lang/bestiary/" + currentLanguage + "/";
-        String fileName = this.pageType.toString().toLowerCase() + "_" + this.bookPages + ".txt";
-        InputStream fileReader = getClass().getClassLoader().getResourceAsStream(filePath + fileName);
-        if (fileReader == null) {
-            IceAndFire.logger.warn("The Bestiary translation at " + fileName + " is missing for " + currentLanguage);
-            filePath = "assets/iceandfire/lang/bestiary/en_US/";
-            fileReader = getClass().getClassLoader().getResourceAsStream(filePath + fileName);
-        }
-        if (fileReader == null) {
-            IceAndFire.logger.warn("The Bestiary translation " + fileName + " is missing.");
-            return;
-        }
+        InputStream fileReader = openPageText();
+        if (fileReader == null) return;
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileReader));
             String line;
@@ -955,7 +985,7 @@ public class GuiBestiary extends GuiScreen {
         }
         GL11.glPushMatrix();
         GL11.glScalef(2, 2, 2);
-        font.drawString(I18n.format("bestiary." + this.pageType.toString().toLowerCase()), 10, 2, 0X7A756A, false);
+        font.drawString(pageTitle(this.pageType), 10, 2, 0X7A756A, false);
         GL11.glPopMatrix();
     }
 
@@ -964,19 +994,8 @@ public class GuiBestiary extends GuiScreen {
     }
 
     public void drawFromTxt() {
-        String currentLanguage = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage().getJavaLocale().toString();
-        String filePath = "assets/iceandfire/lang/bestiary/" + currentLanguage + "/";
-        String fileName = this.pageType.toString().toLowerCase() + "_" + this.bookPages + ".txt";
-        InputStream fileReader = getClass().getClassLoader().getResourceAsStream(filePath + fileName);
-        if (fileReader == null) {
-            IceAndFire.logger.warn("The Bestiary translation at " + fileName + " is missing for " + currentLanguage);
-            filePath = "assets/iceandfire/lang/bestiary/en_US/";
-            fileReader = getClass().getClassLoader().getResourceAsStream(filePath + fileName);
-        }
-        if (fileReader == null) {
-            IceAndFire.logger.warn("The Bestiary translation " + fileName + " is missing.");
-            return;
-        }
+        InputStream fileReader = openPageText();
+        if (fileReader == null) return;
         List<String[]> images = new ArrayList<>();
         List<String[]> itemStacks = new ArrayList<>();
         try {

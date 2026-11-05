@@ -1,0 +1,14 @@
+Shooting an amphithere with a bow
+may fell one of these creatures
+from the sky and onto the ground.
+Being naturally passive, the
+amphithere will try and flee its
+attacker.
+
+Wild amphitheres cannot be tamed
+or mounted here. An amphithere
+tamed before this change will
+still carry its owner.
+
+Amphitheres can be bred using
+cookies, even in the wild.

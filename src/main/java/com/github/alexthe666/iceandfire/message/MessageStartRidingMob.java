@@ -1,5 +1,9 @@
 package com.github.alexthe666.iceandfire.message;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.entity.EntityAmphithere;
+import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
+import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import com.github.alexthe666.iceandfire.entity.ISyncMount;
 import io.netty.buffer.ByteBuf;
 import net.ilexiconn.llibrary.server.network.AbstractMessage;
@@ -48,6 +52,17 @@ public class MessageStartRidingMob extends AbstractMessage<MessageStartRidingMob
             Entity entity = player.world.getEntityByID(message.dragonId);
             if (entity instanceof ISyncMount) {
                 if (message.ride) {
+                    if (entity instanceof EntityDragonBase && IceAndFire.CONFIG.disableDragonTaming) {
+                        return;
+                    }
+                    if (entity instanceof EntityAmphithere && IceAndFire.CONFIG.disableAmphithereTaming
+                            && !((EntityAmphithere) entity).isOwner(player)) {
+                        return;
+                    }
+                    if (entity instanceof EntityHippogryph && IceAndFire.CONFIG.disableHippogryphTaming
+                            && !((EntityHippogryph) entity).isOwner(player)) {
+                        return;
+                    }
                     player.startRiding(entity, true);
                 } else if (entity.equals(player.getRidingEntity())) {
                     player.dismountRidingEntity();

@@ -37,6 +37,7 @@ public class IceAndFireConfig {
     public boolean spawnGlaciers = true;
     public int glacierSpawnChance = 4;
     public int oreToStoneRatioForDragonCaves = 45;
+    public boolean disableDragonTaming = false;
     public int dragonEggTime = 7200;
     public int dragonGriefing = 0;
     public boolean tamedDragonGriefing = true;
@@ -71,6 +72,7 @@ public class IceAndFireConfig {
     public boolean spawnHippogryphs = true;
     public int hippogryphSpawnRate = 2;
     public float hippogryphFlightSpeed = 1;
+    public boolean disableHippogryphTaming = false;
     public String hippogryphTameItem = "minecraft:rabbit_foot";
     public boolean spawnGorgons = true;
     public int spawnGorgonsChance = 75;
@@ -146,6 +148,7 @@ public class IceAndFireConfig {
     public boolean spawnAmphitheres = true;
     public int amphithereSpawnRate = 5;
     public float amphithereVillagerSearchLength = 64;
+    public boolean disableAmphithereTaming = false;
     public int amphithereTameTime = 400;
     public float amphithereFlightSpeed = 1.75F;
     public double amphithereMaxHealth = 50D;
@@ -222,6 +225,7 @@ public class IceAndFireConfig {
         this.dangerousWorldGenDistanceLimit = config.getInt("Dangerous World Gen Distance From Spawn", "all", 800, 0, Integer.MAX_VALUE, "How many blocks away does dangerous(dragons, cyclops, etc.) world gen have to generate from spawn");
         this.spawnStructuresOnSuperflat = config.getBoolean("Generate All Structures on Superflat", "all", true, "Whether to generate structures or mobs on superflat worlds");
         this.dragonBlockBreakingDropChance = config.getFloat("Dragon Block Breaking Drop Chance", "all", 0.1F, 0.0F, 1.0F, "The percentage chance for a block to drop as an item when a dragon breaks it.");
+        this.disableDragonTaming = config.getBoolean("Disable Dragon Taming", "all", false, "Disables dragon taming, including creative dragon meal. Eggs still hatch into wild dragons. Existing tamed dragons permanently lose ownership when loaded. Restart required.");
         this.dragonEggTime = config.getInt("Dragon Egg Hatch Time", "all", 7200, 1, Integer.MAX_VALUE, "How long it takes(in ticks) for a dragon egg to hatch");
         this.dragonGriefing = config.getInt("Dragon Griefing", "all", 0, 0, 2, "Dragon griefing - 2 is no griefing, 1 is breaking weak blocks, 0 is default");
         this.tamedDragonGriefing = config.getBoolean("Tamed Dragon Griefing", "all", true, "True if tamed dragons can follow the griefing rules.");
@@ -267,6 +271,7 @@ public class IceAndFireConfig {
         this.spawnHippogryphs = config.getBoolean("Spawn Hippogryphs", "all", true, "True if hippogryphs are allowed to spawn");
         this.hippogryphSpawnRate = config.getInt("Hippogryph Spawn Weight", "all", 2, 1, 10000, "Hippogryph spawn weight. Lower = lower chance to spawn.");
         this.hippogryphFlightSpeed = config.getFloat("Hippogryph Flight Speed", "all", 1, 0, 10, "Hippogryph flight speed modifier; all hippogryph speeds are multiplied with this number");
+        this.disableHippogryphTaming = config.getBoolean("Disable Hippogryph Taming", "all", false, "Prevents taming wild hippogryphs. Existing pets keep their owners.");
         this.hippogryphTameItem = config.getString("Hippogryph Tame Item", "all", "minecraft:rabbit_foot", "Hippogryph tame item; supports OreDict");
 
         this.spawnGorgons = config.getBoolean("Spawn Gorgons", "all", true, "True if gorgon temples are allowed to spawn");
@@ -354,6 +359,7 @@ public class IceAndFireConfig {
         this.spawnAmphitheres = config.getBoolean("Spawn Amphitheres", "all", true, "True if amphitheres are allowed to spawn");
         this.amphithereSpawnRate = config.getInt("Amphithere Spawn Weight", "all", 5, 1, 10000, "Amphithere spawn weight. Lower = lower chance to spawn");
         this.amphithereVillagerSearchLength = config.getInt("Amphithere Villager Search Length", "all", 64, 1, 10000, "How many blocks away can ampitheres detect villagers being hurt. Note that increasing this could cause lag.");
+        this.disableAmphithereTaming = config.getBoolean("Disable Amphithere Taming", "all", false, "Prevents taming wild amphitheres. Existing pets keep their owners.");
         this.amphithereTameTime = config.getInt("Amphithere Tame Time", "all", 400, 1, 10000, "How many ticks it takes while riding an untamed amphithere to tame it.");
         this.amphithereFlightSpeed = config.getFloat("Amphithere Flight Speed", "all", 1.75F, 0.0F, 3.0F, "How fast amphitheres fly.");
         this.amphithereMaxHealth = config.getFloat("Amphithere Max Health", "all", 50, 1, 10000, "Maximum amphithere health");

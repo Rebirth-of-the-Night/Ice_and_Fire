@@ -801,7 +801,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     }
 
     protected boolean canFitPassenger(Entity passenger) {
-        return this.getPassengers().size() < 2;
+        return !IceAndFire.CONFIG.disableDragonTaming && this.getPassengers().size() < 2;
     }
 
     @Override
@@ -1034,7 +1034,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             }
             return true;
         } else if (!this.isModelDead()) {
-            if (this.isOwner(player)) {
+            if (!IceAndFire.CONFIG.disableDragonTaming && this.isOwner(player)) {
                 if (!stack.isEmpty()) {
                     if (stack.getItem() == getSummoningCrystal() && !ItemSummoningCrystal.hasDragon(stack)) {
                         this.setCrystalBound(true);
@@ -1166,7 +1166,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                     }
                 }
             } else {
-                if (stack.getItem() == IafItemRegistry.creative_dragon_meal) {
+                if (stack.getItem() == IafItemRegistry.creative_dragon_meal && !IceAndFire.CONFIG.disableDragonTaming) {
                     this.setTamedBy(player);
                     if (!player.isCreative()) {
                         stack.shrink(1);
@@ -1282,7 +1282,28 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     }
 
     @Override
+    public void setTamed(boolean tamed) {
+        super.setTamed(tamed && !IceAndFire.CONFIG.disableDragonTaming);
+    }
+
+    @Override
+    public void setOwnerId(@Nullable java.util.UUID ownerId) {
+        super.setOwnerId(IceAndFire.CONFIG.disableDragonTaming ? null : ownerId);
+    }
+
+    @Override
     public void onLivingUpdate() {
+        if (!this.world.isRemote && IceAndFire.CONFIG.disableDragonTaming) {
+            if (this.isTamed() || this.getOwnerId() != null) {
+                this.setTamed(false);
+                this.setOwnerId(null);
+            }
+            this.setSitting(false);
+            this.setCommand(0);
+            this.setControlState((byte) 0);
+            this.removePassengers();
+            if (this.getRidingEntity() instanceof EntityPlayer) this.dismountRidingEntity();
+        }
         super.onLivingUpdate();
         this.stepHeight = this.getDragonStage() * 0.5F;
         if (!this.isPlayerControlled() && this.isBeyondHeight() && !this.onGround) {

@@ -44,7 +44,8 @@ public class HippogryphAITargetItems<T extends EntityItem> extends EntityAITarge
 
     @Override
     public boolean shouldExecute() {
-        if (!((EntityHippogryph) this.taskOwner).canMove()) {
+        EntityHippogryph hippogryph = (EntityHippogryph) this.taskOwner;
+        if (!hippogryph.canMove() || (IceAndFire.CONFIG.disableHippogryphTaming && !hippogryph.isTamed())) {
             return false;
         }
 
@@ -82,7 +83,7 @@ public class HippogryphAITargetItems<T extends EntityItem> extends EntityAITarge
                 hippo.setAnimation(EntityHippogryph.ANIMATION_EAT);
                 hippo.feedings++;
                 hippo.heal(4);
-                if (hippo.feedings > 3 &&(hippo.feedings > 7 || hippo.getRNG().nextInt(3) == 0) && !hippo.isTamed() && this.targetEntity.getThrower() != null && !this.targetEntity.getThrower().isEmpty() && this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower()) != null) {
+                if (!IceAndFire.CONFIG.disableHippogryphTaming && hippo.feedings > 3 &&(hippo.feedings > 7 || hippo.getRNG().nextInt(3) == 0) && !hippo.isTamed() && this.targetEntity.getThrower() != null && !this.targetEntity.getThrower().isEmpty() && this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower()) != null) {
                     EntityPlayer owner = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
                     hippo.setTamed(true);
                     hippo.setOwnerId(owner.getUniqueID());
