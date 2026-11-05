@@ -2,8 +2,8 @@ package com.github.alexthe666.iceandfire.event;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.item.ItemFishingSpear;
+import com.github.alexthe666.iceandfire.message.MessageFishingRipple;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -13,29 +13,35 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.WeakHashMap;
 
-/** Server-owned fishing targets; particles show the same moving target to all players. */
+/** Server-owned fishing targets shared with nearby clients. */
 @Mod.EventBusSubscriber(modid = IceAndFire.MODID)
 public final class FishingRippleEvents {
-    private static final double RADIUS = 0.65D;
+    public static final double RADIUS = 0.65D;
+    public static final int SYNC_INTERVAL = 2;
     private static final double PLAYER_RANGE = 3.5D;
-    private static final double DRIFT_SPEED = 0.075D;
-    private static final Map<World, List<Ripple>> RIPPLES = new WeakHashMap<>();
+    private static final double DRIFT_SPEED = 0.09D;
+    private static final int MAX_RESPAWN_DELAY = 60;
+    private static final Map<World, FishingSpots> SPOTS = new WeakHashMap<>();
+    private static int nextRippleId;
 
     private FishingRippleEvents() { }
 
     public static boolean consumeRipple(World world, Vec3d hit) {
-        List<Ripple> ripples = RIPPLES.get(world);
-        if (ripples == null) {
+        FishingSpots spots = SPOTS.get(world);
+        if (spots == null) {
             return false;
         }
-        Iterator<Ripple> iterator = ripples.iterator();
+        Iterator<Ripple> iterator = spots.active.iterator();
         while (iterator.hasNext()) {
             Ripple ripple = iterator.next();
             double dx = hit.x - ripple.x;
@@ -43,6 +49,7 @@ public final class FishingRippleEvents {
             if (Math.abs(hit.y - (ripple.y + 0.9D)) < 0.5D
                     && dx * dx + dz * dz <= RADIUS * RADIUS) {
                 iterator.remove();
+                spots.finish(world, ripple);
                 return true;
             }
         }
@@ -51,7 +58,7 @@ public final class FishingRippleEvents {
 
     @SubscribeEvent
     public static void onUnload(WorldEvent.Unload event) {
-        RIPPLES.remove(event.getWorld());
+        SPOTS.remove(event.getWorld());
     }
 
     @SubscribeEvent
@@ -60,28 +67,32 @@ public final class FishingRippleEvents {
             return;
         }
         WorldServer world = (WorldServer) event.world;
-        List<Ripple> ripples = RIPPLES.computeIfAbsent(world, ignored -> new ArrayList<>());
+        FishingSpots spots = SPOTS.computeIfAbsent(world, ignored -> new FishingSpots());
+        List<Ripple> ripples = spots.active;
+        long tick = world.getTotalWorldTime();
         Iterator<Ripple> iterator = ripples.iterator();
         while (iterator.hasNext()) {
             Ripple ripple = iterator.next();
             if (--ripple.life <= 0 || !hasNearbyFisher(world, ripple)
                     || !ItemFishingSpear.isFishingWater(world, new BlockPos(ripple.x, ripple.y, ripple.z))) {
                 iterator.remove();
+                spots.finish(world, ripple);
                 continue;
             }
             ripple.move(world);
-            if (world.getTotalWorldTime() % 4 == 0) {
-                ripple.show(world);
+            if (tick % SYNC_INTERVAL == 0) {
+                ripple.sync(world, false);
             }
         }
-        if (world.getTotalWorldTime() % 20 != 0) {
-            return;
-        }
+        spots.nextSearch.values().removeIf(next -> next <= tick);
         for (EntityPlayer player : world.playerEntities) {
-            if (!holdsSpear(player) || ripples.stream().anyMatch(r ->
-                    player.getPositionEyes(1.0F).squareDistanceTo(r.x, r.y + 0.9D, r.z) < 25)) {
+            UUID playerId = player.getUniqueID();
+            if (!holdsSpear(player) || spots.nextSearch.containsKey(playerId)
+                    || ripples.stream().anyMatch(r -> r.isNear(player))) {
                 continue;
             }
+            // Throttle water searches when there is nowhere suitable to spawn.
+            spots.nextSearch.put(playerId, tick + 20);
             // Search a bounded area near the fisher without loading any new chunks.
             for (int attempt = 0; attempt < 96; attempt++) {
                 BlockPos pos = player.getPosition().add(world.rand.nextInt(7) - 3,
@@ -93,7 +104,9 @@ public final class FishingRippleEvents {
                 }
                 RayTraceResult sight = world.rayTraceBlocks(player.getPositionEyes(1.0F), target, true);
                 if (sight == null || pos.equals(sight.getBlockPos())) {
-                    ripples.add(new Ripple(pos, world.rand.nextDouble() * Math.PI * 2));
+                    Ripple ripple = new Ripple(pos, world.rand.nextDouble() * Math.PI * 2);
+                    ripples.add(ripple);
+                    ripple.sync(world, false);
                     break;
                 }
             }
@@ -107,15 +120,30 @@ public final class FishingRippleEvents {
 
     private static boolean hasNearbyFisher(World world, Ripple ripple) {
         for (EntityPlayer player : world.playerEntities) {
-            if (holdsSpear(player)
-                    && player.getPositionEyes(1.0F).squareDistanceTo(ripple.x, ripple.y + 0.9D, ripple.z) < 25) {
+            if (holdsSpear(player) && ripple.isNear(player)) {
                 return true;
             }
         }
         return false;
     }
 
+    private static final class FishingSpots {
+        private final List<Ripple> active = new ArrayList<>();
+        private final Map<UUID, Long> nextSearch = new HashMap<>();
+
+        private void finish(World world, Ripple ripple) {
+            ripple.sync(world, true);
+            long next = world.getTotalWorldTime() + world.rand.nextInt(MAX_RESPAWN_DELAY + 1);
+            for (EntityPlayer player : world.playerEntities) {
+                if (ripple.isNear(player)) {
+                    nextSearch.put(player.getUniqueID(), next);
+                }
+            }
+        }
+    }
+
     private static final class Ripple {
+        private final int id = nextRippleId++;
         private double x;
         private final int y;
         private double z;
@@ -129,8 +157,11 @@ public final class FishingRippleEvents {
             this.heading = heading;
         }
 
+        private boolean isNear(EntityPlayer player) {
+            return player.getPositionEyes(1.0F).squareDistanceTo(x, y + 0.9D, z) < 25;
+        }
+
         private void move(World world) {
-            // Drift at 1.5 blocks per second, staying within easy spear reach of a fisher.
             EntityPlayer nearest = null;
             double nearestDistance = Double.MAX_VALUE;
             for (EntityPlayer player : world.playerEntities) {
@@ -159,13 +190,10 @@ public final class FishingRippleEvents {
             }
         }
 
-        private void show(WorldServer world) {
-            for (int i = 0; i < 12; i++) {
-                double angle = i * Math.PI * 2 / 12;
-                world.spawnParticle(EnumParticleTypes.WATER_WAKE,
-                        x + Math.cos(angle) * RADIUS, y + 0.9D, z + Math.sin(angle) * RADIUS,
-                        0, 0.0D, 0.0D, 0.0D, 0.0D);
-            }
+        private void sync(World world, boolean removed) {
+            int dimension = world.provider.getDimension();
+            IceAndFire.NETWORK_WRAPPER.sendToAllAround(new MessageFishingRipple(dimension, id, x, y + 0.91D, z, removed),
+                    new NetworkRegistry.TargetPoint(dimension, x, y, z, 16));
         }
     }
 }

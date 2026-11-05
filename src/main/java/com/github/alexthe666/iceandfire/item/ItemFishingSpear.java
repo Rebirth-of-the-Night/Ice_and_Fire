@@ -75,8 +75,13 @@ public class ItemFishingSpear extends Item {
             int roll = worldIn.rand.nextInt(100);
             int fish = roll < 75 ? 0 : roll < 98 ? 1 : roll < 99 ? 2 : 3;
             BlockPos pos = hit.getBlockPos();
-            worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 1.5D,
-                    pos.getZ() + 0.5D, new ItemStack(Items.FISH, 1, fish)));
+            EntityItem caughtFish = new EntityItem(worldIn, pos.getX() + 0.5D, pos.getY() + 1.5D,
+                    pos.getZ() + 0.5D, new ItemStack(Items.FISH, 1, fish));
+            // Scale the throw with distance and lift it clear of the water and shore.
+            caughtFish.motionX = (player.posX - caughtFish.posX) * 0.085D;
+            caughtFish.motionY = (player.posY + 0.35D - caughtFish.posY) * 0.085D + 0.32D;
+            caughtFish.motionZ = (player.posZ - caughtFish.posZ) * 0.085D;
+            worldIn.spawnEntity(caughtFish);
         }
         worldIn.playSound(null, player.posX, player.posY, player.posZ,
                 SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F,

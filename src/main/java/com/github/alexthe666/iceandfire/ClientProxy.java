@@ -12,6 +12,8 @@ import com.github.alexthe666.iceandfire.client.model.animator.LightningDragonTab
 import com.github.alexthe666.iceandfire.client.model.animator.SeaSerpentTabulaModelAnimator;
 import com.github.alexthe666.iceandfire.client.model.util.*;
 import com.github.alexthe666.iceandfire.client.particle.*;
+import com.github.alexthe666.iceandfire.client.entity.EntityFishingSalmon;
+import com.github.alexthe666.iceandfire.client.render.FishingRippleRenderer;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsAurora;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsSky;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsWeather;
@@ -384,6 +386,7 @@ public class ClientProxy extends CommonProxy {
 
     @SideOnly(Side.CLIENT)
     private void renderEntities() {
+        RenderingRegistry.registerEntityRenderingHandler(EntityFishingSalmon.class, new FishingRippleRenderer(Minecraft.getMinecraft().getRenderManager()));
         EnumDragonAnimations.initializeDragonModels();
         EnumSeaSerpentAnimations.initializeSerpentModels();
         DragonAnimationsLibrary.register(EnumDragonPoses.values(), EnumDragonModelTypes.values());
