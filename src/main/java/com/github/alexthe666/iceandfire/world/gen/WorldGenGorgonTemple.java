@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.world.gen;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.entity.EntityStoneStatue;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -8,6 +9,7 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -27,6 +29,9 @@ public class WorldGenGorgonTemple extends WorldGenerator {
     // The template has a buried chamber at 0..6, sand at 7..9, and a temple floor at 10.
     private static final int GROUND_LEVEL = 9;
     private static final int BLEND_RADIUS = 12;
+    private static final BlockPos[] CHAMBER_STATUES = {
+            new BlockPos(7, 1, 12), new BlockPos(25, 1, 12), new BlockPos(16, 1, 23)
+    };
 
     @Override
     public boolean generate(World world, Random random, BlockPos position) {
@@ -122,7 +127,22 @@ public class WorldGenGorgonTemple extends WorldGenerator {
             return info;
         }, settings, 2);
         apron.forEach((pos, state) -> world.setBlockState(pos, state, 2));
+        placeChamberStatues(world, origin, settings);
         return true;
+    }
+
+    private static void placeChamberStatues(World world, BlockPos origin, PlacementSettings settings) {
+        BlockPos center = Template.transformedBlockPos(settings, new BlockPos(16, 1, 14)).add(origin);
+        for (BlockPos local : CHAMBER_STATUES) {
+            BlockPos pos = Template.transformedBlockPos(settings, local).add(origin);
+            if (!world.getBlockState(pos.down()).isFullCube() || !world.isAirBlock(pos) || !world.isAirBlock(pos.up())) {
+                continue;
+            }
+            float yaw = (float) Math.toDegrees(MathHelper.atan2(center.getZ() - pos.getZ(), center.getX() - pos.getX())) - 90.0F;
+            EntityStoneStatue statue = new EntityStoneStatue(world);
+            statue.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, yaw, 0.0F);
+            world.spawnEntity(statue);
+        }
     }
 
     private static IBlockState filler(IBlockState surface) {
