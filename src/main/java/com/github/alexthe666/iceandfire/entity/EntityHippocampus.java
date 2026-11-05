@@ -597,11 +597,10 @@ public class EntityHippocampus extends EntityTameable implements ISyncMount, IAn
                     itemstack.shrink(1);
                 }
             }
-            if (!this.isTamed() && this.getRNG().nextInt(3) == 0) {
+            if (!this.world.isRemote && !IceAndFire.CONFIG.disableHippocampusTaming
+                    && !this.isTamed() && this.getRNG().nextInt(3) == 0) {
                 this.setTamedBy(player);
-                for (int i = 0; i < 6; i++) {
-                    this.world.spawnParticle(EnumParticleTypes.HEART, this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, this.posY + (double) (this.rand.nextFloat() * this.height), this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width, 0, 0, 0);
-                }
+                this.world.setEntityState(this, (byte) 7);
             }
             return true;
 

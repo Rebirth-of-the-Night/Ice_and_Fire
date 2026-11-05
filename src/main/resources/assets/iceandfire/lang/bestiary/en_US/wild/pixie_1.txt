@@ -1,0 +1,28 @@
+Simply interact with a pixie
+holding a jar to capture it.
+
+Consuming pixie dust results
+with levitation and glowing,
+however it can be crafted
+into something far more
+powerful: ambrosia.
+
+
+
+
+When ambrosia is consumed,
+it restores a large amount
+of health along with many
+powerful potion effects.
+
+Wild pixies cannot be befriended
+here, even with cake. Watch your
+belongings around them.
+
+Previously befriended pixies
+can still follow or wait
+for their friend. If a
+befriended pixie is near
+you, it will give you a
+bonus potion effect,
+depending on its color.

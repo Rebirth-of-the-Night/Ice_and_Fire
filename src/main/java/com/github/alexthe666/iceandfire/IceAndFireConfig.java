@@ -79,6 +79,7 @@ public class IceAndFireConfig {
     public boolean gorgonTempleTestMode = true;
     public double gorgonMaxHealth = 100D;
     public int gorgonPetrificationChargeTicks = 20;
+    public boolean disablePixieTaming = false;
     public boolean spawnPixies = true;
     public int spawnPixiesChance = 60;
     public int pixieVillageSize = 5;
@@ -103,10 +104,12 @@ public class IceAndFireConfig {
     public List<String> sirenFluteMobBlacklist = new ArrayList<>();
     public boolean spawnHippocampus = true;
     public int hippocampusSpawnChance = 70;
+    public boolean disableHippocampusTaming = false;
     public String hippocampusTameItem = "minecraft:prismarine_crystals";
     public int deathWormTargetSearchLength = 64;
     public double deathWormMaxHealth = 10D;
     public double deathWormAttackStrength = 3D;
+    public boolean disableDeathWormTaming = false;
     public boolean spawnDeathWorm = true;
     public boolean deathWormAttackMonsters = true;
     public int deathWormSpawnRate = 2;
@@ -115,6 +118,7 @@ public class IceAndFireConfig {
     public int cockatriceEggChance = 30;
     public double cockatriceMaxHealth = 40.0D;
     public boolean chickensLayRottenEggs = true;
+    public boolean disableCockatriceTaming = false;
     public boolean spawnCockatrices = true;
     public int cockatriceSpawnRate = 4;
     public int cockatriceSpawnCheckChance = 0;
@@ -280,6 +284,7 @@ public class IceAndFireConfig {
         this.gorgonMaxHealth = config.getFloat("Gorgon Max Health", "all", 100, 1, 10000, "Maximum gorgon health");
         this.gorgonPetrificationChargeTicks = config.getInt("Gorgon Petrification Charge Ticks", "all", 20, 1, Integer.MAX_VALUE, "Consecutive ticks of eye contact required for a gorgon to petrify its target");
 
+        this.disablePixieTaming = config.getBoolean("Disable Pixie Taming", "all", false, "Prevents taming wild pixies. Existing pets keep their owners. Restart required.");
         this.spawnPixies = config.getBoolean("Spawn Pixies", "all", true, "True if pixie villages are allowed to spawn");
         this.spawnPixiesChance = config.getInt("Spawn Pixies Chance", "all", 60, 1, 10000, "1 out of this number chance per chunk for generation");
         this.pixieVillageSize = config.getInt("Pixie Village Size", "all", 5, 1, 10000, "size of pixie villages");
@@ -309,11 +314,13 @@ public class IceAndFireConfig {
 
         this.spawnHippocampus = config.getBoolean("Spawn Hippocampus", "all", true, "True if hippocampi are allowed to spawn");
         this.hippocampusSpawnChance = config.getInt("Spawn Hippocampus Chance", "all", 70, 1, 10000, "1 out of this number chance per chunk for generation");
+        this.disableHippocampusTaming = config.getBoolean("Disable Hippocampus Taming", "all", false, "Prevents taming wild hippocampi. Existing pets keep their owners. Restart required.");
         this.hippocampusTameItem = config.getString("Hippocampus Tame Item", "all", "minecraft:prismarine_crystals", "Hippocampus tame item; supports OreDict");
 
         this.deathWormTargetSearchLength = config.getInt("Death Worm Target Search Length", "all", 64, 1, 10000, "How many blocks away can death worms spot potential prey. Note that increasing this could cause lag");
         this.deathWormMaxHealth = config.getFloat("Death Worm Base Health", "all", 10, 1, 10000, "Default deathworm health, this is scaled to the worm's particular size");
         this.deathWormAttackStrength = config.getFloat("Death Worm Base Attack Strength", "all", 3, 1, 10000, "Default deathworm attack strength, this is scaled to the worm's particular size");
+        this.disableDeathWormTaming = config.getBoolean("Disable Death Worm Taming", "all", false, "Prevents taming wild death worms. Eggs still hatch into wild death worms. Existing pets keep their owners. Restart required.");
         this.spawnDeathWorm = config.getBoolean("Spawn Death Worms", "all", true, "True if deathworms are allowed to spawn");
         this.deathWormAttackMonsters = config.getBoolean("Death Worms Target Monsters", "all", true, "True if wild deathworms are allowed to target and attack monsters");
         this.deathWormSpawnRate = config.getInt("Death Worm Spawn Weight", "all", 2, 1, 10000, "Deathworm spawn weight. Lower = lower chance to spawn");
@@ -323,6 +330,7 @@ public class IceAndFireConfig {
         this.cockatriceChickenSearchLength = config.getInt("Cockatrice chicken Search Length", "all", 32, 1, 10000, "How many blocks away can cockatrices detect chickens. Note that increasing this could cause lag.");
         this.cockatriceEggChance = config.getInt("Cockatrice chicken Search Length", "all", 30, 1, Integer.MAX_VALUE, "1 out of this number chance per 6000 ticks for a chicken to lay a cockatrice egg.");
         this.chickensLayRottenEggs = config.getBoolean("Chickens Lay Rotten Eggs", "all", true, "True if chickens lay rotten eggs.");
+        this.disableCockatriceTaming = config.getBoolean("Disable Cockatrice Taming", "all", false, "Prevents taming wild cockatrices. Eggs still hatch into wild cockatrices. Existing pets keep their owners. Restart required.");
         this.spawnCockatrices = config.getBoolean("Spawn Cockatrices", "all", true, "True if cockatrices are allowed to spawn");
         this.cockatriceSpawnRate = config.getInt("Cockatrice Spawn Weight", "all", 4, 1, 10000, "Cockatrice spawn weight. Lower = lower chance to spawn");
         this.cockatriceSpawnCheckChance = config.getInt("Cockatrice Spawn Check Chance", "all", 0, 0, 10000, "A double check to see if the game can spawn cockatrices. Higher number = lower chance to spawn.");

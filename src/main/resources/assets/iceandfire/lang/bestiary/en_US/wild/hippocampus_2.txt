@@ -1,0 +1,16 @@
+An owner can tell a previously
+tamed hippocampus to sit by
+interacting with it with a stick.
+
+
+
+
+
+If killed, a hippocampi drops
+shiny scales.
+
+These shiny scales, when mixed
+with a water bottle in a
+brewing stand, can be turned
+into potions of water
+breathing.

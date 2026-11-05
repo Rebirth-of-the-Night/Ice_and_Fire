@@ -518,7 +518,7 @@ public class EntityCockatrice extends EntityTameable implements IAnimatedEntity,
                         this.getAttackTarget().attackEntityFrom(DamageSource.WITHER, attackStrength - 1);
                     }
                     this.getAttackTarget().setRevengeTarget(this);
-                    if (!this.isTamed() && this.getAttackTarget() instanceof EntityPlayer) {
+                    if (!IceAndFire.CONFIG.disableCockatriceTaming && !this.isTamed() && this.getAttackTarget() instanceof EntityPlayer) {
                         this.setTamingPlayer(this.getAttackTarget().getEntityId());
                         this.setTamingLevel(this.getTamingLevel() + 1);
                         if (this.getTamingLevel() % 100 == 0) {

@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntityPixie;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
 import com.google.common.base.Predicate;
@@ -34,7 +35,11 @@ public class PixieAIPickupItem<T extends EntityItem> extends EntityAITarget {
         this.targetEntitySelector = new Predicate<EntityItem>() {
             @Override
             public boolean apply(@Nullable EntityItem item) {
-                return item != null && !item.getItem().isEmpty() && (item.getItem().getItem() == Items.CAKE && !creature.isTamed() || item.getItem().getItem() == Items.SUGAR && creature.isTamed() && creature.getHealth() < creature.getMaxHealth());
+                if (item == null || item.getItem().isEmpty()) {
+                    return false;
+                }
+                return (item.getItem().getItem() == Items.CAKE && !creature.isTamed() && !IceAndFire.CONFIG.disablePixieTaming)
+                        || (item.getItem().getItem() == Items.SUGAR && creature.isTamed() && creature.getHealth() < creature.getMaxHealth());
             }
         };
         this.setMutexBits(3);
@@ -79,6 +84,10 @@ public class PixieAIPickupItem<T extends EntityItem> extends EntityAITarget {
                 pixie.heal(5);
             }
             if (this.targetEntity.getItem() != null && this.targetEntity.getItem().getItem() != null && this.targetEntity.getItem().getItem() == Items.CAKE) {
+                if (IceAndFire.CONFIG.disablePixieTaming) {
+                    resetTask();
+                    return;
+                }
                 if (!pixie.isTamed() && this.targetEntity.getThrower() != null && !this.targetEntity.getThrower().isEmpty() && this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower()) != null) {
                     EntityPlayer owner = this.taskOwner.world.getPlayerEntityByName(this.targetEntity.getThrower());
                     pixie.setTamed(true);

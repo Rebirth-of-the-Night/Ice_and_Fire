@@ -1,6 +1,8 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+import com.github.alexthe666.iceandfire.message.MessageDragonTamingConfig;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityEgg;
@@ -32,7 +34,7 @@ public class EntityCockatriceEgg extends EntityEgg {
             for (int i = 0; i < 8; ++i) {
                 this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, Item.getIdFromItem(IafItemRegistry.rotten_egg));
             }
-            if (thrower != null && thrower instanceof EntityPlayer) {
+            if (!MessageDragonTamingConfig.serverDisablesCockatriceTaming && thrower instanceof EntityPlayer) {
                 for (int i = 0; i < 8; ++i) {
                     this.world.spawnParticle(EnumParticleTypes.HEART, this.posX, this.posY, this.posZ, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D);
                 }
@@ -62,7 +64,7 @@ public class EntityCockatriceEgg extends EntityEgg {
                     cockatrice.setGrowingAge(-24000);
                     cockatrice.setHen(this.rand.nextBoolean());
                     cockatrice.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-                    if (thrower != null && thrower instanceof EntityPlayer) {
+                    if (!IceAndFire.CONFIG.disableCockatriceTaming && thrower instanceof EntityPlayer) {
                         cockatrice.setTamedBy((EntityPlayer) thrower);
                     }
                     this.world.spawnEntity(cockatrice);

@@ -88,8 +88,7 @@ public class ServerEvents {
     public void syncDragonTamingConfig(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.player instanceof net.minecraft.entity.player.EntityPlayerMP) {
             IceAndFire.NETWORK_WRAPPER.sendTo(new com.github.alexthe666.iceandfire.message.MessageDragonTamingConfig(
-                    IceAndFire.CONFIG.disableDragonTaming, IceAndFire.CONFIG.disableAmphithereTaming,
-                    IceAndFire.CONFIG.disableHippogryphTaming), (net.minecraft.entity.player.EntityPlayerMP) event.player);
+                    IceAndFire.CONFIG), (net.minecraft.entity.player.EntityPlayerMP) event.player);
         }
     }
 

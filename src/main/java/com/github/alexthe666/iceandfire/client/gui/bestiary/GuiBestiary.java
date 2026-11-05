@@ -942,6 +942,18 @@ public class GuiBestiary extends GuiScreen {
             case HIPPOGRYPH:
                 useWildPage = MessageDragonTamingConfig.serverDisablesHippogryphTaming;
                 break;
+            case COCKATRICE:
+                useWildPage = MessageDragonTamingConfig.serverDisablesCockatriceTaming;
+                break;
+            case DEATHWORM:
+                useWildPage = MessageDragonTamingConfig.serverDisablesDeathWormTaming;
+                break;
+            case HIPPOCAMPUS:
+                useWildPage = MessageDragonTamingConfig.serverDisablesHippocampusTaming;
+                break;
+            case PIXIE:
+                useWildPage = MessageDragonTamingConfig.serverDisablesPixieTaming;
+                break;
             default:
                 useWildPage = dragonTamingDisabled();
                 break;

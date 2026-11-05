@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -58,11 +59,13 @@ public class EntityDeathWormEgg extends EntityThrowable {
         if (!this.world.isRemote && this.thrower != null) {
             EntityDeathWorm deathworm = new EntityDeathWorm(this.world);
             deathworm.setVariant(new Random().nextInt(3));
-            deathworm.setTamed(true);
+            if (!IceAndFire.CONFIG.disableDeathWormTaming) {
+                deathworm.setTamed(true);
+                deathworm.setOwnerId(this.thrower.getUniqueID());
+            }
             deathworm.setWormHome(new BlockPos(this));
             deathworm.setWormAge(1);
             deathworm.setDeathWormScale(giant ? (0.25F + (float) (Math.random() * 0.35F)) * 4 : 0.25F + (float) (Math.random() * 0.35F));
-            deathworm.setOwnerId(this.thrower.getUniqueID());
             deathworm.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
             this.world.spawnEntity(deathworm);
             this.world.setEntityState(this, (byte) 3);
