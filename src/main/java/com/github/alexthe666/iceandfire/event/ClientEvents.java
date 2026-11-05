@@ -36,6 +36,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderSpecificHandEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
@@ -82,6 +83,7 @@ public class ClientEvents {
         }
     }
 
+    private static final ResourceLocation PETRIFICATION_TEXTURE = new ResourceLocation("textures/blocks/stone.png");
     private static final ResourceLocation SIREN_SHADER = new ResourceLocation("iceandfire:shaders/post/siren.json");
     private static final ResourceLocation TEXTURE_0 = new ResourceLocation("textures/blocks/frosted_ice_0.png");
     private static final ResourceLocation TEXTURE_1 = new ResourceLocation("textures/blocks/frosted_ice_1.png");
@@ -89,6 +91,69 @@ public class ClientEvents {
     private static final ResourceLocation TEXTURE_3 = new ResourceLocation("textures/blocks/frosted_ice_3.png");
     private static final ResourceLocation CHAIN_TEXTURE = new ResourceLocation("iceandfire:textures/models/misc/chain_link.png");
     private final Random rand = new Random();
+
+    @SubscribeEvent
+    public void renderPetrificationOverlay(RenderGameOverlayEvent.Pre event) {
+        if (event.getType() != RenderGameOverlayEvent.ElementType.HELMET) {
+            return;
+        }
+        Minecraft minecraft = Minecraft.getMinecraft();
+        EntityPlayer player = minecraft.player;
+        if (player == null || !player.isEntityAlive() || minecraft.getRenderViewEntity() != player) {
+            return;
+        }
+
+        float progress = 0.0F;
+        for (Entity entity : player.world.loadedEntityList) {
+            if (entity instanceof EntityGorgon) {
+                progress = Math.max(progress, ((EntityGorgon) entity).getPetrificationProgress(player));
+            }
+        }
+        if (progress <= 0.0F) {
+            return;
+        }
+
+        float width = event.getResolution().getScaledWidth();
+        float height = event.getResolution().getScaledHeight();
+        float inset = 0.06F + 0.43F * progress;
+        float left = width * inset;
+        float top = height * inset;
+        int opacity = (int) (255 * progress);
+        minecraft.getTextureManager().bindTexture(PETRIFICATION_TEXTURE);
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA,
+                GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.disableDepth();
+        GlStateManager.depthMask(false);
+        GlStateManager.disableAlpha();
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
+
+        // Fade each edge into the clear center of the screen.
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+        buffer.begin(GL11.GL_QUAD_STRIP, DefaultVertexFormats.POSITION_TEX_COLOR);
+        addStoneVertex(buffer, 0, 0, opacity);
+        addStoneVertex(buffer, left, top, 0);
+        addStoneVertex(buffer, width, 0, opacity);
+        addStoneVertex(buffer, width - left, top, 0);
+        addStoneVertex(buffer, width, height, opacity);
+        addStoneVertex(buffer, width - left, height - top, 0);
+        addStoneVertex(buffer, 0, height, opacity);
+        addStoneVertex(buffer, left, height - top, 0);
+        addStoneVertex(buffer, 0, 0, opacity);
+        addStoneVertex(buffer, left, top, 0);
+        tessellator.draw();
+
+        GlStateManager.shadeModel(GL11.GL_FLAT);
+        GlStateManager.enableAlpha();
+        GlStateManager.depthMask(true);
+        GlStateManager.enableDepth();
+    }
+
+    private static void addStoneVertex(BufferBuilder buffer, float x, float y, int opacity) {
+        float tileSize = 96.0F;
+        buffer.pos(x, y, -90).tex(x / tileSize, y / tileSize).color(255, 255, 255, opacity).endVertex();
+    }
 
     private static boolean shouldCancelRender(EntityLivingBase living) {
         if (living.getRidingEntity() != null && living.getRidingEntity() instanceof EntityDragonBase) {

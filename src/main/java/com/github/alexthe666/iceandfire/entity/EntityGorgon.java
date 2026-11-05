@@ -2,7 +2,6 @@ package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.compat.bauble.common.BaublesCompatBridge;
-import com.github.alexthe666.iceandfire.entity.ai.GorgonAIStare;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.github.alexthe666.iceandfire.message.MessageStoneStatue;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
@@ -19,6 +18,9 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -33,12 +35,12 @@ import javax.annotation.Nullable;
 public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillagerFear, IAnimalFear, IHumanoid {
 
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("iceandfire", "gorgon"));
+    private static final DataParameter<Integer> GAZE_PLAYER = EntityDataManager.createKey(EntityGorgon.class, DataSerializers.VARINT);
+    private static final DataParameter<Float> GAZE_PROGRESS = EntityDataManager.createKey(EntityGorgon.class, DataSerializers.FLOAT);
     public static Animation ANIMATION_SCARE;
     public static Animation ANIMATION_HIT;
     private int animationTick;
     private Animation currentAnimation;
-    private GorgonAIStare aiStare;
-    private EntityAIAttackMelee aiMelee;
     private int playerStatueCooldown;
     private EntityLivingBase petrificationTarget;
     private int petrificationChargeTicks;
@@ -48,6 +50,18 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
         this.setSize(0.8F, 1.99F);
         ANIMATION_SCARE = Animation.create(30);
         ANIMATION_HIT = Animation.create(10);
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataManager.register(GAZE_PLAYER, -1);
+        this.dataManager.register(GAZE_PROGRESS, 0.0F);
+    }
+
+    public float getPetrificationProgress(EntityPlayer player) {
+        return this.isEntityAlive() && this.dataManager.get(GAZE_PLAYER) == player.getEntityId()
+                ? this.dataManager.get(GAZE_PROGRESS) : 0.0F;
     }
 
     public static boolean isEntityLookingAt(EntityLivingBase looker, EntityLivingBase seen, double degree) {
@@ -89,9 +103,7 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAIRestrictSun(this));
         this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-        this.tasks.addTask(3, aiStare = new GorgonAIStare(this, 1.0D, 15.0F));
-        this.tasks.addTask(3, aiMelee = new EntityAIAttackMelee(this, 1.0D, false));
-        this.tasks.addTask(4, new GorgonAIStare(this, 1.0D, 15.0F));
+        this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0D) {
             public boolean shouldExecute() {
                 executionChance = 20;
@@ -118,13 +130,9 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
         this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<EntityLiving>(this, EntityLiving.class, 0, true, false, new Predicate<Entity>() {
             @Override
             public boolean apply(@Nullable Entity entity) {
-                StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(entity, StoneEntityProperties.class);
-                return entity instanceof EntityLiving && DragonUtils.isAlive((EntityLiving) entity) && (properties == null || !properties.isStone) || !IsImmune
-                        .toStone(entity) && (entity instanceof IBlacklistedFromStatues && ((IBlacklistedFromStatues) entity)
-                        .canBeTurnedToStone());
+                return entity instanceof EntityLiving && canFight((EntityLiving) entity);
             }
         }));
-        this.tasks.removeTask(aiMelee);
     }
 
     public void attackEntityWithRangedAttack(EntityLivingBase entity) {
@@ -133,35 +141,24 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
         }
     }
 
-    public boolean attackEntityAsMob(Entity entityIn) {
-        boolean blindness = this.isPotionActive(MobEffects.BLINDNESS) || this.getAttackTarget() != null && this.getAttackTarget()
-                .isPotionActive(MobEffects.BLINDNESS) || this.getAttackTarget() != null && IsImmune.toStone(this.getAttackTarget());
-        if (blindness && this.deathTime == 0) {
-            if (this.getAnimation() != ANIMATION_HIT) {
-                this.setAnimation(ANIMATION_HIT);
-            }
-            if (entityIn instanceof EntityLivingBase) {
-                ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 100, 2, false, true));
-            }
-        }
-        return super.attackEntityAsMob(entityIn);
+    private static boolean canFight(EntityLivingBase target) {
+        return !(target instanceof EntityStoneStatue) && target.isEntityAlive() && DragonUtils.isAlive(target);
     }
 
-    public void setAttackTarget(@Nullable EntityLivingBase living) {
-        super.setAttackTarget(living);
-        if (living != null && !world.isRemote) {
-
-            boolean blindness = this.isPotionActive(MobEffects.BLINDNESS) || living.isPotionActive(MobEffects.BLINDNESS) || IsImmune
-                    .toStone(living) || ((living instanceof IBlacklistedFromStatues) && !((IBlacklistedFromStatues) living)
-                    .canBeTurnedToStone()) || isBlindfolded(living);
-            if (blindness && this.deathTime == 0) {
-                this.tasks.removeTask(aiStare);
-                this.tasks.addTask(3, aiMelee);
-            } else {
-                this.tasks.removeTask(aiMelee);
-                this.tasks.addTask(3, aiStare);
-            }
+    @Override
+    public boolean attackEntityAsMob(Entity entityIn) {
+        if (entityIn instanceof EntityLivingBase && !canFight((EntityLivingBase) entityIn)) {
+            return false;
         }
+        if (this.deathTime == 0 && petrificationTarget == null && this.getAnimation() != ANIMATION_HIT) {
+            this.setAnimationTick(0);
+            this.setAnimation(ANIMATION_HIT);
+        }
+        boolean hit = super.attackEntityAsMob(entityIn);
+        if (hit && !world.isRemote && entityIn instanceof EntityLivingBase) {
+            ((EntityLivingBase) entityIn).addPotionEffect(new PotionEffect(MobEffects.POISON, 100, 2, false, true));
+        }
+        return hit;
     }
 
     protected int getExperiencePoints(EntityPlayer player) {
@@ -204,6 +201,10 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
     }
 
     public void onLivingUpdate() {
+        EntityLivingBase currentTarget = this.getAttackTarget();
+        if (!world.isRemote && currentTarget != null && !canFight(currentTarget)) {
+            this.setAttackTarget(null);
+        }
         super.onLivingUpdate();
         if (playerStatueCooldown > 0) {
             playerStatueCooldown--;
@@ -238,6 +239,7 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
             }
             petrificationTarget = null;
             petrificationChargeTicks = 0;
+            this.dataManager.set(GAZE_PLAYER, -1);
             return;
         }
 
@@ -253,10 +255,17 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
             this.setAnimation(ANIMATION_SCARE);
         }
 
-        if (++petrificationChargeTicks >= IceAndFire.CONFIG.gorgonPetrificationChargeTicks) {
+        int chargeDuration = IceAndFire.CONFIG.gorgonPetrificationChargeTicks;
+        if (++petrificationChargeTicks >= chargeDuration) {
             petrificationTarget = null;
             petrificationChargeTicks = 0;
+            this.dataManager.set(GAZE_PLAYER, -1);
             petrify(target);
+        } else if (target instanceof EntityPlayer) {
+            this.dataManager.set(GAZE_PLAYER, target.getEntityId());
+            this.dataManager.set(GAZE_PROGRESS, petrificationChargeTicks / (float) chargeDuration);
+        } else {
+            this.dataManager.set(GAZE_PLAYER, -1);
         }
     }
 
