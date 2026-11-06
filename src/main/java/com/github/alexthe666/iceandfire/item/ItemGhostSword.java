@@ -42,10 +42,27 @@ public class ItemGhostSword extends ItemSword {
         return multimap;
     }
 
+    @Override
+    public net.minecraft.util.ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        ItemStack stack = playerIn.getHeldItem(handIn);
+        // Left-click always uses the main hand in 1.12, so the off-hand blade fires on right-click instead.
+        if (handIn == EnumHand.OFF_HAND) {
+            if (!worldIn.isRemote) {
+                spawnGhostSwordEntity(stack, playerIn, handIn);
+            }
+            return new net.minecraft.util.ActionResult<>(net.minecraft.util.EnumActionResult.SUCCESS, stack);
+        }
+        return super.onItemRightClick(worldIn, playerIn, handIn);
+    }
+
     public static void spawnGhostSwordEntity(ItemStack stack, EntityPlayer playerEntity) {
+        spawnGhostSwordEntity(stack, playerEntity, EnumHand.MAIN_HAND);
+    }
+
+    public static void spawnGhostSwordEntity(ItemStack stack, EntityPlayer playerEntity, EnumHand hand) {
         if (playerEntity.getCooldownTracker().hasCooldown(stack.getItem()))
             return;
-        if (playerEntity.getHeldItem(EnumHand.MAIN_HAND) != stack)
+        if (playerEntity.getHeldItem(hand) != stack)
             return;
         final Multimap<String, AttributeModifier> dmg = stack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND);
         double totalDmg = 0D;
