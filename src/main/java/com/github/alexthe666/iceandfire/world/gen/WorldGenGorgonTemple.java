@@ -2,9 +2,12 @@ package com.github.alexthe666.iceandfire.world.gen;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntityStoneStatue;
+import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -12,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 
@@ -29,6 +33,9 @@ public class WorldGenGorgonTemple extends WorldGenerator {
     // The template has a buried chamber at 0..6, sand at 7..9, and a temple floor at 10.
     private static final int GROUND_LEVEL = 9;
     private static final int BLEND_RADIUS = 12;
+    private static final int MAX_TERRAIN_ADJUSTMENT = 6;
+    // The widest vanilla acacia leaves sit five steps from their trunk.
+    private static final int LEAF_SUPPORT_DISTANCE = 5;
     private static final BlockPos[] CHAMBER_STATUES = {
             new BlockPos(7, 1, 12), new BlockPos(25, 1, 12), new BlockPos(16, 1, 23)
     };
@@ -69,11 +76,16 @@ public class WorldGenGorgonTemple extends WorldGenerator {
         ArrayList<Integer> heights = dryHeights.isEmpty() ? allHeights : dryHeights;
         Collections.sort(heights);
         int groundY = heights.get((heights.size() - 1) / 2);
+        // A steep site needs more excavation than the apron can blend into the hillside.
+        for (int height : allHeights) {
+            if (Math.abs(height - groundY) > MAX_TERRAIN_ADJUSTMENT) return false;
+        }
         BlockPos origin = corner.add(-minX, groundY - GROUND_LEVEL, -minZ);
         if (origin.getY() < 2 || origin.getY() + size.getY() > world.getHeight()) {
             return false;
         }
         // Terrain, trees, water and small caves are adapted below. Preserve protected blocks.
+        Set<BlockPos> leavesBeforePlacement = new HashSet<>();
         for (int x = 0; x < width; x++) {
             for (int z = 0; z < depth; z++) {
                 BlockPos base = corner.add(x, origin.getY(), z);
@@ -84,12 +96,17 @@ public class WorldGenGorgonTemple extends WorldGenerator {
                     if (protectedBlock(world, target, state)) {
                         return false;
                     }
+                    if (state.getBlock().isLeaves(state, world, target)) leavesBeforePlacement.add(target);
                 }
             }
         }
 
         Map<BlockPos, IBlockState> apron = planApron(world, origin, settings, groundY);
-        clearTrees(world, corner, width, depth, origin.getY(), size.getY(), apron);
+        int padding = BLEND_RADIUS + 8;
+        StructureBoundingBox treeBounds = new StructureBoundingBox(
+                corner.getX() - padding, 0, corner.getZ() - padding,
+                corner.getX() + width + padding - 1, world.getHeight() - 1, corner.getZ() + depth + padding - 1);
+        Set<BlockPos> leafCandidates = clearTrees(world, corner, width, depth, origin.getY(), size.getY(), apron, treeBounds);
         // Remove any hillside overhang above the template's roof, within the building footprint.
         for (int x = 5; x <= 27; x++) for (int z = 2; z <= 29; z++) {
             BlockPos column = Template.transformedBlockPos(settings, new BlockPos(x, 0, z)).add(origin);
@@ -126,7 +143,24 @@ public class WorldGenGorgonTemple extends WorldGenerator {
             }
             return info;
         }, settings, 2);
-        apron.forEach((pos, state) -> world.setBlockState(pos, state, 2));
+        apron.forEach((pos, state) -> {
+            IBlockState previous = world.getBlockState(pos);
+            if (previous.getBlock().isLeaves(previous, world, pos)) leavesBeforePlacement.add(pos);
+            world.setBlockState(pos, state, 2);
+        });
+        // Grading skips neighbor updates. Check the plant above and both halves of a clipped double plant.
+        for (BlockPos pos : apron.keySet()) {
+            removeUnsupportedPlant(world, pos.down());
+            removeUnsupportedPlant(world, pos.up());
+            removeUnsupportedPlant(world, pos.up(2));
+        }
+        // Placement and grading can also sever canopies from trees outside the clearing.
+        for (BlockPos pos : leavesBeforePlacement) {
+            IBlockState state = world.getBlockState(pos);
+            if (state.getBlock().isLeaves(state, world, pos)) continue;
+            for (EnumFacing side : EnumFacing.values()) leafCandidates.add(pos.offset(side));
+        }
+        clearUnsupportedLeaves(world, leafCandidates, treeBounds);
         placeChamberStatues(world, origin, settings);
         return true;
     }
@@ -142,6 +176,14 @@ public class WorldGenGorgonTemple extends WorldGenerator {
             EntityStoneStatue statue = new EntityStoneStatue(world);
             statue.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, yaw, 0.0F);
             world.spawnEntity(statue);
+        }
+    }
+
+    private static void removeUnsupportedPlant(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() instanceof BlockBush && !((BlockBush) state.getBlock()).canBlockStay(world, pos, state)
+                && !protectedBlock(world, pos, state)) {
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
         }
     }
 
@@ -169,6 +211,7 @@ public class WorldGenGorgonTemple extends WorldGenerator {
             IBlockState state = world.getBlockState(pos);
             if (!skipLiquid && state.getMaterial().isLiquid()) break;
             if (!treeBlock(world, pos, state) && !state.getMaterial().isReplaceable()
+                    && !(state.getBlock() instanceof BlockBush)
                     && state.getBlock() != Blocks.SNOW_LAYER
                     && !(skipLiquid && state.getMaterial().isLiquid())) break;
             pos = pos.down();
@@ -176,8 +219,8 @@ public class WorldGenGorgonTemple extends WorldGenerator {
         return pos;
     }
 
-    private static void clearTrees(World world, BlockPos corner, int width, int depth, int bottom, int height,
-                                   Map<BlockPos, IBlockState> apron) {
+    private static Set<BlockPos> clearTrees(World world, BlockPos corner, int width, int depth, int bottom, int height,
+                                            Map<BlockPos, IBlockState> apron, StructureBoundingBox bounds) {
         Set<BlockPos> wood = new HashSet<>();
         ArrayDeque<BlockPos> pending = new ArrayDeque<>();
         Set<BlockPos> columns = new HashSet<>();
@@ -195,9 +238,7 @@ public class WorldGenGorgonTemple extends WorldGenerator {
             BlockPos pos = pending.removeFirst();
             for (int x = -1; x <= 1; x++) for (int y = -1; y <= 1; y++) for (int z = -1; z <= 1; z++) {
                 BlockPos next = pos.add(x, y, z);
-                if (next.getX() < corner.getX() - BLEND_RADIUS - 8 || next.getX() >= corner.getX() + width + BLEND_RADIUS + 8
-                        || next.getZ() < corner.getZ() - BLEND_RADIUS - 8 || next.getZ() >= corner.getZ() + depth + BLEND_RADIUS + 8
-                        || next.getY() < bottom || next.getY() >= world.getHeight()) continue;
+                if (next.getY() < bottom || !bounds.isVecInside(next)) continue;
                 IBlockState state = world.getBlockState(next);
                 if (state.getBlock().isWood(world, next) && !protectedBlock(world, next, state)
                         && wood.add(next)) pending.add(next);
@@ -208,21 +249,67 @@ public class WorldGenGorgonTemple extends WorldGenerator {
             if (protectedBlock(world, pos, world.getBlockState(pos))) continue;
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
             for (int x = -4; x <= 4; x++) for (int y = -4; y <= 4; y++) for (int z = -4; z <= 4; z++) {
-                if (Math.abs(x) + Math.abs(y) + Math.abs(z) > 4) continue;
                 BlockPos leaf = pos.add(x, y, z);
+                if (!bounds.isVecInside(leaf)) continue;
                 IBlockState state = world.getBlockState(leaf);
                 if (state.getBlock().isLeaves(state, world, leaf)) leaves.add(leaf);
             }
         }
-        for (BlockPos leaf : leaves) {
-            boolean supported = false;
-            for (int x = -4; x <= 4 && !supported; x++) for (int y = -4; y <= 4 && !supported; y++) for (int z = -4; z <= 4; z++) {
-                if (Math.abs(x) + Math.abs(y) + Math.abs(z) > 4) continue;
-                BlockPos support = leaf.add(x, y, z);
-                if (world.getBlockState(support).getBlock().isWood(world, support)) { supported = true; break; }
+        return leaves;
+    }
+
+    private static void clearUnsupportedLeaves(World world, Set<BlockPos> candidates, StructureBoundingBox bounds) {
+        Set<BlockPos> visited = new HashSet<>();
+        Set<BlockPos> supported = new HashSet<>();
+        ArrayDeque<BlockPos> pending = new ArrayDeque<>();
+        ArrayDeque<BlockPos> supportFrontier = new ArrayDeque<>();
+        ArrayList<BlockPos> canopy = new ArrayList<>();
+        for (BlockPos candidate : candidates) {
+            if (!bounds.isVecInside(candidate) || visited.contains(candidate)) continue;
+            IBlockState state = world.getBlockState(candidate);
+            if (!state.getBlock().isLeaves(state, world, candidate)) continue;
+            visited.add(candidate);
+            pending.add(candidate);
+            canopy.clear();
+            supported.clear();
+            supportFrontier.clear();
+            while (!pending.isEmpty()) {
+                BlockPos leaf = pending.removeFirst();
+                canopy.add(leaf);
+                for (EnumFacing side : EnumFacing.values()) {
+                    BlockPos next = leaf.offset(side);
+                    if (!bounds.isVecInside(next)) {
+                        // The canopy may connect to a trunk beyond the search area.
+                        if (supported.add(leaf)) supportFrontier.add(leaf);
+                        continue;
+                    }
+                    if (visited.contains(next)) continue;
+                    IBlockState neighbor = world.getBlockState(next);
+                    if (neighbor.getBlock().canSustainLeaves(neighbor, world, next)) {
+                        if (supported.add(leaf)) supportFrontier.add(leaf);
+                    } else if (neighbor.getBlock().isLeaves(neighbor, world, next)) {
+                        visited.add(next);
+                        pending.add(next);
+                    }
+                }
             }
-            if (!supported && !protectedBlock(world, leaf, world.getBlockState(leaf))) {
-                world.setBlockState(leaf, Blocks.AIR.getDefaultState(), 2);
+            // Trace support through the leaves themselves, starting beside surviving trunks.
+            for (int distance = 1; distance < LEAF_SUPPORT_DISTANCE && !supportFrontier.isEmpty(); distance++) {
+                for (int count = supportFrontier.size(); count > 0; count--) {
+                    BlockPos leaf = supportFrontier.removeFirst();
+                    for (EnumFacing side : EnumFacing.values()) {
+                        BlockPos next = leaf.offset(side);
+                        if (visited.contains(next) && supported.add(next)) supportFrontier.add(next);
+                    }
+                }
+            }
+            for (BlockPos leaf : canopy) {
+                if (supported.contains(leaf) || (!supported.isEmpty() && !candidates.contains(leaf))) continue;
+                IBlockState leafState = world.getBlockState(leaf);
+                if (leafState.getBlock() instanceof BlockLeaves && !leafState.getValue(BlockLeaves.DECAYABLE)) continue;
+                if (!protectedBlock(world, leaf, leafState)) {
+                    world.setBlockState(leaf, Blocks.AIR.getDefaultState(), 2);
+                }
             }
         }
     }
@@ -230,25 +317,24 @@ public class WorldGenGorgonTemple extends WorldGenerator {
     private static Map<BlockPos, IBlockState> planApron(World world, BlockPos origin,
                                                       PlacementSettings settings, int groundY) {
         Map<BlockPos, IBlockState> result = new LinkedHashMap<>();
-        // The stone floor occupies local x=5..27, z=2..29. Feather soil beyond it,
-        // following the existing surface, with broad variations instead of a rectangular rim.
+        // The stone floor occupies local x=5..27, z=2..29. Taper the cut or fill
+        // to zero at the outer edge so the apron meets the original surface.
         for (int x = 5 - BLEND_RADIUS; x <= 27 + BLEND_RADIUS; x++) {
             for (int z = 2 - BLEND_RADIUS; z <= 29 + BLEND_RADIUS; z++) {
                 int dx = Math.max(5 - x, Math.max(0, x - 27));
                 int dz = Math.max(2 - z, Math.max(0, z - 29));
                 if (dx == 0 && dz == 0) continue;
                 double distance = Math.sqrt(dx * dx + dz * dz);
+                if (distance >= BLEND_RADIUS) continue;
+                double blend = (BLEND_RADIUS - distance) / (BLEND_RADIUS - 1);
                 BlockPos column = Template.transformedBlockPos(settings, new BlockPos(x, 0, z)).add(origin);
-                double variation = Math.sin(column.getX() * 0.37 + column.getZ() * 0.19)
-                        + 0.5 * Math.sin(column.getZ() * 0.51 - column.getX() * 0.13);
                 BlockPos ground = ground(world, column, true);
+                int delta = groundY - ground.getY();
+                int adjustment = (int) Math.round(Math.min(Math.abs(delta), MAX_TERRAIN_ADJUSTMENT) * blend);
+                if (adjustment == 0) continue;
+                boolean cut = delta < 0;
+                int top = ground.getY() + (cut ? -adjustment : adjustment);
                 IBlockState surface = surface(world.getBlockState(ground));
-                int relief = Math.abs(groundY - ground.getY());
-                if (distance > Math.min(BLEND_RADIUS, 4.5 + relief + variation)) continue;
-                int falloff = (int) Math.floor(Math.max(0, distance - 1) * 0.7 + 0.25 * (variation + 1.5));
-                boolean cut = ground.getY() > groundY;
-                int top = cut ? Math.min(ground.getY(), groundY + falloff) : Math.max(ground.getY(), groundY - falloff);
-                if (top == ground.getY()) continue;
                 boolean clear = true;
                 for (int y = Math.min(ground.getY(), top); y <= Math.max(ground.getY(), top); y++) {
                     BlockPos target = new BlockPos(column.getX(), y, column.getZ());
