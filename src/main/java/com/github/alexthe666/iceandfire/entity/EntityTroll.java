@@ -14,7 +14,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.*;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
@@ -60,6 +62,14 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
     private int animationTick;
     private Animation currentAnimation;
     private boolean avoidSun = true;
+    private static final int ATTACK_COOLDOWN = 70;
+    private static final int UNREACHABLE_HITS_TO_GIVE_UP = 3;
+    private static final int GIVE_UP_TICKS = 200;
+    private int attackCooldown;
+    private int unreachableHits;
+    private int unreachableHitResetTimer;
+    private int giveUpTicks;
+    private EntityLivingBase giveUpFrom;
 
     public EntityTroll(World worldIn) {
         super(worldIn);
@@ -102,7 +112,7 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
 
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.385D);
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(IceAndFire.CONFIG.trollAttackStrength);
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(IceAndFire.CONFIG.trollMaxHealth);
         this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1D);
@@ -110,7 +120,23 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
 
     }
 
+    private boolean isStriking() {
+        return this.getAnimation() == ANIMATION_STRIKE_HORIZONTAL || this.getAnimation() == ANIMATION_STRIKE_VERTICAL;
+    }
+
+    /**
+     * While swinging, the troll is rooted in place so the player gets a clear window to dodge or counter-attack.
+     */
+    @Override
+    protected boolean isMovementBlocked() {
+        return super.isMovementBlocked() || (isStriking() && !EntityGorgon.isStoneMob(this));
+    }
+
     public boolean attackEntityAsMob(Entity entityIn) {
+        if (this.attackCooldown > 0 || this.getAnimation() != NO_ANIMATION) {
+            return false;
+        }
+        this.attackCooldown = ATTACK_COOLDOWN;
         if (this.getRNG().nextBoolean()) {
             this.setAnimation(ANIMATION_STRIKE_VERTICAL);
 
@@ -189,7 +215,38 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
         if (source.getDamageType().contains("arrow")) {
             return false;
         }
-        return super.attackEntityFrom(source, damage);
+        boolean hurt = super.attackEntityFrom(source, damage);
+        if (hurt && !this.world.isRemote && source.getTrueSource() != null && source.getTrueSource() == this.getAttackTarget() && !EntityGorgon.isStoneMob(this)) {
+            EntityLivingBase attacker = this.getAttackTarget();
+            if (this.getNavigator().noPath() && this.getDistanceSq(attacker) > 9D) {
+                this.unreachableHits++;
+                this.unreachableHitResetTimer = 200;
+                if (this.unreachableHits >= UNREACHABLE_HITS_TO_GIVE_UP) {
+                    this.giveUp(attacker);
+                }
+            } else {
+                this.unreachableHits = 0;
+            }
+        }
+        return hurt;
+    }
+
+    /**
+     * The troll cannot reach its attacker, so it shrugs, loses interest and wanders off.
+     */
+    private void giveUp(EntityLivingBase attacker) {
+        this.unreachableHits = 0;
+        this.giveUpTicks = GIVE_UP_TICKS;
+        this.giveUpFrom = attacker;
+        this.setAttackTarget(null);
+        this.setRevengeTarget(null);
+        if (this.getAnimation() == NO_ANIMATION) {
+            this.setAnimation(ANIMATION_SPEAK);
+        }
+        Vec3d away = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this, 16, 7, new Vec3d(attacker.posX, attacker.posY, attacker.posZ));
+        if (away != null) {
+            this.getNavigator().tryMoveToXYZ(away.x, away.y, away.z, 1.1D);
+        }
     }
 
     @Nullable
@@ -272,7 +329,34 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
     }
 
     public void onLivingUpdate() {
+        if (isStriking()) {
+            this.motionX = 0;
+            this.motionZ = 0;
+            this.getNavigator().clearPath();
+            if (this.getAttackTarget() != null && this.getAnimationTick() < 8) {
+                this.faceEntity(this.getAttackTarget(), 30, 30);
+            }
+        }
         super.onLivingUpdate();
+        if (this.attackCooldown > 0) {
+            this.attackCooldown--;
+        }
+        if (!this.world.isRemote) {
+            if (this.unreachableHits > 0 && --this.unreachableHitResetTimer <= 0) {
+                this.unreachableHits = 0;
+            }
+            if (this.giveUpTicks > 0) {
+                this.giveUpTicks--;
+                if (this.getAttackTarget() != null && this.getAttackTarget() == this.giveUpFrom) {
+                    this.setAttackTarget(null);
+                }
+                if (this.getRevengeTarget() == this.giveUpFrom) {
+                    this.setRevengeTarget(null);
+                }
+            } else {
+                this.giveUpFrom = null;
+            }
+        }
         if(world.getDifficulty() == EnumDifficulty.PEACEFUL && this.getAttackTarget() instanceof EntityPlayer){
             this.setAttackTarget(null);
         }
@@ -347,7 +431,8 @@ public class EntityTroll extends EntityMob implements IAnimatedEntity, IVillager
         }
         if (this.getNavigator().noPath() && this.getAttackTarget() != null && this.getDistanceSq(this.getAttackTarget()) > 3 && this.getDistanceSq(this.getAttackTarget()) < 30 && this.world.getGameRules().getBoolean("mobGriefing")) {
             this.faceEntity(this.getAttackTarget(), 30, 30);
-            if (this.getAnimation() == NO_ANIMATION && this.rand.nextInt(15) == 0) {
+            if (this.getAnimation() == NO_ANIMATION && this.attackCooldown <= 0 && this.rand.nextInt(15) == 0) {
+                this.attackCooldown = ATTACK_COOLDOWN;
                 this.setAnimation(ANIMATION_STRIKE_VERTICAL);
             }
             if (this.getAnimation() == ANIMATION_STRIKE_VERTICAL && this.getAnimationTick() == 10) {
