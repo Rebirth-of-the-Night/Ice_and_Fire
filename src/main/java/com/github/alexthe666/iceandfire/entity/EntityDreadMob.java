@@ -1,7 +1,9 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.pathfinding.PathNavigateDread;
 import com.github.alexthe666.iceandfire.util.IceAndFireCoreUtils;
+import com.github.alexthe666.iceandfire.world.dimension.WorldProviderDreadLands;
 import com.google.common.base.Optional;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,9 +19,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -30,6 +34,12 @@ public class EntityDreadMob extends EntityMob implements IDreadMob {
 
 	public EntityDreadMob(World worldIn) {
 		super(worldIn);
+	}
+
+	@Override
+	protected PathNavigate createNavigator(World worldIn) {
+		return worldIn instanceof WorldServer && worldIn.provider instanceof WorldProviderDreadLands
+				? new PathNavigateDread(this, (WorldServer) worldIn) : super.createNavigator(worldIn);
 	}
 
 	@Override
