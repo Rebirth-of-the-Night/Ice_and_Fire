@@ -6,6 +6,7 @@ import com.github.alexthe666.iceandfire.entity.EntityCyclops;
 import net.minecraft.block.BlockBone;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockCarpet;
+import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.biome.Biome;
@@ -33,6 +34,13 @@ public class WorldGenCyclopsCave extends WorldGenerator {
 
     @Override
     public boolean generate(World worldIn, Random rand, BlockPos position) {
+        Biome originBiome = worldIn.getBiome(position);
+        boolean desert = BiomeDictionary.hasType(originBiome, BiomeDictionary.Type.HOT)
+                && BiomeDictionary.hasType(originBiome, BiomeDictionary.Type.DRY)
+                && BiomeDictionary.hasType(originBiome, BiomeDictionary.Type.SANDY);
+        IBlockState sandstone = Blocks.SANDSTONE.getDefaultState();
+        IBlockState sand = Blocks.SAND.getDefaultState();
+        IBlockState coarseDirt = Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT);
         int radiusX = 16 + rand.nextInt(2);
         int radiusZ = 15 + rand.nextInt(3);
         int height = 18 + rand.nextInt(2);
@@ -220,11 +228,13 @@ public class WorldGenCyclopsCave extends WorldGenerator {
                         worldIn.setBlockState(target, Blocks.AIR.getDefaultState(), 2);
                     } else if (y == floorHeight && (chamber || approach)) {
                         double floor = patch(x, 0, z, phase);
-                        worldIn.setBlockState(target, (floor > 0.9 ? Blocks.MOSSY_COBBLESTONE : floor > 0.35 ? Blocks.DIRT
-                                : floor > -0.35 ? Blocks.STONE : floor > -0.95 ? Blocks.GRAVEL : Blocks.COBBLESTONE).getDefaultState(), 2);
+                        IBlockState floorState = desert ? (floor > 1.15 ? coarseDirt : floor > 0.1 ? sand : sandstone)
+                                : (floor > 0.9 ? Blocks.MOSSY_COBBLESTONE : floor > 0.35 ? Blocks.DIRT
+                                : floor > -0.35 ? Blocks.STONE : floor > -0.95 ? Blocks.GRAVEL : Blocks.COBBLESTONE).getDefaultState();
+                        worldIn.setBlockState(target, floorState, 2);
                     } else if (y >= 0 || !worldIn.isBlockFullCube(target)) {
                         double rock = patch(x, y, z, phase);
-                        worldIn.setBlockState(target, (rock > 1.15 && y < 5 ? Blocks.MOSSY_COBBLESTONE
+                        worldIn.setBlockState(target, desert ? sandstone : (rock > 1.15 && y < 5 ? Blocks.MOSSY_COBBLESTONE
                                 : rock < -0.8 ? Blocks.COBBLESTONE : Blocks.STONE).getDefaultState(), 2);
                         highestPlaced = y;
                     }
@@ -234,10 +244,10 @@ public class WorldGenCyclopsCave extends WorldGenerator {
                 if (highestPlaced == roof) {
                     BlockPos top = position.add(x, roof, z);
                     if (worldIn.isBlockFullCube(top.down()) && worldIn.isBlockFullCube(top.down(2))) {
-                        IBlockState surfaceCover = cover[x + reach][z + reach];
+                        IBlockState surfaceCover = desert ? sand : cover[x + reach][z + reach];
                         Material surfaceMaterial = surfaceCover.getMaterial();
                         IBlockState filler = surfaceMaterial == Material.ROCK ? surfaceCover
-                                : surfaceMaterial == Material.SAND ? Blocks.SANDSTONE.getDefaultState()
+                                : surfaceMaterial == Material.SAND ? sandstone
                                 : worldIn.getBiome(top).fillerBlock;
                         if (filler == null || !filler.isFullCube()) {
                             filler = Blocks.DIRT.getDefaultState();
@@ -411,6 +421,7 @@ public class WorldGenCyclopsCave extends WorldGenerator {
                 IBlockState state = world.getBlockState(base);
                 if (!world.isAirBlock(base) && state.getBlock() != Blocks.STONE
                         && state.getBlock() != Blocks.DIRT && state.getBlock() != Blocks.GRAVEL
+                        && state.getBlock() != Blocks.SANDSTONE && state.getBlock() != Blocks.SAND
                         && state.getBlock() != Blocks.COBBLESTONE && state.getBlock() != Blocks.MOSSY_COBBLESTONE) {
                     return;
                 }
