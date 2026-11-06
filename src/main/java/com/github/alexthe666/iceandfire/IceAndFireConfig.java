@@ -201,6 +201,11 @@ public class IceAndFireConfig {
     public float weezerTinkersDisarmChance = 0.2F;
     public boolean chunkLoadSummonCrystal = true;
     public int ballistaBaseDamage = 10;
+    public double dragonboneArrowDamage = 10.0D;
+    public double amphithereArrowDamage = 2.5D;
+    public double hydraArrowDamage = 5.0D;
+    public double seaSerpentArrowDamage = 3.0D;
+    public double stymphalianArrowDamage = 3.5D;
     public double phantasmalBladeAttackSpeedModifier = -2.4D;
     public int phantasmalBladeShotCooldown = 20;
     public int castleBallistaFireInterval = 60;
@@ -453,6 +458,11 @@ public class IceAndFireConfig {
         //Ballista
         this.phantasmalBladeAttackSpeedModifier = config.getFloat("Phantasmal Blade Attack Speed Modifier", "all", -2.4F, -3.9F, 10.0F, "Attack speed modifier of the phantasmal blade, added to the base player attack speed of 4.0. More negative is slower (vanilla swords use -2.4).");
         this.phantasmalBladeShotCooldown = config.getInt("Phantasmal Blade Shot Cooldown", "all", 20, 0, 1200, "Ticks between phantasmal blade shots (20 ticks = 1 second). Lower is faster.");
+        this.dragonboneArrowDamage = config.getFloat("Dragonbone Arrow Damage", "all", 10.0F, 0.5F, 100.0F, "Base damage of dragonbone arrows (vanilla arrows use 2). Multiplied by arrow speed on impact, so a fully drawn bow deals roughly 3x this. Power enchantment adds on top.");
+        this.amphithereArrowDamage = config.getFloat("Amphithere Arrow Damage", "all", 2.5F, 0.5F, 100.0F, "Base damage of amphithere arrows (vanilla arrows use 2). Multiplied by arrow speed on impact.");
+        this.hydraArrowDamage = config.getFloat("Hydra Arrow Damage", "all", 5.0F, 0.5F, 100.0F, "Base damage of hydra arrows (vanilla arrows use 2). Multiplied by arrow speed on impact.");
+        this.seaSerpentArrowDamage = config.getFloat("Sea Serpent Arrow Damage", "all", 3.0F, 0.5F, 100.0F, "Base damage of sea serpent arrows (vanilla arrows use 2). Multiplied by arrow speed on impact.");
+        this.stymphalianArrowDamage = config.getFloat("Stymphalian Arrow Damage", "all", 3.5F, 0.5F, 100.0F, "Base damage of stymphalian arrows (vanilla arrows use 2). Multiplied by arrow speed on impact.");
         this.ballistaBaseDamage = config.getInt("Ballista Arrow Damage", "all", 10, 1, 100, "Maximum castle ballista arrow strength.");
         this.castleBallistaFireInterval = config.getInt("Castle Ballista Fire Interval", "all", 60, 1, 1200, "Maximum ticks between castle ballista shots (20 ticks = 1 second). Lower is faster.");
         this.finalBallistaCooldown = config.getInt("Final Ballista Cooldown", "all", 100, 1, 1200, "Ticks between final ballista shots when ridden (20 ticks = 1 second). Lower is faster.");
