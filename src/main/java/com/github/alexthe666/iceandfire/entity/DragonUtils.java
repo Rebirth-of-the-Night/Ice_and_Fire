@@ -140,6 +140,11 @@ public class DragonUtils {
         return ghost.getPosition();
     }
 
+    /** Never triggers chunk loading: returns false for positions in unloaded chunks. */
+    public static boolean isLoaded(World world, BlockPos pos) {
+        return world.isBlockLoaded(pos);
+    }
+
     public static BlockPos getBlockInView(EntityDragonBase dragon) {
         float radius = 12 * (0.7F * dragon.getRenderSize() / 3);
         float neg = dragon.getRNG().nextBoolean() ? 1 : -1;
@@ -151,7 +156,7 @@ public class DragonUtils {
             for (int i = 0; i < 10; i++) {
                 BlockPos homePos = dragon.homePos.getPosition();
                 BlockPos pos = new BlockPos(homePos.getX() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance, (distFromGround > 16 ? (int) Math.min(IceAndFire.CONFIG.maxDragonFlight, dragon.posY + dragon.getRNG().nextInt(16) - 8) : (int) dragon.posY + dragon.getRNG().nextInt(16) + 1), (homePos.getZ() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance));
-                if (dragon.isWithinWildHome(pos.getX(), pos.getZ()) && !dragon.isTargetBlocked(new Vec3d(pos)) && dragon.getDistanceSqToCenter(pos) > 6) {
+                if (isLoaded(dragon.world, pos) && dragon.isWithinWildHome(pos.getX(), pos.getZ()) && !dragon.isTargetBlocked(new Vec3d(pos)) && dragon.getDistanceSqToCenter(pos) > 6) {
                     return pos;
                 }
             }
@@ -163,6 +168,9 @@ public class DragonUtils {
         double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
         double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = new BlockPos(dragon.posX + extraX, 0, dragon.posZ + extraZ);
+        if (!isLoaded(dragon.world, radialPos)) {
+            return null;
+        }
         BlockPos ground = dragon.world.getHeight(radialPos);
         int distFromGround = (int) dragon.posY - ground.getY();
         BlockPos newPos = radialPos.up(distFromGround > 16 ? (int) Math.min(IceAndFire.CONFIG.maxDragonFlight, dragon.posY + dragon.getRNG().nextInt(16) - 8) : (int) dragon.posY + dragon.getRNG().nextInt(16) + 1);
@@ -180,6 +188,9 @@ public class DragonUtils {
         double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
         double extraZ = radius * MathHelper.cos(angle);
         BlockPos radialPos = new BlockPos(dragon.posX + extraX, 0, dragon.posZ + extraZ);
+        if (!isLoaded(dragon.world, radialPos)) {
+            return null;
+        }
         BlockPos ground = dragon.world.getHeight(radialPos);
         int distFromGround = (int) dragon.posY - ground.getY();
         BlockPos newPos = radialPos.up(distFromGround > 16 ? (int) Math.min(IceAndFire.CONFIG.maxDragonFlight, dragon.posY + dragon.getRNG().nextInt(16) - 8) : (int) dragon.posY + dragon.getRNG().nextInt(16) + 1);
@@ -434,17 +445,6 @@ public class DragonUtils {
         }
     }
 
-    public static boolean isBlacklistedBlock(Block block) {
-        if (IceAndFire.CONFIG.blacklistBreakBlocksIsWhiteList) {
-            for (String name : IceAndFire.CONFIG.blacklistedBreakBlocks) {
-                if (name.equalsIgnoreCase(block.getRegistryName().toString())) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            for (String name : IceAndFire.CONFIG.blacklistedBreakBlocks) {
-                if (name.equalsIgnoreCase(block.getRegistryName().toString())) {
     /** True if the block is on the "Dragon Breath Immune Blocks" config list (not transformed or destroyed by breath). */
     public static boolean isBreathImmuneBlock(Block block) {
         if (block.getRegistryName() == null) {
@@ -459,6 +459,17 @@ public class DragonUtils {
         return false;
     }
 
+    public static boolean isBlacklistedBlock(Block block) {
+        if (IceAndFire.CONFIG.blacklistBreakBlocksIsWhiteList) {
+            for (String name : IceAndFire.CONFIG.blacklistedBreakBlocks) {
+                if (name.equalsIgnoreCase(block.getRegistryName().toString())) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            for (String name : IceAndFire.CONFIG.blacklistedBreakBlocks) {
+                if (name.equalsIgnoreCase(block.getRegistryName().toString())) {
                     return true;
                 }
             }

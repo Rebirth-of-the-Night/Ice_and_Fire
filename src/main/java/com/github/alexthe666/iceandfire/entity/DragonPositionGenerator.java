@@ -61,7 +61,7 @@ public class DragonPositionGenerator {
 
                 BlockPos blockpos1 = new BlockPos((double) l + mob.posX, (double) i1 + mob.posY, (double) j1 + mob.posZ);
 
-                if ((!flag || mob.isWithinHomeDistanceFromPosition(blockpos1)) && pathnavigate.canEntityStandOnPos(blockpos1)) {
+                if (mob.world.isBlockLoaded(blockpos1) && (!flag || mob.isWithinHomeDistanceFromPosition(blockpos1)) && pathnavigate.canEntityStandOnPos(blockpos1)) {
                     if (skipWater) {
                         blockpos1 = moveAboveSolid(blockpos1, mob);
                         if (isWaterDestination(blockpos1, mob)) {

@@ -2267,6 +2267,9 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
 
     public boolean isTargetBlocked(Vec3d target) {
         if (target != null) {
+            if (!world.isBlockLoaded(new BlockPos(target))) {
+                return true;
+            }
             RayTraceResult rayTrace = world.rayTraceBlocks(new Vec3d(this.getPosition()), target, false);
             if (rayTrace != null && rayTrace.hitVec != null) {
                 BlockPos pos = new BlockPos(rayTrace.hitVec);
