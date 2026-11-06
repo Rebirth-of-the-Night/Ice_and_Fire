@@ -3,6 +3,8 @@ package com.github.alexthe666.iceandfire.item;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import com.github.alexthe666.iceandfire.compat.bauble.common.IafBaublesIntegration;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,31 +39,40 @@ public class ItemCyclopsEye extends Item {
 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean unused2) {
+        if (entity instanceof EntityLivingBase) {
+            EntityLivingBase living = (EntityLivingBase) entity;
+            tickEffect(stack, living, living.getHeldItemMainhand() == stack || living.getHeldItemOffhand() == stack);
+        }
+    }
+
+    private static void tickEffect(ItemStack stack, EntityLivingBase living, boolean active) {
         if (stack.getTagCompound() == null) {
             stack.setTagCompound(new NBTTagCompound());
-        } else {
-            if (entity instanceof EntityLivingBase) {
-                EntityLivingBase living = (EntityLivingBase) entity;
-                if (living.getHeldItemMainhand() == stack || living.getHeldItemOffhand() == stack) {
-                    double range = 15;
-                    boolean inflictedDamage = false;
-                    for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(living.posX - range, living.posY - range, living.posZ - range, living.posX + range, living.posY + range, living.posZ + range))) {
-                        if (!entityliving.isEntityEqual(living) && !entityliving.isOnSameTeam(living) && (entityliving.getAttackTarget() == living || entityliving.getRevengeTarget() == living || entityliving instanceof IMob)) {
-                            entityliving.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 10, 0));
-                            inflictedDamage = true;
-                        }
-                    }
-                    if (inflictedDamage) {
-                        stack.getTagCompound().setInteger("HurtingTicks", stack.getTagCompound().getInteger("HurtingTicks") + 1);
-                    }
-                }
-                if (stack.getTagCompound().getInteger("HurtingTicks") > 120) {
-                    stack.damageItem(1, (EntityLivingBase) entity);
-                    stack.getTagCompound().setInteger("HurtingTicks", 0);
+            return;
+        }
+        if (active) {
+            double range = 15;
+            boolean inflictedDamage = false;
+            for (EntityLiving entityliving : living.world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(living.posX - range, living.posY - range, living.posZ - range, living.posX + range, living.posY + range, living.posZ + range))) {
+                if (!entityliving.isEntityEqual(living) && !entityliving.isOnSameTeam(living) && (entityliving.getAttackTarget() == living || entityliving.getRevengeTarget() == living || entityliving instanceof IMob)) {
+                    entityliving.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 10, 0));
+                    inflictedDamage = true;
                 }
             }
-
+            if (inflictedDamage) {
+                stack.getTagCompound().setInteger("HurtingTicks", stack.getTagCompound().getInteger("HurtingTicks") + 1);
+            }
         }
+        if (stack.getTagCompound().getInteger("HurtingTicks") > 120) {
+            stack.damageItem(1, living);
+            stack.getTagCompound().setInteger("HurtingTicks", 0);
+        }
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+        return IafBaublesIntegration.enabled() ? IafBaublesIntegration.createCharmProvider((s, living) -> tickEffect(s, living, true)) : null;
     }
 
     @Override

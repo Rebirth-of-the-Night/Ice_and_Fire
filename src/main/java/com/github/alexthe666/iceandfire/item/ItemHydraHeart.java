@@ -3,7 +3,11 @@ package com.github.alexthe666.iceandfire.item;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import com.github.alexthe666.iceandfire.compat.bauble.common.IafBaublesIntegration;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
@@ -23,6 +27,7 @@ public class ItemHydraHeart extends Item {
         this.setTranslationKey("iceandfire.hydra_heart");
         this.setRegistryName(IceAndFire.MODID, "hydra_heart");
         this.maxStackSize = 1;
+        this.setMaxDamage(800); // placeholder so the item is damageable; real value comes from getMaxDamage(ItemStack)
     }
 
     @Override
@@ -33,22 +38,37 @@ public class ItemHydraHeart extends Item {
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean unused2) {
         if(entity instanceof EntityPlayer && slot >= 0 && slot <= 8) {
-        	EntityPlayer player = (EntityPlayer)entity;
-            double healthPercentage = player.getHealth() / Math.max(1, player.getMaxHealth());
-            if(healthPercentage < 1.0D){
-                int level = 0;
-                if(healthPercentage < 0.25D){
-                    level = 3;
-                } else if(healthPercentage < 0.5D){
-                    level = 2;
-                } else if(healthPercentage < 0.75D){
-                    level = 1;
-                }
-                if(!player.isPotionActive(MobEffects.REGENERATION)) {
-                	player.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 900, level, true, false));
-                }
+            applyRegeneration(stack, (EntityPlayer) entity);
+        }
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return IceAndFire.CONFIG.hydraHeartDurability;
+    }
+
+    public static void applyRegeneration(ItemStack stack, EntityLivingBase living) {
+        double healthPercentage = living.getHealth() / Math.max(1, living.getMaxHealth());
+        if(healthPercentage < 1.0D && !living.isPotionActive(MobEffects.REGENERATION)){
+            int level = IceAndFire.CONFIG.hydraHeartRegenAmplifierBelow100;
+            if(healthPercentage < 0.25D){
+                level = IceAndFire.CONFIG.hydraHeartRegenAmplifierBelow25;
+            } else if(healthPercentage < 0.5D){
+                level = IceAndFire.CONFIG.hydraHeartRegenAmplifierBelow50;
+            } else if(healthPercentage < 0.75D){
+                level = IceAndFire.CONFIG.hydraHeartRegenAmplifierBelow75;
+            }
+            if(level >= 0) {
+                living.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, IceAndFire.CONFIG.hydraHeartRegenSeconds * 20, level, true, false));
+                stack.damageItem(1, living);
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+        return IafBaublesIntegration.enabled() ? IafBaublesIntegration.createCharmProvider((s, living) -> applyRegeneration(s, living)) : null;
     }
 
     @Override

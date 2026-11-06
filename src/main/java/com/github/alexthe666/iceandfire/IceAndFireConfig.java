@@ -14,6 +14,7 @@ public class IceAndFireConfig {
     public boolean useVanillaFont = false;
     public boolean logCascadingWorldGen = false;
     public boolean logStartupVerse = false;
+    public boolean baublesIntegration = true;
     public boolean generateSilverOre = true;
     public boolean generateSapphireOre = true;
     public boolean generateCopperOre = true;
@@ -189,6 +190,12 @@ public class IceAndFireConfig {
     public double hydraMaxHealth = 250D;
     public boolean generateHydraCaves = true;
     public int generateHydraChance = 200;
+    public int hydraHeartDurability = 800;
+    public int hydraHeartRegenSeconds = 10;
+    public int hydraHeartRegenAmplifierBelow100 = 0;
+    public int hydraHeartRegenAmplifierBelow75 = 1;
+    public int hydraHeartRegenAmplifierBelow50 = 2;
+    public int hydraHeartRegenAmplifierBelow25 = 3;
     public boolean explosiveDragonBreath = false;
     public float weezerTinkersDisarmChance = 0.2F;
     public boolean chunkLoadSummonCrystal = true;
@@ -207,6 +214,7 @@ public class IceAndFireConfig {
     public void init(Configuration config) {
         BiomeSpawnFilter.load(config);
         this.logStartupVerse = config.getBoolean("Log Startup Verse", "all", false, "Whether to print the startup verse and season 8 comment to the console.");
+        this.baublesIntegration = config.getBoolean("Baubles Integration", "all", true, "If true and Baubles is installed, the cyclops eye (charm) and hydra heart (charm) can be worn in Baubles slots and keep their effects while worn.");
         this.customMainMenu = config.getBoolean("Custom main menu", "all", true, "Whether to display the dragon on the main menu or not");
         this.useVanillaFont = config.getBoolean("Use Vanilla Font", "all", false, "Whether to use the vanilla font in the bestiary or not");
         this.generateSilverOre = config.getBoolean("Generate Silver Ore", "all", true, "Whether to generate silver ore or not");
@@ -406,6 +414,12 @@ public class IceAndFireConfig {
         this.dreadGang = config.getStringList("Dread Gang", "all", new String[0], "These entities are on the same team as dread mobs");
 
         this.hydraMaxHealth = config.getFloat("Hydra Max Health", "all", 250, 1, 10000, "Maximum hydra health");
+        this.hydraHeartDurability = config.getInt("Hydra Heart Durability", "all", 800, 1, 100000, "Durability of the hydra heart. It loses 1 durability each time it applies regeneration.");
+        this.hydraHeartRegenSeconds = config.getInt("Hydra Heart Regeneration Duration", "all", 10, 1, 60, "Duration in seconds of the regeneration applied by the hydra heart. The level is re-evaluated each time it runs out.");
+        this.hydraHeartRegenAmplifierBelow100 = config.getInt("Hydra Heart Regeneration Amplifier (below 100% health)", "all", 0, -1, 9, "Regeneration amplifier (0 = Regeneration I) when health is under 100%. -1 disables regeneration at this health range.");
+        this.hydraHeartRegenAmplifierBelow75 = config.getInt("Hydra Heart Regeneration Amplifier (below 75% health)", "all", 1, -1, 9, "Regeneration amplifier (0 = Regeneration I) when health is under 75%. -1 disables regeneration at this health range.");
+        this.hydraHeartRegenAmplifierBelow50 = config.getInt("Hydra Heart Regeneration Amplifier (below 50% health)", "all", 2, -1, 9, "Regeneration amplifier (0 = Regeneration I) when health is under 50%. -1 disables regeneration at this health range.");
+        this.hydraHeartRegenAmplifierBelow25 = config.getInt("Hydra Heart Regeneration Amplifier (below 25% health)", "all", 3, -1, 9, "Regeneration amplifier (0 = Regeneration I) when health is under 25%. -1 disables regeneration at this health range.");
         this.generateHydraCaves = config.getBoolean("Generate Hydra Caves", "all", true, "True if hydra caves are allowed to generate");
         this.generateHydraChance = config.getInt("Hydra Caves Gen Chance", "all", 200, 1, 10000, "One out of this number chance per chunk to generate a hydra cave.");
 

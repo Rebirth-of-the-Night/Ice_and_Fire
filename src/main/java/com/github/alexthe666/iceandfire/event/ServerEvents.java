@@ -1054,21 +1054,10 @@ public class ServerEvents {
             }
         }
 
-        if (event.getEntityLiving().getHeldItemMainhand().getItem() instanceof ItemHydraHeart || event.getEntityLiving().getHeldItemOffhand().getItem() instanceof ItemHydraHeart) {
-            double healthPercentage = event.getEntityLiving().getHealth() / Math.max(1, event.getEntityLiving().getMaxHealth());
-            if (healthPercentage < 1.0D) {
-                int level = 0;
-                if (healthPercentage < 0.25D) {
-                    level = 3;
-                } else if (healthPercentage < 0.5D) {
-                    level = 2;
-                } else if (healthPercentage < 0.75D) {
-                    level = 1;
-                }
-                if (!event.getEntityLiving().isPotionActive(MobEffects.REGENERATION)) {
-                    event.getEntityLiving().addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 900, level, true, false));
-                }
-            }
+        if (event.getEntityLiving().getHeldItemMainhand().getItem() instanceof ItemHydraHeart) {
+            ItemHydraHeart.applyRegeneration(event.getEntityLiving().getHeldItemMainhand(), event.getEntityLiving());
+        } else if (event.getEntityLiving().getHeldItemOffhand().getItem() instanceof ItemHydraHeart) {
+            ItemHydraHeart.applyRegeneration(event.getEntityLiving().getHeldItemOffhand(), event.getEntityLiving());
         }
     }
 

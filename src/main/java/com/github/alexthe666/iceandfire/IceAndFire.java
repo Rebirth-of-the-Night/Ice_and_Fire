@@ -44,7 +44,7 @@ import java.io.File;
 import java.util.Random;
 
 @Mod(modid = IceAndFire.MODID,
-        dependencies = "required-after:llibrary@[" + IceAndFire.LLIBRARY_VERSION + ",);after:thaumicadds",
+        dependencies = "required-after:llibrary@[" + IceAndFire.LLIBRARY_VERSION + ",);after:thaumicadds;after:baubles",
         version = IceAndFire.VERSION, name = IceAndFire.NAME, guiFactory = "com.github.alexthe666.iceandfire.client.gui.IceAndFireGuiFactory")
 public class IceAndFire {
 
