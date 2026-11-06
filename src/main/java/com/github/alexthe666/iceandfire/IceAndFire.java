@@ -199,14 +199,4 @@ public class IceAndFire {
         logger.info("You win or you die");
         logger.info("Damn season 8 really sucked didn't it");
     }
-
-    @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent event) {
-        WorldGenDreadDimension.clearGenerationCache();
-    }
-
-    @Mod.EventHandler
-    public void onServerStopping(FMLServerStoppingEvent event) {
-        WorldGenDreadDimension.clearGenerationCache();
-    }
 }

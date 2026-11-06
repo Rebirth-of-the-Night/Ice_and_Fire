@@ -30,6 +30,7 @@ public class ChunkProviderDreadLands implements IChunkGenerator {
     protected static final IBlockState GRAVEL = IafBlockRegistry.frozenGravel.getDefaultState().withProperty(BlockReturningState.REVERTS, false);
     private final Random rand;
     private final World world;
+    private int castleBaseY = -1;
     private final WorldType terrainType;
     private final double[] heightMap;
     private final float[] biomeWeights;
@@ -173,6 +174,15 @@ public class ChunkProviderDreadLands implements IChunkGenerator {
 
         chunk.generateSkylightMap();
         return chunk;
+    }
+
+    public int getCastleBaseY(int x, int z) {
+        if (castleBaseY < 0) {
+            // Sample the same raw terrain regardless of which fortress slice is populated first.
+            Chunk terrain = generateChunk(x >> 4, z >> 4);
+            castleBaseY = terrain.getHeightValue(x & 15, z & 15);
+        }
+        return castleBaseY;
     }
 
     private void generateHeightmap(int x, int y, int z) {

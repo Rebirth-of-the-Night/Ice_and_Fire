@@ -8,16 +8,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.Random;
 
-public class WorldGenDreadRuin extends WorldGenerator {
+public class WorldGenDreadRuin {
     private static final ResourceLocation STRUCTURE_0 = new ResourceLocation(IceAndFire.MODID, "dread_ruin_0");
     private static final ResourceLocation STRUCTURE_1 = new ResourceLocation(IceAndFire.MODID, "dread_ruin_1");
     private static final ResourceLocation STRUCTURE_2 = new ResourceLocation(IceAndFire.MODID, "dread_ruin_2");
@@ -32,15 +32,29 @@ public class WorldGenDreadRuin extends WorldGenerator {
     private static final ResourceLocation STRUCTURE_11 = new ResourceLocation(IceAndFire.MODID, "dread_ruin_11");
     private static final ResourceLocation STRUCTURE_12 = new ResourceLocation(IceAndFire.MODID, "dread_ruin_12");
 
-    public boolean generate(World worldIn, Random rand, BlockPos position) {
+    public boolean generate(World worldIn, Random rand, BlockPos position, BlockPos chunkOrigin) {
         ResourceLocation structure = getRandomStructure(rand);
         EnumFacing facing = EnumFacing.HORIZONTALS[rand.nextInt(3)];
         MinecraftServer server = worldIn.getMinecraftServer();
         TemplateManager templateManager = worldIn.getSaveHandler().getStructureTemplateManager();
         PlacementSettings settings = new PlacementSettings().setRotation(getRotationFromFacing(facing)).setReplacedBlock(Blocks.AIR);
         Template template = templateManager.getTemplate(server, structure);
+        if (template == null) {
+            return false;
+        }
+        BlockPos size = template.getSize();
+        BlockPos offset = BlockPos.ORIGIN.offset(facing, size.getZ() / 2).offset(facing.rotateYCCW(), size.getX() / 2);
+        BlockPos opposite = offset.add(Template.transformedBlockPos(settings, size.add(-1, 0, -1)));
+        // Keep the entire rotated ruin and its neighbor updates in the loaded 2x2 population area.
+        int x = MathHelper.clamp(position.getX(), chunkOrigin.getX() + 2 - Math.min(offset.getX(), opposite.getX()),
+                chunkOrigin.getX() + 29 - Math.max(offset.getX(), opposite.getX()));
+        int z = MathHelper.clamp(position.getZ(), chunkOrigin.getZ() + 2 - Math.min(offset.getZ(), opposite.getZ()),
+                chunkOrigin.getZ() + 29 - Math.max(offset.getZ(), opposite.getZ()));
+        if (x != position.getX() || z != position.getZ()) {
+            position = worldIn.getHeight(new BlockPos(x, 0, z));
+        }
         Biome biome = worldIn.getBiome(position);
-        BlockPos genPos = position.offset(facing, template.getSize().getZ()/2).offset(facing.rotateYCCW(), template.getSize().getX()/2);
+        BlockPos genPos = position.add(offset);
         template.addBlocksToWorld(worldIn, genPos, new DreadRuinProcessor(position, settings, biome), settings, 2);
         return true;
     }

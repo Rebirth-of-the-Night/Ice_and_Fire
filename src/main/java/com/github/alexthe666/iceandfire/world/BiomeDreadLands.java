@@ -76,7 +76,7 @@ public class BiomeDreadLands extends Biome {
             int k6 = rand.nextInt(16) + 8;
             int l = rand.nextInt(16) + 8;
             BlockPos blockpos = worldIn.getHeight(pos.add(k6, -1, l));
-            DREAD_RUIN.generate(worldIn, rand, blockpos);
+            DREAD_RUIN.generate(worldIn, rand, blockpos, pos);
         }
     }
 

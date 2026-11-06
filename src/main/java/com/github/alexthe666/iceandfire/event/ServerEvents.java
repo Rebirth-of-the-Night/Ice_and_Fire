@@ -130,13 +130,6 @@ public class ServerEvents {
         }
     }
 
-    @SubscribeEvent
-    public void onWorldUnload(WorldEvent.Unload event) {
-        if (event.getWorld().provider instanceof WorldProviderDreadLands) {
-            WorldGenDreadDimension.clearGenerationCache();
-        }
-    }
-
     private static void signalAmphithereAlarm(EntityLivingBase villager, EntityLivingBase attacker) {
         float d0 = IceAndFire.CONFIG.amphithereVillagerSearchLength;
         List<Entity> list = villager.world.getEntitiesWithinAABB(EntityAmphithere.class, (new AxisAlignedBB(villager.posX - 1.0D, villager.posY - 1.0D, villager.posZ - 1.0D, villager.posX + 1.0D, villager.posY + 1.0D, villager.posZ + 1.0D)).grow(d0, d0, d0));
