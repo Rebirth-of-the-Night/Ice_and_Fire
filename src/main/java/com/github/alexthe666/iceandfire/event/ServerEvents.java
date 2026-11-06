@@ -594,6 +594,7 @@ public class ServerEvents {
     public void onTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
             EntityPlayer player = event.player;
+            ItemDeathwormGauntlet.tickLunge(player);
             if (!player.getEntityWorld().isRemote) {
                 if (player.ticksExisted % 2 == 0 && player.world.provider.getDimension() == IceAndFire.CONFIG.dreadlandsDimensionId) {
                     if ((player.capabilities.isFlying || player.isElytraFlying()) && !player.isCreative() && !player.isSpectator()) {

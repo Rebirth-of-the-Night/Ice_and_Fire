@@ -3,7 +3,9 @@ package com.github.alexthe666.iceandfire.entity;
 import net.ilexiconn.llibrary.server.entity.EntityProperties;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,9 @@ public class MiscEntityProperties extends EntityProperties<EntityLivingBase> {
     public int deathwormLungeTicks = 0;
     public int prevDeathwormLungeTicks = 0;
     public int specialWeaponDmg = 0;
-    public boolean deathwormLaunched = false;
+    public ItemStack deathwormGauntlet = ItemStack.EMPTY;
+    public EnumHand deathwormGauntletHand = EnumHand.MAIN_HAND;
+    public boolean deathwormUseConsumed = false;
     public boolean deathwormReceded = false;
     public boolean isBeingGlaredAt = false;
     public int lastEnteredDreadPortalX = 0;
