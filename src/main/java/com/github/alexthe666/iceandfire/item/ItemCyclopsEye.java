@@ -47,7 +47,7 @@ public class ItemCyclopsEye extends Item {
                     boolean inflictedDamage = false;
                     for (EntityLiving entityliving : world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(living.posX - range, living.posY - range, living.posZ - range, living.posX + range, living.posY + range, living.posZ + range))) {
                         if (!entityliving.isEntityEqual(living) && !entityliving.isOnSameTeam(living) && (entityliving.getAttackTarget() == living || entityliving.getRevengeTarget() == living || entityliving instanceof IMob)) {
-                            entityliving.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 10, 1));
+                            entityliving.addPotionEffect(new PotionEffect(MobEffects.WEAKNESS, 10, 0));
                             inflictedDamage = true;
                         }
                     }
