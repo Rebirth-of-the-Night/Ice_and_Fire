@@ -120,7 +120,18 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
             }
         });
         this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false) {
+            @Override
+            protected boolean isSuitableTarget(@Nullable EntityLivingBase target, boolean includeInvincibles) {
+                return target != null && canFight(target) && super.isSuitableTarget(target, includeInvincibles);
+            }
+
+            @Override
+            public boolean shouldContinueExecuting() {
+                // Vanilla falls back to the old revenge target when the attack target is cleared.
+                return EntityGorgon.this.getAttackTarget() != null && super.shouldContinueExecuting();
+            }
+        });
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<EntityPlayer>(this, EntityPlayer.class, 0, true, false, new Predicate<EntityPlayer>() {
             @Override
             public boolean apply(@Nullable EntityPlayer entity) {
@@ -219,6 +230,26 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
         }
     }
 
+    @Override
+    public void setAttackTarget(@Nullable EntityLivingBase target) {
+        if (target != null && !canFight(target)) {
+            return;
+        }
+        if (target == null && this.getAttackTarget() != null) {
+            this.getNavigator().clearPath();
+        }
+        super.setAttackTarget(target);
+    }
+
+    @Override
+    protected void updateAITasks() {
+        super.updateAITasks();
+        EntityLivingBase target = this.getAttackTarget();
+        if (target != null && canFight(target)) {
+            this.getLookHelper().setLookPositionWithEntity(target, this.getHorizontalFaceSpeed(), this.getVerticalFaceSpeed());
+        }
+    }
+
     public void onLivingUpdate() {
         EntityLivingBase currentTarget = this.getAttackTarget();
         if (!world.isRemote && currentTarget != null && !canFight(currentTarget)) {
@@ -231,9 +262,6 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
         EntityLivingBase target = this.getAttackTarget();
         if (target != null) {
             boolean blindness = this.isPotionActive(MobEffects.BLINDNESS) || target.isPotionActive(MobEffects.BLINDNESS);
-            this.getLookHelper()
-                    .setLookPosition(target.posX, target.posY + (double) target.getEyeHeight(), target.posZ, (float) this
-                            .getHorizontalFaceSpeed(), (float) this.getVerticalFaceSpeed());
             if (!blindness && this.deathTime == 0 && target instanceof EntityLiving && !(target instanceof EntityPlayer)) {
                 forcePreyToLook((EntityLiving) target);
             }
