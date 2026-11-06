@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class IceAndFireConfig {
-    public boolean enableDreadlands = false;
+    public boolean enableDreadlands = true;
     public boolean customMainMenu = true;
     public boolean useVanillaFont = false;
     public boolean logCascadingWorldGen = false;
@@ -405,7 +405,7 @@ public class IceAndFireConfig {
         this.bloodedDragonArmorSetEffectCooldown = config.getInt("Blooded Dragon Armor Set Effect Cooldown", "all", 100, 10, 1000, "Length in required between the activation of the Blooded Dragon Armor Set Effects");
 
         //Dreadlands
-        this.enableDreadlands = config.getBoolean("Enable Dreadlands", "all", false, "Enable dreadland dimension. (WIP)");
+        this.enableDreadlands = config.getBoolean("Enable Dreadlands", "all", true, "Enable dreadland dimension.");
 
         //Castle
         this.maxDreadSpawnerEntities = config.getInt("Dread Spawner Entity Counts)", "all", 2, 1, 100, "Maximum counts of Entities can once spawned by a Dread Spawner");
