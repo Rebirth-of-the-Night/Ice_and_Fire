@@ -47,7 +47,7 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
 
     @Override
     public boolean shouldExecute() {
-        if (((EntityDragonBase) this.taskOwner).getHunger() >= 100) {
+        if (((EntityDragonBase) this.taskOwner).getHunger() >= ((EntityDragonBase) this.taskOwner).getMaxHunger()) {
             return false;
         }
         if (!((EntityDragonBase) this.taskOwner).canMove()) {
@@ -90,7 +90,7 @@ public class DragonAITargetItems<T extends EntityItem> extends EntityAITarget {
             this.targetEntity.getItem().shrink(1);
             this.taskOwner.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1, 1);
             int hunger = FoodUtils.getFoodPoints(this.targetEntity.getItem(), true, isIce);
-            ((EntityDragonBase) this.taskOwner).setHunger(Math.min(100, ((EntityDragonBase) this.taskOwner).getHunger() + hunger));
+            ((EntityDragonBase) this.taskOwner).setHunger(((EntityDragonBase) this.taskOwner).getHunger() + hunger);
             ((EntityDragonBase) this.taskOwner).eatFoodBonus(this.targetEntity.getItem());
             this.taskOwner.setHealth(Math.min(this.taskOwner.getMaxHealth(), (int) (this.taskOwner.getHealth() + FoodUtils.getFoodPoints(this.targetEntity.getItem(), true, isIce))));
             if (EntityDragonBase.ANIMATION_EAT != null) {

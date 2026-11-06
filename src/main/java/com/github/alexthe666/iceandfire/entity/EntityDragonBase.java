@@ -249,6 +249,21 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         return this.homePos == null ? super.getHomePosition() : this.homePos.getPosition();
     }
 
+    public boolean hasWildHome() {
+        return !isTamed() && hasHomePosition && homePos != null
+            && homePos.getDimension() != null && homePos.getDimension() == dimension;
+    }
+
+    public boolean isWithinWildHome(double x, double z) {
+        if (!hasWildHome()) {
+            return true;
+        }
+        double radius = IceAndFire.CONFIG.dragonWanderFromHomeDistance;
+        double dx = x - (homePos.getPosition().getX() + 0.5D);
+        double dz = z - (homePos.getPosition().getZ() + 0.5D);
+        return dx * dx + dz * dz <= radius * radius;
+    }
+
     public Integer getHomeDimensionID() {
         return this.homePos == null ? null : this.homePos.getDimension();
     }
@@ -425,7 +440,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(HUNGER, 0);
+        this.dataManager.register(HUNGER, MathHelper.clamp(IceAndFire.CONFIG.dragonStartingHunger, 0, getMaxHunger()));
         this.dataManager.register(AGE_TICKS, 0);
         this.dataManager.register(GENDER, Boolean.FALSE);
         this.dataManager.register(VARIANT, 0);
@@ -569,7 +584,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
             this.setCustomNameTag(compound.getString("CustomName"));
         }
         this.hasHomePosition = compound.getBoolean("HasHomePosition");
-        if (hasHomePosition && compound.getInteger("HomeAreaX") != 0 && compound.getInteger("HomeAreaY") != 0 && compound.getInteger("HomeAreaZ") != 0) {
+        if (hasHomePosition && compound.hasKey("HomeAreaX") && compound.hasKey("HomeAreaY") && compound.hasKey("HomeAreaZ")) {
             homePos = new HomePosition(compound, this.world);
         }
         this.setTackling(compound.getBoolean("Tackle"));
@@ -662,8 +677,12 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         return this.dataManager.get(HUNGER);
     }
 
+    public int getMaxHunger() {
+        return IceAndFire.CONFIG.dragonMaxHunger;
+    }
+
     public void setHunger(int hunger) {
-        this.dataManager.set(HUNGER, MathHelper.clamp(hunger, 0, 100));
+        this.dataManager.set(HUNGER, MathHelper.clamp(hunger, 0, getMaxHunger()));
     }
 
     public int getVariant() {
@@ -1071,7 +1090,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                         return true;
                     }
                     int itemFoodAmount = FoodUtils.getFoodPoints(stack, true, dragonType.isPiscivore());
-                    if (itemFoodAmount > 0 && (this.getHunger() < 100 || this.getHealth() < this.getMaxHealth())) {
+                    if (itemFoodAmount > 0 && (this.getHunger() < getMaxHunger() || this.getHealth() < this.getMaxHealth())) {
                         this.setHunger(this.getHunger() + itemFoodAmount);
                         this.setHealth(Math.min(this.getMaxHealth(), (int) (this.getHealth() + (itemFoodAmount / 10))));
                         this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
@@ -1868,7 +1887,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         double healthStep = (maximumHealth - minimumHealth) / (125);
         this.heal((Math.round(minimumHealth + (healthStep * age))));
         this.usingGroundAttack = true;
-        this.setHunger(50);
+        this.setHunger(IceAndFire.CONFIG.dragonStartingHunger);
         return livingdata;
     }
 

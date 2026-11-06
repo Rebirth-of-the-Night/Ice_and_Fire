@@ -27,7 +27,7 @@ public class DragonAIWander extends EntityAIBase {
 
     @Override
     public boolean shouldExecute() {
-        if (!dragon.canMove()) {
+        if (!dragon.canMove() || dragon.getAttackTarget() != null) {
             return false;
         }
         if (dragon.isPlayerControlled()) {
@@ -36,12 +36,18 @@ public class DragonAIWander extends EntityAIBase {
         if (dragon.isFlying() || dragon.isHovering() || !dragon.onGround) {
             return false;
         }
-        if (!this.mustUpdate) {
+        boolean returnHome = !dragon.isWithinWildHome(dragon.posX, dragon.posZ);
+        if (!returnHome && !this.mustUpdate) {
             if (this.dragon.getRNG().nextInt(executionChance) != 0) {
                 return false;
             }
         }
-        Vec3d vec3d = RandomPositionGenerator.findRandomTarget(this.dragon, 10, 7);
+        Vec3d vec3d = returnHome
+            ? RandomPositionGenerator.findRandomTargetBlockTowards(this.dragon, 10, 7, new Vec3d(dragon.getHomePosition()))
+            : RandomPositionGenerator.findRandomTarget(this.dragon, 10, 7);
+        if (!returnHome && vec3d != null && !dragon.isWithinWildHome(vec3d.x, vec3d.z)) {
+            return false;
+        }
         if (vec3d == null) {
             return false;
         } else {

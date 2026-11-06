@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.api.FoodUtils;
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.DragonUtils;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.google.common.base.Predicate;
@@ -11,6 +12,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class DragonAITarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
     private EntityDragonBase dragon;
+    private int nextWildHuntTick;
 
     public DragonAITarget(EntityDragonBase entityIn, Class<T> classTarget, boolean checkSight, Predicate<? super T> targetSelector) {
         super(entityIn, classTarget, 0, checkSight, false, targetSelector);
@@ -35,7 +37,7 @@ public class DragonAITarget<T extends EntityLivingBase> extends EntityAINearestA
                 if (this.targetEntity instanceof EntityPlayer && dragon.isTamed()) {
                     return false;
                 } else {
-                    if (!dragon.isOwner(this.targetEntity) && FoodUtils.getFoodPoints(this.targetEntity) > 0 && dragon.canMove() && (dragon.getHunger() < 90 || !dragon.isTamed() && this.targetEntity instanceof EntityPlayer)) {
+                    if (!dragon.isOwner(this.targetEntity) && FoodUtils.getFoodPoints(this.targetEntity) > 0 && dragon.canMove() && (dragon.getHunger() < dragon.getMaxHunger() * (IceAndFire.CONFIG.dragonHuntHungerThreshold / 100.0D) || !dragon.isTamed() && this.targetEntity instanceof EntityPlayer)) {
                         if (dragon.isTamed()) {
                             return DragonUtils.canTameDragonAttack(dragon, this.targetEntity);
                         } else {
@@ -46,6 +48,33 @@ public class DragonAITarget<T extends EntityLivingBase> extends EntityAINearestA
             }
         }
         return false;
+    }
+
+    @Override
+    protected boolean isSuitableTarget(EntityLivingBase target, boolean includeInvincibles) {
+        return dragon.isWithinWildHome(dragon.posX, dragon.posZ)
+            && dragon.isWithinWildHome(target.posX, target.posZ)
+            && (dragon.isTamed() || target instanceof EntityPlayer || dragon.ticksExisted >= nextWildHuntTick)
+            && super.isSuitableTarget(target, includeInvincibles);
+    }
+
+    @Override
+    public boolean shouldContinueExecuting() {
+        EntityLivingBase target = dragon.getAttackTarget();
+        return target != null && dragon.isWithinWildHome(dragon.posX, dragon.posZ)
+            && dragon.isWithinWildHome(target.posX, target.posZ)
+            && super.shouldContinueExecuting();
+    }
+
+    @Override
+    public void resetTask() {
+        if (!dragon.isTamed()) {
+            // Fire can kill prey without feeding the dragon; prevent consecutive wildlife hunts.
+            nextWildHuntTick = dragon.ticksExisted + 20 * 60;
+            dragon.airTarget = null;
+            dragon.getNavigator().clearPath();
+        }
+        super.resetTask();
     }
 
     protected AxisAlignedBB getTargetableArea(double targetDistance) {

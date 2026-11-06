@@ -65,6 +65,9 @@ public class IceAndFireConfig {
     public int dragonWanderFromHomeDistance = 40;
     public int dragonHungerTickRate = 3000;
     public float dragonFlightChance = 0.000666F;
+    public int dragonMaxHunger = 100;
+    public int dragonStartingHunger = 100;
+    public int dragonHuntHungerThreshold = 90;
 
     public String[] dragonIceImmuneEntities = new String[0];
     public String[] dragonFireImmuneEntities = new String[0];
@@ -259,7 +262,10 @@ public class IceAndFireConfig {
         this.explosiveDragonBreath = config.getBoolean("Explosive Dragon Breath", "all", false, "True if dragons fire/ice/lightning charges create secondary explosions that launch blocks everywhere. Turn this to true if you like unfair explosions. Or lag.");
         this.dragonTargetSearchLength = config.getInt("Dragon Target Search Length", "all", 128, 1, 10000, "How many blocks away can dragons spot potential prey. Note that increasing this could cause lag.");
         this.dragonWanderFromHomeDistance = config.getInt("Dragon Wander From Home Distance", "all", 40, 1, 10000, "How many blocks away can dragons wander from their defined \"home\" position.");
-        this.dragonHungerTickRate = config.getInt("Dragon Hunger Tick Rate", "all", 3000, 1, 10000, "Awake ticks between losing one hunger point, including dragons with aging disabled. 20 ticks = 1 second.");
+        this.dragonMaxHunger = config.getInt("Dragon Max Hunger", "all", 100, 1, 1000000, "Maximum dragon hunger.");
+        this.dragonStartingHunger = config.getInt("Dragon Starting Hunger", "all", 100, 0, 1000000, "Starting hunger for newly spawned and hatched dragons, capped at Dragon Max Hunger. Does not change saved dragons.");
+        this.dragonHuntHungerThreshold = config.getInt("Dragon Hunt Hunger Threshold", "all", 90, 0, 100, "Dragons hunt wildlife when hunger is below this percentage of Dragon Max Hunger. 0 disables hunger-driven hunting. Does not prevent wild dragons attacking players or retaliation.");
+        this.dragonHungerTickRate = config.getInt("Dragon Hunger Tick Rate", "all", 3000, 1, Integer.MAX_VALUE, "Awake ticks between losing one hunger point, including dragons with aging disabled. 20 ticks = 1 second.");
         this.dragonFlightChance = config.getFloat("Dragon Flight Chance Per Tick", "all", 0.000666F, 0F, 1F, "Every tick a RNG decides whether this dragon should start flying or not, based on this chance");
         this.dragonIceImmuneEntities = config.getStringList("Entities immune to dragon ice", "all", new String[0], "Entities listed here will not be affected by dragon ice freezing");
         this.dragonFireImmuneEntities = config.getStringList("Entities immune to dragon fire", "all", new String[0], "Entities listed here will not be affected by dragon fire burning");

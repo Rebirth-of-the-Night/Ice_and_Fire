@@ -387,7 +387,18 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityFishingSalmon.class, new FishingRippleRenderer(Minecraft.getMinecraft().getRenderManager()));
         EnumDragonAnimations.initializeDragonModels();
         EnumSeaSerpentAnimations.initializeSerpentModels();
-        DragonAnimationsLibrary.register(EnumDragonPoses.values(), EnumDragonModelTypes.values());
+        for (EnumDragonPoses pose : EnumDragonPoses.values()) {
+            for (EnumDragonModelTypes modelType : EnumDragonModelTypes.values()) {
+                // These fire dragon poses share the ice dragon models, as in EnumDragonAnimations.
+                if (modelType == EnumDragonModelTypes.FIRE_DRAGON_MODEL
+                        && (pose == EnumDragonPoses.SWIM_POSE || pose == EnumDragonPoses.SWIM5)) {
+                    continue;
+                }
+                DragonAnimationsLibrary.registerSingle(pose, modelType);
+            }
+        }
+        DragonAnimationsLibrary.registerReference(EnumDragonPoses.SWIM_POSE, EnumDragonModelTypes.ICE_DRAGON_MODEL, EnumDragonModelTypes.FIRE_DRAGON_MODEL);
+        DragonAnimationsLibrary.registerReference(EnumDragonPoses.SWIM5, EnumDragonModelTypes.ICE_DRAGON_MODEL, EnumDragonModelTypes.FIRE_DRAGON_MODEL);
 
         try {
             this.FIRE_DRAGON_MODEL = new IceAndFireTabulaModel<>(INSTANCE.loadTabulaModel("/assets/iceandfire/models/tabula/firedragon/firedragon_Ground"), new FireDragonTabulaModelAnimator());

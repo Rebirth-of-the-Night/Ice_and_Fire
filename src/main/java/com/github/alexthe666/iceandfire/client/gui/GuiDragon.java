@@ -79,7 +79,7 @@ public class GuiDragon extends GuiContainer {
         this.fontRenderer.drawString(s2, this.xSize / 2 - this.fontRenderer.getStringWidth(s2) / 2, 84, 0XFFFFFF);
         String s5 = I18n.format("dragon.gender") + I18n.format((dragon.isMale() ? "dragon.gender.male" : "dragon.gender.female"));
         this.fontRenderer.drawString(s5, this.xSize / 2 - this.fontRenderer.getStringWidth(s5) / 2, 93, 0XFFFFFF);
-        String s6 = I18n.format("dragon.hunger") + dragon.getHunger() + "/100";
+        String s6 = I18n.format("dragon.hunger") + dragon.getHunger() + "/" + dragon.getMaxHunger();
         this.fontRenderer.drawString(s6, this.xSize / 2 - this.fontRenderer.getStringWidth(s6) / 2, 102, 0XFFFFFF);
         String s4 = I18n.format("dragon.stage") + dragon.getDragonStage() + " " + I18n.format("dragon.days.front") + dragon.getAgeInDays() + " " + I18n.format("dragon.days.back");
         this.fontRenderer.drawString(s4, this.xSize / 2 - this.fontRenderer.getStringWidth(s4) / 2, 111, 0XFFFFFF);

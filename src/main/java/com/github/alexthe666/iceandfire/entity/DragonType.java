@@ -73,7 +73,7 @@ public class DragonType {
                     dragon.setVariant(egg.getType().ordinal());
                     dragon.setGender(egg.getRNG().nextBoolean());
                     dragon.setPosition(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
-                    dragon.setHunger(50);
+                    dragon.setHunger(IceAndFire.CONFIG.dragonStartingHunger);
                     if (!egg.world.isRemote) {
                         egg.world.spawnEntity(dragon);
                     }
@@ -112,7 +112,7 @@ public class DragonType {
                     dragon.setVariant(egg.getType().ordinal() - 8);
                     dragon.setGender(egg.getRNG().nextBoolean());
                     dragon.setPosition(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
-                    dragon.setHunger(50);
+                    dragon.setHunger(IceAndFire.CONFIG.dragonStartingHunger);
                     if (!egg.world.isRemote) {
                         egg.world.spawnEntity(dragon);
                         egg.world.addWeatherEffect(lightningBolt);

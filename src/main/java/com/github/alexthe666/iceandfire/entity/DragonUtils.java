@@ -151,10 +151,13 @@ public class DragonUtils {
             for (int i = 0; i < 10; i++) {
                 BlockPos homePos = dragon.homePos.getPosition();
                 BlockPos pos = new BlockPos(homePos.getX() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance, (distFromGround > 16 ? (int) Math.min(IceAndFire.CONFIG.maxDragonFlight, dragon.posY + dragon.getRNG().nextInt(16) - 8) : (int) dragon.posY + dragon.getRNG().nextInt(16) + 1), (homePos.getZ() + dragon.getRNG().nextInt(IceAndFire.CONFIG.dragonWanderFromHomeDistance * 2) - IceAndFire.CONFIG.dragonWanderFromHomeDistance));
-                if (!dragon.isTargetBlocked(new Vec3d(pos)) && dragon.getDistanceSqToCenter(pos) > 6) {
+                if (dragon.isWithinWildHome(pos.getX(), pos.getZ()) && !dragon.isTargetBlocked(new Vec3d(pos)) && dragon.getDistanceSqToCenter(pos) > 6) {
                     return pos;
                 }
             }
+        }
+        if (dragon.hasWildHome()) {
+            return null;
         }
         float angle = (0.01745329251F * renderYawOffset) + 3.15F + (dragon.getRNG().nextFloat() * neg);
         double extraX = radius * MathHelper.sin((float) (Math.PI + angle));
