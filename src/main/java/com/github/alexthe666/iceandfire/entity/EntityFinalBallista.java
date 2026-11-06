@@ -162,7 +162,7 @@ public class EntityFinalBallista extends EntityCreature implements IDreadMob {
             this.prevRotationYawHead = this.rotationYawHead;
             this.prevRotationPitch = this.rotationPitch;
         }
-        if(this.coolDown < 100){
+        if(this.coolDown < IceAndFire.CONFIG.finalBallistaCooldown){
             this.coolDown++;
         }
     }
@@ -227,7 +227,7 @@ public class EntityFinalBallista extends EntityCreature implements IDreadMob {
 
         entityarrow.setPosition(this.posX + d2 * 3, this.posY + this.getEyeHeight() + d3 * 3, this.posZ + d4 * 3);
 
-        if (!this.world.isRemote && this.coolDown == 100) {
+        if (!this.world.isRemote && this.coolDown >= IceAndFire.CONFIG.finalBallistaCooldown) {
             this.world.spawnEntity(entityarrow);
             this.coolDown = 0;
         }

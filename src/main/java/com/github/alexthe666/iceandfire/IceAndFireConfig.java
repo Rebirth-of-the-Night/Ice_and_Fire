@@ -201,6 +201,8 @@ public class IceAndFireConfig {
     public float weezerTinkersDisarmChance = 0.2F;
     public boolean chunkLoadSummonCrystal = true;
     public int ballistaBaseDamage = 10;
+    public int castleBallistaFireInterval = 60;
+    public int finalBallistaCooldown = 100;
     public int maxDreadSpawnerEntities = 2;
     public double ghostMaxHealth = 30;
     public double ghostAttackStrength = 3F;
@@ -448,6 +450,8 @@ public class IceAndFireConfig {
 
         //Ballista
         this.ballistaBaseDamage = config.getInt("Ballista Arrow Damage", "all", 10, 1, 100, "Maximum castle ballista arrow strength.");
+        this.castleBallistaFireInterval = config.getInt("Castle Ballista Fire Interval", "all", 60, 1, 1200, "Maximum ticks between castle ballista shots (20 ticks = 1 second). Lower is faster.");
+        this.finalBallistaCooldown = config.getInt("Final Ballista Cooldown", "all", 100, 1, 1200, "Ticks between final ballista shots when ridden (20 ticks = 1 second). Lower is faster.");
 
     }
 }

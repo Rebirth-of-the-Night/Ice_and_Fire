@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -46,7 +47,7 @@ public class EntityCastleBallista extends EntityCreature implements IRangedAttac
     }
 
     protected void initEntityAI() {
-        tasks.addTask(1, new EntityAIAttackRanged(this, 0.0, 20, 60, 120.0f));
+        tasks.addTask(1, new EntityAIAttackRanged(this, 0.0, Math.min(20, IceAndFire.CONFIG.castleBallistaFireInterval), IceAndFire.CONFIG.castleBallistaFireInterval, 120.0f));
         tasks.addTask(2, new EntityAIWatchTarget(this));
         targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityDragonBase.class, true));
