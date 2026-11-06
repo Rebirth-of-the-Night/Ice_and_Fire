@@ -89,7 +89,21 @@ public class EntityDeathWorm extends EntityTameable implements ISyncMount, IBlac
         this.switchNavigator(false);
         this.tasks.addTask(0, new EntityGroundAIRide<>(this));
         this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.5D, true));
+        this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.5D, true) {
+            @Override
+            public boolean shouldContinueExecuting() {
+                return !EntityDeathWorm.this.isBeingRidden() && super.shouldContinueExecuting();
+            }
+
+            @Override
+            public void updateTask() {
+                // the ride AI clears the attack target earlier in the same AI tick
+                if (EntityDeathWorm.this.getAttackTarget() == null) {
+                    return;
+                }
+                super.updateTask();
+            }
+        });
         this.tasks.addTask(3, new DeathWormAIFindSandTarget(this, 10));
         this.tasks.addTask(4, new DeathWormAIGetInSand(this, 1.0D));
         this.tasks.addTask(5, new DeathWormAIWander(this, 1));
