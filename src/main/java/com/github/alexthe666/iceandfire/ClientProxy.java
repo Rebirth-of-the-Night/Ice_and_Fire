@@ -244,6 +244,11 @@ public class ClientProxy extends CommonProxy {
                 Object obj = f.get(null);
                 if (obj instanceof Item && !(obj instanceof ICustomRendered)) {
                     ModelLoader.setCustomModelResourceLocation((Item) obj, 0, new ModelResourceLocation("iceandfire:" + ((Item) obj).getRegistryName().getPath(), "inventory"));
+                } else if (obj == IafItemRegistry.structureTeleporters) {
+                    ModelResourceLocation model = new ModelResourceLocation("iceandfire:structure_teleporter", "inventory");
+                    for (Item item : IafItemRegistry.structureTeleporters) {
+                        ModelLoader.setCustomModelResourceLocation(item, 0, model);
+                    }
                 } else if (obj instanceof Item[]) {
                     for (Item item : (Item[]) obj) {
                         if (!(item instanceof ICustomRendered)) {
