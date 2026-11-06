@@ -38,6 +38,7 @@ public class IceAndFireConfig {
     public String[] blacklistedBreakBlocks = new String[0];
     public String[] noDropBreakBlocks = new String[]{"minecraft:stone", "minecraft:dirt", "minecraft:grass"};
     public boolean blacklistBreakBlocksIsWhiteList = false;
+    public String[] dragonBreathImmuneBlocks = new String[0];
     public boolean spawnGlaciers = true;
     public int glacierSpawnChance = 4;
     public int oreToStoneRatioForDragonCaves = 45;
@@ -287,6 +288,7 @@ public class IceAndFireConfig {
         this.blacklistedBreakBlocks = config.getStringList("Blacklisted Blocks from Dragon", "all", new String[0], "Blacklist for blocks that dragons are not to break or burn. Ex. \"minecraft:sponge\" or \"rats:rat_crafting_table\"");
         this.noDropBreakBlocks = config.getStringList("No-Drop Blocks from Dragon Block Breaking", "all", new String[]{"minecraft:stone", "minecraft:dirt", "minecraft:grass"}, "Blocks that will not drop as items when broken by a dragon. Ex. \"minecraft:chest\" or \"rats:rat_crafting_table\"");
         this.blacklistBreakBlocksIsWhiteList = config.getBoolean("Blacklisted Blocks from Dragon is a Whitelist", "all", false, "If true, then the blacklist will act as a whitelist.");
+        this.dragonBreathImmuneBlocks = config.getStringList("Dragon Breath Immune Blocks", "all", new String[0], "Blocks that dragon breath and charges will not transform (charred/frozen/crackled) or destroy. Ex. \"minecraft:sponge\" or \"rats:rat_crafting_table\"");
         this.completeDragonPathfinding = config.getBoolean("Intelligent Dragon Pathfinding", "all", false, "A more intelligent dragon pathfinding system, but is also laggier. Turn this on if you think dragons are too stupid.");
         this.dragonAuto3rdPerson = config.getBoolean("Auto 3rd person when riding dragon", "all", true, "True if riding dragons should make the player take a 3rd person view automatically.");
 

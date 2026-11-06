@@ -445,6 +445,20 @@ public class DragonUtils {
         } else {
             for (String name : IceAndFire.CONFIG.blacklistedBreakBlocks) {
                 if (name.equalsIgnoreCase(block.getRegistryName().toString())) {
+    /** True if the block is on the "Dragon Breath Immune Blocks" config list (not transformed or destroyed by breath). */
+    public static boolean isBreathImmuneBlock(Block block) {
+        if (block.getRegistryName() == null) {
+            return false;
+        }
+        String id = block.getRegistryName().toString();
+        for (String name : IceAndFire.CONFIG.dragonBreathImmuneBlocks) {
+            if (name.trim().equalsIgnoreCase(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
                     return true;
                 }
             }
