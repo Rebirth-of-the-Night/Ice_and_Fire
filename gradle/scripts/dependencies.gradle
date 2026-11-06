@@ -27,4 +27,26 @@ dependencies {
     implementation rfg.deobf('curse.maven:theoneprobe-245211:2667280')
     implementation rfg.deobf('curse.maven:fire-resistance-tiers-382381:2953279')
     implementation rfg.deobf('CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.675')
+    if (!propertyBool('use_mixins')) {
+        runtimeOnly 'zone.rong:mixinbooter:9.1'
+    }
+}
+
+// Forge discovers Oceanic Expanse's coremod from run/mods, as in Wilderlands.
+def oceanicExpanse = configurations.detachedConfiguration(
+    dependencies.create('curse.maven:oceanic-expanse-840576:7009970')
+)
+def installDevOceanicExpanse = tasks.register('installDevOceanicExpanse', Copy) {
+    from oceanicExpanse
+    into layout.projectDirectory.dir('run/mods')
+    rename { 'OceanicExpanse-1.2.2.jar' }
+}
+
+tasks.matching { it.name in ['runClient', 'runServer'] }.configureEach {
+    def mappings = tasks.named('generateForgeSrgMappings')
+    dependsOn installDevOceanicExpanse, mappings
+    extraJvmArgs.add('-Dmixin.env.remapRefMap=true')
+    extraJvmArgs.add(mappings.flatMap { it.srgToMcp }.map {
+        '-Dmixin.env.refMapRemappingFile=' + it.asFile.absolutePath
+    })
 }
