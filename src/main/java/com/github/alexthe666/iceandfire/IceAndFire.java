@@ -107,8 +107,10 @@ public class IceAndFire {
         if (IceAndFire.CONFIG.enableDreadlands)
             IafWorldRegistry.init();
         MinecraftForge.EVENT_BUS.register(PROXY);
-        logger.info("A raven flies from the north to the sea");
-        logger.info("A dragon whispers her name in the east");
+        if (CONFIG.logStartupVerse) {
+            logger.info("A raven flies from the north to the sea");
+            logger.info("A dragon whispers her name in the east");
+        }
         ThaumcraftCompatBridge.loadThaumcraftCompat();
         LootFunctionManager.registerFunction(new CustomizeToDragon.Serializer());
         LootFunctionManager.registerFunction(new CustomizeToSeaSerpent.Serializer());
@@ -122,8 +124,10 @@ public class IceAndFire {
     public void init(FMLInitializationEvent event) {
         IafEntityRegistry.registerSpawns();
         IafVillagerRegistry.INSTANCE.init();
-        logger.info("The watcher waits on the northern wall");
-        logger.info("A daughter picks up a warrior's sword");
+        if (CONFIG.logStartupVerse) {
+            logger.info("The watcher waits on the northern wall");
+            logger.info("A daughter picks up a warrior's sword");
+        }
         GameRegistry.findRegistry(VillagerRegistry.VillagerProfession.class).register(IafVillagerRegistry.INSTANCE.scriber);
         MapGenStructureIO.registerStructure(MapGenSnowVillage.Start.class, "SnowVillageStart");
         MapGenStructureIO.registerStructureComponent(ComponentAnimalFarm.class, "AnimalFarm");
@@ -193,12 +197,15 @@ public class IceAndFire {
         PROXY.postRender();
         TinkersCompatBridge.loadTinkersPostInitCompat();
         IafRecipeRegistry.postInit();
-        logger.info("A brother bound to a love he must hide");
-        logger.info("The younger's armor is worn in the mind");
-        logger.info("A cold iron throne holds a boy barely grown");
-        logger.info("And now it is known");
-        logger.info("A claim to the prize, a crown laced in lies");
-        logger.info("You win or you die");
-        logger.info("Damn season 8 really sucked didn't it");
+        if (CONFIG.logStartupVerse) {
+            logger.info("A brother bound to a love he must hide");
+            logger.info("The younger's armor is worn in the mind");
+            logger.info("A cold iron throne holds a boy barely grown");
+            logger.info("And now it is known");
+            logger.info("A claim to the prize, a crown laced in lies");
+            logger.info("You win or you die");
+            logger.info("Damn season 8 really sucked didn't it");
+        }
     }
+
 }

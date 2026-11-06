@@ -13,6 +13,7 @@ public class IceAndFireConfig {
     public boolean customMainMenu = true;
     public boolean useVanillaFont = false;
     public boolean logCascadingWorldGen = false;
+    public boolean logStartupVerse = false;
     public boolean generateSilverOre = true;
     public boolean generateSapphireOre = true;
     public boolean generateCopperOre = true;
@@ -81,7 +82,6 @@ public class IceAndFireConfig {
     public String hippogryphTameItem = "minecraft:rabbit_foot";
     public boolean spawnGorgons = true;
     public int spawnGorgonsChance = 75;
-    public boolean gorgonTempleTestMode = true;
     public double gorgonMaxHealth = 100D;
     public int gorgonPetrificationChargeTicks = 20;
     public boolean disablePixieTaming = false;
@@ -206,6 +206,7 @@ public class IceAndFireConfig {
 
     public void init(Configuration config) {
         BiomeSpawnFilter.load(config);
+        this.logStartupVerse = config.getBoolean("Log Startup Verse", "all", false, "Whether to print the startup verse and season 8 comment to the console.");
         this.customMainMenu = config.getBoolean("Custom main menu", "all", true, "Whether to display the dragon on the main menu or not");
         this.useVanillaFont = config.getBoolean("Use Vanilla Font", "all", false, "Whether to use the vanilla font in the bestiary or not");
         this.generateSilverOre = config.getBoolean("Generate Silver Ore", "all", true, "Whether to generate silver ore or not");
@@ -289,7 +290,6 @@ public class IceAndFireConfig {
 
         this.spawnGorgons = config.getBoolean("Spawn Gorgons", "all", true, "True if gorgon temples are allowed to spawn");
         this.spawnGorgonsChance = config.getInt("Spawn Gorgon Chance", "all", 75, 1, 10000, "1 out of this number chance per chunk for generation");
-        this.gorgonTempleTestMode = config.getBoolean("Gorgon Temple Test Mode", "all", true, "Also attempt gorgon temples in plains and sandy biomes for testing. Disable to restrict them to beaches.");
         this.gorgonMaxHealth = config.getFloat("Gorgon Max Health", "all", 100, 1, 10000, "Maximum gorgon health");
         this.gorgonPetrificationChargeTicks = config.getInt("Gorgon Petrification Charge Ticks", "all", 20, 1, Integer.MAX_VALUE, "Consecutive ticks of eye contact required for a gorgon to petrify its target");
 
@@ -413,14 +413,14 @@ public class IceAndFireConfig {
 
         this.bloodedDragonArmorSetEffectCooldown = config.getInt("Blooded Dragon Armor Set Effect Cooldown", "all", 100, 10, 1000, "Length in required between the activation of the Blooded Dragon Armor Set Effects");
 
+        this.enableStructureLocator = config.getBoolean("Enable Structure Locator", "all", false, "Registers the Creative-only structure teleporter items and records structure locations as they generate. Requires a restart. When false, no items are registered and nothing is tracked.");
+
         //Dreadlands
         this.enableDreadlands = config.getBoolean("Enable Dreadlands", "all", true, "Enable dreadland dimension.");
 
         //Castle
         this.maxDreadSpawnerEntities = config.getInt("Dread Spawner Entity Counts)", "all", 2, 1, 100, "Maximum counts of Entities can once spawned by a Dread Spawner");
         //Ghost
-        this.enableStructureLocator = config.getBoolean("Enable Structure Locator", "all", false, "Registers the Creative-only structure teleporter items and records structure locations as they generate. Requires a restart. When false, no items are registered and nothing is tracked.");
-
         this.ghostMaxHealth = config.getFloat("Ghost Max Health", "all", 30F, 1.0F, 10000.0F, "Maximum ghost health.");
         this.ghostAttackStrength = config.getFloat("Ghost Attack Strength", "all", 3F, 0.0F, 10000.0F, "Maximum ghost attack strength.");
         this.ghostSpawnFromPlayerDeaths = config.getBoolean("Player Death Spawns Ghost", "all", true, "True if allow spawn ghost when player death");
