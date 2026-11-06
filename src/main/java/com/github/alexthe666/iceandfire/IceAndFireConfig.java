@@ -65,10 +65,10 @@ public class IceAndFireConfig {
     public int dragonTargetSearchLength = 128;
     public int dragonWanderFromHomeDistance = 40;
     public int dragonHungerTickRate = 3000;
-    public float dragonFlightChance = 0.000666F;
     public int dragonMaxHunger = 100;
     public int dragonStartingHunger = 100;
     public int dragonHuntHungerThreshold = 90;
+    public float dragonFlightChance = 0.000666F;
 
     public String[] dragonIceImmuneEntities = new String[0];
     public String[] dragonFireImmuneEntities = new String[0];
