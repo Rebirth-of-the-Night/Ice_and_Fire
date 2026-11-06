@@ -9,6 +9,7 @@ import java.util.List;
 
 public class IceAndFireConfig {
     public boolean enableDreadlands = true;
+    public boolean dreadlandsVanillaSnow = false;
     public boolean enableStructureLocator = false;
     public boolean customMainMenu = true;
     public boolean useVanillaFont = false;
@@ -442,6 +443,7 @@ public class IceAndFireConfig {
 
         //Dreadlands
         this.enableDreadlands = config.getBoolean("Enable Dreadlands", "all", true, "Enable dreadland dimension.");
+        this.dreadlandsVanillaSnow = config.getBoolean("Dreadlands Vanilla Snow", "all", false, "Use the normal Minecraft snow look in the Dreadlands instead of the thick dread snow. The snow also no longer fades after the Dread Queen is defeated.");
 
         //Castle
         this.maxDreadSpawnerEntities = config.getInt("Dread Spawner Entity Counts)", "all", 2, 1, 100, "Maximum counts of Entities can once spawned by a Dread Spawner");

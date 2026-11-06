@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.client.render;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.world.dimension.WorldProviderDreadLands;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -21,6 +22,7 @@ import java.util.Random;
 public class RenderDreadlandsWeather extends IRenderHandler {
 
     private static final ResourceLocation SNOW_TEXTURES = new ResourceLocation("iceandfire:textures/environment/dread_snow.png");
+    private static final ResourceLocation VANILLA_SNOW_TEXTURES = new ResourceLocation("textures/environment/snow.png");
     private final float[] rainXCoords = new float[1024];
     private final float[] rainYCoords = new float[1024];
     private final DynamicTexture lightmapTexture = new DynamicTexture(16, 16);
@@ -45,7 +47,8 @@ public class RenderDreadlandsWeather extends IRenderHandler {
         if(lightTexture == null){
             lightTexture = mc.getTextureManager().getDynamicTextureLocation("lightMap", this.lightmapTexture);
         }
-        float intensity = ((WorldProviderDreadLands) world.provider).getSnowfallIntensity();
+        boolean vanilla = IceAndFire.CONFIG.dreadlandsVanillaSnow;
+        float intensity = vanilla ? 1.0F : ((WorldProviderDreadLands) world.provider).getSnowfallIntensity();
         rendererUpdateCount++;
         if (intensity > 0.0F) {
             this.enableLightmap(mc);
@@ -121,7 +124,7 @@ public class RenderDreadlandsWeather extends IRenderHandler {
                             int i4 = (world.getCombinedLight(blockpos$mutableblockpos, 0) * 3 + 15728880) / 4;
                             int j4 = i4 >> 16 & 65535;
                             int k4 = i4 & 65535;
-                            mc.getTextureManager().bindTexture(SNOW_TEXTURES);
+                            mc.getTextureManager().bindTexture(vanilla ? VANILLA_SNOW_TEXTURES : SNOW_TEXTURES);
                             bufferbuilder.begin(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
                             bufferbuilder.pos((double) l1 - d3 + 0.5D, (double) l2, (double) k1 - d4 + 0.5D).tex(0.0D + d9, (double) k2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();
                             bufferbuilder.pos((double) l1 + d3 + 0.5D, (double) l2, (double) k1 + d4 + 0.5D).tex(1.0D + d9, (double) k2 * 0.25D + d8 + d10).color(1.0F, 1.0F, 1.0F, f5).lightmap(j4, k4).endVertex();

@@ -13,16 +13,36 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 
 public class WorldProviderDreadLands extends WorldProvider {
+    private static final float DEFEATED_SNOW_INTENSITY = 0.2F;
+    private static final float SNOW_FADE_MILLIS = 180000.0F; // 3 minutes from full to defeated intensity
     private boolean queenDefeated;
+    private boolean synced;
+    private float snowfall = 1.0F;
+    private long lastSnowUpdate;
 
     @SideOnly(Side.CLIENT)
     public void setQueenDefeated(boolean queenDefeated) {
+        // First sync after joining: snap to the right value; later changes (boss dying live) fade slowly.
+        if (!synced && queenDefeated) {
+            this.snowfall = DEFEATED_SNOW_INTENSITY;
+        }
+        this.synced = true;
         this.queenDefeated = queenDefeated;
+        this.lastSnowUpdate = System.currentTimeMillis();
     }
 
     @SideOnly(Side.CLIENT)
     public float getSnowfallIntensity() {
-        return queenDefeated ? 0.45F : 1.0F;
+        float target = queenDefeated ? DEFEATED_SNOW_INTENSITY : 1.0F;
+        long now = System.currentTimeMillis();
+        float step = Math.max(0L, now - lastSnowUpdate) / SNOW_FADE_MILLIS * (1.0F - DEFEATED_SNOW_INTENSITY);
+        lastSnowUpdate = now;
+        if (snowfall > target) {
+            snowfall = Math.max(target, snowfall - step);
+        } else if (snowfall < target) {
+            snowfall = Math.min(target, snowfall + step);
+        }
+        return snowfall;
     }
 
     @Override
