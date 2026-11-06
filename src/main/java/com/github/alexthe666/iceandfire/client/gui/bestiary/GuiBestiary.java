@@ -210,6 +210,8 @@ public class GuiBestiary extends GuiScreen {
             case DREAD_MOBS:
             case DREADLAND:
             case DREADLAND_FORTRESS:
+            case DREAD_QUEEN:
+            case BLACK_FROST:
                 drawFromTxt();
                 writeFromTxt();
                 break;
@@ -248,16 +250,17 @@ public class GuiBestiary extends GuiScreen {
                     GL11.glScalef(1.5F, 1.5F, 1F);
                     drawItemStack(new ItemStack(IafBlockRegistry.fire_lily), 5, 14, 2.5F);
                     drawItemStack(new ItemStack(IafBlockRegistry.frost_lily), 30, 14, 2.5F);
+                    drawItemStack(new ItemStack(IafBlockRegistry.lightning_lily), 55, 14, 2.5F);
                     GL11.glPopMatrix();
                     GL11.glPushMatrix();
                     GL11.glScalef(1.5F, 1.5F, 1F);
                     drawImage(DRAWINGS_0, 144, 0, 389, 1, 50, 50);
                     GL11.glPopMatrix();
-                    boolean drawFire = Minecraft.getMinecraft().player.ticksExisted % 40 < 20;
-                    drawItemStack(new ItemStack(drawFire ? IafBlockRegistry.fire_lily : IafBlockRegistry.frost_lily), 161, 17, 1.5F);
+                    int mixtureType = (Minecraft.getMinecraft().player.ticksExisted / 20) % 3;
+                    drawItemStack(new ItemStack(mixtureType == 0 ? IafBlockRegistry.fire_lily : mixtureType == 1 ? IafBlockRegistry.frost_lily : IafBlockRegistry.lightning_lily), 161, 17, 1.5F);
                     drawItemStack(new ItemStack(Items.BOWL), 161, 32, 1.5F);
-                    drawItemStack(new ItemStack(drawFire ? Items.BLAZE_ROD : Items.PRISMARINE_CRYSTALS), 177, 17, 1.5F);
-                    drawItemStack(new ItemStack(drawFire ? IafItemRegistry.fire_stew : IafItemRegistry.frost_stew), 151, 10, 2F);
+                    drawItemStack(new ItemStack(mixtureType == 0 ? Items.BLAZE_ROD : mixtureType == 1 ? Items.PRISMARINE_CRYSTALS : Items.CHORUS_FRUIT), 177, 17, 1.5F);
+                    drawItemStack(new ItemStack(mixtureType == 0 ? IafItemRegistry.fire_stew : mixtureType == 1 ? IafItemRegistry.frost_stew : IafItemRegistry.lightning_stew), 151, 10, 2F);
                     GL11.glPushMatrix();
                     GL11.glScalef(1.5F, 1.5F, 1F);
                     drawImage(DRAWINGS_0, 144, 65, 389, 1, 50, 50);

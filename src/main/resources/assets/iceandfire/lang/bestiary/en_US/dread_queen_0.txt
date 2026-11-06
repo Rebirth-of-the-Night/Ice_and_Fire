@@ -1,0 +1,42 @@
+<item><iceandfire:dread_queen_sword 0 110 70 1>
+<item><iceandfire:dread_queen_staff 0 125 70 1>
+<item><iceandfire:treasury_key 0 140 70 1>
+Deep inside the Dread Fortress
+waits the ruler of the undead,
+the Dread Queen.
+
+
+
+
+She is extremely tough, with
+far more health than any of
+her servants, and heavy armor
+that blunts weaker weapons.
+
+Crowned and clad in dark blue,
+the undead queen swings the
+Blade of the Dreaded Queen and
+carries the Staff of the Dreaded
+Queen in her other hand.
+
+
+
+
+
+
+
+Until she falls, the fortress
+walls resist all but a few
+blocks, like torches, snow,
+spawners and chests.
+
+Slain, she drops:
+
+
+
+
+
+
+
+Once she has fallen, the snow
+of the Dreadlands slowly fades.

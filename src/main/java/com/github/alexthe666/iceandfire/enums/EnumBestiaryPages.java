@@ -18,7 +18,7 @@ public enum EnumBestiaryPages {
     TAMEDDRAGONS(3),
     MATERIALS(2),
     ALCHEMY(1),
-    DRAGONFORGE(3),
+    DRAGONFORGE(5),
     VILLAGERS(0),
     HIPPOGRYPH(1),
     GORGON(1),
@@ -37,7 +37,9 @@ public enum EnumBestiaryPages {
     GHOST(1),
     DREAD_MOBS(1),
     DREADLAND(1),
-    DREADLAND_FORTRESS(1);
+    DREADLAND_FORTRESS(0),
+    DREAD_QUEEN(0),
+    BLACK_FROST(0);
 
     public int pages;
 

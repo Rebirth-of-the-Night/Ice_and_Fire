@@ -12,11 +12,11 @@ effectively as a weapon.
 
 
 
-By combining either fire or
-ice blood with a dragon bone
-sword, I was able to infuse
-the two and make them into
-potent weapons to the
+By combining fire, ice or
+lightning blood with a dragon
+bone sword, I was able to infuse
+them into potent weapons against
+the other dragon types.
 opposite dragon.
 
 
@@ -31,9 +31,9 @@ and do extra damage against
 Ice Dragons. Ice Infused swords
 slow down their target, and do
 extra damage to Fire Dragons.
-Both swords also have large
-knockback effects.
-
+Lightning Infused swords strike
+foes with bolts, hurting both.
+Fire and Ice swords also knock back.
 
 
 Dragon blood can also be used

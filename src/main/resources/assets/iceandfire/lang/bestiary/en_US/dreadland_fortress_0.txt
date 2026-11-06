@@ -1,0 +1,30 @@
+<image><drawings_3.png 240 110 0 176 109 100 1>
+Rising from the frozen ruins of
+the Dreadlands, the Dread
+Fortress is the seat of the
+Dread Queen and the heart of
+her undead legions.
+
+Its walls are not meant to be
+broken. While the Queen lives,
+almost every block of the
+fortress resists mining and
+building, apart from torches,
+snow, chests, spawners and
+cobblestone. A warning appears
+whenever you try.
+
+Only when she falls does the
+castle's protection fade away.
+
+
+
+Its garrison is vast. Dread
+spawners keep the halls full
+of undead, and castle ballistas
+wake and open fire as soon as
+a stranger comes near.
+Near the Queen, spawners call
+forth her dragon, Black Frost.
+Bring dragonsteel, healing and
+allies.

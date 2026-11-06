@@ -8,9 +8,9 @@ items must be gathered.
 
 
 
-Fire Lilies and Frost Lilies are
-used to make Fire Mixture and
-Frost Mixture, respectively.
+Fire, Frost and Lightning Lilies
+make Fire, Frost and Lightning
+Mixture, respectively.
 This mixture can be used to
 breed two tamed dragons. By
 interacting with a male dragon

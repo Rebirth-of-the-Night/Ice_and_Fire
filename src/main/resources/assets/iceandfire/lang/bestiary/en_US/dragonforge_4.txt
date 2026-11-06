@@ -1,0 +1,42 @@
+<recipe><iceandfire:dragonforge_lightning_brick 0 iceandfire:dragonscale_amethyst 0 minecraft:stonebrick 0 iceandfire:dragonscale_amethyst 0 minecraft:stonebrick 0 iceandfire:dragonscale_amethyst 0 minecraft:stonebrick 0 iceandfire:dragonscale_amethyst 0 minecraft:stonebrick 0 iceandfire:dragonscale_amethyst 0 5 76 1>
+<recipe><iceandfire:dragonforge_lightning_core 0 iceandfire:dragonforge_lightning_brick 0 iceandfire:dragonforge_lightning_brick 0 iceandfire:dragonforge_lightning_brick 0 iceandfire:dragonforge_lightning_brick 0 iceandfire:lightning_dragon_heart 0 iceandfire:dragonforge_lightning_brick 0 iceandfire:dragonforge_lightning_brick 0 iceandfire:dragonforge_lightning_brick 0 iceandfire:dragonforge_lightning_brick 0 190 3 1>
+<recipe><iceandfire:dragonforge_lightning_input 0 iceandfire:dragonforge_lightning_brick 0 minecraft:iron_ingot 0 iceandfire:dragonforge_lightning_brick 0 minecraft:iron_ingot 0 minecraft:air 0 minecraft:iron_ingot 0 iceandfire:dragonforge_lightning_brick 0 minecraft:iron_ingot 0 iceandfire:dragonforge_lightning_brick 0 190 90 1>
+Lightning dragons can power a
+forge of their own. Bricks are
+crafted from lightning dragon
+scale blocks and stone bricks.
+
+
+
+
+
+
+
+
+
+
+
+The forge is built in the same
+shape as the fire and ice ones,
+just with lightning bricks, a
+lightning core and a lightning
+aperture.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The core is made with a
+lightning dragon heart, and
+the aperture with iron ingots.

@@ -17,11 +17,11 @@ from dragons. This meat cannot be
 cooked, and has different effects
 based on what type of dragon it
 came from. Fire Dragon flesh will
-
-smite its eater, and Ice Dragon
-flesh can slow its consumer to
-a halt. All flesh sates as much
-as cooked beef.
+smite its eater, Ice Dragon flesh
+slows its consumer to a halt, and
+Lightning Dragon flesh calls down
+a bolt of lightning on its eater.
+All flesh sates like cooked beef.
 
 
 
