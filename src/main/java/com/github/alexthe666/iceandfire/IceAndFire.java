@@ -45,11 +45,11 @@ import java.util.Random;
 
 @Mod(modid = IceAndFire.MODID,
         dependencies = "required-after:llibrary@[" + IceAndFire.LLIBRARY_VERSION + ",);after:thaumicadds;after:baubles",
-        version = IceAndFire.VERSION, name = IceAndFire.NAME, guiFactory = "com.github.alexthe666.iceandfire.client.gui.IceAndFireGuiFactory")
+        version = IceAndFire.VERSION, name = IceAndFire.NAME, updateJSON = "https://raw.githubusercontent.com/Rebirth-of-the-Night/Ice_and_Fire/1.12.2/.forge/update.json", guiFactory = "com.github.alexthe666.iceandfire.client.gui.IceAndFireGuiFactory")
 public class IceAndFire {
 
     public static final String MODID = "iceandfire";
-    public static final String VERSION = "1.9.1-2.0.0";
+    public static final String VERSION = "1.9.1-2.1.0";
     public static final String LLIBRARY_VERSION = "1.7.9";
     public static final String NAME = "Ice And Fire: RotN Edition";
     public static final Logger logger = LogManager.getLogger(NAME);
