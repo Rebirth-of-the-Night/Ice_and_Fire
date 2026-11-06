@@ -9,6 +9,7 @@ import java.util.List;
 
 public class IceAndFireConfig {
     public boolean enableDreadlands = true;
+    public boolean enableStructureLocator = false;
     public boolean customMainMenu = true;
     public boolean useVanillaFont = false;
     public boolean logCascadingWorldGen = false;
@@ -412,6 +413,8 @@ public class IceAndFireConfig {
         //Castle
         this.maxDreadSpawnerEntities = config.getInt("Dread Spawner Entity Counts)", "all", 2, 1, 100, "Maximum counts of Entities can once spawned by a Dread Spawner");
         //Ghost
+        this.enableStructureLocator = config.getBoolean("Enable Structure Locator", "all", false, "Registers the Creative-only structure teleporter items and records structure locations as they generate. Requires a restart. When false, no items are registered and nothing is tracked.");
+
         this.ghostMaxHealth = config.getFloat("Ghost Max Health", "all", 30F, 1.0F, 10000.0F, "Maximum ghost health.");
         this.ghostAttackStrength = config.getFloat("Ghost Attack Strength", "all", 3F, 0.0F, 10000.0F, "Maximum ghost attack strength.");
         this.ghostSpawnFromPlayerDeaths = config.getBoolean("Player Death Spawns Ghost", "all", true, "True if allow spawn ghost when player death");

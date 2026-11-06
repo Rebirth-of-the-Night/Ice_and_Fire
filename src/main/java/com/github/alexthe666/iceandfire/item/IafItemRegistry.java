@@ -2,6 +2,7 @@ package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.enums.*;
+import com.github.alexthe666.iceandfire.world.LocatableStructure;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -10,6 +11,8 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.Arrays;
 
 public class IafItemRegistry {
 
@@ -412,6 +415,9 @@ public class IafItemRegistry {
     public static Item weezer_blue_album = new ItemGeneric("weezer_blue_album", "iceandfire.weezer_blue_album", 1).setCreativeTab(null);
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dragon_debug_stick")
     public static Item dragon_debug_stick = new ItemGeneric("dragon_debug_stick", "iceandfire.dragon_debug_stick", 1).setCreativeTab(null);
+    public static final Item[] structureTeleporters = IceAndFire.CONFIG.enableStructureLocator
+            ? Arrays.stream(LocatableStructure.values()).map(ItemStructureTeleporter::new).toArray(Item[]::new)
+            : new Item[0];
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_sword")
     public static Item dread_sword = new ItemModSword(dread_sword_tools, "dread_sword", "iceandfire.dread_sword");
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_knight_sword")

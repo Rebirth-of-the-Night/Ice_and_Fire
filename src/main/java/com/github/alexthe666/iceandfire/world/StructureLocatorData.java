@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.world;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
@@ -36,6 +37,9 @@ public final class StructureLocatorData extends WorldSavedData {
     }
 
     public static void record(World world, LocatableStructure structure, BlockPos pos) {
+        if (!IceAndFire.CONFIG.enableStructureLocator) {
+            return;
+        }
         StructureLocatorData data = get(world, true);
         if (data.locations.computeIfAbsent(structure, ignored -> new LinkedHashSet<>()).add(pos.toImmutable())) {
             data.markDirty();
