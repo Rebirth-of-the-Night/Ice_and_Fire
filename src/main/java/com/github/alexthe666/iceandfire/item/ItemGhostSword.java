@@ -15,6 +15,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -37,7 +38,7 @@ public class ItemGhostSword extends ItemSword {
         Multimap<String, AttributeModifier> multimap = HashMultimap.<String, AttributeModifier>create();
         if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
             multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 10D, 0));
-            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -1.0D, 0));
+            multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", IceAndFire.CONFIG.phantasmalBladeAttackSpeedModifier, 0));
         }
         return multimap;
     }
@@ -69,7 +70,8 @@ public class ItemGhostSword extends ItemSword {
         for (AttributeModifier modifier : dmg.get(SharedMonsterAttributes.ATTACK_DAMAGE.getName())) {
             totalDmg += modifier.getAmount();
         }
-        playerEntity.playSound(SoundEvents.ENTITY_ZOMBIE_INFECT, 1, 1);
+        // world.playSound(null, ...) so the shooter hears it too; EntityPlayer#playSound skips the player on the server.
+        playerEntity.world.playSound(null, playerEntity.posX, playerEntity.posY, playerEntity.posZ, SoundEvents.ENTITY_ZOMBIE_INFECT, SoundCategory.PLAYERS, 1.0F, 1.0F);
         EntityGhostSword shot = new EntityGhostSword(playerEntity.world, playerEntity, totalDmg * 0.5F);
         Vec3d vector3d = playerEntity.getLook(1.0F);
         Vector3f vector3f = new Vector3f((float) vector3d.x, (float) vector3d.y, (float) vector3d.z);

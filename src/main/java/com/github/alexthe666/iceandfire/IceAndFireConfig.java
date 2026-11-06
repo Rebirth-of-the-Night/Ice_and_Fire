@@ -201,6 +201,7 @@ public class IceAndFireConfig {
     public float weezerTinkersDisarmChance = 0.2F;
     public boolean chunkLoadSummonCrystal = true;
     public int ballistaBaseDamage = 10;
+    public double phantasmalBladeAttackSpeedModifier = -1.4D;
     public int castleBallistaFireInterval = 60;
     public int finalBallistaCooldown = 100;
     public int maxDreadSpawnerEntities = 2;
@@ -449,6 +450,7 @@ public class IceAndFireConfig {
         this.generateGraveyardChance = config.getInt("Graveyards Generate Chance", "all", 256, 1, 10000, "One out of this number chance per chunk to generate a Graveyard.");
 
         //Ballista
+        this.phantasmalBladeAttackSpeedModifier = config.getFloat("Phantasmal Blade Attack Speed Modifier", "all", -1.4F, -3.9F, 10.0F, "Attack speed modifier of the phantasmal blade, added to the base player attack speed of 4.0. More negative is slower (vanilla swords use -2.4).");
         this.ballistaBaseDamage = config.getInt("Ballista Arrow Damage", "all", 10, 1, 100, "Maximum castle ballista arrow strength.");
         this.castleBallistaFireInterval = config.getInt("Castle Ballista Fire Interval", "all", 60, 1, 1200, "Maximum ticks between castle ballista shots (20 ticks = 1 second). Lower is faster.");
         this.finalBallistaCooldown = config.getInt("Final Ballista Cooldown", "all", 100, 1, 1200, "Ticks between final ballista shots when ridden (20 ticks = 1 second). Lower is faster.");
