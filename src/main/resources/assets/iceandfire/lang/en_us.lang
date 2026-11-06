@@ -101,6 +101,7 @@ tile.iceandfire.dread_single_spawner_lich.name=Single Lich Spawner
 tile.iceandfire.dread_single_spawner_queen.name=Dread Queen Spawner
 tile.iceandfire.dread_single_spawner_dragon.name=Black Frost Spawner
 tile.iceandfire.dread_single_spawner_ballista.name=Castle Ballista Spawner
+tile.iceandfire.dread_single_spawner_final_ballista.name=Final Ballista Spawner
 tile.iceandfire.tripwire.name=Castle Tripwire
 tile.iceandfire.tripwire_dragon.name=Castle Tripwire Dragon
 
@@ -487,6 +488,7 @@ entity.dread_lich_skull.name=Dread Lich Skull
 entity.dread_knight.name=Dread Knight
 entity.dread_knight_royal.name=Royal Dread Knight
 entity.ballista.name=Castle Ballista
+entity.final_ballista.name=Final Ballista
 entity.dread_horse.name=Dread Knight Horse
 entity.black_frost_dragon.name=Black Frost
 entity.blackfrost.name=Black Frost

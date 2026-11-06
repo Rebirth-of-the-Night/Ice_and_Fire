@@ -101,6 +101,7 @@ tile.iceandfire.dread_single_spawner_lich.name=竦怖尸巫刷怪笼
 tile.iceandfire.dread_single_spawner_queen.name=竦怖女皇刷怪笼
 tile.iceandfire.dread_single_spawner_dragon.name=黑霜刷怪笼
 tile.iceandfire.dread_single_spawner_ballista.name=城堡弩炮刷怪笼
+tile.iceandfire.dread_single_spawner_final_ballista.name=终极弩炮刷怪笼
 tile.iceandfire.tripwire.name=城堡陷阱
 tile.iceandfire.tripwire_dragon.name=城堡陷阱龙
 
@@ -470,6 +471,7 @@ entity.dread_lich_skull.name=冰魂髑髅
 entity.dread_knight.name=悚怖尸骑
 entity.dread_knight_royal.name=悚怖皇家尸骑
 entity.ballista.name=城堡弩炮
+entity.final_ballista.name=终极弩炮
 entity.dread_horse.name=悚怖战马
 entity.black_frost_dragon.name=黑霜
 entity.blackfrost.name=黑霜
