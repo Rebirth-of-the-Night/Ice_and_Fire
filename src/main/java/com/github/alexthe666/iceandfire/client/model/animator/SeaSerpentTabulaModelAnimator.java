@@ -46,7 +46,7 @@ public class SeaSerpentTabulaModelAnimator extends IceAndFireTabulaModelAnimator
         }
         IceAndFireTabulaModel<EntitySeaSerpent> prevPosition = swimPose.get(prevIndex);
         IceAndFireTabulaModel<EntitySeaSerpent> currentPosition = swimPose.get(currentIndex);
-        float delta = ((entity.swimCycle) / 10.0F) % 1.0F + (LLibrary.PROXY.getPartialTicks() / 10.0F);
+        float delta = (entity.swimCycle % 10 + LLibrary.PROXY.getPartialTicks() * EntitySeaSerpent.SWIM_CYCLE_STEP) / 10.0F;
         AdvancedModelRenderer[] tailParts = {model.getCube("Tail1"), model.getCube("Tail2"), model.getCube("Tail3"), model.getCube("Tail4"), model.getCube("Tail5"), model.getCube("Tail6")};
         AdvancedModelRenderer[] neckParts = {model.getCube("Neck1"), model.getCube("Neck2"), model.getCube("Neck3"), model.getCube("Head")};
 

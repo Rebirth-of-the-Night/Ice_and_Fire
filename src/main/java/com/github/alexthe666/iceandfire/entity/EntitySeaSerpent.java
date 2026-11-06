@@ -62,6 +62,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
     public static final Animation ANIMATION_ROAR = Animation.create(40);
     public static final int TIME_BETWEEN_JUMPS = 170;
     public static final int TIME_BETWEEN_ROARS = 300;
+    public static final int SWIM_CYCLE_STEP = 2;
     public static final ResourceLocation LOOT = LootTableList.register(new ResourceLocation("iceandfire", "sea_serpent"));
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(EntitySeaSerpent.class, DataSerializers.VARINT);
     private static final DataParameter<Float> SCALE = EntityDataManager.createKey(EntitySeaSerpent.class, DataSerializers.FLOAT);
@@ -463,11 +464,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
             ticksSinceJump = 0;
             setJumpingOutOfWater(true);
         }
-        if (this.swimCycle < 38) {
-            this.swimCycle += 2;
-        } else {
-            this.swimCycle = 0;
-        }
+        this.swimCycle = (this.swimCycle + SWIM_CYCLE_STEP) % 40;
         if (breathing && breathProgress < 20.0F) {
             breathProgress += 0.5F;
         } else if (!breathing && breathProgress > 0.0F) {
@@ -504,14 +501,6 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
         }
         renderYawOffset = rotationYaw;
         rotationPitch = MathHelper.clamp((float) motionY * 20F, -90, 90);
-        if (world.isRemote) {
-            pitch_buffer.calculateChainWaveBuffer(90, 10, 10F, 0.5F, this);
-
-            if (!jumping) {
-                tail_buffer.calculateChainSwingBuffer(70, 20, 5F, this);
-                head_buffer.calculateChainSwingBuffer(70, 20, 5F, this);
-            }
-        }
         if (changedSwimBehavior) {
             changedSwimBehavior = false;
         }
@@ -580,6 +569,23 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
             }
             if (this.swimBehavior == SwimBehavior.ATTACK && (this.getAttackTarget() == null || !isDirectPathBetweenPoints(new BlockPos(this.getAttackTarget())))) {
                 this.swimBehavior = SwimBehavior.WANDER;
+            }
+        }
+        if (isSwimmingNormally()) {
+            float turnRate = MathHelper.clamp(14.0F - getSeaSerpentScale(), 5.0F, 12.0F);
+            float yawDelta = MathHelper.wrapDegrees(rotationYaw - prevRotationYaw);
+            rotationYaw = prevRotationYaw + MathHelper.clamp(yawDelta, -turnRate, turnRate);
+            renderYawOffset = rotationYaw;
+            float pitchRate = turnRate * 0.5F;
+            rotationPitch = prevRotationPitch + MathHelper.clamp(rotationPitch - prevRotationPitch, -pitchRate, pitchRate);
+        }
+        if (world.isRemote) {
+            pitch_buffer.calculateChainWaveBuffer(90, 10, 10F, 0.5F, this);
+            if (!jumping) {
+                // Keep the chain buffers on the short side of the yaw wrap.
+                prevRenderYawOffset = renderYawOffset - MathHelper.wrapDegrees(renderYawOffset - prevRenderYawOffset);
+                tail_buffer.calculateChainSwingBuffer(70, 20, 5F, this);
+                head_buffer.calculateChainSwingBuffer(70, 20, 5F, this);
             }
         }
         if (this.getAnimation() == ANIMATION_BITE && this.getAttackTarget() != null && (this.isTouchingMob(this.getAttackTarget()) || this.getDistanceSq(this.getAttackTarget()) < 50)) {
@@ -889,6 +895,21 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
         return LOOT;
     }
 
+    private boolean isSwimmingNormally() {
+        // The client only receives the breach flag, while the server knows the planned launch.
+        boolean breaching = world.isRemote ? isJumpingOutOfWater() : swimBehavior == SwimBehavior.JUMP;
+        return isInWater() && !breaching;
+    }
+
+    @Override
+    protected float updateDistance(float movementYaw, float movementAmount) {
+        if (isSwimmingNormally()) {
+            // Keep vanilla's movement-facing adjustment from overriding the swim turn rate.
+            return movementAmount;
+        }
+        return super.updateDistance(movementYaw, movementAmount);
+    }
+
     @Override
     public void travel(float strafe, float vertical, float forward) {
         if (this.swimBehavior == SwimBehavior.JUMP && this.isJumpingOutOfWater() && this.getAttackTarget() == null) {
@@ -999,9 +1020,10 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
                         serpent.setJumpingOutOfWater(false);
                     }
                 } else {
-                    serpent.motionX += d0 / d3 * 0.5D * this.speed;
-                    serpent.motionY += d1 / d3 * 0.5D * this.speed;
-                    serpent.motionZ += d2 / d3 * 0.5D * this.speed;
+                    double thrust = (serpent.isSwimmingNormally() ? 0.4D : 0.5D) * this.speed;
+                    serpent.motionX += d0 / d3 * thrust;
+                    serpent.motionY += d1 / d3 * thrust;
+                    serpent.motionZ += d2 / d3 * thrust;
                     float f1 = (float) (-(MathHelper.atan2(d1, d3) * (180D / Math.PI)));
                     this.entity.rotationPitch = f1;
                     if (!serpent.isArcing) {
