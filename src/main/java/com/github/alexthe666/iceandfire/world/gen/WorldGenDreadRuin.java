@@ -1,6 +1,8 @@
 package com.github.alexthe666.iceandfire.world.gen;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.world.LocatableStructure;
+import com.github.alexthe666.iceandfire.world.StructureLocatorData;
 import com.github.alexthe666.iceandfire.world.gen.processor.DreadRuinProcessor;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
@@ -56,6 +58,7 @@ public class WorldGenDreadRuin {
         Biome biome = worldIn.getBiome(position);
         BlockPos genPos = position.add(offset);
         template.addBlocksToWorld(worldIn, genPos, new DreadRuinProcessor(position, settings, biome), settings, 2);
+        StructureLocatorData.record(worldIn, LocatableStructure.DREAD_RUIN, position);
         return true;
     }
 

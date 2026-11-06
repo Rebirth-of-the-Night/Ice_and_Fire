@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.world.gen;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.DragonUtils;
+import com.github.alexthe666.iceandfire.event.WorldGenEvents;
 import com.github.alexthe666.iceandfire.world.gen.processor.DreadRuinProcessor;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.BlockStairs;
@@ -79,7 +80,9 @@ public class WorldGenMausoleum extends WorldGenerator {
             BlockPos origin = position.subtract(Template.transformedBlockPos(settings,
                     new BlockPos(size.getX() / 2, 0, size.getZ() / 2)));
             Site candidate = findSite(world, terrain, size, origin, settings, facing);
-            if (candidate != null && (best == null || candidate.cost < best.cost)) {
+            if (candidate != null && (best == null || candidate.cost < best.cost)
+                    && !VillageAvoidance.intersects(world, candidate.column(-SNOW_MOUND_MARGIN, -SNOW_MOUND_MARGIN),
+                    candidate.column(size.getX() - 1 + SNOW_MOUND_MARGIN, size.getZ() - 1 + SNOW_MOUND_MARGIN))) {
                 best = candidate;
             }
         }
@@ -191,7 +194,7 @@ public class WorldGenMausoleum extends WorldGenerator {
 
     private BlockPos ground(World world, Map<BlockPos, BlockPos> terrain, BlockPos column) {
         return terrain.computeIfAbsent(new BlockPos(column.getX(), 0, column.getZ()), key -> {
-            BlockPos surface = world.getHeight(key).down();
+            BlockPos surface = WorldGenEvents.getHeight(world, key).down();
             while (surface.getY() > 1) {
                 Material material = world.getBlockState(surface).getMaterial();
                 if (material.isLiquid() || !(material.isReplaceable() || material == Material.LEAVES || material == Material.WOOD)) {

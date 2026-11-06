@@ -1,7 +1,10 @@
 package com.github.alexthe666.iceandfire.world.village;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.event.StructureSearch;
 import com.github.alexthe666.iceandfire.world.IafWorldRegistry;
+import com.github.alexthe666.iceandfire.world.LocatableStructure;
+import com.github.alexthe666.iceandfire.world.StructureLocatorData;
 import net.minecraft.init.Biomes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
@@ -44,9 +47,11 @@ public class MapGenSnowVillage extends WorldGenerator {
     public boolean generate(World world, Random rand, BlockPos position) {
         this.distance = 9;
         boolean canSpawn = canSpawnStructureAtCoords(world, position.getX() >> 4, position.getZ() >> 4);
-        if (new Random().nextInt(IceAndFire.CONFIG.generateSnowVillageChance + 1) == 0) {
+        if (new Random().nextInt(IceAndFire.CONFIG.generateSnowVillageChance + 1) == 0
+                || StructureSearch.getPopulationTarget(world, position) == LocatableStructure.SNOW_VILLAGE) {
             int new_size = 32;
             getStructureStart(world, position.getX() >> 4, position.getZ() >> 4, rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
+            StructureLocatorData.record(world, LocatableStructure.SNOW_VILLAGE, position);
         }
         return canSpawn;
     }

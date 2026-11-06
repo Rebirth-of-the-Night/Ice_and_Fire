@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.world.gen;
 import com.github.alexthe666.iceandfire.block.BlockGoldPile;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityCyclops;
+import com.github.alexthe666.iceandfire.event.WorldGenEvents;
 import net.minecraft.block.BlockBone;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockCarpet;
@@ -59,7 +60,7 @@ public class WorldGenCyclopsCave extends WorldGenerator {
         boolean[][] snow = new boolean[span][span];
         for (int x = -reach; x <= reach; x++) {
             for (int z = -reach; z <= reach; z++) {
-                BlockPos surface = worldIn.getHeight(position.add(x, 0, z)).down();
+                BlockPos surface = WorldGenEvents.getHeight(worldIn, position.add(x, 0, z)).down();
                 Material material = worldIn.getBlockState(surface).getMaterial();
                 snow[x + reach][z + reach] = material == Material.SNOW || material == Material.CRAFTED_SNOW;
                 while (surface.getY() > 1 && (material == Material.LEAVES || material == Material.WOOD

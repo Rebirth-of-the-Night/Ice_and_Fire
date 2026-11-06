@@ -2,8 +2,12 @@ package com.github.alexthe666.iceandfire.world.gen;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.EntityStoneStatue;
+import com.github.alexthe666.iceandfire.event.WorldGenEvents;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockStoneBrick;
+import net.minecraft.block.BlockStoneSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -148,11 +152,11 @@ public class WorldGenGorgonTemple extends WorldGenerator {
             if (previous.getBlock().isLeaves(previous, world, pos)) leavesBeforePlacement.add(pos);
             world.setBlockState(pos, state, 2);
         });
-        // Grading skips neighbor updates. Check the plant above and both halves of a clipped double plant.
+        // Grading skips neighbor updates. Check snow, plants, and both halves of clipped double plants.
         for (BlockPos pos : apron.keySet()) {
-            removeUnsupportedPlant(world, pos.down());
-            removeUnsupportedPlant(world, pos.up());
-            removeUnsupportedPlant(world, pos.up(2));
+            removeUnsupportedDecoration(world, pos.down());
+            removeUnsupportedDecoration(world, pos.up());
+            removeUnsupportedDecoration(world, pos.up(2));
         }
         // Placement and grading can also sever canopies from trees outside the clearing.
         for (BlockPos pos : leavesBeforePlacement) {
@@ -162,7 +166,110 @@ public class WorldGenGorgonTemple extends WorldGenerator {
         }
         clearUnsupportedLeaves(world, leafCandidates, treeBounds);
         placeChamberStatues(world, origin, settings);
+        placeOutlyingRuins(world, random, origin, settings);
         return true;
+    }
+
+    private static IBlockState ruinBrick(Random random) {
+        int roll = random.nextInt(4);
+        return Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT,
+                roll == 0 ? BlockStoneBrick.EnumType.MOSSY
+                        : roll == 1 ? BlockStoneBrick.EnumType.CRACKED : BlockStoneBrick.EnumType.DEFAULT);
+    }
+
+    private static IBlockState rubbleBlock(Random random) {
+        switch (random.nextInt(6)) {
+            case 0: return Blocks.COBBLESTONE.getDefaultState();
+            case 1: return Blocks.MOSSY_COBBLESTONE.getDefaultState();
+            case 2: return Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK);
+            case 3: return Blocks.COBBLESTONE_WALL.getDefaultState();
+            default: return ruinBrick(random);
+        }
+    }
+
+    /** Returns the free spot on top of the terrain at a local template coordinate, or null if unsuitable. */
+    private static BlockPos surfaceSpot(World world, BlockPos origin, PlacementSettings settings, int x, int z) {
+        BlockPos column = Template.transformedBlockPos(settings, new BlockPos(x, 0, z)).add(origin);
+        BlockPos ground = ground(world, column, false);
+        IBlockState state = world.getBlockState(ground);
+        if (state.getMaterial().isLiquid() || !state.isFullCube() || protectedBlock(world, ground, state)) return null;
+        BlockPos spot = ground.up();
+        IBlockState above = world.getBlockState(spot);
+        if (!world.isAirBlock(spot) && !above.getMaterial().isReplaceable() && !(above.getBlock() instanceof BlockBush)) {
+            return null;
+        }
+        return spot;
+    }
+
+    private static void setRuin(World world, BlockPos pos, IBlockState state) {
+        IBlockState existing = world.getBlockState(pos);
+        if (world.isAirBlock(pos) || existing.getMaterial().isReplaceable() || existing.getBlock() instanceof BlockBush) {
+            world.setBlockState(pos, state, 2);
+        }
+    }
+
+    /** Scatters broken wall stubs, lone pillars and stone rubble around the temple on the surrounding terrain. */
+    private static void placeOutlyingRuins(World world, Random random, BlockPos origin, PlacementSettings settings) {
+        // Ring of candidate positions: outside the stone floor (x 5..27, z 2..29), inside the graded apron.
+        int ruins = 2 + random.nextInt(3);
+        for (int i = 0; i < ruins * 4 && ruins > 0; i++) {
+            int x = 5 - 11 + random.nextInt(23 + 22);
+            int z = 2 - 11 + random.nextInt(28 + 22);
+            int dx = Math.max(5 - x, Math.max(0, x - 27));
+            int dz = Math.max(2 - z, Math.max(0, z - 29));
+            double distance = Math.sqrt(dx * dx + dz * dz);
+            if (distance < 3 || distance > 9) continue;
+            BlockPos base = surfaceSpot(world, origin, settings, x, z);
+            if (base == null) continue;
+            ruins--;
+            if (random.nextBoolean()) {
+                // Broken wall stub, running along one local axis and crumbling toward its ends.
+                boolean alongX = random.nextBoolean();
+                int length = 2 + random.nextInt(4);
+                int peak = 1 + random.nextInt(3);
+                for (int n = 0; n < length; n++) {
+                    BlockPos spot = surfaceSpot(world, origin, settings, x + (alongX ? n : 0), z + (alongX ? 0 : n));
+                    if (spot == null || Math.abs(spot.getY() - base.getY()) > 1) continue;
+                    int height = Math.max(1, peak - (n == 0 || n == length - 1 ? 1 : 0) - random.nextInt(2));
+                    for (int y = 0; y < height; y++) setRuin(world, spot.up(y), ruinBrick(random));
+                }
+            } else {
+                // Lone broken pillar.
+                int height = 2 + random.nextInt(3);
+                for (int y = 0; y < height; y++) {
+                    setRuin(world, base.up(y), y == height - 1 && random.nextBoolean()
+                            ? Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED)
+                            : Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED));
+                }
+            }
+            // Fallen blocks around the ruin.
+            for (int n = 0; n < 6; n++) {
+                BlockPos spot = surfaceSpot(world, origin, settings, x - 3 + random.nextInt(7), z - 3 + random.nextInt(7));
+                if (spot != null) setRuin(world, spot, rubbleBlock(random));
+            }
+        }
+        // Loose rubble strewn across the grounds and the temple approaches.
+        for (int i = 0; i < 70; i++) {
+            int x = 5 - 9 + random.nextInt(23 + 18);
+            int z = 2 - 9 + random.nextInt(28 + 18);
+            int dx = Math.max(5 - x, Math.max(0, x - 27));
+            int dz = Math.max(2 - z, Math.max(0, z - 29));
+            if (dx == 0 && dz == 0) continue;
+            if (dx * dx + dz * dz > 81) continue;
+            BlockPos spot = surfaceSpot(world, origin, settings, x, z);
+            if (spot == null) continue;
+            setRuin(world, spot, rubbleBlock(random));
+            if (random.nextInt(4) == 0) {
+                // Small piles of two or three blocks.
+                BlockPos next = spot.offset(EnumFacing.HORIZONTALS[random.nextInt(4)]);
+                BlockPos pileSpot = ground(world, next, false).up();
+                IBlockState pileGround = world.getBlockState(pileSpot.down());
+                if (world.isAirBlock(pileSpot) && pileGround.isFullCube() && !pileGround.getMaterial().isLiquid()
+                        && !protectedBlock(world, pileSpot.down(), pileGround)) {
+                    setRuin(world, pileSpot, rubbleBlock(random));
+                }
+            }
+        }
     }
 
     private static void placeChamberStatues(World world, BlockPos origin, PlacementSettings settings) {
@@ -179,10 +286,12 @@ public class WorldGenGorgonTemple extends WorldGenerator {
         }
     }
 
-    private static void removeUnsupportedPlant(World world, BlockPos pos) {
+    private static void removeUnsupportedDecoration(World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-        if (state.getBlock() instanceof BlockBush && !((BlockBush) state.getBlock()).canBlockStay(world, pos, state)
-                && !protectedBlock(world, pos, state)) {
+        Block block = state.getBlock();
+        boolean unsupported = block == Blocks.SNOW_LAYER && !block.canPlaceBlockAt(world, pos)
+                || block instanceof BlockBush && !((BlockBush) block).canBlockStay(world, pos, state);
+        if (unsupported && !protectedBlock(world, pos, state)) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
         }
     }
@@ -206,7 +315,7 @@ public class WorldGenGorgonTemple extends WorldGenerator {
     }
 
     private static BlockPos ground(World world, BlockPos column, boolean skipLiquid) {
-        BlockPos pos = world.getHeight(column).down();
+        BlockPos pos = WorldGenEvents.getHeight(world, column).down();
         while (pos.getY() > 1) {
             IBlockState state = world.getBlockState(pos);
             if (!skipLiquid && state.getMaterial().isLiquid()) break;
@@ -248,6 +357,7 @@ public class WorldGenGorgonTemple extends WorldGenerator {
         for (BlockPos pos : wood) {
             if (protectedBlock(world, pos, world.getBlockState(pos))) continue;
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
+            removeUnsupportedDecoration(world, pos.up());
             for (int x = -4; x <= 4; x++) for (int y = -4; y <= 4; y++) for (int z = -4; z <= 4; z++) {
                 BlockPos leaf = pos.add(x, y, z);
                 if (!bounds.isVecInside(leaf)) continue;
@@ -309,6 +419,8 @@ public class WorldGenGorgonTemple extends WorldGenerator {
                 if (leafState.getBlock() instanceof BlockLeaves && !leafState.getValue(BlockLeaves.DECAYABLE)) continue;
                 if (!protectedBlock(world, leaf, leafState)) {
                     world.setBlockState(leaf, Blocks.AIR.getDefaultState(), 2);
+                    // Snow resting on the canopy would otherwise be left floating.
+                    removeUnsupportedDecoration(world, leaf.up());
                 }
             }
         }

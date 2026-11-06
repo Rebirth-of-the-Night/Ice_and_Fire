@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.world;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.BlockReturningState;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
+import com.github.alexthe666.iceandfire.event.StructureSearch;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenDreadRuin;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenDreadSpike;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenDreadwoodTree;
@@ -62,7 +63,7 @@ public class BiomeDreadLands extends Biome {
             BlockPos blockpos = worldIn.getHeight(pos.add(k6, -1, l));
             DREAD_SPIKE.generate(worldIn, rand, blockpos);
         }
-        if (rand.nextFloat() < 0.05F) {
+        if (rand.nextFloat() < 0.05F || StructureSearch.getPopulationTarget(worldIn, pos) == LocatableStructure.DREAD_RUIN) {
             int k6 = rand.nextInt(16) + 8;
             int l = rand.nextInt(16) + 8;
             BlockPos blockpos = worldIn.getHeight(pos.add(k6, -1, l));
