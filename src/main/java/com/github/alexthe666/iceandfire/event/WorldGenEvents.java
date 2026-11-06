@@ -420,9 +420,9 @@ public class WorldGenEvents implements IWorldGenerator {
                 if (random.nextInt(IceAndFire.CONFIG.generateMausoleumChance + 1) == 0) {
                     BlockPos surface = world.getHeight(new BlockPos(x, 0, z));
                     surface = degradeSurface(world, surface);
-                    new WorldGenMausoleum(EnumFacing.byHorizontalIndex(random.nextInt(3))).generate(world, random, surface);
-                    lastMausoleum = surface;
-                    //boolean leninWouldBeProud = true;
+                    if (new WorldGenMausoleum(EnumFacing.byHorizontalIndex(random.nextInt(4))).generate(world, random, surface)) {
+                        lastMausoleum = surface;
+                    }
                 }
             }
         }
