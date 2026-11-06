@@ -188,7 +188,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
     }
 
     protected void initEntityAI() {
-        this.tasks.addTask(0, new SeaSerpentAIGetInWater(this, 1.0D));
+        this.tasks.addTask(0, new SeaSerpentAIGetInWater(this));
         this.tasks.addTask(1, new EntitySeaSerpent.AISwimBite());
         this.tasks.addTask(1, new EntitySeaSerpent.AISwimWander());
         this.tasks.addTask(1, new EntitySeaSerpent.AISwimCircle());
@@ -460,7 +460,9 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
         if (isJumpingOutOfWater() && isWaterBlock(world, new BlockPos(this).up(2))) {
             setJumpingOutOfWater(false);
         }
-        if (!isJumpingOutOfWater() && !isWaterBlock(world, new BlockPos(this).up()) && (ticksSinceJump > TIME_BETWEEN_JUMPS || this.getAttackTarget() != null)) {
+        if (ground) {
+            setJumpingOutOfWater(false);
+        } else if (!this.isLandNavigator && !isJumpingOutOfWater() && !isWaterBlock(world, new BlockPos(this).up()) && (ticksSinceJump > TIME_BETWEEN_JUMPS || this.getAttackTarget() != null)) {
             ticksSinceJump = 0;
             setJumpingOutOfWater(true);
         }
@@ -485,7 +487,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
         } else if (!this.isJumpingOutOfWater() && jumpRot > 0.0F) {
             jumpRot -= 0.1F;
         }
-        if (prevJumping != this.isJumpingOutOfWater() && !this.isJumpingOutOfWater()) {
+        if (!ground && prevJumping && !this.isJumpingOutOfWater()) {
             this.playSound(IafSoundRegistry.SEA_SERPENT_SPLASH, 5F, 0.75F);
             spawnSlamParticles(EnumParticleTypes.FIREWORKS_SPARK);
             spawnSlamParticles(EnumParticleTypes.WATER_BUBBLE);
@@ -493,7 +495,8 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
             spawnSlamParticles(EnumParticleTypes.WATER_BUBBLE);
             this.doSplashDamage();
         }
-        if (!ground && this.isLandNavigator) {
+        // Keep ground navigation through short hops while returning to water.
+        if (this.isInWater() && this.isLandNavigator) {
             switchNavigator(false);
         }
         if (ground && !this.isLandNavigator) {
@@ -565,7 +568,9 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
             }
             if (this.swimBehavior == SwimBehavior.ATTACK && this.getAttackTarget() != null && !this.getAttackTarget().isInWater()) {
                 this.swimBehavior = SwimBehavior.WANDER;
-                this.faceEntity(this.getAttackTarget(), 360, 360);
+                if (this.isInWater()) {
+                    this.faceEntity(this.getAttackTarget(), 360, 360);
+                }
             }
             if (this.swimBehavior == SwimBehavior.ATTACK && (this.getAttackTarget() == null || !isDirectPathBetweenPoints(new BlockPos(this.getAttackTarget())))) {
                 this.swimBehavior = SwimBehavior.WANDER;
@@ -918,7 +923,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
         float f4;
         if (this.isServerWorld()) {
             if (this.isInWater()) {
-                this.moveRelative(strafe, vertical, forward, 0.1F);
+                this.moveRelative(strafe, vertical, forward, swimBehavior == SwimBehavior.JUMP ? 0.1F : 0.08F);
                 f4 = 0.6F;
                 float d0 = (float) EnchantmentHelper.getDepthStriderModifier(this);
                 if (d0 > 3.0F) {
@@ -1020,7 +1025,7 @@ public class EntitySeaSerpent extends EntityAnimal implements IAnimatedEntity, I
                         serpent.setJumpingOutOfWater(false);
                     }
                 } else {
-                    double thrust = (serpent.isSwimmingNormally() ? 0.4D : 0.5D) * this.speed;
+                    double thrust = (serpent.isSwimmingNormally() ? 0.32D : 0.5D) * this.speed;
                     serpent.motionX += d0 / d3 * thrust;
                     serpent.motionY += d1 / d3 * thrust;
                     serpent.motionZ += d2 / d3 * thrust;
