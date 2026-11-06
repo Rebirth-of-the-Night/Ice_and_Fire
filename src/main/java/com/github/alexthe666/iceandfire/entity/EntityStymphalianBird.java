@@ -32,6 +32,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -51,6 +52,9 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
     private static final int FLIGHT_CHANCE_PER_TICK = 100;
     private static final int HOME_RADIUS = 32;
     private static final double PECK_REACH_SQ = 1.5D;
+    private static final double MELEE_LANDING_DISTANCE_SQ = 16.0D;
+    private static final double VOLLEY_GROUND_CLEARANCE = 6.0D;
+    private static final double VOLLEY_CIRCLE_RADIUS = 5.0D;
     private static final int SHORT_VOLLEY_COOLDOWN = 40;
     private static final int LONG_VOLLEY_COOLDOWN = 200;
     private static final DataParameter<Optional<UUID>> VICTOR_ENTITY = EntityDataManager.createKey(EntityStymphalianBird.class, DataSerializers.OPTIONAL_UNIQUE_ID);
@@ -70,6 +74,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
     private int airBorneCounter;
     private int volleyCooldown;
     private boolean nextVolleyUsesLongCooldown;
+    private boolean circleDuringCooldown;
     private boolean returningHome;
 
     public EntityStymphalianBird(World worldIn) {
@@ -89,6 +94,16 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new StymphalianBirdAIFlee(this, 10));
         this.tasks.addTask(3, new EntityAIAttackMelee(this, 1.5D, false) {
+            @Override
+            public boolean shouldExecute() {
+                return !shouldCircleDuringCooldown() && super.shouldExecute();
+            }
+
+            @Override
+            public boolean shouldContinueExecuting() {
+                return !shouldCircleDuringCooldown() && super.shouldContinueExecuting();
+            }
+
             @Override
             protected double getAttackReachSqr(EntityLivingBase target) {
                 return PECK_REACH_SQ;
@@ -146,6 +161,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
         tag.setBoolean("ReturningHome", this.returningHome);
         tag.setInteger("VolleyCooldown", this.volleyCooldown);
         tag.setBoolean("NextVolleyUsesLongCooldown", this.nextVolleyUsesLongCooldown);
+        tag.setBoolean("CircleDuringCooldown", this.circleDuringCooldown);
     }
 
     @Override
@@ -173,6 +189,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
         this.returningHome = tag.getBoolean("ReturningHome");
         this.volleyCooldown = tag.getInteger("VolleyCooldown");
         this.nextVolleyUsesLongCooldown = tag.getBoolean("NextVolleyUsesLongCooldown");
+        this.circleDuringCooldown = tag.getBoolean("CircleDuringCooldown");
     }
 
     public boolean isFlying() {
@@ -302,6 +319,9 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
         if (this.getAttackTarget() != null && (this.getAttackTarget() instanceof EntityPlayer && ((EntityPlayer) this.getAttackTarget()).isCreative() || this.getVictor() != null && this.isVictor(this.getAttackTarget()))) {
             this.setAttackTarget(null);
         }
+        EntityLivingBase attackTarget = this.getAttackTarget();
+        boolean volleyCoolingDown = attackTarget != null && attackTarget.isEntityAlive()
+                && this.volleyCooldown > 0 && this.getAnimation() != ANIMATION_SHOOT_ARROWS;
         if (this.flock == null) {
             StymphalianBirdFlock otherFlock = StymphalianBirdFlock.getNearbyFlock(this);
             if (otherFlock == null) {
@@ -311,7 +331,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
                 this.flock.addToFlock(this);
             }
         } else {
-            if (!this.flock.isLeader(this) && !this.returningHome) {
+            if (!this.flock.isLeader(this) && !this.returningHome && !volleyCoolingDown) {
                 double dist = this.getDistanceSq(this.flock.getLeader());
                 if (dist > 360) {
                     this.setFlying(true);
@@ -329,6 +349,8 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
             }
             this.flock.update();
         }
+        boolean stayingAirborne = false;
+        boolean climbingForVolley = false;
         if (!world.isRemote && this.getAttackTarget() != null && !this.getAttackTarget().isDead) {
             double dist = this.getDistanceSq(this.getAttackTarget());
             if (this.getAnimation() == ANIMATION_PECK && this.getAnimationTick() == 7) {
@@ -340,9 +362,18 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
                 }
             }
             if (this.volleyCooldown == 0 && this.getAnimation() != ANIMATION_PECK && this.getAnimation() != ANIMATION_SHOOT_ARROWS && dist > 3 && dist < 225) {
-                this.setAnimation(ANIMATION_SHOOT_ARROWS);
-                this.volleyCooldown = this.nextVolleyUsesLongCooldown ? LONG_VOLLEY_COOLDOWN : SHORT_VOLLEY_COOLDOWN;
-                this.nextVolleyUsesLongCooldown = !this.nextVolleyUsesLongCooldown;
+                if (this.hasVolleyClearance(VOLLEY_GROUND_CLEARANCE)) {
+                    this.setAnimation(ANIMATION_SHOOT_ARROWS);
+                    this.volleyCooldown = this.nextVolleyUsesLongCooldown ? LONG_VOLLEY_COOLDOWN : SHORT_VOLLEY_COOLDOWN;
+                    this.nextVolleyUsesLongCooldown = !this.nextVolleyUsesLongCooldown;
+                    this.circleDuringCooldown = this.rand.nextInt(3) == 0;
+                } else if (this.posY < IceAndFire.CONFIG.stymphalianBirdFlightHeight
+                        && this.world.getCollisionBoxes(this, this.getEntityBoundingBox().offset(0, 0.35D, 0)).isEmpty()) {
+                    this.setFlying(true);
+                    this.airTarget = null;
+                    this.motionY = 0.35D;
+                    climbingForVolley = true;
+                }
             }
             if (this.getAnimation() == ANIMATION_SHOOT_ARROWS) {
                 EntityLivingBase target = this.getAttackTarget();
@@ -370,8 +401,8 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
                     this.setFlying(true);
                 }
             } else if (this.volleyCooldown > 0) {
-                this.setFlying(false);
-                this.airTarget = null;
+                this.circleDuringCooldown = this.shouldCircleDuringCooldown() && this.circleTarget(attackTarget);
+                stayingAirborne = this.circleDuringCooldown || this.approachMeleeTarget(attackTarget);
             }
         }
         StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(this, StoneEntityProperties.class);
@@ -388,10 +419,14 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
             this.flyHome();
         } else if (this.isFlying() && getAttackTarget() == null) {
             flyAround();
-        } else if (getAttackTarget() != null) {
+        } else if (getAttackTarget() != null && !climbingForVolley) {
             flyTowardsTarget();
         }
-        if (!world.isRemote && !this.returningHome && this.doesWantToLand() && !aiFlightLaunch && this.getAnimation() != ANIMATION_SHOOT_ARROWS) {
+        if (!world.isRemote && this.getAnimation() == ANIMATION_SHOOT_ARROWS && this.motionY < 0.0D
+                && !this.hasVolleyClearance(VOLLEY_GROUND_CLEARANCE + 1.0D)) {
+            this.motionY = 0.0D;
+        }
+        if (!world.isRemote && !this.returningHome && !stayingAirborne && !climbingForVolley && this.doesWantToLand() && !aiFlightLaunch && this.getAnimation() != ANIMATION_SHOOT_ARROWS) {
             this.setFlying(false);
             this.airTarget = null;
         }
@@ -401,7 +436,7 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
             this.flyTicks = 0;
             this.aiFlightLaunch = true;
         }
-        if (!world.isRemote && !this.returningHome && this.onGround && this.isFlying() && !aiFlightLaunch && this.getAnimation() != ANIMATION_SHOOT_ARROWS) {
+        if (!world.isRemote && !this.returningHome && !stayingAirborne && !climbingForVolley && this.onGround && this.isFlying() && !aiFlightLaunch && this.getAnimation() != ANIMATION_SHOOT_ARROWS) {
             this.setFlying(false);
             this.airTarget = null;
         }
@@ -437,6 +472,43 @@ public class EntityStymphalianBird extends EntityCreature implements IAnimatedEn
         if (this.posY > IceAndFire.CONFIG.stymphalianBirdFlightHeight) {
             this.setPosition(this.posX, IceAndFire.CONFIG.stymphalianBirdFlightHeight, this.posZ);
         }
+    }
+
+    private boolean hasVolleyClearance(double clearance) {
+        AxisAlignedBB below = this.getEntityBoundingBox().expand(0, -clearance, 0);
+        return this.world.getCollisionBoxes(this, below).isEmpty() && !this.world.containsAnyLiquid(below);
+    }
+
+    private boolean shouldCircleDuringCooldown() {
+        return this.circleDuringCooldown && this.volleyCooldown > 0
+                && this.isFlying() && this.getAnimation() != ANIMATION_SHOOT_ARROWS;
+    }
+
+    private boolean circleTarget(EntityLivingBase target) {
+        double angle = Math.atan2(this.posZ - target.posZ, this.posX - target.posX) + Math.PI / 4.0D;
+        double height = Math.min(target.posY + VOLLEY_GROUND_CLEARANCE + 1.0D, IceAndFire.CONFIG.stymphalianBirdFlightHeight - 1.0D);
+        BlockPos waypoint = new BlockPos(target.posX + Math.cos(angle) * VOLLEY_CIRCLE_RADIUS,
+                height, target.posZ + Math.sin(angle) * VOLLEY_CIRCLE_RADIUS);
+        if (this.collidedHorizontally || !this.world.isAirBlock(waypoint)) {
+            return false;
+        }
+        this.airTarget = waypoint;
+        return true;
+    }
+
+    private boolean approachMeleeTarget(EntityLivingBase target) {
+        double dx = target.posX - this.posX;
+        double dz = target.posZ - this.posZ;
+        if (this.isFlying() && !this.collidedHorizontally && dx * dx + dz * dz > MELEE_LANDING_DISTANCE_SQ) {
+            BlockPos approachPos = new BlockPos(target.posX, target.posY + target.getEyeHeight(), target.posZ);
+            if (this.world.isAirBlock(approachPos)) {
+                this.airTarget = approachPos;
+                return true;
+            }
+        }
+        this.setFlying(false);
+        this.airTarget = null;
+        return false;
     }
 
     private void updateHomeRange() {
