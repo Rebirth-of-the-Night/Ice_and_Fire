@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.entity;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.ai.DreadAIMountDragon;
 import com.github.alexthe666.iceandfire.entity.ai.DreadAITargetNonDread;
+import com.github.alexthe666.iceandfire.event.DreadCastleProtection;
 import com.github.alexthe666.iceandfire.item.IafItemRegistry;
 import com.google.common.base.Predicate;
 import net.ilexiconn.llibrary.server.animation.Animation;
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.DifficultyInstance;
@@ -146,6 +148,15 @@ public class EntityDreadQueen extends EntityDreadMob implements IAnimatedEntity,
     @Override
     public boolean isNoDespawnRequired() {
         return true;
+    }
+
+    @Override
+    public void onDeath(DamageSource cause) {
+        boolean wasDead = this.dead;
+        super.onDeath(cause);
+        if (!wasDead && this.dead && !this.world.isRemote) {
+            DreadCastleProtection.onBossDefeated(this);
+        }
     }
 
     @Override

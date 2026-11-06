@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.client.render;
 
+import com.github.alexthe666.iceandfire.world.dimension.WorldProviderDreadLands;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -44,9 +45,9 @@ public class RenderDreadlandsWeather extends IRenderHandler {
         if(lightTexture == null){
             lightTexture = mc.getTextureManager().getDynamicTextureLocation("lightMap", this.lightmapTexture);
         }
-        float f = 1.0F;//mc.world.getRainStrength(partialTicks);
+        float intensity = ((WorldProviderDreadLands) world.provider).getSnowfallIntensity();
         rendererUpdateCount++;
-        if (f > 0.0F) {
+        if (intensity > 0.0F) {
             this.enableLightmap(mc);
             Entity entity = mc.getRenderViewEntity();
             int i = MathHelper.floor(entity.posX);
@@ -76,6 +77,11 @@ public class RenderDreadlandsWeather extends IRenderHandler {
             BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
             for (int k1 = k - i1; k1 <= k + i1; ++k1) {
                 for (int l1 = i - i1; l1 <= i + i1; ++l1) {
+                    this.random.setSeed((long) (l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
+                    // Keep the same sparse columns from frame to frame so the snow does not flicker.
+                    if (intensity < 1.0F && this.random.nextFloat() >= intensity) {
+                        continue;
+                    }
                     int i2 = (k1 - k + 16) * 32 + l1 - i + 16;
                     double d3 = (double) this.rainXCoords[i2] * 0.75D;
                     double d4 = (double) this.rainYCoords[i2] * 0.5D;
@@ -102,7 +108,6 @@ public class RenderDreadlandsWeather extends IRenderHandler {
                         }
 
                         if (k2 != l2) {
-                            this.random.setSeed((long) (l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
                             blockpos$mutableblockpos.setPos(l1, k2, k1);
                             // float f2 = biome.getTemperature(blockpos$mutableblockpos);
                             double d8 = (double) (-((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F);
@@ -111,7 +116,7 @@ public class RenderDreadlandsWeather extends IRenderHandler {
                             double d11 = (double) ((float) l1 + 0.5F) - entity.posX;
                             double d12 = (double) ((float) k1 + 0.5F) - entity.posZ;
                             float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) i1;
-                            float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * f;
+                            float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * intensity;
                             blockpos$mutableblockpos.setPos(l1, i3, k1);
                             int i4 = (world.getCombinedLight(blockpos$mutableblockpos, 0) * 3 + 15728880) / 4;
                             int j4 = i4 >> 16 & 65535;

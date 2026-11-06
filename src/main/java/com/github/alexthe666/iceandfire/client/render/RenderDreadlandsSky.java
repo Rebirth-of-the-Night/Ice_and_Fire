@@ -312,11 +312,15 @@ public class RenderDreadlandsSky extends IRenderHandler {
             }
         }
 
+        GlStateManager.popMatrix();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        if (f16 > 0.0F) {
+            float phase = (world.getTotalWorldTime() % 1200L + partialTicks) * ((float) Math.PI * 2.0F / 1200.0F);
+            RenderDreadlandsAurora.render(mc, phase, f16);
+        }
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableFog();
-        GlStateManager.popMatrix();
         GlStateManager.disableTexture2D();
         GlStateManager.color(0.0F, 0.0F, 0.0F);
         double d3 = mc.player.getPositionEyes(partialTicks).y - world.getHorizon();

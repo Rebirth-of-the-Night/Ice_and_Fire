@@ -14,7 +14,6 @@ import com.github.alexthe666.iceandfire.client.model.util.*;
 import com.github.alexthe666.iceandfire.client.particle.*;
 import com.github.alexthe666.iceandfire.client.entity.EntityFishingSalmon;
 import com.github.alexthe666.iceandfire.client.render.FishingRippleRenderer;
-import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsAurora;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsSky;
 import com.github.alexthe666.iceandfire.client.render.RenderDreadlandsWeather;
 import com.github.alexthe666.iceandfire.client.render.entity.*;
@@ -121,7 +120,6 @@ public class ClientProxy extends CommonProxy {
     private int thirdPersonViewDragon = 0;
     private final IRenderHandler dreadlandsWeatherRenderer = new RenderDreadlandsWeather();
     private final IRenderHandler dreadlandsSkyRenderer = new RenderDreadlandsSky();
-    private final IRenderHandler dreadlandsAuroraRender = new RenderDreadlandsAurora();
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
@@ -646,9 +644,6 @@ public class ClientProxy extends CommonProxy {
         }
         if (i == 1) {
             return dreadlandsWeatherRenderer;
-        }
-        if (i == 2) {
-            return dreadlandsAuroraRender;
         }
         return null;
     }

@@ -85,11 +85,22 @@ public class ServerEvents {
     };
     private final Random rand = new Random();
     @SubscribeEvent
-    public void syncDragonTamingConfig(PlayerEvent.PlayerLoggedInEvent event) {
+    public void syncPlayerDataOnLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        DreadCastleProtection.syncWeather(event.player);
         if (event.player instanceof net.minecraft.entity.player.EntityPlayerMP) {
             IceAndFire.NETWORK_WRAPPER.sendTo(new com.github.alexthe666.iceandfire.message.MessageDragonTamingConfig(
                     IceAndFire.CONFIG), (net.minecraft.entity.player.EntityPlayerMP) event.player);
         }
+    }
+
+    @SubscribeEvent
+    public void syncDreadlandsWeatherOnTravel(PlayerEvent.PlayerChangedDimensionEvent event) {
+        DreadCastleProtection.syncWeather(event.player);
+    }
+
+    @SubscribeEvent
+    public void syncDreadlandsWeatherOnRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        DreadCastleProtection.syncWeather(event.player);
     }
 
 

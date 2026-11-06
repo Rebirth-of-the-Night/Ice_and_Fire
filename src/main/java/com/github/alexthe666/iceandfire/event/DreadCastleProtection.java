@@ -3,8 +3,11 @@ package com.github.alexthe666.iceandfire.event;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntityDreadQueen;
+import com.github.alexthe666.iceandfire.message.MessageDreadlandsWeather;
+import com.github.alexthe666.iceandfire.world.dimension.WorldProviderDreadLands;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -157,12 +160,20 @@ public class DreadCastleProtection {
         return !data.defeatedBosses.isEmpty();
     }
 
+    public static void syncWeather(EntityPlayer player) {
+        if (player instanceof EntityPlayerMP && player.world.provider instanceof WorldProviderDreadLands) {
+            IceAndFire.NETWORK_WRAPPER.sendTo(new MessageDreadlandsWeather(hasBossBeenDefeated(player.world)),
+                    (EntityPlayerMP) player);
+        }
+    }
+
     public static void onBossDefeated(EntityDreadQueen boss) {
         World world = boss.world;
-        if (!world.isRemote) {
+        if (!world.isRemote && world.provider instanceof WorldProviderDreadLands) {
             CastleProtectionData data = CastleProtectionData.get(world);
             data.markBossDefeated(boss.getUniqueID());
             for (EntityPlayer player : world.playerEntities) {
+                syncWeather(player);
                 player.sendMessage(new TextComponentTranslation("message.iceandfire.dread_castle_defeated"));
             }
         }
