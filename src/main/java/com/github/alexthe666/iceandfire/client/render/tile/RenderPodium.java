@@ -13,7 +13,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class RenderPodium extends TileEntitySpecialRenderer<TileEntityPodium> {
@@ -78,9 +77,8 @@ public class RenderPodium extends TileEntitySpecialRenderer<TileEntityPodium> {
                 //if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new RenderPodiumItemEvent(this, podium, f, x, y, z))) {
                     GL11.glPushMatrix();
                     float f2 = ((float) podium.prevTicksExisted + (podium.ticksExisted - podium.prevTicksExisted) * f);
-                    float f3 = MathHelper.sin(f2 / 10.0F) * 0.1F + 0.1F;
-                    GL11.glTranslatef((float) x + 0.5F, (float) y + 1.55F + f3, (float) z + 0.5F);
-                    float f4 = (f2 / 20.0F) * (180F / (float) Math.PI);
+                    GL11.glTranslatef((float) x + 0.5F, (float) y + 1.65F, (float) z + 0.5F);
+                    float f4 = (f2 / 40.0F) * (180F / (float) Math.PI);
                     GlStateManager.rotate(f4, 0.0F, 1.0F, 0.0F);
                     GL11.glPushMatrix();
                     Minecraft.getMinecraft().getItemRenderer().renderItem(Minecraft.getMinecraft().player, podium.getStackInSlot(0), ItemCameraTransforms.TransformType.GROUND);

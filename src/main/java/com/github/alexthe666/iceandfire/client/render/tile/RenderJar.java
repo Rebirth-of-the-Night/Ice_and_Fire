@@ -52,18 +52,14 @@ public class RenderJar extends TileEntitySpecialRenderer<TileEntityJar> {
             }
             if (entity != null && entity.getWorld() != null) {
 
-                if (entity.hasProduced) {
-                    GL11.glTranslatef(0F, 0.90F, 0F);
-                } else {
-                    GL11.glTranslatef(0F, 0.60F, 0F);
-                }
+                GL11.glTranslatef(0F, 0.9625F, 0F);
                 GL11.glDisable(GL11.GL_CULL_FACE);
                 GlStateManager.rotate(this.interpolateRotation(entity.prevRotationYaw, entity.rotationYaw, f), 0.0F, 1.0F, 0.0F);
                 GL11.glScalef(0.50F, 0.50F, 0.50F);
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
                 OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0F);
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                MODEL_PIXIE.animateInJar(entity.hasProduced, entity, 0);
+                MODEL_PIXIE.animateInJar(true, entity, f);
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
                 GL11.glEnable(GL11.GL_CULL_FACE);
             }

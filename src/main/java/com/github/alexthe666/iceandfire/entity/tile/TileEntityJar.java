@@ -16,6 +16,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 
 import javax.annotation.Nullable;
@@ -36,6 +37,7 @@ public class TileEntityJar extends TileEntity implements ITickable {
     public NonNullList<ItemStack> pixieItems = NonNullList.withSize(1, ItemStack.EMPTY);
     public float rotationYaw;
     public float prevRotationYaw;
+    private float targetRotationYaw;
     net.minecraftforge.items.IItemHandler handlerBottom = new PixieJarInvWrapper(this);
     private final Random rand;
 
@@ -97,7 +99,7 @@ public class TileEntityJar extends TileEntity implements ITickable {
     @Override
     public void update() {
         ticksExisted++;
-        if (this.world.isRemote && this.hasPixie) {
+        if (this.world.isRemote && this.hasPixie && this.rand.nextFloat() < 0.3F) {
             IceAndFire.PROXY.spawnParticle("if_pixie", this.pos.getX() + 0.5F + (double) (this.rand.nextFloat() * PARTICLE_WIDTH * 2F) - (double) PARTICLE_WIDTH, this.pos.getY() + (double) (this.rand.nextFloat() * PARTICLE_HEIGHT), this.pos.getZ() + 0.5F + (double) (this.rand.nextFloat() * PARTICLE_WIDTH * 2F) - (double) PARTICLE_WIDTH, EntityPixie.PARTICLE_RGB[this.pixieType][0], EntityPixie.PARTICLE_RGB[this.pixieType][1], EntityPixie.PARTICLE_RGB[this.pixieType][2]);
         }
         if (ticksExisted % 24000 == 0 && !this.hasProduced && this.hasPixie) {
@@ -113,9 +115,12 @@ public class TileEntityJar extends TileEntity implements ITickable {
             world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5, IafSoundRegistry.PIXIE_HURT, SoundCategory.NEUTRAL, 1, 1, false);
         }
         prevRotationYaw = rotationYaw;
-        if (rand.nextInt(30) == 0) {
-            this.rotationYaw = (rand.nextFloat() * 360F) - 180F;
+        if (rand.nextInt(120) == 0) {
+            this.targetRotationYaw = this.rotationYaw + (rand.nextFloat() - 0.5F) * 40F;
         }
+        // Seated pixies turn gently instead of snapping to a random direction in one tick.
+        float yawDifference = MathHelper.wrapDegrees(this.targetRotationYaw - this.rotationYaw);
+        this.rotationYaw += MathHelper.clamp(yawDifference, -0.25F, 0.25F);
         if (this.hasPixie && ticksExisted % 40 == 0 && this.rand.nextInt(6) == 0) {
             this.world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5, IafSoundRegistry.PIXIE_IDLE, SoundCategory.NEUTRAL, 1, 1, false);
         }
