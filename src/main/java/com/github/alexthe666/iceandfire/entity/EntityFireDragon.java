@@ -35,11 +35,27 @@ import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nullable;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Random;
 
 public class EntityFireDragon extends EntityDragonBase {
 
     private static final DataParameter<Boolean> SMOKING = EntityDataManager.createKey(EntityFireDragon.class, DataSerializers.BOOLEAN);
+    private static final double FIRE_BREATH_SPEED = 5.0D; // Blocks per tick.
+    private final Deque<FireBreathPulse> fireBreathPulses = new ArrayDeque<>();
+
+    private static final class FireBreathPulse {
+        private Vec3d position;
+        private final Vec3d target;
+        private final boolean smoke;
+
+        private FireBreathPulse(Vec3d position, Vec3d target, boolean smoke) {
+            this.position = position;
+            this.target = target;
+            this.smoke = smoke;
+        }
+    }
 
     public static final float[] growth_stage_1 = new float[]{1F, 3F};
     public static final float[] growth_stage_2 = new float[]{3F, 7F};
@@ -163,41 +179,63 @@ public class EntityFireDragon extends EntityDragonBase {
             return;
         }
         this.getNavigator().clearPath();
-        this.burnParticleX = burnX;
-        this.burnParticleY = burnY;
-        this.burnParticleZ = burnZ;
         Vec3d headPos = getHeadPosition();
-        double d2 = burnX - headPos.x;
-        double d3 = burnY - headPos.y;
-        double d4 = burnZ - headPos.z;
-        double distance = Math.max(5 * this.getDistance(burnX, burnY, burnZ), 0);
-        double conqueredDistance = shouldBurnFire(world) / 40D * distance;
-        int increment = (int) Math.ceil(conqueredDistance / 100);
-        for (int i = 0; i < conqueredDistance; i += increment) {
-            double progressX = headPos.x + d2 * (distance / (float) distance);
-            double progressY = headPos.y + d3 * (distance / (float) distance);
-            double progressZ = headPos.z + d4 * (distance / (float) distance);
-
-            if (canPositionBeSeen(progressX, progressY, progressZ)) {
-                if (world.isRemote && rand.nextInt(5) == 0) {
+        Vec3d target = new Vec3d(burnX, burnY, burnZ);
+        double distance = headPos.distanceTo(target);
+        if (!Double.isFinite(distance)) {
+            return;
+        }
+        if (world.isRemote) {
+            RayTraceResult hit = world.rayTraceBlocks(headPos, target, false, true, false);
+            Vec3d particleTarget = hit == null ? target : hit.hitVec;
+            this.burnParticleX = particleTarget.x;
+            this.burnParticleY = particleTarget.y;
+            this.burnParticleZ = particleTarget.z;
+            int particleSamples = Math.max(5, (int) Math.min(100, distance * 5));
+            for (int i = 0; i < particleSamples; i++) {
+                if (rand.nextInt(5) == 0) {
                     IceAndFire.PROXY.spawnDragonParticle(getIsSmoking() ? "dragonsmoke" : "dragonfire", headPos.x, headPos.y, headPos.z, 0, 0, 0, this);
                 }
+            }
+        } else if (isActuallyBreathingFire() && !isModelDead()) {
+            fireBreathPulses.add(new FireBreathPulse(headPos, target, getIsSmoking()));
+        }
+    }
+
+    @Override
+    public void onUpdate() {
+        if (!world.isRemote) {
+            if (isModelDead()) {
+                fireBreathPulses.clear();
             } else {
-                if (!world.isRemote) {
-                    RayTraceResult result = this.world.rayTraceBlocks(new Vec3d(this.posX, this.posY + (double) this.getEyeHeight(), this.posZ), new Vec3d(progressX, progressY, progressZ), false, true, false);
-                    if (result != null) {
-                        BlockPos pos = result.getBlockPos();
-                        IafDragonDestructionManager.destroyAreaFire(world, pos, this, getIsSmoking());
-                    }
-                }
+                advanceFireBreath();
             }
         }
-        if (shouldBurnFire(world) >= 40D && canPositionBeSeen(burnX, burnY, burnZ)) {
-            double spawnX = burnX + (rand.nextFloat() * 3.0) - 1.5;
-            double spawnY = burnY + (rand.nextFloat() * 3.0) - 1.5;
-            double spawnZ = burnZ + (rand.nextFloat() * 3.0) - 1.5;
-            if (!world.isRemote) {
-                IafDragonDestructionManager.destroyAreaFire(world, new BlockPos(spawnX, spawnY, spawnZ), this, getIsSmoking());
+        super.onUpdate();
+    }
+
+    private void advanceFireBreath() {
+        int activePulses = fireBreathPulses.size();
+        for (int i = 0; i < activePulses; i++) {
+            FireBreathPulse pulse = fireBreathPulses.removeFirst();
+            double distance = pulse.position.distanceTo(pulse.target);
+            boolean arrived = distance <= FIRE_BREATH_SPEED;
+            Vec3d next = pulse.target;
+            if (!arrived) {
+                Vec3d step = pulse.target.subtract(pulse.position).scale(FIRE_BREATH_SPEED / distance);
+                next = pulse.position.add(step);
+            }
+            if (!world.isBlockLoaded(new BlockPos(next))) {
+                continue;
+            }
+
+            RayTraceResult hit = world.rayTraceBlocks(pulse.position, next, false, true, false);
+            if (hit != null || arrived) {
+                BlockPos impact = hit != null ? hit.getBlockPos() : new BlockPos(next);
+                IafDragonDestructionManager.destroyAreaFire(world, impact, this, pulse.smoke);
+            } else {
+                pulse.position = next;
+                fireBreathPulses.addLast(pulse);
             }
         }
     }
