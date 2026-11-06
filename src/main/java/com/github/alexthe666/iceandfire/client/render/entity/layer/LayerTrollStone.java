@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.client.render.entity.layer;
 
+import com.github.alexthe666.iceandfire.client.render.SafeRender;
 import com.github.alexthe666.iceandfire.entity.EntityTroll;
 import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
@@ -21,11 +22,16 @@ public class LayerTrollStone implements LayerRenderer<EntityLivingBase> {
         if (entitylivingbaseIn instanceof EntityTroll) {
             EntityTroll troll = (EntityTroll) entitylivingbaseIn;
             StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(troll, StoneEntityProperties.class);
-            if (properties != null && properties.isStone) {
-                GL11.glEnable(GL11.GL_CULL_FACE);
-                this.renderer.bindTexture(troll.getType().TEXTURE_STONE);
-                this.renderer.getMainModel().render(entitylivingbaseIn, f, 0, 0, f3, f4, f5);
-                GL11.glDisable(GL11.GL_CULL_FACE);
+            if (properties != null && properties.isStone && !SafeRender.isFallback()) {
+                try {
+                    GL11.glEnable(GL11.GL_CULL_FACE);
+                    this.renderer.bindTexture(troll.getType().TEXTURE_STONE);
+                    this.renderer.getMainModel().render(entitylivingbaseIn, f, 0, 0, f3, f4, f5);
+                } catch (Throwable t) {
+                    SafeRender.reportFailure("Troll stone layer", t);
+                } finally {
+                    GL11.glDisable(GL11.GL_CULL_FACE);
+                }
             }
         }
     }

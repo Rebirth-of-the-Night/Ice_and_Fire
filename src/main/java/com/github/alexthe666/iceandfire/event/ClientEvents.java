@@ -2,6 +2,7 @@ package com.github.alexthe666.iceandfire.event;
 
 import com.github.alexthe666.iceandfire.ClientProxy;
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.client.render.SafeRender;
 import com.github.alexthe666.iceandfire.client.IafKeybindRegistry;
 import com.github.alexthe666.iceandfire.client.gui.IceAndFireMainMenu;
 import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
@@ -51,6 +52,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class ClientEvents {
+    private static boolean hiddenForStoneRender = false;
     @SubscribeEvent
     public void onTridentHand(RenderSpecificHandEvent event) {
         EntityPlayer player = Minecraft.getMinecraft().player;
@@ -212,6 +214,29 @@ public class ClientEvents {
             }
         }
 
+    }
+
+    private void renderIceCube(RenderLivingEvent.Post<?> event, FrozenEntityProperties frozenProps) {
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.enableNormalize();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        float sideExpand = 0.25F;
+            AxisAlignedBB axisalignedbb1 = new AxisAlignedBB(event.getEntity().getRenderBoundingBox().minX - event.getEntity().posX + event.getX() - sideExpand, event.getEntity().getRenderBoundingBox().minY - event.getEntity().posY + event.getY(), event.getEntity().getRenderBoundingBox().minZ - event.getEntity().posZ + event.getZ() - sideExpand, event.getEntity().getRenderBoundingBox().maxX - event.getEntity().posX + event.getX() + sideExpand, event.getEntity().getRenderBoundingBox().maxY - event.getEntity().posY + event.getY() + sideExpand, event.getEntity().getRenderBoundingBox().maxZ - event.getEntity().posZ + event.getZ() + sideExpand);
+        if (SafeRender.isFallback()) {
+            GlStateManager.disableTexture2D();
+            GlStateManager.color(0.6F, 0.8F, 1.0F, 0.5F);
+        } else {
+            event.getRenderer().bindTexture(getIceTexture(frozenProps.ticksUntilUnfrozen));
+        }
+        try {
+            renderAABB(axisalignedbb1, 0, 0, 0);
+        } finally {
+            GlStateManager.enableTexture2D();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.disableBlend();
+            GlStateManager.disableNormalize();
+        }
     }
 
     private static ResourceLocation getIceTexture(int ticksFrozen) {
@@ -376,7 +401,13 @@ public class ClientEvents {
             StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(event.getEntity(), StoneEntityProperties.class);
             if (properties != null && properties.isStone) {
                 properties.freezePose((EntityLiving) event.getEntity());
-                event.getEntity().setInvisible(true);
+                if (SafeRender.isFallback()) {
+                    GlStateManager.color(0.55F, 0.55F, 0.55F, 1.0F);
+                    hiddenForStoneRender = false;
+                } else {
+                    event.getEntity().setInvisible(true);
+                    hiddenForStoneRender = true;
+                }
             }
         }
     }
@@ -474,16 +505,11 @@ public class ClientEvents {
         }
         FrozenEntityProperties frozenProps = EntityPropertiesHandler.INSTANCE.getProperties(entity, FrozenEntityProperties.class);
         if (frozenProps != null && frozenProps.isFrozen) {
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.enableNormalize();
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            float sideExpand = 0.25F;
-            AxisAlignedBB axisalignedbb1 = new AxisAlignedBB(event.getEntity().getRenderBoundingBox().minX - event.getEntity().posX + event.getX() - sideExpand, event.getEntity().getRenderBoundingBox().minY - event.getEntity().posY + event.getY(), event.getEntity().getRenderBoundingBox().minZ - event.getEntity().posZ + event.getZ() - sideExpand, event.getEntity().getRenderBoundingBox().maxX - event.getEntity().posX + event.getX() + sideExpand, event.getEntity().getRenderBoundingBox().maxY - event.getEntity().posY + event.getY() + sideExpand, event.getEntity().getRenderBoundingBox().maxZ - event.getEntity().posZ + event.getZ() + sideExpand);
-            event.getRenderer().bindTexture(getIceTexture(frozenProps.ticksUntilUnfrozen));
-            renderAABB(axisalignedbb1, 0, 0, 0);
-            GlStateManager.disableBlend();
-            GlStateManager.disableNormalize();
+            try {
+                renderIceCube(event, frozenProps);
+            } catch (Throwable t) {
+                SafeRender.reportFailure("Ice cube", t);
+            }
         }
         MiscEntityProperties miscProps = EntityPropertiesHandler.INSTANCE.getProperties(entity, MiscEntityProperties.class);
         if (miscProps != null && miscProps.glarers.size() > 0) {
@@ -561,7 +587,13 @@ public class ClientEvents {
         if (event.getEntity() instanceof EntityLiving) {
             StoneEntityProperties stoneProps = EntityPropertiesHandler.INSTANCE.getProperties(event.getEntity(), StoneEntityProperties.class);
             if (stoneProps != null && stoneProps.isStone) {
-                event.getEntity().setInvisible(false);
+                if (hiddenForStoneRender) {
+                    event.getEntity().setInvisible(false);
+                    hiddenForStoneRender = false;
+                }
+                if (SafeRender.isFallback()) {
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                }
             }
         }
     }

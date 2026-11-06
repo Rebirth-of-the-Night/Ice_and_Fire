@@ -10,6 +10,7 @@ import java.util.List;
 public class IceAndFireConfig {
     public boolean enableDreadlands = true;
     public boolean dreadlandsVanillaSnow = false;
+    public boolean safeStoneIceRender = false;
     public boolean enableStructureLocator = false;
     public boolean customMainMenu = true;
     public boolean useVanillaFont = false;
@@ -444,6 +445,8 @@ public class IceAndFireConfig {
         //Dreadlands
         this.enableDreadlands = config.getBoolean("Enable Dreadlands", "all", true, "Enable dreadland dimension.");
         this.dreadlandsVanillaSnow = config.getBoolean("Dreadlands Vanilla Snow", "all", false, "Use the normal Minecraft snow look in the Dreadlands instead of the thick dread snow. The snow also no longer fades after the Dread Queen is defeated.");
+
+        this.safeStoneIceRender = config.getBoolean("Safe Stone And Ice Rendering", "all", false, "Enable if petrified mobs or frozen (ice cube) mobs turn invisible, freeze in place or lose their textures on your graphics card. Mobs are drawn with a plain grey/blue tint instead of the stone and ice overlay textures. This is also enabled automatically for the session if a render error occurs.");
 
         //Castle
         this.maxDreadSpawnerEntities = config.getInt("Dread Spawner Entity Counts)", "all", 2, 1, 100, "Maximum counts of Entities can once spawned by a Dread Spawner");

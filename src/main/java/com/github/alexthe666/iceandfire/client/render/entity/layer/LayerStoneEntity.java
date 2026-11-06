@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.client.render.entity.layer;
 import com.github.alexthe666.iceandfire.client.model.ICustomStatueModel;
 import com.github.alexthe666.iceandfire.client.model.ModelGuardianStatue;
 import com.github.alexthe666.iceandfire.client.model.ModelHorseStatue;
+import com.github.alexthe666.iceandfire.client.render.SafeRender;
 import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,7 +31,19 @@ public class LayerStoneEntity<T extends EntityLivingBase> implements LayerRender
     public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float f, float f1, float i, float f2, float f3, float f4, float f5) {
         if (entitylivingbaseIn instanceof EntityLiving) {
             StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(entitylivingbaseIn, StoneEntityProperties.class);
-            if (properties != null && properties.isStone) {
+            if (properties != null && properties.isStone && !SafeRender.isFallback()) {
+                try {
+                    renderStone(entitylivingbaseIn, f, f3, f4, f5);
+                } catch (Throwable t) {
+                    SafeRender.reportFailure("Stone layer", t);
+                }
+            }
+        }
+    }
+
+    private void renderStone(EntityLivingBase entitylivingbaseIn, float f, float f3, float f4, float f5) {
+        {
+            {
                 float x = Math.max(this.renderer.getMainModel().textureWidth, 1) / 16F; //default to 4
                 float y = Math.max(this.renderer.getMainModel().textureHeight, 1) / 16F; //default to 2
                 GlStateManager.enableBlend();

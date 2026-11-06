@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.client.render.entity.layer;
 
+import com.github.alexthe666.iceandfire.client.render.SafeRender;
 import com.github.alexthe666.iceandfire.entity.EntityStoneStatue;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
@@ -21,7 +22,17 @@ public class LayerStonePlayerEntityCrack implements LayerRenderer<EntityStoneSta
         float x = Math.max(this.renderer.getMainModel().textureWidth, 1) / 16F; //default to 4
         float y = Math.max(this.renderer.getMainModel().textureHeight, 1) / 16F; //default to 2
         int breakCount = ((EntityStoneStatue) entitylivingbaseIn).getCrackAmount();
-        if (breakCount > 0) {
+        if (breakCount > 0 && !SafeRender.isFallback()) {
+            try {
+                renderCrack(entitylivingbaseIn, f, f1, f2, f3, f4, f5, x, y, breakCount);
+            } catch (Throwable t) {
+                SafeRender.reportFailure("Statue crack layer", t);
+            }
+        }
+    }
+
+    private void renderCrack(EntityStoneStatue entitylivingbaseIn, float f, float f1, float f2, float f3, float f4, float f5, float x, float y, int breakCount) {
+        {
             GlStateManager.enableNormalize();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);

@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.client.render.entity.layer;
 import com.github.alexthe666.iceandfire.client.model.ICustomStatueModel;
 import com.github.alexthe666.iceandfire.client.model.ModelGuardianStatue;
 import com.github.alexthe666.iceandfire.client.model.ModelHorseStatue;
+import com.github.alexthe666.iceandfire.client.render.SafeRender;
 import com.github.alexthe666.iceandfire.client.model.ModelTroll;
 import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
@@ -31,7 +32,19 @@ public class LayerStoneEntityCrack implements LayerRenderer<EntityLivingBase> {
     public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float f, float f1, float i, float f2, float f3, float f4, float f5) {
         if (entitylivingbaseIn instanceof EntityLiving) {
             StoneEntityProperties properties = EntityPropertiesHandler.INSTANCE.getProperties(entitylivingbaseIn, StoneEntityProperties.class);
-            if (properties != null && properties.isStone && properties.breakLvl > 0) {
+            if (properties != null && properties.isStone && properties.breakLvl > 0 && !SafeRender.isFallback()) {
+                try {
+                    renderCrack(entitylivingbaseIn, properties, f, f3, f4, f5);
+                } catch (Throwable t) {
+                    SafeRender.reportFailure("Stone crack layer", t);
+                }
+            }
+        }
+    }
+
+    private void renderCrack(EntityLivingBase entitylivingbaseIn, StoneEntityProperties properties, float f, float f3, float f4, float f5) {
+        {
+            {
                 float x = Math.max(this.renderer.getMainModel().textureWidth, 1) / 16F; //default to 4
                 float y = Math.max(this.renderer.getMainModel().textureHeight, 1) / 16F; //default to 2
 
