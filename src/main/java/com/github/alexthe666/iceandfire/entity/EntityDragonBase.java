@@ -175,6 +175,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public String armorResLoc = "0|0|0|0";
     public boolean lookingForRoostAIFlag = false;
     private boolean isSleeping;
+    private int awakeTicksSinceHungerLoss;
     private boolean isSitting;
     private boolean isHovering;
     private boolean isFlying;
@@ -511,6 +512,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
         compound.setInteger("Hunger", this.getHunger());
+        compound.setInteger("AwakeTicksSinceHungerLoss", this.awakeTicksSinceHungerLoss);
         compound.setInteger("AgeTicks", this.getAgeInTicks());
         compound.setBoolean("Gender", this.isMale());
         compound.setInteger("Variant", this.getVariant());
@@ -550,6 +552,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public void readEntityFromNBT(NBTTagCompound compound) {
         super.readEntityFromNBT(compound);
         this.setHunger(compound.getInteger("Hunger"));
+        this.awakeTicksSinceHungerLoss = MathHelper.clamp(compound.getInteger("AwakeTicksSinceHungerLoss"), 0, IceAndFire.CONFIG.dragonHungerTickRate - 1);
         this.setAgeInTicks(compound.getInteger("AgeTicks"));
         this.setGender(compound.getBoolean("Gender"));
         this.setVariant(compound.getInteger("Variant"));
@@ -1589,7 +1592,8 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                 this.growDragon(0);
             }
         }
-        if (this.getAgeInTicks() % IceAndFire.CONFIG.dragonHungerTickRate == 0) {
+        if (!this.world.isRemote && !this.isSleeping() && ++this.awakeTicksSinceHungerLoss >= IceAndFire.CONFIG.dragonHungerTickRate) {
+            this.awakeTicksSinceHungerLoss = 0;
             if (this.getHunger() > 0) {
                 this.setHunger(this.getHunger() - 1);
             }
@@ -2017,10 +2021,12 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         if (!this.world.isRemote) {
             StoneEntityProperties capability = EntityPropertiesHandler.INSTANCE.getProperties(this, StoneEntityProperties.class);
             if (capability != null && !capability.isStone) {
-                if (!this.isInWater() && !this.isSleeping() && this.onGround && !this.isFlying() && !this.isHovering() && this.getAttackTarget() == null && !this.isTimeToWake() && this.getRNG().nextInt(250) == 0 && this.getAttackTarget() == null && this.getPassengers().isEmpty()) {
+                if (!this.isInWater() && !this.isSleeping() && this.onGround && !this.isFlying() && !this.isHovering() && this.getAttackTarget() == null && this.getPassengers().isEmpty()
+                        && !this.isTimeToWake() && this.getRNG().nextInt(50) == 0) {
                     this.setSleeping(true);
                 }
-                if (this.isSleeping() && (this.isFlying() || this.isHovering() || this.isInWater() || (this.world.canBlockSeeSky(new BlockPos(this)) && this.isTimeToWake() && !this.isTamed() || this.isTimeToWake() && this.isTamed()) || this.getAttackTarget() != null || !this.getPassengers().isEmpty())) {
+                if (this.isSleeping() && (this.isFlying() || this.isHovering() || this.isInWater() || this.getAttackTarget() != null || !this.getPassengers().isEmpty()
+                        || (this.isTimeToWake() && (this.isTamed() || this.world.canBlockSeeSky(new BlockPos(this)))))) {
                     this.setSleeping(false);
                 }
                 if (this.isSitting() && this.getControllingPassenger() != null) {

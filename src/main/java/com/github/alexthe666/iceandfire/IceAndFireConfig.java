@@ -256,7 +256,7 @@ public class IceAndFireConfig {
         this.explosiveDragonBreath = config.getBoolean("Explosive Dragon Breath", "all", false, "True if dragons fire/ice/lightning charges create secondary explosions that launch blocks everywhere. Turn this to true if you like unfair explosions. Or lag.");
         this.dragonTargetSearchLength = config.getInt("Dragon Target Search Length", "all", 128, 1, 10000, "How many blocks away can dragons spot potential prey. Note that increasing this could cause lag.");
         this.dragonWanderFromHomeDistance = config.getInt("Dragon Wander From Home Distance", "all", 40, 1, 10000, "How many blocks away can dragons wander from their defined \"home\" position.");
-        this.dragonHungerTickRate = config.getInt("Dragon Hunger Tick Rate", "all", 3000, 1, 10000, "Every interval of this number in ticks, dragon hunger decreases.");
+        this.dragonHungerTickRate = config.getInt("Dragon Hunger Tick Rate", "all", 3000, 1, 10000, "Awake ticks between losing one hunger point, including dragons with aging disabled. 20 ticks = 1 second.");
         this.dragonFlightChance = config.getFloat("Dragon Flight Chance Per Tick", "all", 0.000666F, 0F, 1F, "Every tick a RNG decides whether this dragon should start flying or not, based on this chance");
         this.dragonIceImmuneEntities = config.getStringList("Entities immune to dragon ice", "all", new String[0], "Entities listed here will not be affected by dragon ice freezing");
         this.dragonFireImmuneEntities = config.getStringList("Entities immune to dragon fire", "all", new String[0], "Entities listed here will not be affected by dragon fire burning");

@@ -140,6 +140,7 @@ public class WorldGenIceDragonRoosts extends WorldGenerator {
             dragon.homePos = new HomePosition(position, worldIn);
             dragon.hasHomePosition = true;
             dragon.setHunger(50);
+            dragon.setSleeping(true);
             worldIn.spawnEntity(dragon);
         }
 
