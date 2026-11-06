@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.item;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.compat.OceanicExpanseCompat;
 import com.github.alexthe666.iceandfire.compat.spartanweaponry.SpartanWeaponryCompat;
 import com.github.alexthe666.iceandfire.entity.EntityTideTrident;
 import com.google.common.collect.HashMultimap;
@@ -181,7 +182,15 @@ public class ItemTideTrident extends Item {
         }
         int i = this.getMaxItemUseDuration(stack) - timeLeft;
         if (i < 0) return;
-        float f = getArrowVelocity(i) * 3.0F;
+        if (OceanicExpanseCompat.handleRiptideRelease(stack, worldIn, entity, timeLeft)) {
+            return;
+        }
+        float charge = getArrowVelocity(i);
+        int riptide = OceanicExpanseCompat.getRiptideLevel(stack);
+        if (riptide > 0 && charge < 0.6F) {
+            return;
+        }
+        float f = (riptide > 0 ? riptide * 0.8F : charge) * 3.0F;
         EntityTideTrident trident = new EntityTideTrident(worldIn, entity);
         trident.setWeapon(stack);
         trident.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, f, 1.0F);
@@ -212,6 +221,9 @@ public class ItemTideTrident extends Item {
         ItemStack itemStackIn = player.getHeldItem(hand);
         if (isEmpty(itemStackIn)) {
             return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
+        }
+        if (!OceanicExpanseCompat.canCharge(itemStackIn, worldIn, player)) {
+            return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
         }
         player.setActiveHand(hand);
         return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);

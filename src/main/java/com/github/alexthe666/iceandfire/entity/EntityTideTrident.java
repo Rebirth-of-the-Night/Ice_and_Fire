@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.compat.OceanicExpanseCompat;
 import com.github.alexthe666.iceandfire.compat.spartanweaponry.SpartanWeaponryCompat;
 import com.github.alexthe666.iceandfire.item.ItemTideTrident;
 import com.google.common.base.Predicate;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.common.registry.IThrowableEntity;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 /*
  *
@@ -53,6 +55,8 @@ public class EntityTideTrident extends EntityArrow implements IThrowableEntity {
     private int knockbackStrength;
     private boolean isReturning = false;
     private boolean playedReturnSound = false;
+    private boolean channeledLightning;
+    private UUID shooterId;
 
     public EntityTideTrident(World world) {
         super(world);
@@ -89,18 +93,21 @@ public class EntityTideTrident extends EntityArrow implements IThrowableEntity {
         }
         this.getDataManager().set(WEAPON, stack);
         this.getDataManager().setDirty(WEAPON);
-        if (SpartanWeaponryCompat.hasReturnEnchantment()) {
-            this.getDataManager().set(RETURN, (byte) EnchantmentHelper.getEnchantmentLevel(SpartanWeaponryCompat.getReturnEnchantment(), stack));
-            this.getDataManager().setDirty(RETURN);
-        }
+        int spartanReturn = SpartanWeaponryCompat.hasReturnEnchantment()
+                ? EnchantmentHelper.getEnchantmentLevel(SpartanWeaponryCompat.getReturnEnchantment(), stack) : 0;
+        int loyalty = OceanicExpanseCompat.getLevel(OceanicExpanseCompat.LOYALTY, stack);
+        this.getDataManager().set(RETURN, (byte) Math.max(spartanReturn, loyalty));
     }
 
     public void onUpdate() {
+        if (this.shootingEntity == null && this.shooterId != null && this.world instanceof WorldServer) {
+            this.shootingEntity = ((WorldServer) this.world).getEntityFromUuid(this.shooterId);
+        }
         Vec3d vec3d;
-        if (this.timeInGround > 4 || this.noClip || this.isReturning && this.shootingEntity != null) {
+        if (this.shootingEntity != null && (this.timeInGround > 4 || this.noClip || this.isReturning)) {
             int returnLevel = this.getDataManager().get(RETURN);
             if (returnLevel > 0 && this.shootingEntity.isEntityAlive() && (!(this.shootingEntity instanceof EntityPlayerMP) || !((EntityPlayer) this.shootingEntity).isSpectator())) {
-                if (!this.isReturning) {
+                if (!this.isReturning || !this.noClip) {
                     this.noClip = true;
                     this.inGround = false;
                     this.isReturning = true;
@@ -119,9 +126,11 @@ public class EntityTideTrident extends EntityArrow implements IThrowableEntity {
                 this.motionY = vec3d.y;
                 this.motionZ = vec3d.z;
                 if (!this.playedReturnSound) {
-                    SoundEvent returnSound = SpartanWeaponryCompat.getReturnSoundEvent();
+                    boolean loyalty = OceanicExpanseCompat.getLevel(OceanicExpanseCompat.LOYALTY, this.getArrowStack()) > 0;
+                    SoundEvent returnSound = loyalty ? OceanicExpanseCompat.tridentSound("return") : SpartanWeaponryCompat.getReturnSoundEvent();
                     if (returnSound != null) {
-                        this.world.playSound(null, this.posX, this.posY, this.posZ, returnSound, SoundCategory.NEUTRAL, 10.0F, 0.1F);
+                        this.world.playSound(null, this.posX, this.posY, this.posZ, returnSound, SoundCategory.NEUTRAL,
+                                loyalty ? 1.0F : 10.0F, loyalty ? 1.0F : 0.1F);
                     }
                     this.playedReturnSound = true;
                 }
@@ -367,6 +376,10 @@ public class EntityTideTrident extends EntityArrow implements IThrowableEntity {
                     }
 
                     this.arrowHit(entitylivingbase);
+                    if (!this.channeledLightning) {
+                        this.channeledLightning = OceanicExpanseCompat.channelLightning(this.getArrowStack(), this.world,
+                                entitylivingbase.getPosition(), entitylivingbase, null);
+                    }
 
                     if (this.shootingEntity != null && entitylivingbase != this.shootingEntity && entitylivingbase instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP) {
                         ((EntityPlayerMP)this.shootingEntity).connection.sendPacket(new SPacketChangeGameState(6, 0.0F));
@@ -388,6 +401,10 @@ public class EntityTideTrident extends EntityArrow implements IThrowableEntity {
                         this.setDead();
                     }
                 }
+            }
+            if (!this.world.isRemote && !this.isDead && this.shootingEntity != null
+                    && OceanicExpanseCompat.getLevel(OceanicExpanseCompat.LOYALTY, this.getArrowStack()) > 0) {
+                this.noClip = true;
             }
         }  else {
             if (!this.noClip) {
@@ -413,6 +430,10 @@ public class EntityTideTrident extends EntityArrow implements IThrowableEntity {
                 this.posZ -= this.motionZ / (double)f2 * 0.05000000074505806;
                 this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
                 this.inGround = true;
+                if (!this.channeledLightning) {
+                    this.channeledLightning = OceanicExpanseCompat.channelLightning(this.getArrowStack(), this.world,
+                            blockpos.offset(raytraceResultIn.sideHit), null, blockpos);
+                }
                 this.arrowShake = 7;
                 this.setIsCritical(false);
                 if (iblockstate.getMaterial() != Material.AIR) {
@@ -437,6 +458,13 @@ public class EntityTideTrident extends EntityArrow implements IThrowableEntity {
         compound.setByte("pickup", (byte) this.pickupStatus.ordinal());
         compound.setDouble("damage", this.getDamage());
         compound.setBoolean("crit", this.getIsCritical());
+        compound.setTag("Weapon", this.getArrowStack().writeToNBT(new NBTTagCompound()));
+        compound.setBoolean("ChanneledLightning", this.channeledLightning);
+        compound.setBoolean("Returning", this.isReturning || this.noClip);
+        UUID owner = this.shootingEntity == null ? this.shooterId : this.shootingEntity.getUniqueID();
+        if (owner != null) {
+            compound.setUniqueId("Shooter", owner);
+        }
     }
 
     @Override
@@ -468,6 +496,12 @@ public class EntityTideTrident extends EntityArrow implements IThrowableEntity {
         }
 
         this.setIsCritical(compound.getBoolean("crit"));
+        if (compound.hasKey("Weapon", 10)) {
+            this.setWeapon(new ItemStack(compound.getCompoundTag("Weapon")));
+        }
+        this.channeledLightning = compound.getBoolean("ChanneledLightning");
+        this.isReturning = compound.getBoolean("Returning");
+        this.shooterId = compound.hasUniqueId("Shooter") ? compound.getUniqueId("Shooter") : null;
     }
 
     protected void attemptDropAsItem() {
@@ -521,7 +555,7 @@ public class EntityTideTrident extends EntityArrow implements IThrowableEntity {
     }
 
     @Override
-    protected ItemStack getArrowStack() {
+    public ItemStack getArrowStack() {
         return this.getDataManager().get(WEAPON);
     }
 }

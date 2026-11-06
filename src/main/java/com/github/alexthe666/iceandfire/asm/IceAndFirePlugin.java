@@ -19,6 +19,7 @@ public class IceAndFirePlugin implements IFMLLoadingPlugin {
                 "com.github.alexthe666.iceandfire.asm.EntityLivingBaseTransformer",
                 "com.github.alexthe666.iceandfire.asm.LayerArmorBaseTransformer",
                 "com.github.alexthe666.iceandfire.asm.TridentPoseTransformer",
+                "com.github.alexthe666.iceandfire.asm.OceanicExpanseTridentTransformer",
                 "com.github.alexthe666.iceandfire.asm.LLibraryPatronTransformer"
         };
     }
