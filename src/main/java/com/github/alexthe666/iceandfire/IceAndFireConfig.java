@@ -89,7 +89,7 @@ public class IceAndFireConfig {
     public boolean generateCyclopsCaves = true;
     public boolean generateWanderingCyclops = true;
     public int spawnWanderingCyclopsChance = 900;
-    public int spawnCyclopsCaveChance = 170;
+    public int spawnCyclopsCaveChance = 60;
     public int cyclopesSheepSearchLength = 17;
     public double cyclopsMaxHealth = 150;
     public double cyclopsAttackStrength = 15;
@@ -293,7 +293,7 @@ public class IceAndFireConfig {
         this.pixiesStealItems = config.getBoolean("Pixies Steal Items", "all", true, "True if pixies are allowed to steal from players");
 
         this.generateCyclopsCaves = config.getBoolean("Spawn Cyclopes Caves", "all", true, "True if cyclops caves are allowed to spawn");
-        this.spawnCyclopsCaveChance = config.getInt("Spawn Cyclops Cave Chance", "all", 170, 1, 10000, "1 out of this number chance per chunk for generation");
+        this.spawnCyclopsCaveChance = config.getInt("Spawn Cyclops Cave Chance", "all", 60, 1, 10000, "1 out of this number chance per chunk for generation");
 
         this.generateWanderingCyclops = config.getBoolean("Spawn Wandering Cyclopes", "all", true, "True if wandering cyclopes are allowed to spawn");
         this.spawnWanderingCyclopsChance = config.getInt("Spawn Wandering Cyclops Chance", "all", 900, 1, 10000, "1 out of this number chance per chunk for generation");
