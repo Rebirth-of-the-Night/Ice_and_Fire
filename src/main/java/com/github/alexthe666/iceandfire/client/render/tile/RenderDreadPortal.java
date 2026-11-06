@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.client.render.tile;
 
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDreadPortal;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -15,6 +16,7 @@ import java.util.Random;
 
 public class RenderDreadPortal extends TileEntitySpecialRenderer<TileEntityDreadPortal> {
 	private static final ResourceLocation END_SKY_TEXTURE = new ResourceLocation("iceandfire:textures/environment/dread_portal_background.png");
+	private static final ResourceLocation RETURN_PORTAL_BACKGROUND = new ResourceLocation("iceandfire:textures/environment/dread_portal_return.png");
 	private static final ResourceLocation END_PORTAL_TEXTURE = new ResourceLocation("iceandfire:textures/environment/dread_portal.png");
 	private static final Random RANDOM = new Random(31100L);
 	private static final FloatBuffer MODELVIEW = GLAllocation.createDirectFloatBuffer(16);
@@ -22,6 +24,9 @@ public class RenderDreadPortal extends TileEntitySpecialRenderer<TileEntityDread
 	private final FloatBuffer buffer = GLAllocation.createDirectFloatBuffer(16);
 
     public void render(TileEntityDreadPortal te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+        boolean inDreadlands = te != null && te.hasWorld()
+                && te.getWorld().provider.getDimension() == IceAndFire.CONFIG.dreadlandsDimensionId;
+        ResourceLocation backgroundTexture = inDreadlands ? RETURN_PORTAL_BACKGROUND : END_SKY_TEXTURE;
         GlStateManager.disableLighting();
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 0.0F);
         RANDOM.setSeed(31100L);
@@ -38,7 +43,7 @@ public class RenderDreadPortal extends TileEntitySpecialRenderer<TileEntityDread
             float f1 = 2.0F / (float) (18 - j);
 
             if (j == 0) {
-                Minecraft.getMinecraft().getTextureManager().bindTexture(END_SKY_TEXTURE);
+                Minecraft.getMinecraft().getTextureManager().bindTexture(backgroundTexture);
                 f1 = 0.85F;
                 GlStateManager.enableBlend();
                 GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
@@ -133,7 +138,7 @@ public class RenderDreadPortal extends TileEntitySpecialRenderer<TileEntityDread
             tessellator.draw();
             GlStateManager.popMatrix();
             GlStateManager.matrixMode(5888);
-            Minecraft.getMinecraft().getTextureManager().bindTexture(END_SKY_TEXTURE);
+            Minecraft.getMinecraft().getTextureManager().bindTexture(backgroundTexture);
         }
 
         GlStateManager.disableBlend();
