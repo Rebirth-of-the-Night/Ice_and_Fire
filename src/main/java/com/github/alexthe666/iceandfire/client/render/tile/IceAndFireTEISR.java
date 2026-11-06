@@ -27,7 +27,7 @@ public class IceAndFireTEISR extends TileEntityItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack itemStackIn) {
-        if (itemStackIn.getItem() instanceof ItemTideTrident) {
+        if (itemStackIn.getItem() instanceof ItemTideTrident && !ItemTideTrident.isEmpty(itemStackIn)) {
             boolean culling = GL11.glIsEnabled(GL11.GL_CULL_FACE);
             GlStateManager.pushMatrix();
             try {

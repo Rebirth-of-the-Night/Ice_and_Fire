@@ -1,5 +1,7 @@
 package com.github.alexthe666.iceandfire.client.model;
 
+import com.github.alexthe666.iceandfire.item.IafItemRegistry;
+import com.github.alexthe666.iceandfire.item.ItemTideTrident;
 import java.util.List;
 import java.util.Collections;
 import javax.vecmath.Matrix4f;
@@ -10,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -31,6 +34,13 @@ public final class TideTridentItemModel implements IBakedModel {
         this.icon = icon;
         this.held = held;
         this.charging = charging;
+    }
+
+    @SubscribeEvent
+    public static void registerItemColors(ColorHandlerEvent.Item event) {
+        event.getItemColors().registerItemColorHandler(
+                (stack, tintIndex) -> ItemTideTrident.isEmpty(stack) ? 0x888888 : 0xFFFFFF,
+                IafItemRegistry.tide_trident);
     }
 
     @SubscribeEvent

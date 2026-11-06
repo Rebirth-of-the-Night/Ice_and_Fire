@@ -210,8 +210,17 @@ public class ItemTideTrident extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand) {
         ItemStack itemStackIn = player.getHeldItem(hand);
+        if (isEmpty(itemStackIn)) {
+            return new ActionResult<>(EnumActionResult.PASS, itemStackIn);
+        }
         player.setActiveHand(hand);
         return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
+    }
+
+    @Override
+    public String getTranslationKey(ItemStack stack) {
+        String key = super.getTranslationKey(stack);
+        return isEmpty(stack) ? key + ".thrown" : key;
     }
 
     @Override
@@ -227,7 +236,7 @@ public class ItemTideTrident extends Item {
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag flag) {
         boolean isEmpty = isEmpty(stack);
         boolean isOriginal = isOriginal(stack);
-        if (isEmpty || !isOriginal) {
+        if (flag.isAdvanced() && (isEmpty || !isOriginal)) {
             UUID uuid = getUUID(stack);
             if (uuid != null) {
                 tooltip.add(TextFormatting.DARK_PURPLE + "UUID: " + Long.toHexString(uuid.getMostSignificantBits()) + Long.toHexString(uuid.getLeastSignificantBits()));
@@ -236,6 +245,6 @@ public class ItemTideTrident extends Item {
         if (!isOriginal) {
             tooltip.add(TextFormatting.DARK_RED + I18n.format("item.iceandfire.tide_trident.not_original"));
         }
-        tooltip.add(I18n.format("item.iceandfire.tide_trident.desc_1"));
+        tooltip.add(I18n.format(isEmpty ? "item.iceandfire.tide_trident.thrown.desc" : "item.iceandfire.tide_trident.desc_1"));
     }
 }
