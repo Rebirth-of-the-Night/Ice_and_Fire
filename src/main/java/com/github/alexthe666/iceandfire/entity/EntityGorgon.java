@@ -26,6 +26,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
@@ -255,6 +256,7 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
         if (!world.isRemote && currentTarget != null && !canFight(currentTarget)) {
             this.setAttackTarget(null);
         }
+        float previousPitch = this.rotationPitch;
         super.onLivingUpdate();
         if (playerStatueCooldown > 0) {
             playerStatueCooldown--;
@@ -268,9 +270,24 @@ public class EntityGorgon extends EntityMob implements IAnimatedEntity, IVillage
         }
 
         if (!world.isRemote) {
+            if (!this.isAIDisabled()) {
+                updateHeadPitch(target, previousPitch);
+            }
             updatePetrificationCharge(target);
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
+    }
+
+    private void updateHeadPitch(@Nullable EntityLivingBase target, float previousPitch) {
+        // Vanilla's look helper resets pitch each tick. Turn from the last pose instead.
+        float desiredPitch = 0.0F;
+        if (target != null) {
+            double heightDifference = target.posY + target.getEyeHeight() - this.posY - this.getEyeHeight();
+            double horizontalDistance = Math.hypot(target.posX - this.posX, target.posZ - this.posZ);
+            desiredPitch = (float) -Math.toDegrees(MathHelper.atan2(heightDifference, horizontalDistance));
+        }
+        float turn = MathHelper.clamp(desiredPitch - previousPitch, -4.0F, 4.0F);
+        this.rotationPitch = previousPitch + turn;
     }
 
     private void updatePetrificationCharge(@Nullable EntityLivingBase target) {
