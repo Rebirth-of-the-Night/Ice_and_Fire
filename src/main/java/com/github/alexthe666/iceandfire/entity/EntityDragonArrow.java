@@ -21,6 +21,7 @@ public class EntityDragonArrow extends EntityArrow {
 
     public EntityDragonArrow(World worldIn, EntityLivingBase shooter) {
         super(worldIn, shooter);
+        this.setDamage(10);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class EntityDragonArrow extends EntityArrow {
     @Override
     public void readEntityFromNBT(NBTTagCompound tagCompund) {
         super.readEntityFromNBT(tagCompund);
-        tagCompund.setDouble("damage", 10);
+        this.setDamage(10);
     }
 
     @Override
