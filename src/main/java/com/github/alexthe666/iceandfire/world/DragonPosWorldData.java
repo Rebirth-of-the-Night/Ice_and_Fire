@@ -12,10 +12,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Global (not per-dimension) record of the last known position and dimension of crystal-bound dragons,
+ * so a summoning crystal can chunk load the dragon's last location when the dragon itself is unloaded.
+ */
 public class DragonPosWorldData extends WorldSavedData {
 
     private static final String IDENTIFIER = "iceandfire_dragonPositions";
     protected final Map<UUID, BlockPos> lastDragonPositions = new HashMap<>();
+    protected final Map<UUID, Integer> lastDragonDimensions = new HashMap<>();
     private World world;
     private int tickCounter;
 
@@ -30,29 +35,41 @@ public class DragonPosWorldData extends WorldSavedData {
     }
 
     public static DragonPosWorldData get(World world) {
-        MapStorage storage = world.getPerWorldStorage();
+        MapStorage storage = world.getMapStorage();
+        if (storage == null) {
+            return null;
+        }
         DragonPosWorldData instance = (DragonPosWorldData) storage.getOrLoadData(DragonPosWorldData.class, IDENTIFIER);
 
         if (instance == null) {
             instance = new DragonPosWorldData(world);
             storage.setData(IDENTIFIER, instance);
         }
-        instance.markDirty();
         return instance;
     }
 
-    public void addDragon(UUID uuid, BlockPos pos) {
-        lastDragonPositions.put(uuid, pos);
-        this.markDirty();
+    public void addDragon(UUID uuid, BlockPos pos, int dimension) {
+        BlockPos old = lastDragonPositions.put(uuid, pos);
+        Integer oldDim = lastDragonDimensions.put(uuid, dimension);
+        if (!pos.equals(old) || oldDim == null || oldDim != dimension) {
+            this.markDirty();
+        }
     }
 
     public void removeDragon(UUID uuid) {
-        lastDragonPositions.remove(uuid);
-        this.markDirty();
+        if (lastDragonPositions.remove(uuid) != null) {
+            this.markDirty();
+        }
+        lastDragonDimensions.remove(uuid);
     }
 
     public BlockPos getDragonPos(UUID uuid) {
         return lastDragonPositions.get(uuid);
+    }
+
+    /** @return the dimension the dragon was last seen in, or null if unknown. */
+    public Integer getDragonDimension(UUID uuid) {
+        return lastDragonDimensions.get(uuid);
     }
 
     public World getWorld() {
@@ -72,11 +89,15 @@ public class DragonPosWorldData extends WorldSavedData {
         this.tickCounter = nbt.getInteger("Tick");
         NBTTagList nbttaglist = nbt.getTagList("DragonMap", 10);
         this.lastDragonPositions.clear();
+        this.lastDragonDimensions.clear();
         for (int i = 0; i < nbttaglist.tagCount(); ++i) {
             NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
             UUID uuid = nbttagcompound.getUniqueId("DragonUUID");
             BlockPos pos = new BlockPos(nbttagcompound.getInteger("DragonPosX"), nbttagcompound.getInteger("DragonPosY"), nbttagcompound.getInteger("DragonPosZ"));
             this.lastDragonPositions.put(uuid, pos);
+            if (nbttagcompound.hasKey("DragonDim")) {
+                this.lastDragonDimensions.put(uuid, nbttagcompound.getInteger("DragonDim"));
+            }
         }
     }
 
@@ -89,6 +110,10 @@ public class DragonPosWorldData extends WorldSavedData {
             nbttagcompound.setInteger("DragonPosX", pair.getValue().getX());
             nbttagcompound.setInteger("DragonPosY", pair.getValue().getY());
             nbttagcompound.setInteger("DragonPosZ", pair.getValue().getZ());
+            Integer dim = lastDragonDimensions.get(pair.getKey());
+            if (dim != null) {
+                nbttagcompound.setInteger("DragonDim", dim);
+            }
             nbttaglist.appendTag(nbttagcompound);
         }
         compound.setTag("DragonMap", nbttaglist);

@@ -14,6 +14,7 @@ import com.github.alexthe666.iceandfire.item.ItemSummoningCrystal;
 import com.github.alexthe666.iceandfire.message.MessageDragonControl;
 import com.github.alexthe666.iceandfire.message.MessageStartRidingMob;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
+import com.github.alexthe666.iceandfire.world.DragonPosWorldData;
 import net.ilexiconn.llibrary.client.model.tools.ChainBuffer;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
@@ -405,7 +406,25 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
 
     public void setDead() {
         removeParts();
+        if (!world.isRemote && this.isBoundToCrystal() && IceAndFire.CONFIG.chunkLoadSummonCrystal) {
+            // only genuine removal (death) reaches here; chunk unloading does not call setDead
+            DragonPosWorldData data = DragonPosWorldData.get(world);
+            if (data != null) {
+                data.removeDragon(this.getUniqueID());
+            }
+        }
         super.setDead();
+    }
+
+    /** Records this dragon's position so a summoning crystal can chunk load it later. */
+    protected void recordCrystalPosition() {
+        if (world.isRemote || !this.isBoundToCrystal() || !IceAndFire.CONFIG.chunkLoadSummonCrystal) {
+            return;
+        }
+        DragonPosWorldData data = DragonPosWorldData.get(world);
+        if (data != null) {
+            data.addDragon(this.getUniqueID(), new BlockPos(this), world.provider.getDimension());
+        }
     }
 
     protected int getExperiencePoints(EntityPlayer player) {
@@ -526,6 +545,7 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     @Override
     public void writeEntityToNBT(NBTTagCompound compound) {
         super.writeEntityToNBT(compound);
+        recordCrystalPosition(); // runs on chunk save/unload, so the stored position is exact when the dragon unloads
         compound.setInteger("Hunger", this.getHunger());
         compound.setInteger("AwakeTicksSinceHungerLoss", this.awakeTicksSinceHungerLoss);
         compound.setInteger("AgeTicks", this.getAgeInTicks());
@@ -1953,6 +1973,9 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
     public void onUpdate() {
         super.onUpdate();
         updateParts();
+        if (!world.isRemote && this.ticksExisted % 100 == 0) {
+            recordCrystalPosition();
+        }
         this.setScaleForAge(true);
         if (world.isRemote) {
             this.updateClientControls();
