@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire;
 
+import com.github.alexthe666.iceandfire.world.BiomeSpawnFilter;
 import net.minecraftforge.common.config.Configuration;
 
 import java.util.ArrayList;
@@ -200,6 +201,7 @@ public class IceAndFireConfig {
     public String villagerTradingItem = "iceandfire:sapphire_gem"; // TODO make trading item configurable
 
     public void init(Configuration config) {
+        BiomeSpawnFilter.load(config);
         this.customMainMenu = config.getBoolean("Custom main menu", "all", true, "Whether to display the dragon on the main menu or not");
         this.useVanillaFont = config.getBoolean("Use Vanilla Font", "all", false, "Whether to use the vanilla font in the bestiary or not");
         this.generateSilverOre = config.getBoolean("Generate Silver Ore", "all", true, "Whether to generate silver ore or not");

@@ -2,6 +2,7 @@ package com.github.alexthe666.iceandfire.world.gen;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
+import com.github.alexthe666.iceandfire.world.BiomeSpawnFilter;
 import com.github.alexthe666.iceandfire.world.dimension.ChunkProviderDreadLands;
 import com.github.alexthe666.iceandfire.world.gen.processor.DreadCastleProcessor;
 import net.minecraft.block.state.IBlockState;
@@ -36,6 +37,10 @@ public final class WorldGenCastle {
         int maxX = Math.min(x + 15, CASTLE_X + WIDTH - 1);
         int maxZ = Math.min(z + 15, CASTLE_Z + DEPTH - 1);
         if (minX > maxX || minZ > maxZ) {
+            return;
+        }
+
+        if (!BiomeSpawnFilter.DREAD_CASTLE.allows(world.getBiomeProvider().getBiome(new BlockPos(CASTLE_X, 0, CASTLE_Z)), true)) {
             return;
         }
 

@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.world.village;
 
 import com.github.alexthe666.iceandfire.entity.IafVillagerRegistry;
+import com.github.alexthe666.iceandfire.world.BiomeSpawnFilter;
 import com.github.alexthe666.iceandfire.world.gen.WorldGenScriberHouse;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -26,6 +27,9 @@ public class ComponentScriberHouse extends StructureVillagePieces.Village {
 
     public static ComponentScriberHouse buildComponent(StructureVillagePieces.Start startPiece, List<StructureComponent> pieces, Random random, int x, int y, int z, EnumFacing facing, int p5) {
         StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, 0, 0, -1, 11, 12, 14, facing);
+        if (!BiomeSpawnFilter.SCRIBER_HOUSE.allows(startPiece.biomeProvider.getBiome(new BlockPos(x, y, z)), true)) {
+            return null;
+        }
         return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(pieces, structureboundingbox) == null ? new ComponentScriberHouse(startPiece, p5, random, structureboundingbox, facing) : null;
     }
 
