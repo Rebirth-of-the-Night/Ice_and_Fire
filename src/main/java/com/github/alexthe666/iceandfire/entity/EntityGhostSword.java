@@ -23,6 +23,8 @@ import net.minecraft.world.World;
 public class EntityGhostSword extends EntityArrow {
     public static final DataParameter<Integer> DISPOSE_TIME = EntityDataManager.createKey(EntityGhostSword.class, DataSerializers.VARINT);
 
+    public static final int MAX_BLOCKS_PASSED = 3;
+    private final java.util.Set<net.minecraft.util.math.BlockPos> passedBlocks = new java.util.HashSet<>();
     public Entity shooter;
     int maxDisposeTime = 15;
     private int knockbackStrength;
@@ -151,6 +153,13 @@ public class EntityGhostSword extends EntityArrow {
                         ((EntityPlayerMP) this.shootingEntity).connection.sendPacket(new SPacketChangeGameState(6, 0.0F));
                     }
                 }
+            }
+        } else if (object.typeOfHit == RayTraceResult.Type.BLOCK) {
+            // Pass through up to MAX_BLOCKS_PASSED distinct blocks; the next one stops the blade.
+            // The raytrace reports the same block on consecutive ticks while we're inside it, so count distinct positions.
+            passedBlocks.add(object.getBlockPos().toImmutable());
+            if (passedBlocks.size() > MAX_BLOCKS_PASSED) {
+                this.setDead();
             }
         } else {
             this.setDead();
