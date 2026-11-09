@@ -1,16 +1,15 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.entity.util.EntityMultipartPart;
 import com.github.alexthe666.iceandfire.message.MessageMultipartInteract;
-import net.ilexiconn.llibrary.server.entity.multipart.PartEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 
-public class EntityMutlipartPart extends PartEntity {
+public class EntityMutlipartPart extends EntityMultipartPart {
 
     public EntityMutlipartPart(EntityLiving parent, float radius, float angleYaw, float offsetY, float sizeX, float sizeY, float damageMultiplier) {
         super(parent, radius, angleYaw, offsetY, sizeX, sizeY, damageMultiplier);
@@ -28,10 +27,6 @@ public class EntityMutlipartPart extends PartEntity {
         if(world.isRemote && source.getTrueSource() instanceof EntityPlayer) IceAndFire.NETWORK_WRAPPER.sendToServer(
                 new MessageMultipartInteract(this.parent.getEntityId(), damage * damageMultiplier, true));
         return this.parent.attackEntityFrom(source, damage * this.damageMultiplier);
-    }
-
-    public EntityLivingBase getParent(){
-        return this.parent;
     }
 
     public void resize(float width, float height){
