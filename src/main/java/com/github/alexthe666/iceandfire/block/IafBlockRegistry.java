@@ -193,6 +193,13 @@ public class IafBlockRegistry {
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":dread_single_spawner_final_ballista")
     public static Block dread_single_spawner_final_ballista = new BlockDreadSingleMobSpawner("dread_single_spawner_final_ballista");
 
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":charred_branch")
+    public static Block charredBranch = new BlockElementalBranch("charred_branch", "iceandfire.charredBranch", SoundType.WOOD, 1.5F, true);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":crackled_branch")
+    public static Block crackledBranch = new BlockElementalBranch("crackled_branch", "iceandfire.crackledBranch", SoundType.WOOD, 1.5F, true);
+    @GameRegistry.ObjectHolder(IceAndFire.MODID + ":frozen_branch")
+    public static Block frozenBranch = new BlockElementalBranch("frozen_branch", "iceandfire.frozenBranch", SoundType.GLASS, 1.5F, false);
+
     @GameRegistry.ObjectHolder(IceAndFire.MODID + ":burnt_torch")
     public static Block burnt_torch = new BlockBurntTorch();
 

@@ -1,0 +1,540 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "radius": "1"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_core_1"
+      }
+    },
+    {
+      "when": {
+        "radius": "1",
+        "north": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_1"
+      }
+    },
+    {
+      "when": {
+        "radius": "1",
+        "east": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_1",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "1",
+        "south": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_1",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "radius": "1",
+        "west": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_1",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "1",
+        "up": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_1",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "1",
+        "down": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_1",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "2"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_core_2"
+      }
+    },
+    {
+      "when": {
+        "radius": "2",
+        "north": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_2"
+      }
+    },
+    {
+      "when": {
+        "radius": "2",
+        "east": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_2",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "2",
+        "south": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_2",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "radius": "2",
+        "west": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_2",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "2",
+        "up": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_2",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "2",
+        "down": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_2",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "3"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_core_3"
+      }
+    },
+    {
+      "when": {
+        "radius": "3",
+        "north": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_3"
+      }
+    },
+    {
+      "when": {
+        "radius": "3",
+        "east": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_3",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "3",
+        "south": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_3",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "radius": "3",
+        "west": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_3",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "3",
+        "up": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_3",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "3",
+        "down": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_3",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "4"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_core_4"
+      }
+    },
+    {
+      "when": {
+        "radius": "4",
+        "north": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_4"
+      }
+    },
+    {
+      "when": {
+        "radius": "4",
+        "east": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_4",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "4",
+        "south": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_4",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "radius": "4",
+        "west": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_4",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "4",
+        "up": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_4",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "4",
+        "down": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_4",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "5"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_core_5"
+      }
+    },
+    {
+      "when": {
+        "radius": "5",
+        "north": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_5"
+      }
+    },
+    {
+      "when": {
+        "radius": "5",
+        "east": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_5",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "5",
+        "south": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_5",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "radius": "5",
+        "west": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_5",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "5",
+        "up": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_5",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "5",
+        "down": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_5",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "6"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_core_6"
+      }
+    },
+    {
+      "when": {
+        "radius": "6",
+        "north": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_6"
+      }
+    },
+    {
+      "when": {
+        "radius": "6",
+        "east": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_6",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "6",
+        "south": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_6",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "radius": "6",
+        "west": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_6",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "6",
+        "up": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_6",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "6",
+        "down": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_6",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "7"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_core_7"
+      }
+    },
+    {
+      "when": {
+        "radius": "7",
+        "north": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_7"
+      }
+    },
+    {
+      "when": {
+        "radius": "7",
+        "east": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_7",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "7",
+        "south": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_7",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "radius": "7",
+        "west": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_7",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "7",
+        "up": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_7",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "7",
+        "down": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_7",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "8"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_core_8"
+      }
+    },
+    {
+      "when": {
+        "radius": "8",
+        "north": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_8"
+      }
+    },
+    {
+      "when": {
+        "radius": "8",
+        "east": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_8",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "radius": "8",
+        "south": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_8",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "radius": "8",
+        "west": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_8",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "8",
+        "up": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_8",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "radius": "8",
+        "down": "true"
+      },
+      "apply": {
+        "model": "iceandfire:charred_branch_arm_8",
+        "x": 90
+      }
+    }
+  ]
+}

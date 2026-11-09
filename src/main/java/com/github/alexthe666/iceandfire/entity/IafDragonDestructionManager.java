@@ -6,6 +6,7 @@ import com.github.alexthe666.iceandfire.block.*;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforgeInput;
 import com.github.alexthe666.iceandfire.util.IsImmune;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -19,8 +20,22 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 
 public class IafDragonDestructionManager {
+
+    private static final boolean DYNAMIC_TREES_LOADED = Loader.isModLoaded("dynamictrees");
+
+    /**
+     * Applies a dragon block transformation. Dynamic Trees branches are converted together with the whole
+     * connected tree so no disconnected branch fragments are left floating.
+     */
+    private static void setTransformedBlock(World world, BlockPos pos, IBlockState transformState, Block treeBranch) {
+        if (DYNAMIC_TREES_LOADED && IceAndFire.CONFIG.dynamicTreesCompat && com.github.alexthe666.iceandfire.compat.DynamicTreesCompat.transformTree(world, pos, (BlockElementalBranch) treeBranch)) {
+            return;
+        }
+        world.setBlockState(pos, transformState);
+    }
 
     public static void destroyAreaFire(World world, BlockPos center, EntityDragonBase destroyer) {
         destroyAreaFire(world, center, destroyer, false);
@@ -37,7 +52,7 @@ public class IafDragonDestructionManager {
                 if (IceAndFire.CONFIG.dragonGriefing != 2 && world.rand.nextBoolean()) {
                     if (canAffectBlock(world, pos)) {
                         IBlockState transformState = transformBlockFire(world.getBlockState(pos));
-                        world.setBlockState(pos, transformState);
+                        setTransformedBlock(world, pos, transformState, IafBlockRegistry.charredBranch);
                         if (world.rand.nextBoolean() && transformState.isFullBlock() && world.isAirBlock(pos.up()) && !smoke) {
                             world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
                         }
@@ -59,7 +74,7 @@ public class IafDragonDestructionManager {
                     if (IceAndFire.CONFIG.dragonGriefing != 2 && world.rand.nextFloat() > (float) blockpos.distanceSq(center) / (f * f)) {
                         if (canAffectBlock(world, blockpos)) {
                             IBlockState transformState = transformBlockFire(world.getBlockState(blockpos));
-                            world.setBlockState(blockpos, transformState);
+                            setTransformedBlock(world, blockpos, transformState, IafBlockRegistry.charredBranch);
                             if (world.rand.nextBoolean() && transformState.isFullBlock() && world.isAirBlock(blockpos.up()) && !smoke) {
                                 world.setBlockState(blockpos.up(), Blocks.FIRE.getDefaultState());
                             }
@@ -100,7 +115,7 @@ public class IafDragonDestructionManager {
                 if (IceAndFire.CONFIG.dragonGriefing != 2 && world.rand.nextBoolean()) {
                     if (canAffectBlock(world, pos)) {
                         IBlockState transformState = transformBlockIce(world.getBlockState(pos));
-                        world.setBlockState(pos, transformState);
+                        setTransformedBlock(world, pos, transformState, IafBlockRegistry.frozenBranch);
                         if (world.rand.nextInt(9) == 0)
                             generateSpikes(world, pos, transformState);
                     }
@@ -130,7 +145,7 @@ public class IafDragonDestructionManager {
                     if (IceAndFire.CONFIG.dragonGriefing != 2 && world.rand.nextFloat() > (float) blockpos.distanceSq(center) / (f * f)) {
                         if (canAffectBlock(world, blockpos)) {
                             IBlockState transformState = transformBlockIce(world.getBlockState(blockpos));
-                            world.setBlockState(blockpos, transformState);
+                            setTransformedBlock(world, blockpos, transformState, IafBlockRegistry.frozenBranch);
                             if (world.rand.nextInt(9) == 0)
                                 generateSpikes(world, blockpos, transformState);
                         }
@@ -164,7 +179,7 @@ public class IafDragonDestructionManager {
                     if (canAffectBlock(world, pos)) {
                         IBlockState transformState = transformBlockLightning(world.getBlockState(pos));
                         if (transformState.getBlock() != world.getBlockState(pos).getBlock()) {
-                            world.setBlockState(pos, transformState);
+                            setTransformedBlock(world, pos, transformState, IafBlockRegistry.crackledBranch);
                         }
                     }
                 }
@@ -194,7 +209,7 @@ public class IafDragonDestructionManager {
                     if (IceAndFire.CONFIG.dragonGriefing != 2 && world.rand.nextFloat() > (float) blockpos.distanceSq(center) / (f * f)) {
                         if (canAffectBlock(world, blockpos)) {
                             IBlockState transformState = transformBlockLightning(world.getBlockState(blockpos));
-                            world.setBlockState(blockpos, transformState);
+                            setTransformedBlock(world, blockpos, transformState, IafBlockRegistry.crackledBranch);
                         }
                     }
                 }
@@ -235,7 +250,7 @@ public class IafDragonDestructionManager {
                         if (world.rand.nextBoolean()) {
                             if (canAffectBlock(world, pos)) {
                                 IBlockState transformState = transformBlockFire(world.getBlockState(pos));
-                                world.setBlockState(pos, transformState);
+                                setTransformedBlock(world, pos, transformState, IafBlockRegistry.charredBranch);
                                 if (world.rand.nextBoolean() && transformState.isFullBlock() && world.isAirBlock(pos.up())) {
                                     world.setBlockState(pos.up(), Blocks.FIRE.getDefaultState());
                                 }
@@ -275,7 +290,7 @@ public class IafDragonDestructionManager {
                         if (blockpos.distanceSq(center) <= (double) (f * f)) {
                             if (canAffectBlock(world, blockpos)) {
                                 IBlockState transformState = transformBlockFire(world.getBlockState(blockpos));
-                                world.setBlockState(blockpos, transformState);
+                                setTransformedBlock(world, blockpos, transformState, IafBlockRegistry.charredBranch);
                                 if (world.rand.nextBoolean() && transformState.isFullBlock() && world.isAirBlock(blockpos.up())) {
                                     world.setBlockState(blockpos.up(), Blocks.FIRE.getDefaultState());
                                 }
@@ -318,7 +333,7 @@ public class IafDragonDestructionManager {
                     if (world.rand.nextBoolean()) {
                         if (canAffectBlock(world, pos)) {
                             IBlockState transformState = transformBlockIce(world.getBlockState(pos));
-                            world.setBlockState(pos, transformState);
+                            setTransformedBlock(world, pos, transformState, IafBlockRegistry.frozenBranch);
                             if (world.rand.nextBoolean()) {
                                 generateSpikes(world, pos, transformState);
                             }
@@ -354,7 +369,7 @@ public class IafDragonDestructionManager {
                     if (blockpos.distanceSq(center) <= (double) (f * f)) {
                         if (canAffectBlock(world, blockpos)) {
                             IBlockState transformState = transformBlockIce(world.getBlockState(blockpos));
-                            world.setBlockState(blockpos, transformState);
+                            setTransformedBlock(world, blockpos, transformState, IafBlockRegistry.frozenBranch);
                             if (world.rand.nextBoolean())
                                 generateSpikes(world, blockpos, transformState);
                         }
@@ -394,7 +409,7 @@ public class IafDragonDestructionManager {
                         if (canAffectBlock(world, pos)) {
                             IBlockState transformState = transformBlockLightning(world.getBlockState(pos));
                             if (transformState.getBlock() != world.getBlockState(pos).getBlock()) {
-                                world.setBlockState(pos, transformState);
+                                setTransformedBlock(world, pos, transformState, IafBlockRegistry.crackledBranch);
                             }
                         }
                     }
@@ -430,7 +445,7 @@ public class IafDragonDestructionManager {
                         if (canAffectBlock(world, blockpos)) {
                             IBlockState transformState = transformBlockLightning(world.getBlockState(blockpos));
                             if (transformState.getBlock() != world.getBlockState(blockpos).getBlock()) {
-                                world.setBlockState(blockpos, transformState);
+                                setTransformedBlock(world, blockpos, transformState, IafBlockRegistry.crackledBranch);
                             }
                         }
                     }
@@ -469,6 +484,9 @@ public class IafDragonDestructionManager {
     }
 
     public static IBlockState transformBlockFire(IBlockState in) {
+        if (in.getBlock() instanceof BlockElementalBranch) {
+            return in;
+        }
         if (in.getMaterial() == Material.GRASS || in.getMaterial() == Material.CRAFTED_SNOW) {
             return IafBlockRegistry.charedGrass.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
         } else if (in.getBlock() == Blocks.DIRT) {
@@ -490,6 +508,9 @@ public class IafDragonDestructionManager {
     }
 
     public static IBlockState transformBlockIce(IBlockState in) {
+        if (in.getBlock() instanceof BlockElementalBranch) {
+            return in;
+        }
         if (in.getMaterial() == Material.GRASS || in.getMaterial() == Material.CRAFTED_SNOW) {
             return IafBlockRegistry.frozenGrass.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
         } else if (in.getBlock() == Blocks.DIRT || in.getMaterial() == Material.CRAFTED_SNOW) {
@@ -513,6 +534,9 @@ public class IafDragonDestructionManager {
     }
 
     public static IBlockState transformBlockLightning(IBlockState in) {
+        if (in.getBlock() instanceof BlockElementalBranch) {
+            return in;
+        }
         if (in.getMaterial() == Material.GRASS || in.getMaterial() == Material.CRAFTED_SNOW) {
             return IafBlockRegistry.crackledGrass.getDefaultState().withProperty(BlockReturningState.REVERTS, true);
         } else if (in.getBlock() == Blocks.DIRT) {
