@@ -25,7 +25,7 @@ public enum LocatableStructure {
     FIRE_DRAGON_DEN(c -> c.generateDragonDens, (biome, types) -> isFireDragonBiome(biome, types) && !types.contains(Type.BEACH)),
     ICE_DRAGON_DEN(c -> c.generateDragonDens, (biome, types) -> isColdAndSnowy(biome, types) && !types.contains(Type.BEACH)),
     LIGHTNING_DRAGON_DEN(c -> c.generateDragonDens, LocatableStructure::isLightningDragonBiome),
-    SNOW_VILLAGE(c -> c.generateSnowVillages, LocatableStructure::isColdAndSnowy),
+    SNOW_VILLAGE(c -> c.generateSnowVillages, (biome, types) -> biome == IafWorldRegistry.GLACIER_BIOME || isColdAndSnowy(biome, types)),
     JUNGLE_MYRMEX_HIVE(c -> c.generateMyrmexColonies, (biome, types) -> types.contains(Type.JUNGLE)),
     DESERT_MYRMEX_HIVE(c -> c.generateMyrmexColonies, (biome, types) -> !types.contains(Type.JUNGLE)
             && types.contains(Type.HOT) && types.contains(Type.DRY) && types.contains(Type.SANDY)),

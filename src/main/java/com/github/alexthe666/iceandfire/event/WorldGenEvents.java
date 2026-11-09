@@ -451,8 +451,9 @@ public class WorldGenEvents implements IWorldGenerator {
             }
         }
         if (IceAndFire.CONFIG.generateSnowVillages && LocatableStructure.SNOW_VILLAGE.allows(biome, types) && (lastSnowVillage == null || lastSnowVillage.distanceSq(height) >= spawnCheck)) {
-            SNOW_VILLAGE.generate(world, random, height);
-            lastSnowVillage = height;
+            if (SNOW_VILLAGE.generate(world, random, height)) {
+                lastSnowVillage = height;
+            }
         }
         boolean myrmexRoll = IceAndFire.CONFIG.generateMyrmexColonies && random.nextInt(IceAndFire.CONFIG.myrmexColonyGenChance) == 0;
         boolean searchingForHive = searchTarget == LocatableStructure.JUNGLE_MYRMEX_HIVE
