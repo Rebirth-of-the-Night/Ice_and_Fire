@@ -48,6 +48,7 @@ public class IceAndFireConfig {
     public int dragonEggTime = 7200;
     public int dragonGriefing = 0;
     public boolean dynamicTreesCompat = true;
+    public boolean leafBurnEffects = true;
     public double burntBranchDecayChance = 0.25D;
     public boolean tamedDragonGriefing = true;
     public int dragonFlapNoiseDistance = 4;
@@ -262,6 +263,7 @@ public class IceAndFireConfig {
         this.dragonEggTime = config.getInt("Dragon Egg Hatch Time", "all", 7200, 1, Integer.MAX_VALUE, "How long it takes(in ticks) for a dragon egg to hatch");
         this.dragonGriefing = config.getInt("Dragon Griefing", "all", 0, 0, 2, "Dragon griefing - 2 is no griefing, 1 is breaking weak blocks, 0 is default");
         this.dynamicTreesCompat = config.getBoolean("Dynamic Trees Compat", "all", true, "If Dynamic Trees is installed, dragon breath turns whole trees into charred or frozen copies of themselves instead of destroying single branches. Disable to use the default behavior.");
+        this.leafBurnEffects = config.getBoolean("Leaf Destruction Effects", "all", true, "Show leaves burning away (fire breath) or freezing and shattering (ice breath) when dragon breath destroys them, including whole Dynamic Trees trees, instead of the leaves vanishing instantly. Client-side particles only.");
         this.burntBranchDecayChance = config.getFloat("Charred and Frozen Branch Decay Chance", "all", 0.25F, 0.0F, 1.0F, "Chance per random tick for a charred or frozen tree branch (left by dragon breath on Dynamic Trees trees) to shrink by one step and eventually vanish. 0 disables decay.");
         this.tamedDragonGriefing = config.getBoolean("Tamed Dragon Griefing", "all", true, "True if tamed dragons can follow the griefing rules.");
         this.dragonFlapNoiseDistance = config.getInt("Dragon Flap Noise Distance", "all", 4, 0, 10000, "Dragon Flap Noise Distance - Larger number, further away you can hear it");

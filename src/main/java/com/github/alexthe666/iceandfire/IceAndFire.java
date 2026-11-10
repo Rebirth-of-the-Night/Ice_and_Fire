@@ -60,7 +60,7 @@ public class IceAndFire {
             MessageDeathWormHitbox.class, MessageMultipartInteract.class, MessageGetMyrmexHive.class, MessageSetMyrmexHiveNull.class, MessagePlayerHitMultipart.class,
             MessageAddChainedEntity.class, MessageRemoveChainedEntity.class, MessageDragonSetBurnBlock.class, MessageDragonSyncFire.class, MessageSpawnParticleAt.class,
             MessageStartRidingMob.class, MessageSwingArm.class, MessageDragonTamingConfig.class, MessageFishingRipple.class,
-            MessageDreadlandsWeather.class})
+            MessageDreadlandsWeather.class, MessageTreeLeafDissolve.class})
     public static SimpleNetworkWrapper NETWORK_WRAPPER;
     @SidedProxy(clientSide = "com.github.alexthe666.iceandfire.ClientProxy", serverSide = "com.github.alexthe666.iceandfire.CommonProxy")
     public static CommonProxy PROXY;

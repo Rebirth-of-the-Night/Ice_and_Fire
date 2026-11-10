@@ -1694,6 +1694,8 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         return this.posY > IceAndFire.CONFIG.maxDragonFlight;
     }
 
+    private static final boolean DYNAMIC_TREES_LOADED = net.minecraftforge.fml.common.Loader.isModLoaded("dynamictrees");
+
     public void breakBlock() {
         if (IceAndFire.CONFIG.dragonGriefing != 2 && (!this.isTamed() || IceAndFire.CONFIG.tamedDragonGriefing)) {
             float hardness = IceAndFire.CONFIG.dragonGriefing == 1 || this.getDragonStage() <= 3 ? 1.6F : 5F;
@@ -1704,6 +1706,13 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
                             IBlockState state = world.getBlockState(new BlockPos(a, b, c));
                             Block block = state.getBlock();
                             BlockPos pos = new BlockPos(a, b, c);
+                            if (DYNAMIC_TREES_LOADED && IceAndFire.CONFIG.dynamicTreesCompat && this.canDestroyBlock(pos)
+                                    && com.github.alexthe666.iceandfire.compat.DynamicTreesCompat.fellTree(world, pos, state, this)) {
+                                // branches are too tough to smash through, so the dragon fells the whole tree instead
+                                this.motionX *= 0.6D;
+                                this.motionZ *= 0.6D;
+                                continue;
+                            }
                             if (state.getMaterial() != Material.AIR && !(block instanceof BlockBush) && !(block instanceof BlockLiquid) && state.getBlockHardness(world, pos) < hardness && DragonUtils.canDragonBreak(state.getBlock()) && this.canDestroyBlock(pos)) {
                                 this.motionX *= 0.6D;
                                 this.motionZ *= 0.6D;

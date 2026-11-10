@@ -4,7 +4,9 @@ import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.api.event.DragonFireDamageWorldEvent;
 import com.github.alexthe666.iceandfire.block.*;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityDragonforgeInput;
+import com.github.alexthe666.iceandfire.message.MessageTreeLeafDissolve;
 import com.github.alexthe666.iceandfire.util.IsImmune;
+import com.github.alexthe666.iceandfire.util.LeafBurnEffects;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
@@ -34,7 +36,16 @@ public class IafDragonDestructionManager {
         if (DYNAMIC_TREES_LOADED && IceAndFire.CONFIG.dynamicTreesCompat && com.github.alexthe666.iceandfire.compat.DynamicTreesCompat.transformTree(world, pos, (BlockElementalBranch) treeBranch)) {
             return;
         }
+        IBlockState previous = world.getBlockState(pos);
         world.setBlockState(pos, transformState);
+        int effect = treeBranch == IafBlockRegistry.charredBranch ? MessageTreeLeafDissolve.ELEMENT_FIRE
+                : treeBranch == IafBlockRegistry.frozenBranch ? MessageTreeLeafDissolve.ELEMENT_ICE
+                : treeBranch == IafBlockRegistry.crackledBranch ? MessageTreeLeafDissolve.ELEMENT_LIGHTNING : -1;
+        if (effect >= 0 && transformState.getBlock() == Blocks.AIR && previous.getMaterial() == Material.LEAVES) {
+            // a leaf block was destroyed: show it burning or freezing and shattering instead of popping out of existence
+            IBlockState visual = DYNAMIC_TREES_LOADED ? com.github.alexthe666.iceandfire.compat.DynamicTreesCompat.visualLeafState(previous) : previous;
+            LeafBurnEffects.queue(world, pos, visual, 1 + world.rand.nextInt(4), effect);
+        }
     }
 
     public static void destroyAreaFire(World world, BlockPos center, EntityDragonBase destroyer) {
