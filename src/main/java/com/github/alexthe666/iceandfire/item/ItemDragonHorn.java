@@ -86,6 +86,11 @@ public class ItemDragonHorn extends Item {
             NBTTagCompound entityTag = new NBTTagCompound();
             entityTag.setString("id", EntityList.getKey(target).toString());
             target.writeEntityToNBT(entityTag);
+            // writeEntityToNBT skips the base Entity data, so the custom name must be stored explicitly
+            if (target.hasCustomName()) {
+                entityTag.setString("CustomName", target.getCustomNameTag());
+                entityTag.setBoolean("CustomNameVisible", target.getAlwaysRenderNameTag());
+            }
             NBTTagCompound newTag = new NBTTagCompound();
             newTag.setTag("EntityTag", entityTag);
             trueStack.setTagCompound(newTag);
