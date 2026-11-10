@@ -15,7 +15,6 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
-import net.minecraft.world.gen.structure.StructureVillagePieces;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +23,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 public class MapGenSnowVillage extends WorldGenerator {
+    private static final int VILLAGE_RADIUS = 32;
     public static List<Biome> VILLAGE_SPAWN_BIOMES = Arrays.asList(Biomes.ICE_MOUNTAINS, Biomes.ICE_PLAINS, Biomes.MUTATED_ICE_FLATS, IafWorldRegistry.GLACIER_BIOME, Biomes.COLD_TAIGA_HILLS, Biomes.FROZEN_OCEAN, Biomes.COLD_TAIGA);
     private int size;
     private int distance;
@@ -47,8 +47,13 @@ public class MapGenSnowVillage extends WorldGenerator {
     public boolean generate(World world, Random rand, BlockPos position) {
         if (StructureSearch.getPopulationTarget(world, position) == LocatableStructure.SNOW_VILLAGE
                 || rand.nextInt(IceAndFire.CONFIG.generateSnowVillageChance) == 0) {
-            int new_size = 32;
-            getStructureStart(world, position.getX() >> 4, position.getZ() >> 4, rand).generateStructure(world, rand, new StructureBoundingBox(position.getX() - new_size, position.getZ() - new_size, position.getX() + new_size, position.getZ() + new_size));
+            int chunkX = position.getX() >> 4;
+            int chunkZ = position.getZ() >> 4;
+            StructureStart start = getStructureStart(world, chunkX, chunkZ, rand);
+            if (!start.isSizeableStructure()) {
+                return false;
+            }
+            start.generateStructure(world, rand, getPlacementBounds(chunkX, chunkZ));
             StructureLocatorData.record(world, LocatableStructure.SNOW_VILLAGE, position);
             return true;
         }
@@ -81,11 +86,14 @@ public class MapGenSnowVillage extends WorldGenerator {
         return new MapGenSnowVillage.Start(world, random, chunkX, chunkZ, this.size);
     }
 
+    private static StructureBoundingBox getPlacementBounds(int chunkX, int chunkZ) {
+        int x = (chunkX << 4) + 8;
+        int z = (chunkZ << 4) + 8;
+        return new StructureBoundingBox(x - VILLAGE_RADIUS, z - VILLAGE_RADIUS, x + VILLAGE_RADIUS, z + VILLAGE_RADIUS);
+    }
+
     public static class Start extends StructureStart {
-        /**
-         * well ... thats what it does
-         */
-        private boolean hasMoreThanTwoComponents;
+        private boolean valid;
 
         public Start() {
         }
@@ -93,7 +101,10 @@ public class MapGenSnowVillage extends WorldGenerator {
         public Start(World worldIn, Random rand, int x, int z, int size) {
             super(x, z);
             List<SnowVillagePieces.PieceWeight> list = SnowVillagePieces.getStructureVillageWeightedPieceList(rand, size);
-            SnowVillagePieces.Start structurevillagepieces$start = new SnowVillagePieces.Start(worldIn.getBiomeProvider(), 0, rand, (x << 4) + 2, (z << 4) + 2, list, size);
+            SnowVillagePieces.Start structurevillagepieces$start = new SnowVillagePieces.Start(worldIn, getPlacementBounds(x, z), rand, (x << 4) + 2, (z << 4) + 2, list, size);
+            if (!structurevillagepieces$start.canPlace(structurevillagepieces$start.getBoundingBox(), false)) {
+                return;
+            }
             this.components.add(structurevillagepieces$start);
             structurevillagepieces$start.buildComponent(structurevillagepieces$start, this.components, rand);
             List<StructureComponent> list1 = structurevillagepieces$start.pendingRoads;
@@ -112,29 +123,21 @@ public class MapGenSnowVillage extends WorldGenerator {
             }
 
             this.updateBoundingBox();
-            int k = 0;
-
-            for (StructureComponent structurecomponent1 : this.components) {
-                if (!(structurecomponent1 instanceof StructureVillagePieces.Road)) {
-                    ++k;
-                }
-            }
-
-            this.hasMoreThanTwoComponents = k > 2;
+            this.valid = this.components.stream().anyMatch(SnowVillagePieces.WoodHut.class::isInstance);
         }
 
         public boolean isSizeableStructure() {
-            return this.hasMoreThanTwoComponents;
+            return this.valid;
         }
 
         public void writeToNBT(NBTTagCompound tagCompound) {
             super.writeToNBT(tagCompound);
-            tagCompound.setBoolean("Valid", this.hasMoreThanTwoComponents);
+            tagCompound.setBoolean("Valid", this.valid);
         }
 
         public void readFromNBT(NBTTagCompound tagCompound) {
             super.readFromNBT(tagCompound);
-            this.hasMoreThanTwoComponents = tagCompound.getBoolean("Valid");
+            this.valid = tagCompound.getBoolean("Valid");
         }
     }
 }

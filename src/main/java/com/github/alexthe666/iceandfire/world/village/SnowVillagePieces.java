@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.world.village;
 import com.github.alexthe666.iceandfire.block.IafBlockRegistry;
 import com.github.alexthe666.iceandfire.entity.EntitySnowVillager;
 import com.github.alexthe666.iceandfire.entity.IafVillagerRegistry;
+import com.github.alexthe666.iceandfire.world.LocatableStructure;
 import com.google.common.collect.Lists;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -23,6 +24,7 @@ import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Iterator;
 import java.util.List;
@@ -90,7 +92,7 @@ public class SnowVillagePieces {
 
                         Village SnowVillagePieces$village = findAndCreateComponentFactory(start, SnowVillagePieces$pieceweight, structureComponents, rand, structureMinX, structureMinY, structureMinZ, facing, componentType);
 
-                        if (SnowVillagePieces$village != null) {
+                        if (SnowVillagePieces$village != null && start.canPlace(SnowVillagePieces$village.getTerrainBounds(), false)) {
                             ++SnowVillagePieces$pieceweight.villagePiecesSpawned;
                             start.structVillagePieceWeight = SnowVillagePieces$pieceweight;
 
@@ -106,7 +108,7 @@ public class SnowVillagePieces {
 
             StructureBoundingBox structureboundingbox = Torch.findPieceBox(start, structureComponents, rand, structureMinX, structureMinY, structureMinZ, facing);
 
-            if (structureboundingbox != null) {
+            if (structureboundingbox != null && start.canPlace(structureboundingbox, false)) {
                 return new Torch(start, componentType, rand, structureboundingbox, facing);
             } else {
                 return null;
@@ -573,10 +575,17 @@ public class SnowVillagePieces {
         }
 
         public static StructureBoundingBox findPieceBox(Start start, List<StructureComponent> p_175848_1_, Random rand, int p_175848_3_, int p_175848_4_, int p_175848_5_, EnumFacing facing) {
+            int dx = facing.getDirectionVec().getX();
+            int dz = facing.getDirectionVec().getZ();
             for (int i = 7 * MathHelper.getInt(rand, 3, 5); i >= 7; i -= 7) {
                 StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175848_3_, p_175848_4_, p_175848_5_, 0, 0, 0, 3, 3, i, facing);
+                // Include the adjoining row so two individually walkable paths cannot meet at a cliff.
+                StructureBoundingBox approach = new StructureBoundingBox(
+                        structureboundingbox.minX - Math.max(dx, 0), structureboundingbox.minZ - Math.max(dz, 0),
+                        structureboundingbox.maxX - Math.min(dx, 0), structureboundingbox.maxZ - Math.min(dz, 0));
 
-                if (StructureComponent.findIntersecting(p_175848_1_, structureboundingbox) == null) {
+                if (StructureComponent.findIntersecting(p_175848_1_, structureboundingbox) == null
+                        && start.canPlace(approach, true)) {
                     return structureboundingbox;
                 }
             }
@@ -685,7 +694,9 @@ public class SnowVillagePieces {
                         while (blockpos.getY() >= worldIn.getSeaLevel() - 1) {
                             IBlockState iblockstate4 = worldIn.getBlockState(blockpos);
 
-                            if (iblockstate4.getBlock() == Blocks.GRASS && worldIn.isAirBlock(blockpos.up())) {
+                            Block block = iblockstate4.getBlock();
+                            if ((block == Blocks.GRASS || block == Blocks.SNOW || block == Blocks.PACKED_ICE)
+                                    && (worldIn.isAirBlock(blockpos.up()) || worldIn.getBlockState(blockpos.up()).getBlock() == Blocks.SNOW_LAYER)) {
                                 worldIn.setBlockState(blockpos, iblockstate, 2);
                                 break;
                             }
@@ -747,6 +758,8 @@ public class SnowVillagePieces {
     }
 
     public static class Start extends Well {
+        private World world;
+        private StructureBoundingBox placementBounds;
         public BiomeProvider worldChunkMngr;
         /**
          * World terrain type, 0 for normal, 1 for flap map
@@ -761,6 +774,12 @@ public class SnowVillagePieces {
         public Start() {
         }
 
+        Start(World world, StructureBoundingBox placementBounds, Random rand, int x, int z, List<PieceWeight> weights, int terrainType) {
+            this(world.getBiomeProvider(), 0, rand, x, z, weights, terrainType);
+            this.world = world;
+            this.placementBounds = placementBounds;
+        }
+
         public Start(BiomeProvider chunkManagerIn, int p_i2104_2_, Random rand, int p_i2104_4_, int p_i2104_5_, List<SnowVillagePieces.PieceWeight> p_i2104_6_, int p_i2104_7_) {
             super(null, 0, rand, p_i2104_4_, p_i2104_5_);
             this.worldChunkMngr = chunkManagerIn;
@@ -771,6 +790,60 @@ public class SnowVillagePieces {
             this.startPiece = this;
             this.setStructureType(this.structureType);
             this.isZombieInfested = rand.nextInt(50) == 0;
+        }
+
+        boolean canPlace(StructureBoundingBox box, boolean road) {
+            if (world == null) {
+                return true;
+            }
+            if (box.minX < placementBounds.minX || box.maxX > placementBounds.maxX
+                    || box.minZ < placementBounds.minZ || box.maxZ > placementBounds.maxZ) {
+                return false;
+            }
+
+            int lowest = Integer.MAX_VALUE;
+            int highest = Integer.MIN_VALUE;
+            int[] previousRow = new int[box.getZSize()];
+            BlockPos.MutableBlockPos column = new BlockPos.MutableBlockPos();
+            for (int x = box.minX; x <= box.maxX; x++) {
+                int previousHeight = 0;
+                for (int z = box.minZ; z <= box.maxZ; z++) {
+                    column.setPos(x, 0, z);
+                    Biome biome = world.getBiome(column);
+                    if (!world.getWorldBorder().contains(column)
+                            || !LocatableStructure.SNOW_VILLAGE.allows(biome, BiomeDictionary.getTypes(biome))) {
+                        return false;
+                    }
+
+                    BlockPos surface = world.getTopSolidOrLiquidBlock(column);
+                    BlockPos ground = surface.down();
+                    IBlockState state = world.getBlockState(ground);
+                    if (ground.getY() < 1 || world.getBlockState(surface).getMaterial().isLiquid()
+                            || state.getBlock().isWood(world, ground)
+                            || state.getBlock() == Blocks.ICE && world.getBlockState(ground.down()).getMaterial().isLiquid()) {
+                        return false;
+                    }
+
+                    int height = surface.getY();
+                    if (road) {
+                        // A path can climb gradually, but every step across it must be walkable.
+                        int index = z - box.minZ;
+                        if ((x > box.minX && Math.abs(height - previousRow[index]) > 1)
+                                || (z > box.minZ && Math.abs(height - previousHeight) > 1)) {
+                            return false;
+                        }
+                        previousRow[index] = height;
+                        previousHeight = height;
+                    } else {
+                        lowest = Math.min(lowest, height);
+                        highest = Math.max(highest, height);
+                        if (highest - lowest > 2) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
     }
 
@@ -825,6 +898,10 @@ public class SnowVillagePieces {
     }
 
     public abstract static class Village extends StructureComponent {
+        StructureBoundingBox getTerrainBounds() {
+            return this.boundingBox;
+        }
+
         protected int averageGroundLvl = -1;
         protected int structureType;
         protected boolean isZombieInfested;
@@ -1219,6 +1296,14 @@ public class SnowVillagePieces {
         public static WoodHut createPiece(Start start, List<StructureComponent> p_175853_1_, Random rand, int p_175853_3_, int p_175853_4_, int p_175853_5_, EnumFacing facing, int p_175853_7_) {
             StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(p_175853_3_, p_175853_4_, p_175853_5_, 0, 0, 0, 4, 6, 5, facing);
             return canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(p_175853_1_, structureboundingbox) == null ? new WoodHut(start, p_175853_7_, rand, structureboundingbox, facing) : null;
+        }
+
+        @Override
+        StructureBoundingBox getTerrainBounds() {
+            int doorX = this.getXWithOffset(1, -1);
+            int doorZ = this.getZWithOffset(1, -1);
+            return new StructureBoundingBox(Math.min(this.boundingBox.minX, doorX), Math.min(this.boundingBox.minZ, doorZ),
+                    Math.max(this.boundingBox.maxX, doorX), Math.max(this.boundingBox.maxZ, doorZ));
         }
 
         /**
