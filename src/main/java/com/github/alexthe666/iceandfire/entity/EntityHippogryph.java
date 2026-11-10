@@ -796,7 +796,8 @@ public class EntityHippogryph extends EntityTameable implements ISyncMount, IAni
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 		switchNavigator();
-		if (world.getDifficulty() == EnumDifficulty.PEACEFUL && this.getAttackTarget() instanceof EntityPlayer) {
+		if (this.getAttackTarget() instanceof EntityPlayer && (world.getDifficulty() == EnumDifficulty.PEACEFUL
+				|| ((EntityPlayer) this.getAttackTarget()).capabilities.disableDamage)) {
 			this.setAttackTarget(null);
 		}
 		if (!this.world.isRemote) {

@@ -24,7 +24,7 @@ public class HippogryphAITarget<T extends EntityLivingBase> extends EntityAINear
         if (super.shouldExecute() && this.targetEntity != null && !this.targetEntity.getClass().equals(this.hippogryph.getClass())) {
             if (this.hippogryph.width >= this.targetEntity.width) {
                 if (this.targetEntity instanceof EntityPlayer) {
-                    return !hippogryph.isTamed();
+                    return !hippogryph.isTamed() && !((EntityPlayer) this.targetEntity).capabilities.disableDamage;
                 } else {
                     if (!hippogryph.isOwner(this.targetEntity) && hippogryph.canMove() && this.targetEntity instanceof EntityAnimal) {
                         if (hippogryph.isTamed()) {
