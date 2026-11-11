@@ -2162,6 +2162,24 @@ public abstract class EntityDragonBase extends EntityTameable implements ISyncMo
         }
     }
 
+    @Override
+    public void dismountRidingEntity() {
+        boolean wasOnPlayer = this.getRidingEntity() instanceof EntityPlayer;
+        super.dismountRidingEntity();
+        if (wasOnPlayer) {
+            // the tracker sends no position while riding, so the client's last known server position is still the
+            // pickup spot; resync it so the relative move sent after dismounting doesn't snap the dragon back
+            this.serverPosX = EntityTracker.getPositionLong(this.posX);
+            this.serverPosY = EntityTracker.getPositionLong(this.posY);
+            this.serverPosZ = EntityTracker.getPositionLong(this.posZ);
+            this.newPosRotationIncrements = 0;
+            if (!this.world.isRemote) {
+                // dismount bit would otherwise stay stuck, since control packets are ignored once not riding
+                this.setControlState((byte) 0);
+            }
+        }
+    }
+
     protected int shouldBurnFire(World world) {
         return world.isRemote ? burnProgress : (this.fireTicks > 20 ? this.fireTicks : 0);
     }
