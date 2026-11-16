@@ -430,7 +430,7 @@ public class IceAndFireConfig {
         this.weezerTinkers = config.getBoolean("Weezer", "all", true, "Disable this to remove easter egg with tinkers installed.");
         this.weezerTinkersDisarmChance = config.getFloat("Easter Egg Tinkers Tool Disarm chance", "all", 0.2F, 0F, 1F, "Percentage of critical strike that will disarm with easter egg tinkers material.");
 
-        this.generateMausoleums = config.getBoolean("Generate Mausoleums", "all", true, "True if mausoleums are allowed to generate");
+        this.generateMausoleums = config.getBoolean("Generate Mausoleums", "all", true, "True if mausoleums are allowed to generate. They stay available even when Dreadlands is disabled, which keeps the dread blocks and mobs they use registered.");
         this.generateMausoleumChance = config.getInt("Mausoleum Gen Chance", "all", 1800, 1, 10000, "One out of this number chance per chunk to generate a mausoleum.");
         this.spawnLiches = config.getBoolean("Spawn Liches", "all", true, "True if dread liches are allowed to spawn");
         this.lichSpawnRate = config.getInt("Lich Spawn Weight", "all", 2, 1, 10000, "Dread Lich spawn weight. Lower = lower chance to spawn");
