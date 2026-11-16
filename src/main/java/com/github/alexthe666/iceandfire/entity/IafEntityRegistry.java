@@ -40,7 +40,8 @@ public class IafEntityRegistry {
             boolean useDefaults = defaultSpawnBiomes.contains(biome);
             List<Biome.SpawnListEntry> creatures = biome.getSpawnableList(EnumCreatureType.CREATURE);
             List<Biome.SpawnListEntry> monsters = biome.getSpawnableList(EnumCreatureType.MONSTER);
-            registerDreadSpawns(biome, monsters);
+            if (IceAndFire.CONFIG.enableDreadlands)
+                registerDreadSpawns(biome, monsters);
 
             if (IceAndFire.CONFIG.spawnHippogryphs && BiomeSpawnFilter.HIPPOGRYPH.allows(biome,
                     useDefaults && BiomeDictionary.hasType(biome, BiomeDictionary.Type.HILLS))) {

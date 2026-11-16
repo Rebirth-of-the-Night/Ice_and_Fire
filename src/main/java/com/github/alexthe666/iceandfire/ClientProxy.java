@@ -384,7 +384,8 @@ public class ClientProxy extends CommonProxy {
         IafItemRegistry.deathworm_gauntlet_yellow.setTileEntityItemStackRenderer(TEISR);
         IafItemRegistry.deathworm_gauntlet_white.setTileEntityItemStackRenderer(TEISR);
         IafItemRegistry.deathworm_gauntlet_red.setTileEntityItemStackRenderer(TEISR);
-        Item.getItemFromBlock(IafBlockRegistry.dread_portal).setTileEntityItemStackRenderer(TEISR);
+        if (IceAndFire.CONFIG.enableDreadlands)
+            Item.getItemFromBlock(IafBlockRegistry.dread_portal).setTileEntityItemStackRenderer(TEISR);
 
         ClientCommandHandler.instance.registerCommand(new CommandTreeBaseButOurs());
     }

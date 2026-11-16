@@ -1,4 +1,9 @@
 {
+  "conditions": [
+    {
+      "type": "iceandfire:dreadlands_enabled"
+    }
+  ],
   "type": "forge:ore_shaped",
   "pattern": [
     "DDD"

@@ -58,6 +58,7 @@ public class CommonProxy {
             for (Field f : IafBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
                 if (obj instanceof Block) {
+                    if (DreadlandsContent.shouldSkip((Block) obj)) continue;
                     event.getRegistry().register((Block) obj);
                 } else if (obj instanceof Block[]) {
                     for (Block block : (Block[]) obj) {
@@ -142,6 +143,7 @@ public class CommonProxy {
     }
 
     public static <T extends Entity> void registerSpawnable(EntityEntryBuilder<T> builder, RegistryEvent.Register<EntityEntry> event, Class<T> entityClass, String name, int id, int mainColor, int subColor) {
+        if (DreadlandsContent.shouldSkipEntity(name)) return;
         id += 900;
         builder.entity(entityClass);
         builder.id(new ResourceLocation(IceAndFire.MODID, name), id);
@@ -152,6 +154,7 @@ public class CommonProxy {
     }
 
     public static <T extends Entity> void registerSpawnable(EntityEntryBuilder<T> builder, RegistryEvent.Register<EntityEntry> event, Class<T> entityClass, String name, int id, int mainColor, int subColor, int range, int frequency) {
+        if (DreadlandsContent.shouldSkipEntity(name)) return;
         id += 900;
         builder.entity(entityClass);
         builder.id(new ResourceLocation(IceAndFire.MODID, name), id);
@@ -162,6 +165,7 @@ public class CommonProxy {
     }
 
     public static <T extends Entity> void registerUnspawnable(EntityEntryBuilder<T> builder, RegistryEvent.Register<EntityEntry> event, Class<T> entityClass, String name, int id) {
+        if (DreadlandsContent.shouldSkipEntity(name)) return;
         id += 900;
         builder.entity(entityClass);
         builder.id(new ResourceLocation(IceAndFire.MODID, name), id);
@@ -177,6 +181,7 @@ public class CommonProxy {
             for (Field f : IafBlockRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
                 if (obj instanceof Block) {
+                    if (DreadlandsContent.shouldSkip((Block) obj)) continue;
                     ItemBlock itemBlock;
                     if (obj == IafBlockRegistry.jar_pixie) {
                         itemBlock = ((BlockJar) obj).new ItemBlockJar((Block) obj);
@@ -217,6 +222,7 @@ public class CommonProxy {
             for (Field f : IafItemRegistry.class.getDeclaredFields()) {
                 Object obj = f.get(null);
                 if (obj instanceof Item) {
+                    if (DreadlandsContent.shouldSkip((Item) obj)) continue;
                     event.getRegistry().register((Item) obj);
                 } else if (obj instanceof Item[]) {
                     for (Item item : (Item[]) obj) {
@@ -265,9 +271,11 @@ public class CommonProxy {
     @SubscribeEvent
     public static void registerBiomes(RegistryEvent.Register<Biome> event) {
         event.getRegistry().register(IafWorldRegistry.GLACIER_BIOME);
-        event.getRegistry().register(IafWorldRegistry.DREADLANDS_BIOME);
+        if (IceAndFire.CONFIG.enableDreadlands)
+            event.getRegistry().register(IafWorldRegistry.DREADLANDS_BIOME);
         BiomeDictionary.addTypes(IafWorldRegistry.GLACIER_BIOME, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.WASTELAND);
-        BiomeDictionary.addTypes(IafWorldRegistry.DREADLANDS_BIOME, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD, BiomeDictionary.Type.SPOOKY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.WASTELAND);
+        if (IceAndFire.CONFIG.enableDreadlands)
+            BiomeDictionary.addTypes(IafWorldRegistry.DREADLANDS_BIOME, BiomeDictionary.Type.SNOWY, BiomeDictionary.Type.COLD, BiomeDictionary.Type.SPOOKY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.WASTELAND);
 
         if (IceAndFire.CONFIG.spawnGlaciers) {
             BiomeManager.addSpawnBiome(IafWorldRegistry.GLACIER_BIOME);

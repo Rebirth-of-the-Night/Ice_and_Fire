@@ -1,5 +1,8 @@
 {
   "recipes": {
     "lectern": "com.github.alexthe666.iceandfire.recipe.LecternRecipeFactory"
+  },
+  "conditions": {
+    "dreadlands_enabled": "com.github.alexthe666.iceandfire.recipe.DreadlandsEnabledCondition"
   }
 }
