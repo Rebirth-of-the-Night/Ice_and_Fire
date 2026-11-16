@@ -104,6 +104,31 @@ public class ServerEvents {
     }
 
 
+    @SubscribeEvent
+    public void onJarSmallSlime(PlayerInteractEvent.EntityInteract event) {
+        if (!IceAndFire.CONFIG.jarSmallSlimes || !(event.getTarget() instanceof net.minecraft.entity.monster.EntitySlime)) {
+            return;
+        }
+        net.minecraft.entity.monster.EntitySlime slime = (net.minecraft.entity.monster.EntitySlime) event.getTarget();
+        ItemStack held = event.getItemStack();
+        if (slime.isDead || slime.getSlimeSize() != 1 || held.getItem() != net.minecraft.item.Item.getItemFromBlock(IafBlockRegistry.jar_empty) || held.getMetadata() != 0) {
+            return;
+        }
+        event.setCanceled(true);
+        event.setCancellationResult(net.minecraft.util.EnumActionResult.SUCCESS);
+        if (event.getWorld().isRemote) {
+            return;
+        }
+        if (!event.getEntityPlayer().isCreative()) {
+            held.shrink(1);
+        }
+        slime.setDead();
+        ItemStack jar = new ItemStack(IafBlockRegistry.jar_pixie, 1, slime instanceof net.minecraft.entity.monster.EntityMagmaCube ? 6 : 5);
+        if (!event.getEntityPlayer().addItemStackToInventory(jar)) {
+            event.getEntityPlayer().dropItem(jar, false);
+        }
+    }
+
     public static void onLeftClick(final EntityPlayer playerEntity, final ItemStack stack) {
         if (stack.getItem() == IafItemRegistry.ghost_sword && !playerEntity.world.isRemote) {
             ItemGhostSword.spawnGhostSwordEntity(stack, playerEntity);

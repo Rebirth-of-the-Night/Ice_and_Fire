@@ -6,6 +6,9 @@ import com.github.alexthe666.iceandfire.message.MessageUpdatePixieHouse;
 import com.github.alexthe666.iceandfire.message.MessageUpdatePixieHouseModel;
 import com.github.alexthe666.iceandfire.message.MessageUpdatePixieJar;
 import com.github.alexthe666.iceandfire.misc.IafSoundRegistry;
+import net.minecraft.entity.monster.EntityMagmaCube;
+import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
@@ -31,6 +35,10 @@ public class TileEntityJar extends TileEntity implements ITickable {
     public boolean prevHasProduced;
     public boolean hasProduced;
     public boolean tamedPixie;
+    /** A small slime kept in the jar instead of a pixie. Purely decorative. */
+    public boolean hasSlime;
+    /** When {@link #hasSlime} is set: true for a magma cube instead of a slime. */
+    public boolean magmaCube;
     public UUID pixieOwnerUUID;
     public int pixieType;
     public int ticksExisted;
@@ -38,6 +46,7 @@ public class TileEntityJar extends TileEntity implements ITickable {
     public float rotationYaw;
     public float prevRotationYaw;
     private float targetRotationYaw;
+    private int lookAtPlayerTicks;
     net.minecraftforge.items.IItemHandler handlerBottom = new PixieJarInvWrapper(this);
     private final Random rand;
 
@@ -57,6 +66,8 @@ public class TileEntityJar extends TileEntity implements ITickable {
         compound.setInteger("PixieType", pixieType);
         compound.setBoolean("HasProduced", hasProduced);
         compound.setBoolean("TamedPixie", tamedPixie);
+        compound.setBoolean("HasSlime", hasSlime);
+        compound.setBoolean("MagmaCube", magmaCube);
         if (pixieOwnerUUID != null) {
             compound.setUniqueId("PixieOwnerUUID", pixieOwnerUUID);
         }
@@ -90,6 +101,8 @@ public class TileEntityJar extends TileEntity implements ITickable {
         hasProduced = compound.getBoolean("HasProduced");
         ticksExisted = compound.getInteger("TicksExisted");
         tamedPixie = compound.getBoolean("TamedPixie");
+        hasSlime = compound.getBoolean("HasSlime");
+        magmaCube = compound.getBoolean("MagmaCube");
         pixieOwnerUUID = compound.getUniqueId("PixieOwnerUUID");
         this.pixieItems = NonNullList.withSize(1, ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, pixieItems);
@@ -108,6 +121,12 @@ public class TileEntityJar extends TileEntity implements ITickable {
                 IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageUpdatePixieJar(pos.toLong(), hasProduced));
             }
         }
+        if (this.hasSlime && IceAndFire.CONFIG.jarSlimeProduction && !this.world.isRemote && ticksExisted % 24000 == 0 && !this.hasProduced && this.rand.nextInt(3) == 0) {
+            this.hasProduced = true;
+            this.markDirty();
+            IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageUpdatePixieJar(pos.toLong(), true));
+            this.world.playSound(null, this.pos, this.magmaCube ? SoundEvents.ENTITY_MAGMACUBE_SQUISH : SoundEvents.ENTITY_SLIME_SQUISH, SoundCategory.NEUTRAL, 1, 1);
+        }
         if (this.hasPixie && hasProduced != prevHasProduced && ticksExisted > 5) {
             if (!this.getWorld().isRemote) {
                 IceAndFire.NETWORK_WRAPPER.sendToAll(new MessageUpdatePixieJar(pos.toLong(), hasProduced));
@@ -115,16 +134,46 @@ public class TileEntityJar extends TileEntity implements ITickable {
             world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5, IafSoundRegistry.PIXIE_HURT, SoundCategory.NEUTRAL, 1, 1, false);
         }
         prevRotationYaw = rotationYaw;
-        if (rand.nextInt(120) == 0) {
+        float turnSpeed = 0.25F;
+        if (this.world.isRemote && this.hasPixie) {
+            if (this.lookAtPlayerTicks > 0) {
+                this.lookAtPlayerTicks--;
+            } else if (rand.nextInt(160) == 0) {
+                this.lookAtPlayerTicks = 40 + rand.nextInt(60);
+            }
+            if (this.lookAtPlayerTicks > 0) {
+                EntityPlayer player = this.world.getClosestPlayer(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, 8.0D, false);
+                if (player != null) {
+                    double dx = player.posX - (this.pos.getX() + 0.5D);
+                    double dz = player.posZ - (this.pos.getZ() + 0.5D);
+                    // The jar renderer is flipped upside down, which mirrors the yaw direction.
+                    this.targetRotationYaw = (float) Math.toDegrees(MathHelper.atan2(dx, dz)) + 180.0F;
+                    turnSpeed = 6.0F;
+                } else {
+                    this.lookAtPlayerTicks = 0;
+                }
+            }
+        }
+        if (this.lookAtPlayerTicks <= 0 && rand.nextInt(120) == 0) {
             this.targetRotationYaw = this.rotationYaw + (rand.nextFloat() - 0.5F) * 40F;
         }
         // Seated pixies turn gently instead of snapping to a random direction in one tick.
         float yawDifference = MathHelper.wrapDegrees(this.targetRotationYaw - this.rotationYaw);
-        this.rotationYaw += MathHelper.clamp(yawDifference, -0.25F, 0.25F);
+        this.rotationYaw += MathHelper.clamp(yawDifference, -turnSpeed, turnSpeed);
         if (this.hasPixie && ticksExisted % 40 == 0 && this.rand.nextInt(6) == 0) {
             this.world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5, IafSoundRegistry.PIXIE_IDLE, SoundCategory.NEUTRAL, 1, 1, false);
         }
         prevHasProduced = hasProduced;
+    }
+
+    public void releaseSlime() {
+        this.hasSlime = false;
+        if (!world.isRemote) {
+            EntitySlime slime = this.magmaCube ? new EntityMagmaCube(this.world) : new EntitySlime(this.world);
+            slime.setSlimeSize(1, true);
+            slime.setLocationAndAngles(this.pos.getX() + 0.5D, this.pos.getY(), this.pos.getZ() + 0.5D, this.world.rand.nextFloat() * 360F, 0);
+            this.world.spawnEntity(slime);
+        }
     }
 
     public void releasePixie() {

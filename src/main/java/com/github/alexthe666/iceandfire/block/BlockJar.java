@@ -102,6 +102,9 @@ public class BlockJar extends BlockContainer implements ICustomRendered {
     */
 
     public void dropPixie(World world, BlockPos pos) {
+        if (world.getTileEntity(pos) instanceof TileEntityJar && ((TileEntityJar) world.getTileEntity(pos)).hasSlime) {
+            ((TileEntityJar) world.getTileEntity(pos)).releaseSlime();
+        }
         if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityJar && ((TileEntityJar) world.getTileEntity(pos)).hasPixie) {
             ((TileEntityJar) world.getTileEntity(pos)).releasePixie();
         }
@@ -116,6 +119,19 @@ public class BlockJar extends BlockContainer implements ICustomRendered {
     }
 
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (!empty && world.getTileEntity(pos) instanceof TileEntityJar) {
+            TileEntityJar jar = (TileEntityJar) world.getTileEntity(pos);
+            if (jar.hasSlime && jar.hasProduced) {
+                if (!world.isRemote) {
+                    jar.hasProduced = false;
+                    jar.markDirty();
+                    IceAndFire.NETWORK_WRAPPER.sendToAll(new com.github.alexthe666.iceandfire.message.MessageUpdatePixieJar(pos.toLong(), false));
+                    world.spawnEntity(new EntityItem(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, new ItemStack(jar.magmaCube ? net.minecraft.init.Items.MAGMA_CREAM : net.minecraft.init.Items.SLIME_BALL)));
+                    world.playSound(null, pos, jar.magmaCube ? net.minecraft.init.SoundEvents.ENTITY_MAGMACUBE_SQUISH : net.minecraft.init.SoundEvents.ENTITY_SLIME_SQUISH, SoundCategory.NEUTRAL, 1, 1);
+                }
+                return true;
+            }
+        }
         if (!empty && world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityJar && ((TileEntityJar) world.getTileEntity(pos)).hasPixie && ((TileEntityJar) world.getTileEntity(pos)).hasProduced) {
             ((TileEntityJar) world.getTileEntity(pos)).hasProduced = false;
             EntityItem item = new EntityItem(world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, new ItemStack(IafItemRegistry.pixie_dust));
@@ -142,7 +158,11 @@ public class BlockJar extends BlockContainer implements ICustomRendered {
 
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         if (world.getTileEntity(pos) != null && world.getTileEntity(pos) instanceof TileEntityJar) {
-            if (!empty) {
+            if (!empty && stack.getMetadata() >= 5) {
+                ((TileEntityJar) world.getTileEntity(pos)).hasPixie = false;
+                ((TileEntityJar) world.getTileEntity(pos)).hasSlime = true;
+                ((TileEntityJar) world.getTileEntity(pos)).magmaCube = stack.getMetadata() == 6;
+            } else if (!empty) {
                 ((TileEntityJar) world.getTileEntity(pos)).hasPixie = true;
                 ((TileEntityJar) world.getTileEntity(pos)).pixieType = stack.getMetadata();
             } else {
@@ -171,7 +191,7 @@ public class BlockJar extends BlockContainer implements ICustomRendered {
         @SideOnly(Side.CLIENT)
         public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
             if (this.isInCreativeTab(tab)) {
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 7; i++) {
                     subItems.add(new ItemStack(this, 1, i));
                 }
             }

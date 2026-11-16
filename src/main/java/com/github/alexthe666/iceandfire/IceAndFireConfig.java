@@ -98,6 +98,8 @@ public class IceAndFireConfig {
     public String[] pixieVillageBiomeBlacklist = {};
     public boolean pixieVillageBiomeBlacklistIsWhitelist = false;
     public boolean pixiesStealItems = true;
+    public boolean jarSmallSlimes = true;
+    public boolean jarSlimeProduction = true;
     public boolean generateCyclopsCaves = true;
     public boolean generateWanderingCyclops = true;
     public int spawnWanderingCyclopsChance = 900;
@@ -329,6 +331,8 @@ public class IceAndFireConfig {
         this.pixiesStealItems = config.getBoolean("Pixies Steal Items", "all", true, "True if pixies are allowed to steal from players");
 
         this.generateCyclopsCaves = config.getBoolean("Spawn Cyclopes Caves", "all", true, "True if cyclops caves are allowed to spawn");
+        this.jarSmallSlimes = config.getBoolean("Jar Small Slimes", "all", true, "True if tiny slimes and magma cubes can be caught in empty jars");
+        this.jarSlimeProduction = config.getBoolean("Jarred Slimes Produce Items", "all", true, "True if jarred slimes and magma cubes occasionally produce a slimeball or magma cream");
         this.spawnCyclopsCaveChance = config.getInt("Spawn Cyclops Cave Chance", "all", 60, 1, 10000, "1 out of this number chance per chunk for generation");
 
         this.generateWanderingCyclops = config.getBoolean("Spawn Wandering Cyclopes", "all", true, "True if wandering cyclopes are allowed to spawn");

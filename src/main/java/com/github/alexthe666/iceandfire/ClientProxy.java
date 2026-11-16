@@ -189,13 +189,15 @@ public class ClientProxy extends CommonProxy {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 3, new ModelResourceLocation("iceandfire:pixie_house", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 4, new ModelResourceLocation("iceandfire:pixie_house", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.pixieHouse), 5, new ModelResourceLocation("iceandfire:pixie_house", "inventory"));
-        ModelBakery.registerItemVariants(Item.getItemFromBlock(IafBlockRegistry.jar_pixie), new ResourceLocation("iceandfire:jar_0"), new ResourceLocation("iceandfire:jar_1"), new ResourceLocation("iceandfire:jar_2"), new ResourceLocation("iceandfire:jar_3"), new ResourceLocation("iceandfire:jar_4"));
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(IafBlockRegistry.jar_pixie), new ResourceLocation("iceandfire:jar_0"), new ResourceLocation("iceandfire:jar_1"), new ResourceLocation("iceandfire:jar_2"), new ResourceLocation("iceandfire:jar_3"), new ResourceLocation("iceandfire:jar_4"), new ResourceLocation("iceandfire:jar_5"), new ResourceLocation("iceandfire:jar_6"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.jar_empty), 0, new ModelResourceLocation("iceandfire:jar", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.jar_pixie), 0, new ModelResourceLocation("iceandfire:jar_0", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.jar_pixie), 1, new ModelResourceLocation("iceandfire:jar_1", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.jar_pixie), 2, new ModelResourceLocation("iceandfire:jar_2", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.jar_pixie), 3, new ModelResourceLocation("iceandfire:jar_3", "inventory"));
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.jar_pixie), 4, new ModelResourceLocation("iceandfire:jar_4", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.jar_pixie), 5, new ModelResourceLocation("iceandfire:jar_5", "inventory"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(IafBlockRegistry.jar_pixie), 6, new ModelResourceLocation("iceandfire:jar_6", "inventory"));
         ModelBakery.registerItemVariants(IafItemRegistry.deathworm_chitin, new ResourceLocation("iceandfire:deathworm_chitin_yellow"), new ResourceLocation("iceandfire:deathworm_chitin_white"), new ResourceLocation("iceandfire:deathworm_chitin_red"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.deathworm_chitin, 0, new ModelResourceLocation("iceandfire:deathworm_chitin_yellow", "inventory"));
         ModelLoader.setCustomModelResourceLocation(IafItemRegistry.deathworm_chitin, 1, new ModelResourceLocation("iceandfire:deathworm_chitin_white", "inventory"));
